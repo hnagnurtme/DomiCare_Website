@@ -1,0 +1,83 @@
+package com.backend.domicare.service.imp;
+
+import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.stereotype.Service;
+
+import com.backend.domicare.dto.paging.ResultPaginDTO;
+import com.backend.domicare.model.Permission;
+import com.backend.domicare.repository.PermissionsRepository;
+import com.backend.domicare.service.PermissionService;
+
+import lombok.RequiredArgsConstructor;
+@Service
+@RequiredArgsConstructor
+public class PermissionServiceImp implements PermissionService {
+    private final PermissionsRepository permissionsRepository;
+
+    @Override
+    public boolean isPermissionExists(Permission permission) {
+        return permissionsRepository.existsByModuleAndApiPathAndMethod(permission.getModule(), permission.getApiPath(), permission.getMethod());
+    }
+
+    @Override
+    public Permission createPermission(Permission permission) {
+        return this.permissionsRepository.save(permission);
+    }
+
+    @Override
+    public Permission getPermissionById(Long id) {
+        Optional<Permission> permission = permissionsRepository.findById(id);
+        if( permission.isPresent() ) {
+            return permission.get();
+        }
+        return null;
+    }
+
+    @Override
+    public ResultPaginDTO getPermissions(Specification<Permission> spec,Pageable pageable){
+        Page<Permission> permissions = permissionsRepository.findAll(spec, pageable);
+        ResultPaginDTO resultPaginDTO = new ResultPaginDTO();
+        ResultPaginDTO.Meta meta = new ResultPaginDTO.Meta();
+
+        meta.setPage(permissions.getNumber());
+        meta.setSize(permissions.getSize());
+        meta.setTotal(permissions.getTotalElements());
+        meta.setTotalPages(permissions.getTotalPages());
+
+        resultPaginDTO.setMeta(meta);
+        resultPaginDTO.setData(permissions.getContent());
+        return resultPaginDTO;
+    }
+
+    @Override
+    public Permission updatPermission(Permission permission) {
+        Permission oldPermission = this.getPermissionById(permission.getId());
+        if( oldPermission == null ) {
+            return null;
+        }
+        oldPermission.setName(permission.getName());
+        oldPermission.setApiPath(permission.getApiPath());
+        oldPermission.setMethod(permission.getMethod());
+        oldPermission.setModule(permission.getModule());
+        oldPermission.setUpdateBy(permission.getUpdateBy());
+        oldPermission.setUpdateAt(permission.getUpdateAt());
+
+        Permission updatedPermission = this.permissionsRepository.save(oldPermission);
+        return updatedPermission;
+    }
+    
+    @Override
+    public void deletePermission(Permission permission) {
+        Optional<Permission> permissionOptional = this.permissionsRepository.findById(permission.getId());
+        Permission currentPermission = permissionOptional.get();
+        currentPermission.getRoles().forEach(role -> role.getPermissions().remove(currentPermission));
+
+        this.permissionsRepository.delete(permission);
+    }
+
+
+}

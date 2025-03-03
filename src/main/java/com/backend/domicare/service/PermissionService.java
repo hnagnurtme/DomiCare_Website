@@ -13,7 +13,7 @@ public interface PermissionService {
     public Permission createPermission(Permission permission);
     public Permission getPermissionById(Long id);
 
-    public Permission updatPermission(Permission permission);
+    public Permission updatePermission(Permission permission);
     public void deletePermission(Permission permission);
 
     public ResultPaginDTO getPermissions(Specification<Permission> spec,Pageable pageable);

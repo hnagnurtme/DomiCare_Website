@@ -40,7 +40,7 @@ public class User {
     private String password;
     private String phone;
     private String address;
-
+    
     private String createBy;
     private String updateBy;
     private Instant createAt;

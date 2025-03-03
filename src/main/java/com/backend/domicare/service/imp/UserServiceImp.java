@@ -24,7 +24,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User saveUser(UserDTO userDTO){
-        User user = new User();
+        User user = new User(); 
         user.setEmail(userDTO.getEmail());
         user.setName(userDTO.getName());
         user.setAddress(userDTO.getAddress());

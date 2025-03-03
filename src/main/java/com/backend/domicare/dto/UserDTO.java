@@ -1,5 +1,7 @@
 package com.backend.domicare.dto;
 
+import com.backend.domicare.model.Role;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,4 +18,5 @@ public class UserDTO {
     private String password;
     private String phone;
     private String address;
+    private Role role;
 }

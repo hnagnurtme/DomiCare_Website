@@ -16,6 +16,8 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -65,6 +67,16 @@ public class Booking {
 
     @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Review review;
+
+
+    @PrePersist
+    public void prePersist() {
+        this.createAt = Instant.now();
+    }
+    @PreUpdate
+    public void preUpdate() {
+        this.updateAt = Instant.now();
+    }
 }
 
 enum BookingStatus {

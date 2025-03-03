@@ -1,7 +1,5 @@
 package com.backend.domicare.controller;
 
-
-import org.hibernate.annotations.Filter;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -14,7 +12,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import com.backend.domicare.model.Permission;
 import com.backend.domicare.service.PermissionService;

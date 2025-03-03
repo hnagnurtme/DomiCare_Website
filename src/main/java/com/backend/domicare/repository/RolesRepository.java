@@ -8,4 +8,5 @@ import com.backend.domicare.model.Role;
 @Repository
 public interface RolesRepository extends JpaRepository<Role, Long> {
     public Role findByName(String name);
+    public boolean existsByName(String name);
 }

@@ -32,9 +32,10 @@ public class JwtTokenManager {
 
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .subject(email)
-                .issuedAt(expiration)
+                .issuedAt(now)
+                .expiresAt(expiration)
+                .claim("email", email) 
                 .claim("role", "ROLE_USER")
-                .claim(email, authentication)
                 .build();       
         JwsHeader header = JwsHeader.with(JWT_ALGORITHM).build();
 

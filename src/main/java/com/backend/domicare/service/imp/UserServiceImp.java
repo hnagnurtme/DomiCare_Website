@@ -68,7 +68,5 @@ public class UserServiceImp implements UserService {
         resultPaginDTO.setMeta(meta);
         resultPaginDTO.setData(users.getContent());
         return resultPaginDTO;
-
-        
     }
 }

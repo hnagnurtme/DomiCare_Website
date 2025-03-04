@@ -23,14 +23,19 @@ public class JwtConfiguration {
     private final JwtProperties jwtProperties;
     
     @Bean
-    public JwtEncoder jwtEncoder(){
+    public JwtEncoder jwtEncoder() {
         return new NimbusJwtEncoder(new ImmutableSecret<>(getSecretKey()));
     }
 
+    private SecretKey getSecretKey() {
+        String secret = jwtProperties.getSecretKey();
+        
+        if (secret == null || secret.isEmpty()) {
+            throw new IllegalArgumentException("❌ Secret key không được để trống!");
+        }
 
-    private SecretKey getSecretKey(){
-        byte[] secretBytes = Base64.from(jwtProperties.getSecretKey()).decode();
-        return new SecretKeySpec(secretBytes, 0, secretBytes.length,JwtTokenManager.JWT_ALGORITHM.getName());
+        byte[] secretBytes = Base64.from(secret).decode();
+        return new SecretKeySpec(secretBytes, "HmacSHA256"); // Dùng thuật toán HMAC-SHA256 mặc định
     }
 
     @Bean
@@ -38,19 +43,18 @@ public class JwtConfiguration {
         NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withSecretKey(getSecretKey())
             .macAlgorithm(JwtTokenManager.JWT_ALGORITHM).build();
 
-        return token ->{
-            try{
+        return token -> {
+            try {
                 return jwtDecoder.decode(token);
+            } catch (Exception e) {
+                System.out.println(">>> Token Error: " + e.getMessage());
+                throw e;
             }
-            catch(Exception e){
-               System.out.println(">>> Token Error"+e.getMessage());
-               throw e;
-        }
         };
     }
 
-     @Bean
-    public JwtAuthenticationConverter jwtAuthenciationConverter() {
+    @Bean
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");
         jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName("anhnon");

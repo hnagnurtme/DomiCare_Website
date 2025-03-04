@@ -1,15 +1,22 @@
 package com.backend.domicare.security.jwt;
 
-import java.nio.file.attribute.UserPrincipal;
+import java.util.Optional;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.stereotype.Service;
+
+import com.backend.domicare.dto.UserDTO;
+import com.backend.domicare.model.User;
 import com.backend.domicare.security.dto.LoginRequest;
 import com.backend.domicare.security.dto.LoginResponse;
+import com.backend.domicare.security.dto.RegisterResponse;
 import com.backend.domicare.service.UserService;
+import com.backend.domicare.security.dto.RegisterResponse;
 
 import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
@@ -17,7 +24,8 @@ import lombok.RequiredArgsConstructor;
 public class JwtTokenService {
     private final JwtTokenManager jwtTokenManager;
     private final AuthenticationManager authenticationManager;
-    // private final UserService userService;
+    private final UserService userService;
+    private final JwtDecoder jwtDecoder;
 
     public LoginResponse login(LoginRequest loginRequest) {
     String email = loginRequest.getEmail();
@@ -33,19 +41,48 @@ public class JwtTokenService {
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
         Authentication authentication = authenticationManager.authenticate(authenticationToken);
 
-        System.out.println("✅ Xác thực thành công!");
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        String token = jwtTokenManager.createAccessToken(authentication.getName());
+
+        Optional<String> emailOptional = JwtTokenManager.getCurrentUserLogin();
+        if (!emailOptional.isPresent()) {
+            throw new IllegalArgumentException("Không tìm thấy người dùng");
+        }
+        String emailUser = emailOptional.get();
         
-        String token = jwtTokenManager.createAccessToken(authentication);
 
-        return new LoginResponse(token);
-    } catch (BadCredentialsException e) {
-        System.out.println("❌ Sai mật khẩu hoặc email!");
-    } catch (Exception e) {
-        System.out.println("❌ Lỗi trong quá trình xác thực: " + e.getMessage());
+        User user = userService.findUserByEmail(emailUser);
+
+        if( user == null){
+            throw new IllegalArgumentException("Không tìm thấy người dùng");
+        }
+
+
+        LoginResponse loginResponse = new LoginResponse();
+        loginResponse.setAccessToken(token);
+        loginResponse.setUser(user);
+        return loginResponse;
+        } catch (BadCredentialsException e) {
+            System.out.println("❌ Sai mật khẩu hoặc email!");
+        } catch (Exception e) {
+            System.out.println("❌ Lỗi trong quá trình xác thực: " + e.getMessage());
+        }
+        return null;
     }
-    return null;
-}
+
+    public void logout() {
+        SecurityContextHolder.clearContext();
+    }
+
+    public RegisterResponse register(UserDTO user) {
+        User userResponse = userService.saveUser(user);
+
+        String token = jwtTokenManager.createAccessToken(user.getEmail());
+        RegisterResponse registerResponse = new RegisterResponse();
+        registerResponse.setUser(userResponse);
+        registerResponse.setAccessToken(token);
+        return registerResponse;
+    } 
 
 }

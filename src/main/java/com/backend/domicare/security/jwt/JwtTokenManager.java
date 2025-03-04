@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -14,7 +15,9 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Component;
 
-import com.backend.domicare.security.dto.LoginRequest;
+import com.backend.domicare.model.Role;
+import com.backend.domicare.model.User;
+import com.backend.domicare.service.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,19 +26,28 @@ import lombok.RequiredArgsConstructor;
 public class JwtTokenManager {
     private final JwtProperties jwtProperties;
     private final JwtEncoder jwtEncoder;
+    private final UserService userService;
     public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS256;
 
-    public String createAccessToken(Authentication authentication) {
-        String email = authentication.getName();
+    public String createAccessToken(String email) {
         Instant now = Instant.now();
         Instant expiration = now.plusSeconds(jwtProperties.getExpirationMinutes() * 60);
+
+        User user = userService.findUserByEmail(email);
+        if (user == null) {
+            throw new IllegalArgumentException("Không tìm thấy người dùng");
+        }
+        Role role = user.getRole();
+        if (role == null) {
+            throw new IllegalArgumentException("Không tìm thấy quyền của người dùng");
+        }
 
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .subject(email)
                 .issuedAt(now)
                 .expiresAt(expiration)
                 .claim("email", email) 
-                .claim("role", "ROLE_USER")
+                .claim("role", role.getName())
                 .build();       
         JwsHeader header = JwsHeader.with(JWT_ALGORITHM).build();
 
@@ -47,20 +59,21 @@ public class JwtTokenManager {
         return Optional.ofNullable(extractPrincipal(context.getAuthentication()));
     }
 
-    private static String extractPrincipal(Authentication authentication) {
-        if (authentication == null) {
-            return null;
-        }
-    
-        Object principal = authentication.getPrincipal();
-        
-        if (principal instanceof LoginRequest springSecurityUser) {
-            return springSecurityUser.getEmail();
-        } else if (principal instanceof Jwt jwt) {
-            return jwt.getSubject();
-        } else if (principal instanceof String email) {
-            return email;
-        }
+   private static String extractPrincipal(Authentication authentication) {
+    if (authentication == null) {
         return null;
     }
+
+    Object principal = authentication.getPrincipal();
+
+    if (principal instanceof UserDetails) {
+        return ((UserDetails) principal).getUsername(); 
+    } else if (principal instanceof Jwt) {
+        return ((Jwt) principal).getSubject();
+    } else if (principal instanceof String) {
+        return (String) principal;
+    }
+    return null;
+}
+
 }

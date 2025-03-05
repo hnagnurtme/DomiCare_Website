@@ -1,5 +1,8 @@
 package com.backend.domicare.service.imp;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -37,12 +40,14 @@ public class UserServiceImp implements UserService {
         user.setAddress(userDTO.getAddress());
         user.setPhone(userDTO.getPhone());
         user.setPassword(userDTO.getPassword());
-        
-        Role role = userDTO.getRole();
-        if(role == null){
-            role = roleService.getRoleByName("ROLE_USER");
+
+        Set<Role> roles = userDTO.getRole();
+        if(roles == null || roles.isEmpty()){
+            Role role = roleService.getRoleByName("ROLE_USER");
+            roles = new HashSet<>();
+            roles.add(role);
         }
-        user.setRole(role);
+        user.setRoles(roles);
         userValidationService.isEmailAlreadyExist(user.getEmail());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);

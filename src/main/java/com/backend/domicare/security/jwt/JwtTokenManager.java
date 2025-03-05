@@ -2,6 +2,7 @@ package com.backend.domicare.security.jwt;
 
 import java.time.Instant;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -37,17 +38,22 @@ public class JwtTokenManager {
         if (user == null) {
             throw new IllegalArgumentException("Không tìm thấy người dùng");
         }
-        Role role = user.getRole();
-        if (role == null) {
+        // Role role = user.getRole();
+        // if (role == null) {
+        //     throw new IllegalArgumentException("Không tìm thấy quyền của người dùng");
+        // }
+        Set<Role> roles = user.getRoles();
+        if (roles == null || roles.isEmpty()) {
             throw new IllegalArgumentException("Không tìm thấy quyền của người dùng");
         }
+        Role listRole = roles.iterator().next();
 
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .subject(email)
                 .issuedAt(now)
                 .expiresAt(expiration)
                 .claim("email", email) 
-                .claim("role", role.getName())
+                .claim("role", listRole.getName())
                 .build();       
         JwsHeader header = JwsHeader.with(JWT_ALGORITHM).build();
 

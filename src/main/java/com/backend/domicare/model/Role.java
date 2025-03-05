@@ -2,11 +2,13 @@ package com.backend.domicare.model;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -36,7 +38,7 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(unique = true)
     private String name;
     private String description;
     private boolean active;
@@ -55,9 +57,9 @@ public class Role {
     private List<Permission> permissions;
 
 
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore 
-    private List<User> users;
+    @ManyToMany(mappedBy = "roles")
+    @JsonIgnoreProperties("roles") 
+    private Set<User> users; // Một vai trò có thể thuộc về nhiều người dùng
 
     @PrePersist
     public void prePersist() {

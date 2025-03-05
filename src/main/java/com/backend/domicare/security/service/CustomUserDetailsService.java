@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.backend.domicare.model.User;
+import com.backend.domicare.security.utils.CustomUserDetail;
 import com.backend.domicare.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,10 +29,6 @@ public class CustomUserDetailsService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        return new org.springframework.security.core.userdetails.User(
-            user.getEmail(),
-            user.getPassword(),
-            Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"))
-        );
+        return new CustomUserDetail(user);
     }
 }

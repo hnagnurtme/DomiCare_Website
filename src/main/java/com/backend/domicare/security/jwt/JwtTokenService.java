@@ -7,7 +7,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.stereotype.Service;
 
 import com.backend.domicare.dto.UserDTO;
@@ -16,16 +15,15 @@ import com.backend.domicare.security.dto.LoginRequest;
 import com.backend.domicare.security.dto.LoginResponse;
 import com.backend.domicare.security.dto.RegisterResponse;
 import com.backend.domicare.service.UserService;
-import com.backend.domicare.security.dto.RegisterResponse;
-
 import lombok.RequiredArgsConstructor;
+
+
 @RequiredArgsConstructor
 @Service
 public class JwtTokenService {
     private final JwtTokenManager jwtTokenManager;
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
-    private final JwtDecoder jwtDecoder;
 
     public LoginResponse login(LoginRequest loginRequest) {
     String email = loginRequest.getEmail();

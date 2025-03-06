@@ -85,4 +85,14 @@ public class JwtTokenService {
         return registerResponse;
     } 
 
+
+    public String createAccessTokenFromRefreshToken(String refreshToken) {
+        if (!jwtTokenManager.isRefreshTokenValid(refreshToken)) {
+            throw new IllegalArgumentException("Refresh token không hợp lệ");
+        }
+
+        String email = jwtTokenManager.getUserFromRefreshToken(refreshToken).getEmail();
+        return jwtTokenManager.createAccessToken(email);
+    }
+
 }

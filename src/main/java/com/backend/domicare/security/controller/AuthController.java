@@ -43,9 +43,11 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
     }
 
-    @GetMapping("")
-    public String getMethodName(@RequestParam String param) {
-        return new String();
+    @GetMapping("/refresh-token")
+    public ResponseEntity<?> refreshToken(@Valid @RequestParam(value ="refresh_token") String refreshToken) {
+        String token = authService.createAccessTokenFromRefreshToken(refreshToken);
+        return ResponseEntity.status(HttpStatus.OK).body(token);
     }
+  
     
 }

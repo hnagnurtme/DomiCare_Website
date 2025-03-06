@@ -16,6 +16,9 @@ import com.backend.domicare.security.jwt.JwtTokenService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequiredArgsConstructor
@@ -25,8 +28,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
         try{
-            // String token = authService.login(loginRequest).getAccessToken();
-
+           
             LoginResponse loginResponse = authService.login(loginRequest);
             return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
         } catch (Exception e) {
@@ -41,4 +43,9 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
     }
 
+    @GetMapping("")
+    public String getMethodName(@RequestParam String param) {
+        return new String();
+    }
+    
 }

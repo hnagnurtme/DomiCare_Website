@@ -41,7 +41,8 @@ public class JwtTokenService {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String token = jwtTokenManager.createAccessToken(authentication.getName());
+        String accessToken = jwtTokenManager.createAccessToken(authentication.getName());
+        String refreshToken = jwtTokenManager.createRefreshToken(authentication.getName());
 
         Optional<String> emailOptional = JwtTokenManager.getCurrentUserLogin();
         if (!emailOptional.isPresent()) {
@@ -58,7 +59,8 @@ public class JwtTokenService {
 
 
         LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setAccessToken(token);
+        loginResponse.setAccessToken(accessToken);
+        loginResponse.setRefreshToken(refreshToken);
         loginResponse.setUser(user);
         return loginResponse;
         } catch (BadCredentialsException e) {

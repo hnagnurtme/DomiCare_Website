@@ -3,6 +3,7 @@ package com.backend.domicare.security.jwt;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
@@ -18,7 +19,9 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Component;
 
 import com.backend.domicare.model.Role;
+import com.backend.domicare.model.Token;
 import com.backend.domicare.model.User;
+import com.backend.domicare.repository.TokensRepository;
 import com.backend.domicare.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -29,6 +32,7 @@ public class JwtTokenManager {
     private final JwtProperties jwtProperties;
     private final JwtEncoder jwtEncoder;
     private final UserService userService;
+    private final TokensRepository tokensRepository;
     public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS256;
 
     public String createAccessToken(String email) {
@@ -44,44 +48,85 @@ public class JwtTokenManager {
     if (roles == null || roles.isEmpty()) {
         throw new IllegalArgumentException("Không tìm thấy quyền của người dùng");
     }
-
-    // Lấy danh sách các vai trò của người dùng
     Set<String> roleNames = roles.stream().map(Role::getName).collect(Collectors.toSet());
 
     JwtClaimsSet claims = JwtClaimsSet.builder()
-            .subject(email) // email là subject của token
+            .subject(email) 
             .issuedAt(now)
             .expiresAt(expiration)
             .claim("email", email)
-            .claim("roles", roleNames) // Lưu tất cả các vai trò vào claims
+            .claim("roles", roleNames) 
             .build();       
 
     JwsHeader header = JwsHeader.with(JWT_ALGORITHM).build();
 
     return this.jwtEncoder.encode(JwtEncoderParameters.from(header, claims)).getTokenValue();
-}
-
-
-    public static Optional<String> getCurrentUserLogin() {
-        SecurityContext context = SecurityContextHolder.getContext();
-        return Optional.ofNullable(extractPrincipal(context.getAuthentication()));
     }
 
-   private static String extractPrincipal(Authentication authentication) {
-    if (authentication == null) {
+
+        public static Optional<String> getCurrentUserLogin() {
+            SecurityContext context = SecurityContextHolder.getContext();
+            return Optional.ofNullable(extractPrincipal(context.getAuthentication()));
+        }
+
+    private static String extractPrincipal(Authentication authentication) {
+        if (authentication == null) {
+            return null;
+        }
+
+        Object principal = authentication.getPrincipal();
+
+        if (principal instanceof UserDetails) {
+            return ((UserDetails) principal).getUsername(); 
+        } else if (principal instanceof Jwt) {
+            return ((Jwt) principal).getSubject();
+        } else if (principal instanceof String) {
+            return (String) principal;
+        }
         return null;
     }
 
-    Object principal = authentication.getPrincipal();
+    public String createRefreshToken(String email) {
+        User user = userService.findUserByEmail(email);
+        if (user == null) {
+            throw new IllegalArgumentException("Không tìm thấy người dùng");
+        }
+        String refreshToken = UUID.randomUUID().toString();  
+        Instant expiration = Instant.now().plusSeconds(86400); 
 
-    if (principal instanceof UserDetails) {
-        return ((UserDetails) principal).getUsername(); 
-    } else if (principal instanceof Jwt) {
-        return ((Jwt) principal).getSubject();
-    } else if (principal instanceof String) {
-        return (String) principal;
+        Token token = new Token();
+        token.setRefreshToken(refreshToken);
+        token.setExpiration(expiration);
+        token.setUser(user);
+
+        tokensRepository.save(token);
+
+        return refreshToken;
     }
-    return null;
-}
 
+    public void deleteRefreshToken(String refreshToken) {
+        tokensRepository.deleteByRefreshToken(refreshToken);
+    }
+
+    public User getUserFromRefreshToken(String refreshToken) {
+        Token token = tokensRepository.findByRefreshToken(refreshToken);
+
+        return token.getUser();
+    }
+
+    public boolean isRefreshTokenValid(String refreshToken) {
+        Token token = tokensRepository.findByRefreshToken(refreshToken);
+        return token.getExpiration().isAfter(Instant.now());
+    }
+
+    public String refreshAccessToken(String refreshToken) {
+        if (!isRefreshTokenValid(refreshToken)) {
+            throw new IllegalArgumentException("Invalid or expired refresh token");
+        }
+    
+        User user = getUserFromRefreshToken(refreshToken);
+    
+        return createAccessToken(user.getEmail());
+    }
+    
 }

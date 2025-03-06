@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -62,11 +62,10 @@
 <body>
     <div class="container">
         <img src="https://res.cloudinary.com/drtizu6d3/image/upload/v1741085531/Logo_gexpmf.png" alt="DomiCare Logo" class="logo">
-        <p>This is your OTP verification code. This code is valid for 5 minutes:</p>
-        <div class="otp">123456</div>
         <p>If you did not request this code, please ignore this email.</p>
-        <a href="#" class="btn">Confirm Now</a>
+        <!-- Updated link with encoded token -->
+        <p><a th:href="'http://localhost:8080/verify-email?token=' + ${verificationToken}">Xác nhận Email</a></p>
         <p class="footer">© 2025 DomiCare. All rights reserved.</p>
-    </div>    
+    </div>
 </body>
 </html>

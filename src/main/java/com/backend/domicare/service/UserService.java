@@ -18,4 +18,7 @@ public interface UserService {
     // public UpdateUserResponse updateUser(Long id, UpdateUserRequest updateUserRequest);
     public User findUserByEmail(String email);
     public ResultPaginDTO getAllUsers(Specification<User> spec,Pageable pageable);
+    public User findUserByEmailConfirmToken(String token);
+    public String createVerificationToken(String email);
+    public User updateUserInfo(User user);
 }

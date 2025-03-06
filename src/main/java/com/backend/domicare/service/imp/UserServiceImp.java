@@ -1,6 +1,7 @@
 package com.backend.domicare.service.imp;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.data.domain.Page;
@@ -77,5 +78,31 @@ public class UserServiceImp implements UserService {
         resultPaginDTO.setMeta(meta);
         resultPaginDTO.setData(users.getContent());
         return resultPaginDTO;
+    }
+
+    @Override
+    public User findUserByEmailConfirmToken(String token){
+        Optional<User> user = userRepository.findByEmailConfirmationToken(token);
+        if(user.isPresent()){
+            return user.get();
+        }
+        throw new IllegalArgumentException("Không tìm thấy người dùng");
+    }
+
+    @Override
+    public String createVerificationToken(String email){
+        User user = userRepository.findByEmail(email);
+        if(user == null){
+            throw new IllegalArgumentException("Không tìm thấy người dùng");
+        }
+        String token = java.util.UUID.randomUUID().toString();
+        user.setEmailConfirmationToken(token);
+        userRepository.save(user);
+        return token;
+    }
+
+    @Override
+    public User updateUserInfo(User user){
+        return userRepository.save(user);
     }
 }

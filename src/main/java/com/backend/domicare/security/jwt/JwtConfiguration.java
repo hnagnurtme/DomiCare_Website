@@ -35,7 +35,7 @@ public class JwtConfiguration {
         }
 
         byte[] secretBytes = Base64.from(secret).decode();
-        return new SecretKeySpec(secretBytes, "HmacSHA256"); // Dùng thuật toán HMAC-SHA256 mặc định
+        return new SecretKeySpec(secretBytes, "HmacSHA256"); 
     }
 
     @Bean
@@ -55,19 +55,11 @@ public class JwtConfiguration {
 
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
-        // Tạo JwtGrantedAuthoritiesConverter để chuyển đổi quyền từ claim trong JWT
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        
-        // Nếu muốn sử dụng tiền tố "ROLE_" cho quyền, hãy bật phần này
-        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");  // hoặc để rỗng nếu không dùng tiền tố
-        
-        // Đặt tên của claim chứa danh sách các quyền của người dùng trong token
-        jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName("roles");  // Đảm bảo claim này có trong JWT
-        
-        // Tạo JwtAuthenticationConverter và thiết lập JwtGrantedAuthoritiesConverter
+        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");  
+        jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName("roles");  
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
-        
         return jwtAuthenticationConverter;
     }
     

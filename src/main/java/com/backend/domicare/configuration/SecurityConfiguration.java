@@ -21,15 +21,14 @@ public class SecurityConfiguration {
         http
             .csrf(csrf -> csrf.disable()) 
             .authorizeHttpRequests(auth -> auth
-                            .requestMatchers("/login", "/oauth/authorize","/register","/refresh-token").permitAll()
+                            .requestMatchers("/login", "/oauth/authorize","/register","/refresh-token","/email","/verify-email").permitAll()
                             .requestMatchers("/users","/users/**").hasRole("USER")
                             .requestMatchers("/email").hasRole("ADMIN")
                             .requestMatchers("/permissions","/permissions/**").hasAnyRole("ADMIN","USER")
-                            .anyRequest().authenticated()
+                            .anyRequest().permitAll()
                             )
             .formLogin(formLogin -> formLogin.disable())
-            .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
-            .oauth2Login(Customizer.withDefaults()
+            .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults())
         )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));   
         return http.build();

@@ -118,15 +118,4 @@ public class JwtTokenManager {
         Token token = tokensRepository.findByRefreshToken(refreshToken);
         return token.getExpiration().isAfter(Instant.now());
     }
-
-    public String refreshAccessToken(String refreshToken) {
-        if (!isRefreshTokenValid(refreshToken)) {
-            throw new IllegalArgumentException("Invalid or expired refresh token");
-        }
-    
-        User user = getUserFromRefreshToken(refreshToken);
-    
-        return createAccessToken(user.getEmail());
-    }
-    
 }

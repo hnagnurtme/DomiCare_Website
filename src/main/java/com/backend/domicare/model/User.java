@@ -49,6 +49,10 @@ public class User {
     private String phone;
     private String address;
 
+    private boolean isEmailConfirmed;
+    @Column(name = "email_confirmation_token" , unique = true)
+    private String emailConfirmationToken;
+
     private String createBy;
     private String updateBy;
     private Instant createAt;
@@ -83,6 +87,7 @@ public class User {
             this.createBy = "system";
         }
         this.createAt = Instant.now();
+        this.isEmailConfirmed = false;
     }
 
     @PreUpdate

@@ -48,6 +48,11 @@ public class AuthController {
         String token = authService.createAccessTokenFromRefreshToken(refreshToken);
         return ResponseEntity.status(HttpStatus.OK).body(token);
     }
+
+    @GetMapping("/verify-email")
+    public ResponseEntity<String> verifyEmail(@RequestParam(value ="token") String token) {
+        authService.verifyEmail(token);
+        return ResponseEntity.status(HttpStatus.OK).body("Email verified successfully");
+    }
   
-    
 }

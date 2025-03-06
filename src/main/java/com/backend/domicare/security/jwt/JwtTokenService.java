@@ -52,11 +52,12 @@ public class JwtTokenService {
         
 
         User user = userService.findUserByEmail(emailUser);
-
-        if( user == null){
+        if(user == null){
             throw new IllegalArgumentException("Không tìm thấy người dùng");
         }
-
+        if(!user.isEmailConfirmed()){
+            throw new IllegalArgumentException("Email chưa được xác thực");
+        }
 
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setAccessToken(accessToken);
@@ -95,4 +96,13 @@ public class JwtTokenService {
         return jwtTokenManager.createAccessToken(email);
     }
 
+    public void verifyEmail(String token) {
+        User user = userService.findUserByEmailConfirmToken(token);
+        
+        if( user!=null){
+            user.setEmailConfirmed(true);
+            user.setEmailConfirmationToken(null);
+            userService.updateUserInfo(user);
+        }
+    }
 }

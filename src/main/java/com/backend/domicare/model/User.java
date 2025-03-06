@@ -54,6 +54,7 @@ public class User {
     // @ManyToOne(fetch = FetchType.EAGER)
     // @JoinColumn(name = "role_id", nullable = false)
     // private Role role;
+    
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
         name = "users_roles",
@@ -74,9 +75,5 @@ public class User {
     @PreUpdate
     public void preUpdate() {
         this.updateAt = Instant.now();
-    }
-    public User orElseThrow(Object object) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'orElseThrow'");
     }
 }

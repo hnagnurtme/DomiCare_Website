@@ -33,25 +33,29 @@ public class UserServiceImp implements UserService {
     private final RoleService roleService;
 
     @Override
-    public User saveUser(UserDTO userDTO){
-        User user = new User(); 
+    public User saveUser(UserDTO userDTO) {
+        User user = new User();
         user.setEmail(userDTO.getEmail());
         user.setName(userDTO.getName());
         user.setAddress(userDTO.getAddress());
         user.setPhone(userDTO.getPhone());
         user.setPassword(userDTO.getPassword());
-
-        Set<Role> roles = userDTO.getRole();
-        if(roles == null || roles.isEmpty()){
-            Role role = roleService.getRoleByName("ROLE_USER");
-            roles = new HashSet<>();
-            roles.add(role);
+        Set<Role> roles = new HashSet<>();
+        if (userDTO.getRoles() != null && !userDTO.getRoles().isEmpty()) {
+            for (Role role : userDTO.getRoles()) {
+                Role managedRole = roleService.getRoleByName(role.getName()); 
+                roles.add(managedRole);
+            }
+        } else {
+            Role defaultRole = roleService.getRoleByName("ROLE_USER");
+            roles.add(defaultRole);
         }
         user.setRoles(roles);
         userValidationService.isEmailAlreadyExist(user.getEmail());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
+
 
     @Override
     public User findUserByEmail(String email) {

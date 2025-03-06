@@ -57,9 +57,9 @@ public class Role {
     private List<Permission> permissions;
 
 
-    @ManyToMany(mappedBy = "roles")
-    @JsonIgnoreProperties("roles") 
-    private Set<User> users; // Một vai trò có thể thuộc về nhiều người dùng
+    // @ManyToMany(mappedBy = "roles")
+    // @JsonIgnoreProperties("roles") 
+    // private Set<User> users; 
 
     @PrePersist
     public void prePersist() {

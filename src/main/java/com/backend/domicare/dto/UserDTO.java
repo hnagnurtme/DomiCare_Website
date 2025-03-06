@@ -19,5 +19,5 @@ public class UserDTO {
     private String password;
     private String phone;
     private String address;
-    private Set< Role >role;
+    private Set< Role >roles;
 }

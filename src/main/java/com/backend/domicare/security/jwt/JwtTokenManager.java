@@ -3,6 +3,7 @@ package com.backend.domicare.security.jwt;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -31,34 +32,35 @@ public class JwtTokenManager {
     public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS256;
 
     public String createAccessToken(String email) {
-        Instant now = Instant.now();
-        Instant expiration = now.plusSeconds(jwtProperties.getExpirationMinutes() * 60);
+    Instant now = Instant.now();
+    Instant expiration = now.plusSeconds(jwtProperties.getExpirationMinutes() * 60);
 
-        User user = userService.findUserByEmail(email);
-        if (user == null) {
-            throw new IllegalArgumentException("Không tìm thấy người dùng");
-        }
-        // Role role = user.getRole();
-        // if (role == null) {
-        //     throw new IllegalArgumentException("Không tìm thấy quyền của người dùng");
-        // }
-        Set<Role> roles = user.getRoles();
-        if (roles == null || roles.isEmpty()) {
-            throw new IllegalArgumentException("Không tìm thấy quyền của người dùng");
-        }
-        Role listRole = roles.iterator().next();
-
-        JwtClaimsSet claims = JwtClaimsSet.builder()
-                .subject(email)
-                .issuedAt(now)
-                .expiresAt(expiration)
-                .claim("email", email) 
-                .claim("role", listRole.getName())
-                .build();       
-        JwsHeader header = JwsHeader.with(JWT_ALGORITHM).build();
-
-        return this.jwtEncoder.encode(JwtEncoderParameters.from(header, claims)).getTokenValue();
+    User user = userService.findUserByEmail(email);
+    if (user == null) {
+        throw new IllegalArgumentException("Không tìm thấy người dùng");
     }
+
+    Set<Role> roles = user.getRoles();
+    if (roles == null || roles.isEmpty()) {
+        throw new IllegalArgumentException("Không tìm thấy quyền của người dùng");
+    }
+
+    // Lấy danh sách các vai trò của người dùng
+    Set<String> roleNames = roles.stream().map(Role::getName).collect(Collectors.toSet());
+
+    JwtClaimsSet claims = JwtClaimsSet.builder()
+            .subject(email) // email là subject của token
+            .issuedAt(now)
+            .expiresAt(expiration)
+            .claim("email", email)
+            .claim("roles", roleNames) // Lưu tất cả các vai trò vào claims
+            .build();       
+
+    JwsHeader header = JwsHeader.with(JWT_ALGORITHM).build();
+
+    return this.jwtEncoder.encode(JwtEncoderParameters.from(header, claims)).getTokenValue();
+}
+
 
     public static Optional<String> getCurrentUserLogin() {
         SecurityContext context = SecurityContextHolder.getContext();

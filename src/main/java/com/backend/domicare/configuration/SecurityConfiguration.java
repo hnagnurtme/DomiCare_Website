@@ -1,4 +1,5 @@
 package com.backend.domicare.configuration;
+import org.springframework.security.config.Customizer;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,9 +21,15 @@ public class SecurityConfiguration {
         http
             .csrf(csrf -> csrf.disable()) 
             .authorizeHttpRequests(auth -> auth
-                            .anyRequest().permitAll()
+                            .requestMatchers("/login", "/oauth/authorize","/register").permitAll()
+                            .requestMatchers("/users","/users/**").hasRole("USER")
+                            .requestMatchers("/email").hasRole("ADMIN")
+                            .anyRequest().authenticated()
                             )
             .formLogin(formLogin -> formLogin.disable())
+            .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+            .oauth2Login(Customizer.withDefaults()
+        )
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));   
         return http.build();
     }

@@ -55,12 +55,20 @@ public class JwtConfiguration {
 
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
+        // Tạo JwtGrantedAuthoritiesConverter để chuyển đổi quyền từ claim trong JWT
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
-        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");
-        jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName("anhnon");
-
+        
+        // Nếu muốn sử dụng tiền tố "ROLE_" cho quyền, hãy bật phần này
+        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("");  // hoặc để rỗng nếu không dùng tiền tố
+        
+        // Đặt tên của claim chứa danh sách các quyền của người dùng trong token
+        jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName("roles");  // Đảm bảo claim này có trong JWT
+        
+        // Tạo JwtAuthenticationConverter và thiết lập JwtGrantedAuthoritiesConverter
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
+        
         return jwtAuthenticationConverter;
     }
+    
 }

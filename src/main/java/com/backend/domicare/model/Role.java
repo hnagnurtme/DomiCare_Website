@@ -2,8 +2,10 @@ package com.backend.domicare.model;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
+import com.backend.domicare.security.jwt.JwtTokenManager;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -56,17 +58,26 @@ public class Role {
     )
     private List<Permission> permissions;
 
-
-    // @ManyToMany(mappedBy = "roles")
-    // @JsonIgnoreProperties("roles") 
-    // private Set<User> users; 
-
     @PrePersist
     public void prePersist() {
+        Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
+        if(currentUserLogin.isPresent()) {
+            this.createBy = currentUserLogin.get();
+        }
+        else{
+            this.createBy = "system";
+        }
         this.createAt = Instant.now();
     }
     @PreUpdate
     public void preUpdate() {
         this.updateAt = Instant.now();
+        Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
+        if(currentUserLogin.isPresent()) {
+            this.updateBy= currentUserLogin.get();
+        }
+        else{
+            this.updateBy = "system";
+        }
     }
 }

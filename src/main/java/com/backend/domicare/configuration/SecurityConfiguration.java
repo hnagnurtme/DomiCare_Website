@@ -24,6 +24,7 @@ public class SecurityConfiguration {
                             .requestMatchers("/login", "/oauth/authorize","/register").permitAll()
                             .requestMatchers("/users","/users/**").hasRole("USER")
                             .requestMatchers("/email").hasRole("ADMIN")
+                            .requestMatchers("/permissions","/permissions/**").hasAnyRole("ADMIN","USER")
                             .anyRequest().authenticated()
                             )
             .formLogin(formLogin -> formLogin.disable())

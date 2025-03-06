@@ -2,7 +2,10 @@ package com.backend.domicare.model;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+
+import com.backend.domicare.security.jwt.JwtTokenManager;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -51,17 +54,13 @@ public class User {
     private Instant createAt;
     private Instant updateAt;
 
-    // @ManyToOne(fetch = FetchType.EAGER)
-    // @JoinColumn(name = "role_id", nullable = false)
-    // private Role role;
-    
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
         name = "users_roles",
         joinColumns = @JoinColumn(name = "user_id"),
         inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles; // Người dùng có nhiều vai trò
+    private Set<Role> roles; 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Booking> bookings;
 
@@ -70,10 +69,24 @@ public class User {
 
     @PrePersist
     public void prePersist() {
+        Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
+        if(currentUserLogin.isPresent()) {
+            this.createBy = currentUserLogin.get();
+        }
+        else{
+            this.createBy = "system";
+        }
         this.createAt = Instant.now();
     }
     @PreUpdate
     public void preUpdate() {
         this.updateAt = Instant.now();
+        Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
+        if(currentUserLogin.isPresent()) {
+            this.updateBy= currentUserLogin.get();
+        }
+        else{
+            this.updateBy = "system";
+        }
     }
 }

@@ -6,16 +6,12 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.model.User;
 import com.backend.domicare.service.UserService;
 
-import jakarta.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -34,6 +30,6 @@ public class UserController {
             }
             return criteriaBuilder.conjunction();
         };
-        return ResponseEntity.ok(this.userService.getAllUsers(spec, pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(this.userService.getAllUsers(spec, pageable));
     }
 }

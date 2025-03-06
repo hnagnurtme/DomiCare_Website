@@ -2,6 +2,9 @@ package com.backend.domicare.model;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
+
+import com.backend.domicare.security.jwt.JwtTokenManager;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -71,11 +74,25 @@ public class Booking {
 
     @PrePersist
     public void prePersist() {
+        Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
+        if(currentUserLogin.isPresent()) {
+            this.createBy = currentUserLogin.get();
+        }
+        else{
+            this.createBy = "system";
+        }
         this.createAt = Instant.now();
     }
     @PreUpdate
     public void preUpdate() {
         this.updateAt = Instant.now();
+        Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
+        if(currentUserLogin.isPresent()) {
+            this.updateBy= currentUserLogin.get();
+        }
+        else{
+            this.updateBy = "system";
+        }
     }
 }
 

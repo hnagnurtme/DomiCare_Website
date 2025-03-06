@@ -2,11 +2,15 @@ package com.backend.domicare.model;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
+import com.backend.domicare.security.jwt.JwtTokenManager;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -16,6 +20,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,7 +40,7 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(unique = true)
     private String name;
     private String description;
     private boolean active;
@@ -52,8 +58,26 @@ public class Role {
     )
     private List<Permission> permissions;
 
-
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonIgnore 
-    private List<User> users;
+    @PrePersist
+    public void prePersist() {
+        Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
+        if(currentUserLogin.isPresent()) {
+            this.createBy = currentUserLogin.get();
+        }
+        else{
+            this.createBy = "system";
+        }
+        this.createAt = Instant.now();
+    }
+    @PreUpdate
+    public void preUpdate() {
+        this.updateAt = Instant.now();
+        Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
+        if(currentUserLogin.isPresent()) {
+            this.updateBy= currentUserLogin.get();
+        }
+        else{
+            this.updateBy = "system";
+        }
+    }
 }

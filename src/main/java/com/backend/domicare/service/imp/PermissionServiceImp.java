@@ -17,11 +17,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PermissionServiceImp implements PermissionService {
     private final PermissionsRepository permissionsRepository;
-
     @Override
     public boolean isPermissionExists(Permission permission) {
-        return permissionsRepository.existsByModuleAndApiPathAndMethod(permission.getModule(), permission.getApiPath(), permission.getMethod());
+        return permissionsRepository.existsByModuleAndApiPathAndMethod(permission.getModule(), permission.getApiPath(), permission.getMethod()) 
+            && !permissionsRepository.findById(permission.getId()).isPresent();
     }
+    
 
     @Override
     public Permission createPermission(Permission permission) {
@@ -54,7 +55,7 @@ public class PermissionServiceImp implements PermissionService {
     }
 
     @Override
-    public Permission updatPermission(Permission permission) {
+    public Permission updatePermission(Permission permission) {
         Permission oldPermission = this.getPermissionById(permission.getId());
         if( oldPermission == null ) {
             return null;
@@ -73,11 +74,12 @@ public class PermissionServiceImp implements PermissionService {
     @Override
     public void deletePermission(Permission permission) {
         Optional<Permission> permissionOptional = this.permissionsRepository.findById(permission.getId());
+        if (permissionOptional.isEmpty()) {
+            throw new RuntimeException("Permission not found!");
+        }
         Permission currentPermission = permissionOptional.get();
         currentPermission.getRoles().forEach(role -> role.getPermissions().remove(currentPermission));
 
-        this.permissionsRepository.delete(permission);
+        this.permissionsRepository.delete(currentPermission);
     }
-
-
 }

@@ -23,7 +23,7 @@ public class LoginRequest {
     private String email;
 
     @NotEmpty(message = "Password is required")
-    @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$", message = "{password_invalid}")
+    // @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{8,}$", message = "{password_invalid}")
     @Schema(description = "Password must contain at least 8 characters, including uppercase, lowercase, and numbers")
     private String password;
 }

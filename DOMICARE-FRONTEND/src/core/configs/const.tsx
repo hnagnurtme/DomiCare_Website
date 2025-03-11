@@ -1,0 +1,2 @@
+export const REMEMBER_ME = 'LOCAL_STORAGE_REMEMBER_ME'
+export const EMAIL = 'LOCAL_STORAGE_EMAIL'

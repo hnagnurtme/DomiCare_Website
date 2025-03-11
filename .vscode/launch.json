@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-DomicareApplication<domicare>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.backend.domicare.DomicareApplication",
+      "projectName": "domicare",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}

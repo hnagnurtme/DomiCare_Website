@@ -72,11 +72,12 @@ export default function Login() {
   }
 
   useEffect(() => {
-    if (rememberMe) {
-      localStorage.setItem(EMAIL, form.getValues('email'))
-    }
-  }, [form.getValues('email'), rememberMe])
+    const email = form.getValues('email') // Extract the value of email outside of useEffect
 
+    if (rememberMe) {
+      localStorage.setItem(EMAIL, email)
+    }
+  }, [rememberMe, form])
   return (
     <div className='grid grid-cols-1 md:grid-cols-12 gap-6 h-screen'>
       <div className='col-span-1 md:col-span-7  h-[40vh] md:h-full'>
@@ -157,15 +158,8 @@ export default function Login() {
                     checked={rememberMe}
                     type='checkbox'
                     id='terms'
-                    className='peer hidden'
+                    className='accent-main w-4 h-4'
                   />
-                  <label
-                    htmlFor='terms'
-                    className='w-4 h-4 border-2 border-gray-300 rounded cursor-pointer flex items-center justify-center
-                       peer-checked:bg-main peer-checked:border-main peer-checked:text-white'
-                  >
-                    {rememberMe && '✔'}
-                  </label>
 
                   <Label htmlFor='terms' className=' text-sub2  text-gray-500 cursor-pointer'>
                     Lưu thông tin

@@ -8,6 +8,7 @@ import Dashboard from '@/pages/dashboard/Dashboard'
 import PageNotFound from '@/pages/404/PageNotFound'
 import { path } from '@/core/constants/path'
 import { AnimatePresence, motion } from 'framer-motion'
+import CustomerLayout from '@/app/layout/CustomerLayout'
 
 interface RouteConfig {
   path: string
@@ -18,7 +19,14 @@ export default function useRoutesElements() {
   const location = useLocation()
 
   const routes: RouteConfig[] = [
-    { path: path.home, element: <HomePage /> },
+    {
+      path: path.home,
+      element: (
+        <CustomerLayout>
+          <HomePage />
+        </CustomerLayout>
+      )
+    },
     { path: path.login, element: <Login /> },
     { path: path.register, element: <Register /> },
     {

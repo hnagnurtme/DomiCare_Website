@@ -27,13 +27,9 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest loginRequest) {
-        try{
-           
             LoginResponse loginResponse = authService.login(loginRequest);
             return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
-        } catch (Exception e) {
-            return ResponseEntity.status(401).body("{\"error\": \"Invalid credentials\"}");
-        }
+       
     }
 
     

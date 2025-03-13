@@ -87,7 +87,7 @@ public class User {
             this.createBy = "system";
         }
         this.createAt = Instant.now();
-        this.isEmailConfirmed = false;
+        this.isEmailConfirmed = true;
     }
 
     @PreUpdate

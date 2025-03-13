@@ -10,6 +10,7 @@ import com.backend.domicare.model.Role;
 import com.backend.domicare.repository.PermissionsRepository;
 import com.backend.domicare.repository.RolesRepository;
 import com.backend.domicare.service.RoleService;
+import com.backend.domicare.exception.NotFoundException;
 import com.backend.domicare.model.Permission;
 import lombok.RequiredArgsConstructor;
 
@@ -22,7 +23,7 @@ public class RoleServiceImp  implements RoleService {
     public Role getRoleById(Long id) {
        Optional<Role> role = roleRepository.findById(id);
        if (!role.isPresent()) {
-           throw new IllegalArgumentException("Role not found");
+           throw new NotFoundException( "Role not found");
        }
         return role.get();
     }
@@ -30,7 +31,7 @@ public class RoleServiceImp  implements RoleService {
     public Role getRoleByName(String name) {
         Role role = roleRepository.findByName(name);
         if(role == null) {
-            throw new IllegalArgumentException("Role not found");
+            throw new NotFoundException("Role not found");
         }
         return role;
     }
@@ -49,7 +50,7 @@ public class RoleServiceImp  implements RoleService {
 
             List<Permission> permissions = this.permissionsRepository.findByIdIn(reqPermissions);
             if( permissions.size() != reqPermissions.size() ) {
-                throw new IllegalArgumentException("Some permissions not found");
+                throw new NotFoundException("Some permissions not found");
             }
             role.setPermissions(permissions);
         }
@@ -61,7 +62,7 @@ public class RoleServiceImp  implements RoleService {
     public Role updateRole(Role role) {
         Role oldRole = this.getRoleById(role.getId());
         if( oldRole == null ) {
-            throw new IllegalArgumentException("Role not found");
+            throw new NotFoundException("Role not found");
         }
         if( role.getPermissions() != null){
             List<Long> reqPermissions = role.getPermissions().stream()
@@ -70,7 +71,7 @@ public class RoleServiceImp  implements RoleService {
 
             List<Permission> permissions = this.permissionsRepository.findByIdIn(reqPermissions);
             if( permissions.size() != reqPermissions.size() ) {
-                throw new IllegalArgumentException("Some permissions not found");
+                throw new NotFoundException("Some permissions not found");
             }
             oldRole.setPermissions(permissions);
         }
@@ -83,7 +84,7 @@ public class RoleServiceImp  implements RoleService {
     public void deleteRoleById(Long id) {
         Optional<Role> role = roleRepository.findById(id);
         if (!role.isPresent()) {
-            throw new IllegalArgumentException("Role not found");
+            throw new NotFoundException("Role not found");
         }
         roleRepository.delete(role.get());
     }

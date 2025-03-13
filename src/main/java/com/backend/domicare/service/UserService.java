@@ -13,12 +13,13 @@ import com.backend.domicare.model.User;
 public interface UserService {
     // public User findByEmail(String email);
     // public void deleteUserById(Long id);
-    public User saveUser(UserDTO user);
+    public User saveUser(UserDTO user) ;
     // public User findUserById(Long id);
     // public UpdateUserResponse updateUser(Long id, UpdateUserRequest updateUserRequest);
-    public User findUserByEmail(String email);
+    public User findUserByEmail(String email) ;
     public ResultPaginDTO getAllUsers(Specification<User> spec,Pageable pageable);
     public User findUserByEmailConfirmToken(String token);
     public String createVerificationToken(String email);
     public User updateUserInfo(User user);
+    public boolean isEmailAlreadyExist(String email);
 }

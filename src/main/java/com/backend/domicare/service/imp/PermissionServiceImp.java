@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.backend.domicare.dto.paging.ResultPaginDTO;
+import com.backend.domicare.exception.NotFoundException;
 import com.backend.domicare.model.Permission;
 import com.backend.domicare.repository.PermissionsRepository;
 import com.backend.domicare.service.PermissionService;
@@ -35,7 +36,7 @@ public class PermissionServiceImp implements PermissionService {
         if( permission.isPresent() ) {
             return permission.get();
         }
-        return null;
+        throw new NotFoundException("Permission not found");
     }
 
     @Override
@@ -58,7 +59,7 @@ public class PermissionServiceImp implements PermissionService {
     public Permission updatePermission(Permission permission) {
         Permission oldPermission = this.getPermissionById(permission.getId());
         if( oldPermission == null ) {
-            return null;
+            throw new NotFoundException("Permission not found");
         }
         oldPermission.setName(permission.getName());
         oldPermission.setApiPath(permission.getApiPath());
@@ -75,7 +76,7 @@ public class PermissionServiceImp implements PermissionService {
     public void deletePermission(Permission permission) {
         Optional<Permission> permissionOptional = this.permissionsRepository.findById(permission.getId());
         if (permissionOptional.isEmpty()) {
-            throw new RuntimeException("Permission not found!");
+            throw new NotFoundException("Permission not found");
         }
         Permission currentPermission = permissionOptional.get();
         currentPermission.getRoles().forEach(role -> role.getPermissions().remove(currentPermission));

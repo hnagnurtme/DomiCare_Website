@@ -21,10 +21,10 @@ public class SecurityConfiguration {
         http
             .csrf(csrf -> csrf.disable()) 
             .authorizeHttpRequests(auth -> auth
-                            .requestMatchers("/login", "/oauth/authorize","/register","/refresh-token","/email","/verify-email").permitAll()
-                            .requestMatchers("/users","/users/**").hasRole("USER")
-                            .requestMatchers("/email").hasRole("ADMIN")
-                            .requestMatchers("/permissions","/permissions/**").hasAnyRole("ADMIN","USER")
+                            // .requestMatchers("/login", "/oauth/authorize","/register","/refresh-token","/email","/verify-email").permitAll()
+                            // .requestMatchers("/users","/users/**").hasRole("USER")
+                            // .requestMatchers("/email").hasRole("ADMIN")
+                            // .requestMatchers("/permissions","/permissions/**").hasAnyRole("ADMIN","USER")
                             .anyRequest().permitAll()
                             )
             .formLogin(formLogin -> formLogin.disable())

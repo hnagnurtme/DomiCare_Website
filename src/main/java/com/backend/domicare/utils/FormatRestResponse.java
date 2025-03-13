@@ -26,8 +26,7 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
     @Nullable
     public Object beforeBodyWrite(@Nullable Object body, @SuppressWarnings("null") MethodParameter returnType, @SuppressWarnings("null") MediaType selectedContentType,
             @SuppressWarnings({ "null", "rawtypes" }) Class selectedConverterType, @SuppressWarnings("null") ServerHttpRequest request, @SuppressWarnings("null") ServerHttpResponse response) {
-        
-            // getStatus code
+
             HttpServletResponse httpServletResponse = ((ServletServerHttpResponse) response).getServletResponse();
             int status = httpServletResponse.getStatus();
         

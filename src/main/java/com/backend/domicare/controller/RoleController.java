@@ -23,32 +23,16 @@ public class RoleController {
 
     @PostMapping("/roles")
     public ResponseEntity<Role> createRole(@Valid @RequestBody Role role) {
-
-        if( this.roleService.isRoleExistsByName(role.getName()) ) {
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.status(HttpStatus.CREATED).body(this.roleService.createRole(role));
     }
 
     @PutMapping("/roles")
     public ResponseEntity<Role> updateRole(@Valid @RequestBody Role role) {
-
-        if( this.roleService.getRoleById(role.getId()) == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        if( this.roleService.isRoleExistsByName(role.getName()) ) {
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(this.roleService.updateRole(role));
     }
 
     @DeleteMapping("/roles/{id}")
     public ResponseEntity<Void> deleteRole(@Valid @PathVariable("id") Long id) {
-        Role oldRole = this.roleService.getRoleById(id);
-        if( oldRole == null ) {
-            return ResponseEntity.badRequest().build();
-        }
         this.roleService.deleteRoleById(id);
         return ResponseEntity.noContent().build();
     }
@@ -61,9 +45,6 @@ public class RoleController {
     @GetMapping("/roles/{id}")
     public ResponseEntity<?> getRole(@Valid @PathVariable("id") Long id) {
         Role role = this.roleService.getRoleById(id);
-        if( role == null ) {
-            return ResponseEntity.badRequest().build();
-        }
         return ResponseEntity.ok(role);
     }
 }

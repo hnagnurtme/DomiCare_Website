@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.paging.ResultPaginDTO;
+import com.backend.domicare.exception.NotFoundException;
 import com.backend.domicare.dto.paging.ResultPaginDTO;
 import com.backend.domicare.model.Permission;
 import com.backend.domicare.model.Role;
@@ -52,15 +53,19 @@ public class UserServiceImp implements UserService {
             roles.add(defaultRole);
         }
         user.setRoles(roles);
-        userValidationService.isEmailAlreadyExist(user.getEmail());
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
 
     @Override
-    public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public User findUserByEmail(String email)  {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new NotFoundException("Không tìm thấy người dùng " + email);
+        }
+        return user;
     }
 
     @Override
@@ -86,14 +91,14 @@ public class UserServiceImp implements UserService {
         if(user.isPresent()){
             return user.get();
         }
-        throw new IllegalArgumentException("Không tìm thấy người dùng");
+        throw new NotFoundException("Không tìm thấy người dùng" + token);
     }
 
     @Override
     public String createVerificationToken(String email){
         User user = userRepository.findByEmail(email);
         if(user == null){
-            throw new IllegalArgumentException("Không tìm thấy người dùng");
+            throw new NotFoundException("Không tìm thấy người dùng" + email);
         }
         String token = java.util.UUID.randomUUID().toString();
         user.setEmailConfirmationToken(token);
@@ -103,6 +108,11 @@ public class UserServiceImp implements UserService {
 
     @Override
     public User updateUserInfo(User user){
+
         return userRepository.save(user);
+    }
+    @Override
+    public boolean isEmailAlreadyExist(String email){
+        return userValidationService.isEmailAlreadyExist(email);
     }
 }

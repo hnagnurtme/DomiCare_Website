@@ -18,6 +18,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Component;
 
+import com.backend.domicare.exception.NotFoundException;
 import com.backend.domicare.model.Role;
 import com.backend.domicare.model.Token;
 import com.backend.domicare.model.User;
@@ -41,12 +42,12 @@ public class JwtTokenManager {
 
     User user = userService.findUserByEmail(email);
     if (user == null) {
-        throw new IllegalArgumentException("Không tìm thấy người dùng");
+        throw new NotFoundException(email + " không tồn tại");
     }
 
     Set<Role> roles = user.getRoles();
     if (roles == null || roles.isEmpty()) {
-        throw new IllegalArgumentException("Không tìm thấy quyền của người dùng");
+        throw new NotFoundException("Người dùng không có quyền");
     }
     Set<String> roleNames = roles.stream().map(Role::getName).collect(Collectors.toSet());
 
@@ -89,7 +90,7 @@ public class JwtTokenManager {
     public String createRefreshToken(String email) {
         User user = userService.findUserByEmail(email);
         if (user == null) {
-            throw new IllegalArgumentException("Không tìm thấy người dùng");
+            throw new NotFoundException(email + " không tồn tại");
         }
         String refreshToken = UUID.randomUUID().toString();  
         Instant expiration = Instant.now().plusSeconds(86400); 
@@ -110,12 +111,17 @@ public class JwtTokenManager {
 
     public User getUserFromRefreshToken(String refreshToken) {
         Token token = tokensRepository.findByRefreshToken(refreshToken);
-
+        if( token == null) {
+            throw new NotFoundException("Token không tồn tại");
+        }
         return token.getUser();
     }
 
     public boolean isRefreshTokenValid(String refreshToken) {
         Token token = tokensRepository.findByRefreshToken(refreshToken);
+        if (token == null) {
+            throw new NotFoundException("Token không tồn tại");
+        }
         return token.getExpiration().isAfter(Instant.now());
     }
 }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backend.domicare.model.Role;
 import com.backend.domicare.service.RoleService;
 
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController

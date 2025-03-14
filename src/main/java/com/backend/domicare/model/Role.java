@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Optional;
 
 import com.backend.domicare.security.jwt.JwtTokenManager;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -74,5 +77,17 @@ public class Role {
         else{
             this.updateBy = "system";
         }
+    }
+
+    @JsonCreator
+    public static Role fromString(String roleName) {
+        Role role = new Role();
+        role.setName(roleName);
+        return role;
+    }
+
+    @JsonValue
+    public String toValue() {
+        return this.name;
     }
 }

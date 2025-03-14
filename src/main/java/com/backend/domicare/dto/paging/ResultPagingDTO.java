@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ResultPaginDTO {
+public class ResultPagingDTO {
     private Meta meta;
     private Object data;
 

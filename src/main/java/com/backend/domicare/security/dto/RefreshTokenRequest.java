@@ -1,7 +1,5 @@
 package com.backend.domicare.security.dto;
 
-import java.util.Set;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,11 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterResponse {
-    private Long id;
-    private String email;
-    private String password;
-    private String accessToken;
+public class RefreshTokenRequest {
     private String refreshToken;
-    private Set<String> roles;
 }

@@ -16,7 +16,7 @@ import org.springframework.data.domain.Pageable;
 import com.backend.domicare.model.Permission;
 import com.backend.domicare.service.PermissionService;
 
-import jakarta.validation.Valid;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController

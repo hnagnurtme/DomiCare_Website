@@ -3,14 +3,14 @@ package com.backend.domicare.service.imp;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-import org.thymeleaf.TemplateEngine;
-
-
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+
+import com.backend.domicare.exception.EmailSendingException;
 import com.backend.domicare.service.EmailSendingService;
 import com.backend.domicare.service.UserService;
 
@@ -33,7 +33,7 @@ public class EmailSendingServiceImp implements EmailSendingService {
 
     private void sendEmailSync(String to, String subject, String content, boolean isMultiparts, boolean isHtml) {
         MimeMessage message = this.javaMailSender.createMimeMessage();
-        try {
+        try { 
             MimeMessageHelper helper = new MimeMessageHelper(message, isMultiparts, StandardCharsets.UTF_8.name());
             helper.setTo(to);
             helper.setSubject(subject);
@@ -41,7 +41,7 @@ public class EmailSendingServiceImp implements EmailSendingService {
             this.javaMailSender.send(message);
 
         } catch (MailException | MessagingException e) {
-            e.printStackTrace();
+            throw new EmailSendingException("Failed to send email : " + e);
         }
 
     }

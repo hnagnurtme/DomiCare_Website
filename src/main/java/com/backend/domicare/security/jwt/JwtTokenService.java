@@ -106,7 +106,7 @@ public class JwtTokenService {
     }
 
     public void verifyEmail(String token) {
-        User user = userService.findUserByEmailConfirmToken(token);
+        UserDTO user = userService.findUserByEmailConfirmToken(token);
         
         if( user!=null){
             user.setEmailConfirmed(true);

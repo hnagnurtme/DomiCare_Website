@@ -11,6 +11,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
 import  com.backend.domicare.dto.response.RestResponse;
 
 @RestControllerAdvice
@@ -25,7 +26,7 @@ public class GlobalException {
         })
     public ResponseEntity<RestResponse<Object>> handleException(Exception e) {
 
-        RestResponse<Object> response = new RestResponse();
+        RestResponse<Object> response = new RestResponse<>();
         response.setStatus(HttpStatus.BAD_REQUEST.value());
         response.setError(e.getMessage());
         response.setMessage("Failed");
@@ -38,7 +39,7 @@ public class GlobalException {
         BindingResult result = e.getBindingResult();
         final List<FieldError> fieldErrors = result.getFieldErrors();
 
-        RestResponse<Object> response = new RestResponse();
+        RestResponse<Object> response = new RestResponse<>();
         response.setStatus(HttpStatus.BAD_REQUEST.value());
         response.setError(e.getBody().getDetail());
         List<String> errors = fieldErrors.stream().map(f -> f.getDefaultMessage()).collect(Collectors.toList());

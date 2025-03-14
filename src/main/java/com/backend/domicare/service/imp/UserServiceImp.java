@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -14,13 +13,14 @@ import org.springframework.stereotype.Service;
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.exception.NotFoundException;
-import com.backend.domicare.model.Permission;
+import com.backend.domicare.mapper.UserMapper;
 import com.backend.domicare.model.Role;
 import com.backend.domicare.model.User;
+import com.backend.domicare.repository.UsersRepository;
 import com.backend.domicare.service.RoleService;
 import com.backend.domicare.service.UserService;
 import com.backend.domicare.service.UserValidationService;
-import com.backend.domicare.repository.UsersRepository;
+import com.backend.domicare.utils.ProjectConstants;
 
 import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
@@ -34,14 +34,13 @@ public class UserServiceImp implements UserService {
 
     private final RoleService roleService;
 
+
     @Override
     public UserDTO saveUser(UserDTO userDTO) {
-        UserDTO user = new UserDTO();
-        user.setEmail(userDTO.getEmail());
-        user.setName(userDTO.getName());
-        user.setAddress(userDTO.getAddress());
-        user.setPhone(userDTO.getPhone());
-        user.setPassword(userDTO.getPassword());
+        User user = UserMapper.INSTANCE.convertToUser(userDTO);
+        if (userValidationService.isEmailAlreadyExist(user.getEmail())) {
+            throw new NotFoundException("Email already exists");
+        }
         Set<Role> roles = new HashSet<>();
         if (userDTO.getRoles() != null && !userDTO.getRoles().isEmpty()) {
             for (Role role : userDTO.getRoles()) {
@@ -49,15 +48,13 @@ public class UserServiceImp implements UserService {
                 roles.add(managedRole);
             }
         } else {
-            Role defaultRole = roleService.getRoleByName("ROLE_USER");
+            Role defaultRole = roleService.getRoleByName(ProjectConstants.DEFAULT_ROLE);
             roles.add(defaultRole);
         }
         user.setRoles(roles);
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        ModelMapper mapper = new ModelMapper();
-        User userEntity = mapper.map(user, User.class);
-        return mapper.map(userRepository.save(userEntity), UserDTO.class);
+        userRepository.save(user);
+        return UserMapper.INSTANCE.convertToUserDTO(user);
     }
 
 
@@ -65,7 +62,7 @@ public class UserServiceImp implements UserService {
     public User findUserByEmail(String email)  {
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            throw new NotFoundException("Không tìm thấy người dùng " + email);
+            throw new NotFoundException("Email not found : " + email);
         }
         return user;
     }
@@ -91,17 +88,16 @@ public class UserServiceImp implements UserService {
     public UserDTO findUserByEmailConfirmToken(String token){
         Optional<User> user = userRepository.findByEmailConfirmationToken(token);
         if(user.isPresent()){
-            ModelMapper mapper = new ModelMapper();
-            return mapper.map(user.get(), UserDTO.class);
+            return UserMapper.INSTANCE.convertToUserDTO(user.get());
         }
-        throw new NotFoundException("Không tìm thấy người dùng" + token);
+        throw new NotFoundException(" Not found user for token : " + token);
     }
 
     @Override
     public String createVerificationToken(String email){
         User user = userRepository.findByEmail(email);
         if(user == null){
-            throw new NotFoundException("Không tìm thấy người dùng" + email);
+            throw new NotFoundException("Not found user for : " + email);
         }
         String token = java.util.UUID.randomUUID().toString();
         user.setEmailConfirmationToken(token);
@@ -110,10 +106,14 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public UserDTO updateUserInfo(User user){
-
-        
-        return userRepository.save(user);
+    public UserDTO updateUserInfo(UserDTO user){
+        User oldUser = userRepository.findByEmail(user.getEmail());
+        if(oldUser == null){
+            throw new NotFoundException("Not found user for : " + user.getEmail());
+        }
+        User userMapper= UserMapper.INSTANCE.convertToUser(user);
+        User newUser = userRepository.save(userMapper);
+        return UserMapper.INSTANCE.convertToUserDTO(newUser);
     }
     @Override
     public boolean isEmailAlreadyExist(String email){

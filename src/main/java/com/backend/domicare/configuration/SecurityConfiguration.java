@@ -21,11 +21,11 @@ public class SecurityConfiguration {
         http
             .csrf(csrf -> csrf.disable()) 
             .authorizeHttpRequests(auth -> auth
-                            // .requestMatchers("/login", "/oauth/authorize","/register","/refresh-token","/email","/verify-email").permitAll()
-                            // .requestMatchers("/users","/users/**").hasRole("USER")
-                            // .requestMatchers("/email").hasRole("ADMIN")
-                            // .requestMatchers("/permissions","/permissions/**").hasAnyRole("ADMIN","USER")
-                            .anyRequest().permitAll()
+                            .requestMatchers("/login","/register","/refresh-token","/email","/verify-email").permitAll()
+                            .requestMatchers("/users","/users/**").hasAnyRole("ADMIN","USER")
+                            .requestMatchers("/email").hasRole("ADMIN")
+                            .requestMatchers("/permissions","/permissions/**").hasAnyRole("ADMIN","USER")
+                            .anyRequest().authenticated()
                             )
             .formLogin(formLogin -> formLogin.disable())
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults())

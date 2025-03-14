@@ -1,9 +1,10 @@
 package com.backend.domicare.security.jwt;
 
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,9 +14,11 @@ import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.exception.EmailAlreadyExistException;
 import com.backend.domicare.exception.InvalidRefreshToken;
 import com.backend.domicare.exception.NotFoundException;
+import com.backend.domicare.model.Role;
 import com.backend.domicare.model.User;
 import com.backend.domicare.security.dto.LoginRequest;
 import com.backend.domicare.security.dto.LoginResponse;
+import com.backend.domicare.security.dto.RefreshTokenRespone;
 import com.backend.domicare.security.dto.RegisterResponse;
 import com.backend.domicare.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -72,25 +75,34 @@ public class JwtTokenService {
             throw new EmailAlreadyExistException("Email already exists: " + email);
         }
         
-        User userResponse = userService.saveUser(user);
+        UserDTO userResponse = userService.saveUser(user);
 
         String token = jwtTokenManager.createAccessToken(user.getEmail());
         String refreshToken = jwtTokenManager.createRefreshToken(user.getEmail());
         RegisterResponse registerResponse = new RegisterResponse();
-        registerResponse.setUser(userResponse);
+        registerResponse.setId(userResponse.getId());
+        registerResponse.setEmail(userResponse.getEmail());
+        registerResponse.setPassword(userResponse.getPassword());
         registerResponse.setAccessToken(token);
         registerResponse.setRefreshToken(refreshToken);
+
+        Set<String> roles = new HashSet<>();
+        for (Role role : userResponse.getRoles()) {
+            roles.add(role.getName());
+        }
+        registerResponse.setRoles(roles);
         return registerResponse;
     } 
 
 
-    public String createAccessTokenFromRefreshToken(String refreshToken) {
+    public RefreshTokenRespone createAccessTokenFromRefreshToken(String refreshToken) {
         if (!jwtTokenManager.isRefreshTokenValid(refreshToken)) {
             throw new InvalidRefreshToken("Refresh token không hợp lệ");
         }
 
         String email = jwtTokenManager.getUserFromRefreshToken(refreshToken).getEmail();
-        return jwtTokenManager.createAccessToken(email);
+        String accessToken =  jwtTokenManager.createAccessToken(email);
+        return new RefreshTokenRespone(accessToken, email);
     }
 
     public void verifyEmail(String token) {

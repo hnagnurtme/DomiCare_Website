@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.domicare.dto.response.EmailConfirmTokenResponse;
 import com.backend.domicare.service.EmailSendingService;
 
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,8 @@ public class EmailSendingController {
 
     @GetMapping("/email")
     public ResponseEntity<Object> sendEmail(@RequestParam(value = "email") String email) {
-        this.sendingEmailService.sendEmailFromTemplateSync(email, "Verify your account", "SendingOTP");
-        return ResponseEntity.status(HttpStatus.OK).body("Email sent successfully");
+        String emailToken = this.sendingEmailService.sendEmailFromTemplateSync(email, "Verify your account", "SendingOTP");
+        EmailConfirmTokenResponse response = new EmailConfirmTokenResponse(email,emailToken);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

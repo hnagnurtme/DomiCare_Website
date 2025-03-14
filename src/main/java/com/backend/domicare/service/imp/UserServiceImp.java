@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -11,9 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.backend.domicare.dto.UserDTO;
-import com.backend.domicare.dto.paging.ResultPaginDTO;
+import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.exception.NotFoundException;
-import com.backend.domicare.dto.paging.ResultPaginDTO;
 import com.backend.domicare.model.Permission;
 import com.backend.domicare.model.Role;
 import com.backend.domicare.model.User;
@@ -35,8 +35,8 @@ public class UserServiceImp implements UserService {
     private final RoleService roleService;
 
     @Override
-    public User saveUser(UserDTO userDTO) {
-        User user = new User();
+    public UserDTO saveUser(UserDTO userDTO) {
+        UserDTO user = new UserDTO();
         user.setEmail(userDTO.getEmail());
         user.setName(userDTO.getName());
         user.setAddress(userDTO.getAddress());
@@ -55,7 +55,9 @@ public class UserServiceImp implements UserService {
         user.setRoles(roles);
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        ModelMapper mapper = new ModelMapper();
+        User userEntity = mapper.map(user, User.class);
+        return mapper.map(userRepository.save(userEntity), UserDTO.class);
     }
 
 
@@ -69,11 +71,11 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public ResultPaginDTO getAllUsers(Specification<User> spec,Pageable pageable) {
+    public ResultPagingDTO getAllUsers(Specification<User> spec,Pageable pageable) {
         Page<User> users = this.userRepository.findAll(spec, pageable);
         
-        ResultPaginDTO resultPaginDTO = new ResultPaginDTO();
-        ResultPaginDTO.Meta meta = new ResultPaginDTO.Meta();
+        ResultPagingDTO resultPaginDTO = new ResultPagingDTO();
+        ResultPagingDTO.Meta meta = new ResultPagingDTO.Meta();
         
         meta.setPage(users.getNumber());
         meta.setSize(users.getSize());
@@ -86,10 +88,11 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public User findUserByEmailConfirmToken(String token){
+    public UserDTO findUserByEmailConfirmToken(String token){
         Optional<User> user = userRepository.findByEmailConfirmationToken(token);
         if(user.isPresent()){
-            return user.get();
+            ModelMapper mapper = new ModelMapper();
+            return mapper.map(user.get(), UserDTO.class);
         }
         throw new NotFoundException("Không tìm thấy người dùng" + token);
     }
@@ -107,8 +110,9 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public User updateUserInfo(User user){
+    public UserDTO updateUserInfo(User user){
 
+        
         return userRepository.save(user);
     }
     @Override

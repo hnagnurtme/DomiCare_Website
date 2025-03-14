@@ -46,13 +46,14 @@ public class EmailSendingServiceImp implements EmailSendingService {
 
     }
     @Override
-    public void sendEmailFromTemplateSync(String to, String subject, String templateName) {
+    public String sendEmailFromTemplateSync(String to, String subject, String templateName) {
         Context context = new Context();
         String verificationToken = this.userService.createVerificationToken(to);
         String encodedVerificationToken = URLEncoder.encode(verificationToken, StandardCharsets.UTF_8);
         context.setVariable("verificationToken", encodedVerificationToken);
         String content = templateEngine.process(templateName, context);
         this.sendEmailSync(to, subject, content, false, true);
+        return encodedVerificationToken;
     }
 
 

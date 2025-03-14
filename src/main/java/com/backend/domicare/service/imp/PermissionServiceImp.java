@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import com.backend.domicare.dto.paging.ResultPaginDTO;
+import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.exception.NotFoundException;
 import com.backend.domicare.model.Permission;
 import com.backend.domicare.repository.PermissionsRepository;
@@ -40,19 +40,19 @@ public class PermissionServiceImp implements PermissionService {
     }
 
     @Override
-    public ResultPaginDTO getPermissions(Specification<Permission> spec,Pageable pageable){
+    public ResultPagingDTO getPermissions(Specification<Permission> spec,Pageable pageable){
         Page<Permission> permissions = permissionsRepository.findAll(spec, pageable);
-        ResultPaginDTO resultPaginDTO = new ResultPaginDTO();
-        ResultPaginDTO.Meta meta = new ResultPaginDTO.Meta();
+        ResultPagingDTO resultPagingDTO = new ResultPagingDTO();
+        ResultPagingDTO.Meta meta = new ResultPagingDTO.Meta();
 
         meta.setPage(permissions.getNumber());
         meta.setSize(permissions.getSize());
         meta.setTotal(permissions.getTotalElements());
         meta.setTotalPages(permissions.getTotalPages());
 
-        resultPaginDTO.setMeta(meta);
-        resultPaginDTO.setData(permissions.getContent());
-        return resultPaginDTO;
+        resultPagingDTO.setMeta(meta);
+        resultPagingDTO.setData(permissions.getContent());
+        return resultPagingDTO;
     }
 
     @Override

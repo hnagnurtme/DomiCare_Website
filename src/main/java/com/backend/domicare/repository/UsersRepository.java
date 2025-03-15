@@ -1,11 +1,12 @@
 package com.backend.domicare.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import com.backend.domicare.model.User;
-import java.util.Optional;
 
 
 @Repository
@@ -16,4 +17,5 @@ public interface UsersRepository extends JpaRepository<User, Long>, JpaSpecifica
     public User findByEmailAndPassword(String email, String password);
     public boolean existsByEmail(String email);
     public Optional<User> findByEmailConfirmationToken(String emailConfirmationToken);
+    public Optional<User> findByGoogleId(String googleId);
 }

@@ -7,25 +7,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.domicare.dto.UserDTO;
-import com.backend.domicare.dto.response.Message;
 import com.backend.domicare.security.dto.LoginRequest;
 import com.backend.domicare.security.dto.LoginResponse;
 import com.backend.domicare.security.dto.RefreshTokenRequest;
 import com.backend.domicare.security.dto.RefreshTokenRespone;
 import com.backend.domicare.security.dto.RegisterResponse;
 import com.backend.domicare.security.jwt.JwtTokenService;
-
+import com.backend.domicare.service.UserService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
 @RequiredArgsConstructor
 public class AuthController {
     private final JwtTokenService authService;
+    private  final UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest) {
@@ -47,10 +45,12 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body(token);
     }
 
-    @GetMapping("/verify-email")
-    public ResponseEntity<Message> verifyEmail(@RequestParam(value ="token") String token) {
-        authService.verifyEmail(token);
-        return ResponseEntity.status(HttpStatus.OK).body(new Message("Email confirmed successfully"));
+    @PostMapping("reset-password")
+    public ResponseEntity<Void> resetPassword(@Valid @RequestBody UserDTO userDTO) {
+        String email = userDTO.getEmail();
+        String password = userDTO.getPassword();
+        userService.resetPassword(email, password);
+
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
-  
 }

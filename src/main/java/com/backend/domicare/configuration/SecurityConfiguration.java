@@ -25,7 +25,7 @@ public class SecurityConfiguration {
             .csrf(csrf -> csrf.disable()) 
             .authorizeHttpRequests(auth -> auth
                             .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
-                            .requestMatchers("/login","/register","/refresh-token","/email","/verify-email","/oauth2/**").permitAll()
+                            .requestMatchers("/login","/register","/refresh-token","/email/**","/verify-email","/oauth2/**","/forgot-password","/reset-password").permitAll()
                             .requestMatchers("/users","/users/**").hasAnyRole("ADMIN","USER")
                             .requestMatchers("/email").hasRole("ADMIN")
                             .requestMatchers("/permissions","/permissions/**").hasAnyRole("ADMIN","USER")

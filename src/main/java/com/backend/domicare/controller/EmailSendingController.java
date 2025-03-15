@@ -17,9 +17,16 @@ public class EmailSendingController {
     private final EmailSendingService sendingEmailService;
     
 
-    @GetMapping("/email")
+    @GetMapping("/email/verify")
     public ResponseEntity<Object> sendEmail(@RequestParam(value = "email") String email) {
         String emailToken = this.sendingEmailService.sendEmailFromTemplateSync(email, "Verify your account", "SendingOTP");
+        EmailConfirmTokenResponse response = new EmailConfirmTokenResponse(email,emailToken);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/email/reset-password")
+    public ResponseEntity<Object> sendResetPasswordEmail(@RequestParam(value = "email") String email) {
+        String emailToken = this.sendingEmailService.sendEmailFromTemplateSyncForResetPassword(email, "Reset your password", "ResetPassword");
         EmailConfirmTokenResponse response = new EmailConfirmTokenResponse(email,emailToken);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

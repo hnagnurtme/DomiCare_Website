@@ -37,7 +37,17 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         String name = (String) oAuth2User.getAttribute("name");
 
         Optional<User> user = userRepository.findByGoogleId(googleId);
-        if (user.isPresent()) {
+        if (user.isPresent() ) {
+            String accessToken = jwtTokenManager.createAccessToken(email);
+            String refreshToken = jwtTokenManager.createRefreshToken(email);
+        
+            response.sendRedirect("/oauth2/success?accessToken=" + accessToken 
+                                                + "&refreshToken=" + refreshToken);
+        }
+        User userByEmail = userRepository.findByEmail(email);
+        if(userByEmail != null){
+            userByEmail.setGoogleId(googleId);
+            userRepository.save(userByEmail);
             String accessToken = jwtTokenManager.createAccessToken(email);
             String refreshToken = jwtTokenManager.createRefreshToken(email);
             
@@ -45,7 +55,6 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
             response.sendRedirect("/oauth2/success?accessToken=" + accessToken 
                                                 + "&refreshToken=" + refreshToken);
         }
-        
         
         else{
             

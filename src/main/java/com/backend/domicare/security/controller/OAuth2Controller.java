@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class OAuth2Controller {
     
-    @GetMapping("/oauth2/users")
+    @GetMapping("/loginSuccess")
     public ResponseEntity<?> getUser(Authentication authentication) {
         if (authentication == null || !(authentication.getPrincipal() instanceof OAuth2User)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");

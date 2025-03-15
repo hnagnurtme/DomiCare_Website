@@ -53,6 +53,10 @@ public class User {
     @Column(name = "email_confirmation_token" , unique = true)
     private String emailConfirmationToken;
 
+    @Column(name = "google_id", unique = true)
+    private String googleId;
+
+
     private String createBy;
     private String updateBy;
     private Instant createAt;

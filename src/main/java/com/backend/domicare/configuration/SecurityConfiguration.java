@@ -24,7 +24,8 @@ public class SecurityConfiguration {
         http
             .csrf(csrf -> csrf.disable()) 
             .authorizeHttpRequests(auth -> auth
-                            .requestMatchers("/login","/register","/refresh-token","/email","/verify-email","/loginSuccess").permitAll()
+                            .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                            .requestMatchers("/login","/register","/refresh-token","/email","/verify-email","/oauth2/**").permitAll()
                             .requestMatchers("/users","/users/**").hasAnyRole("ADMIN","USER")
                             .requestMatchers("/email").hasRole("ADMIN")
                             .requestMatchers("/permissions","/permissions/**").hasAnyRole("ADMIN","USER")
@@ -33,7 +34,7 @@ public class SecurityConfiguration {
             .formLogin(formLogin -> formLogin.disable())
             .oauth2Login(oauth2 -> oauth2
                 .successHandler(customOAuth2SuccessHandler)
-                .defaultSuccessUrl("/loginSuccess", true) 
+
             )
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults())
         )

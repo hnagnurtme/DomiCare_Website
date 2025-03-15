@@ -22,6 +22,7 @@ public class GlobalException {
         InvalidRefreshToken.class,
         EmailAlreadyExistException.class,
         UnconfirmEmailException.class,
+        DeleteAdminException.class,
         BadCredentialsException.class
         })
     public ResponseEntity<RestResponse<Object>> handleException(Exception e) {

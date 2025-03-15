@@ -4,6 +4,9 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.backend.domicare.model.User;
@@ -18,4 +21,8 @@ public interface UsersRepository extends JpaRepository<User, Long>, JpaSpecifica
     public boolean existsByEmail(String email);
     public Optional<User> findByEmailConfirmationToken(String emailConfirmationToken);
     public Optional<User> findByGoogleId(String googleId);
+
+    @Modifying
+    @Query(value = "DELETE FROM users_roles WHERE user_id = :userId", nativeQuery = true)
+    void deleteRolesByUserId(@Param("userId") Long userId);
 }

@@ -9,13 +9,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
+import com.backend.domicare.exception.DeleteAdminException;
 import com.backend.domicare.exception.NotFoundException;
 import com.backend.domicare.mapper.UserMapper;
 import com.backend.domicare.model.Role;
 import com.backend.domicare.model.User;
+import com.backend.domicare.repository.BookingsRepository;
+import com.backend.domicare.repository.ReviewsRepository;
+import com.backend.domicare.repository.TokensRepository;
 import com.backend.domicare.repository.UsersRepository;
 import com.backend.domicare.service.RoleService;
 import com.backend.domicare.service.UserService;
@@ -33,6 +39,15 @@ public class UserServiceImp implements UserService {
     private final UserValidationService userValidationService;
 
     private final RoleService roleService;
+
+    private final BookingsRepository bookingRepository;
+
+
+    private final ReviewsRepository reviewRepository;
+
+
+    private final TokensRepository tokenRepository;
+
 
 
     @Override
@@ -119,4 +134,61 @@ public class UserServiceImp implements UserService {
     public boolean isEmailAlreadyExist(String email){
         return userValidationService.isEmailAlreadyExist(email);
     }
+
+    @Override
+    public UserDTO getUserById(Long id){
+        User user = userRepository.findUserById(id);
+        if(user == null){
+            throw new NotFoundException("Not found user for id : " + id);
+        }
+        return UserMapper.INSTANCE.convertToUserDTO(user);
+    }
+
+    @Override
+    @Transactional
+    public void deleteUserById(Long id) {
+        User user = userRepository.findById(id)
+            .orElseThrow(() -> new NotFoundException("User not found with id " + id));
+    
+        // Kiểm tra User là ADMIN không cho phép xóa
+        boolean isAdmin = user.getRoles().stream()
+            .anyMatch(role -> ProjectConstants.ROLE_ADMIN.equals(role.getName()));
+    
+        if (isAdmin) {
+            throw new DeleteAdminException("Cannot delete admin account");
+        }
+    
+        // Xóa liên kết bảng trung gian
+        userRepository.deleteRolesByUserId(id);
+    
+        // Xóa dữ liệu liên quan nếu tồn tại (Bookings, Reviews, Tokens)
+        if (!CollectionUtils.isEmpty(user.getBookings())) {
+            bookingRepository.deleteAll(user.getBookings());
+        }
+    
+        if (!CollectionUtils.isEmpty(user.getReviews())) {
+            reviewRepository.deleteAll(user.getReviews());
+        }
+    
+        if (!CollectionUtils.isEmpty(user.getRefreshTokens())) {
+            tokenRepository.deleteAll(user.getRefreshTokens());
+        }
+    
+        // Xóa User sau cùng
+        userRepository.delete(user);
+    }
+
+
+    @Override
+    public UserDTO updateUser(UserDTO user){
+        User oldUser = userRepository.findUserById(user.getId());
+        if(oldUser == null){
+            throw new NotFoundException("Not found user for : " + user.getId());
+        }
+        User userMapper= UserMapper.INSTANCE.convertToUser(user);
+        User newUser = userRepository.save(userMapper);
+        return UserMapper.INSTANCE.convertToUserDTO(newUser);
+    }
+    
+
 }

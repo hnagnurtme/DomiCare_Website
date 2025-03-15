@@ -5,8 +5,6 @@ import org.springframework.data.jpa.domain.Specification;
 
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
-
-
 import com.backend.domicare.model.User;
 
 public interface UserService {
@@ -19,4 +17,9 @@ public interface UserService {
     public String createVerificationToken(String email);
     public UserDTO updateUserInfo(UserDTO user);
     public boolean isEmailAlreadyExist(String email);
+
+    public UserDTO getUserById(Long id);
+    public void deleteUserById(Long id);
+
+    public UserDTO updateUser(UserDTO user);
 }

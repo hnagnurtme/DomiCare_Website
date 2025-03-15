@@ -38,9 +38,14 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
 
         Optional<User> user = userRepository.findByGoogleId(googleId);
         if (user.isPresent()) {
-            String jwt = jwtTokenManager.createAccessToken(email);
+            String accessToken = jwtTokenManager.createAccessToken(email);
+            String refreshToken = jwtTokenManager.createRefreshToken(email);
             
+            // redirect cả hai token về trang xử lý phía client
+            response.sendRedirect("/oauth2/success?accessToken=" + accessToken 
+                                                + "&refreshToken=" + refreshToken);
         }
+        
         
         else{
             
@@ -50,7 +55,13 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
                     .googleId(googleId)
                     .build();
             userRepository.save(newUser);
-            String jwt = jwtTokenManager.createAccessToken(email);
+            String accessToken = jwtTokenManager.createAccessToken(email);
+            String refreshToken = jwtTokenManager.createRefreshToken(email);
+            
+            // redirect cả hai token về trang xử lý phía client
+            response.sendRedirect("/oauth2/success?accessToken=" + accessToken 
+                                                + "&refreshToken=" + refreshToken);
+
 
         }
     }

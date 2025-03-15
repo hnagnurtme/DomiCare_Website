@@ -6,15 +6,20 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.model.User;
 import com.backend.domicare.service.UserService;
 
-
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -51,4 +56,23 @@ public class UserController {
     }
         return ResponseEntity.status(HttpStatus.OK).body(this.userService.getAllUsers(spec, pageable));
     }
+
+    @GetMapping("/users/{id}")
+    public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Long id) {
+        UserDTO user = this.userService.getUserById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<Void> deleteUserById(@PathVariable("id") Long id) {
+        this.userService.deleteUserById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
+    @PutMapping("/users")
+    public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UserDTO user) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.userService.updateUser(user));
+    }
+
 }

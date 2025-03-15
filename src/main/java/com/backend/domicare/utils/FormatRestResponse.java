@@ -5,7 +5,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpResponse;
-import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
@@ -17,20 +16,18 @@ import jakarta.servlet.http.HttpServletResponse;
 public class FormatRestResponse implements ResponseBodyAdvice<Object> {
 
     @Override
-    public boolean supports(@SuppressWarnings("null") MethodParameter returnType, @SuppressWarnings({ "null", "rawtypes" }) Class converterType) {
+    public boolean supports(MethodParameter returnType,  Class converterType) {
         return true;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    @Nullable
-    public Object beforeBodyWrite(@Nullable Object body, @SuppressWarnings("null") MethodParameter returnType, @SuppressWarnings("null") MediaType selectedContentType,
-            @SuppressWarnings({ "null", "rawtypes" }) Class selectedConverterType, @SuppressWarnings("null") ServerHttpRequest request, @SuppressWarnings("null") ServerHttpResponse response) {
+    public Object beforeBodyWrite( Object body, MethodParameter returnType, MediaType selectedContentType,
+            Class selectedConverterType,  ServerHttpRequest request,  ServerHttpResponse response) {
 
             HttpServletResponse httpServletResponse = ((ServletServerHttpResponse) response).getServletResponse();
             int status = httpServletResponse.getStatus();
         
-        @SuppressWarnings("rawtypes")
+
         RestResponse restResponse = new RestResponse();
 
         if( body instanceof String){
@@ -39,7 +36,7 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
 
         else
 
-        if( status >=400){
+        if( status >= 400){
            return body;
         }
 

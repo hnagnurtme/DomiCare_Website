@@ -9,14 +9,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class OAuth2Controller {
     
     @GetMapping("/oauth2/success")
-public String oauth2Success(@RequestParam("accessToken") String accessToken,
-                            @RequestParam("refreshToken") String refreshToken,
-                            Model model) {
-    model.addAttribute("accessToken", accessToken);
-    model.addAttribute("refreshToken", refreshToken);
+    public String oauth2Success(@RequestParam("accessToken") String accessToken,
+                                @RequestParam("refreshToken") String refreshToken,
+                                Model model) {
+        model.addAttribute("accessToken", accessToken);
+        model.addAttribute("refreshToken", refreshToken);
 
-    return "oauth2_success";
-}
+        return "oauth2_success";
+    }
 
 
 }

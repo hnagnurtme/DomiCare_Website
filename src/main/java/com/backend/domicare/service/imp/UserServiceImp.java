@@ -190,5 +190,15 @@ public class UserServiceImp implements UserService {
         return UserMapper.INSTANCE.convertToUserDTO(newUser);
     }
     
+    @Override
+    public void resetPassword(String email, String password){
+        User user = userRepository.findByEmail(email);
+        if(user == null){
+            throw new NotFoundException("Not found user for : " + email);
+        }
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+    
+    }
 
 }

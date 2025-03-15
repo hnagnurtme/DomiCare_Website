@@ -21,6 +21,7 @@ import com.backend.domicare.security.dto.LoginResponse;
 import com.backend.domicare.security.dto.RefreshTokenRespone;
 import com.backend.domicare.security.dto.RegisterResponse;
 import com.backend.domicare.service.UserService;
+
 import lombok.RequiredArgsConstructor;
 
 
@@ -55,7 +56,7 @@ public class JwtTokenService {
         throw new NotFoundException("Không tìm thấy người dùng");
     }
     if(!user.isEmailConfirmed()){
-        throw new NotFoundException("Không tìm thấy người dùng");
+        throw new NotFoundException("Email Not Confirmed");
     }
     LoginResponse loginResponse = new LoginResponse();
     loginResponse.setAccessToken(accessToken);
@@ -117,4 +118,19 @@ public class JwtTokenService {
             throw new NotFoundException("Không tìm thấy người dùng");
         }
     }
+
+    public String verifyEmailAndGetEmail(String token) {
+        UserDTO user = userService.findUserByEmailConfirmToken(token);
+        
+        if( user!=null){
+            user.setEmailConfirmed(true);
+            user.setEmailConfirmationToken(null);
+            userService.updateUserInfo(user);
+        }
+        else{
+            throw new NotFoundException("Không tìm thấy người dùng");
+        }
+        return user.getEmail();
+    }
+
 }

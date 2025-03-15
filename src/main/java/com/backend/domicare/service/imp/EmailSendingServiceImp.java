@@ -56,5 +56,18 @@ public class EmailSendingServiceImp implements EmailSendingService {
         return encodedVerificationToken;
     }
 
+    @Override
+    public String sendEmailFromTemplateSyncForResetPassword(String to, String subject, String templateName) {
+        Context context = new Context();
+        String verificationToken = this.userService.createVerificationToken(to);
+        String encodedVerificationToken = URLEncoder.encode(verificationToken, StandardCharsets.UTF_8);
+        context.setVariable("verificationToken", encodedVerificationToken);
+        context.setVariable("email", to);
+        String content = templateEngine.process(templateName, context);
+        this.sendEmailSync(to, subject, content, false, true);
+        return encodedVerificationToken;
+    }
+
+
 
 }

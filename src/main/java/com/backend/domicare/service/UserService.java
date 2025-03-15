@@ -22,4 +22,6 @@ public interface UserService {
     public void deleteUserById(Long id);
 
     public UserDTO updateUser(UserDTO user);
+
+    public void resetPassword(String email, String password);
 }

@@ -2,15 +2,25 @@
 
 @theme {
   --color-main: #02cf96;
+  --color-mainStrong: #105233;
   --color-tmain: #1dc2c2;
   --color-black: #333;
   --color-secondary: #a6f1dc;
   --color-bg: #ebfdfd;
   --color-red: #ff0000;
-  --color-btn: #cc6600;
+  --color-brown: #cc6600;
   --color-gray: #697077;
   --color-yellow: #febb2e;
   --color-blue: #0f62fe;
+
+  /* custom animate */
+  --animate-fade-up: fade-up 1s ease-out;
+  --animate-caret-blink: caret-blink 1.25s ease-out infinite;
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-fade-down: fade-down 1s ease-out;
+  --animate-fade-up: fade-up 2s ease-out;
+  --animate-fade-right: fade-right 1s ease-out;
 
   /* config shadcn UI đen -> xanh theo màu.*/
   --color-neutral-50: #e6f9f3;
@@ -26,17 +36,20 @@
   --color-neutral-950: #015739;
 
   /* font text*/
-  --text-head: 42px;
+
   --text-body: 14px;
   --text-sub1: 16px;
   --text-menu: 16px;
   --text-sub2: 14px;
   --text-sub3: 12px;
+  --text-sub0: 18px;
 
   /* breack point*/
   --breakpoint-mo: 992px;
 }
-
+.text-head {
+  @apply text-[24px] md:text-[42px];
+}
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -118,4 +131,70 @@ body {
   filter: blur(20px);
   opacity: 0.5;
   z-index: 0;
+}
+
+/*  keyframe */
+@keyframes caret-blink {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes accordion-down {
+  0% {
+    transform: translateY(-10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes accordion-up {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fade-down {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-right {
+  0% {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }

@@ -158,7 +158,7 @@ export default function Login() {
                     checked={rememberMe}
                     type='checkbox'
                     id='terms'
-                    className='accent-main w-4 h-4'
+                    className='accent-[green] w-4 h-4'
                   />
 
                   <Label htmlFor='terms' className=' text-sub2  text-gray-500 cursor-pointer'>

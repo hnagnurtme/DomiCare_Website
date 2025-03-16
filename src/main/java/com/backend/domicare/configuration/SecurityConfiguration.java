@@ -34,11 +34,12 @@ public class SecurityConfiguration {
             .formLogin(formLogin -> formLogin.disable())
             .oauth2Login(oauth2 -> oauth2
                 .successHandler(customOAuth2SuccessHandler)
+                .defaultSuccessUrl("/oauth2/success")
 
             )
             .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults())
         )
-          .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
+          .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();
     }

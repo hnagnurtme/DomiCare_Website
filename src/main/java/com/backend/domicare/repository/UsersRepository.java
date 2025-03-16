@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import com.backend.domicare.model.Token;
 import com.backend.domicare.model.User;
 
 
@@ -25,4 +26,7 @@ public interface UsersRepository extends JpaRepository<User, Long>, JpaSpecifica
     @Modifying
     @Query(value = "DELETE FROM users_roles WHERE user_id = :userId", nativeQuery = true)
     void deleteRolesByUserId(@Param("userId") Long userId);
+
+    @Query("SELECT t FROM Token t JOIN FETCH t.user WHERE t.refreshToken = :refreshToken")
+    Optional<Token> findByRefreshTokenWithUser(@Param("refreshToken") String refreshToken);
 }

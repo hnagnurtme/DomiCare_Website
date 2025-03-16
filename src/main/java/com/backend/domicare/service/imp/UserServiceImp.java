@@ -18,6 +18,7 @@ import com.backend.domicare.exception.DeleteAdminException;
 import com.backend.domicare.exception.NotFoundException;
 import com.backend.domicare.mapper.UserMapper;
 import com.backend.domicare.model.Role;
+import com.backend.domicare.model.Token;
 import com.backend.domicare.model.User;
 import com.backend.domicare.repository.BookingsRepository;
 import com.backend.domicare.repository.ReviewsRepository;
@@ -201,4 +202,8 @@ public class UserServiceImp implements UserService {
     
     }
 
+    @Override
+    public Token findByRefreshTokenWithUser(String refreshToken){
+        return tokenRepository.findByRefreshToken(refreshToken) ;
+    }
 }

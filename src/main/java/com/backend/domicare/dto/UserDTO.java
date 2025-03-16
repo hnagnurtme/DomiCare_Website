@@ -1,9 +1,9 @@
 package com.backend.domicare.dto;
 
-import com.backend.domicare.model.Role;
-
 import java.time.Instant;
 import java.util.Set;
+
+import com.backend.domicare.model.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

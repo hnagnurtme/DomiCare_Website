@@ -1,8 +1,6 @@
 package com.backend.domicare.security.jwt;
 
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,7 +12,7 @@ import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.exception.EmailAlreadyExistException;
 import com.backend.domicare.exception.InvalidRefreshToken;
 import com.backend.domicare.exception.NotFoundException;
-import com.backend.domicare.model.Role;
+import com.backend.domicare.model.Token;
 import com.backend.domicare.model.User;
 import com.backend.domicare.security.dto.LoginRequest;
 import com.backend.domicare.security.dto.LoginResponse;
@@ -22,6 +20,7 @@ import com.backend.domicare.security.dto.RefreshTokenRespone;
 import com.backend.domicare.security.dto.RegisterResponse;
 import com.backend.domicare.service.UserService;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 
@@ -86,25 +85,39 @@ public class JwtTokenService {
         registerResponse.setPassword(userResponse.getPassword());
         registerResponse.setAccessToken(token);
         registerResponse.setRefreshToken(refreshToken);
-
-        Set<String> roles = new HashSet<>();
-        for (Role role : userResponse.getRoles()) {
-            roles.add(role.getName());
-        }
-        registerResponse.setRoles(roles);
+        registerResponse.setEmailConfirmed(userResponse.isEmailConfirmed());
+        registerResponse.setRoles(userResponse.getRoles());
         return registerResponse;
     } 
 
 
+    // public RefreshTokenRespone createAccessTokenFromRefreshToken(String refreshToken) {
+    //     if (!jwtTokenManager.isRefreshTokenValid(refreshToken)) {
+    //         throw new InvalidRefreshToken("Refresh token không hợp lệ");
+    //     }
+
+    //     String email = jwtTokenManager.getUserFromRefreshToken(refreshToken).getEmail();
+    //     String accessToken =  jwtTokenManager.createAccessToken(email);
+    //     return new RefreshTokenRespone(accessToken, email);
+    // }
+
+    @Transactional
     public RefreshTokenRespone createAccessTokenFromRefreshToken(String refreshToken) {
         if (!jwtTokenManager.isRefreshTokenValid(refreshToken)) {
             throw new InvalidRefreshToken("Refresh token không hợp lệ");
         }
 
-        String email = jwtTokenManager.getUserFromRefreshToken(refreshToken).getEmail();
-        String accessToken =  jwtTokenManager.createAccessToken(email);
-        return new RefreshTokenRespone(accessToken, email);
+        Token token = userService.findByRefreshTokenWithUser(refreshToken);
+        if (token == null) {
+            throw new InvalidRefreshToken("Refresh token không hợp lệ");
+        }
+
+        User user = token.getUser(); // User đã được load đầy đủ, không còn proxy
+        String accessToken = jwtTokenManager.createAccessToken(user.getEmail());
+
+        return new RefreshTokenRespone(accessToken, user.getEmail());
     }
+
 
     public void verifyEmail(String token) {
         UserDTO user = userService.findUserByEmailConfirmToken(token);

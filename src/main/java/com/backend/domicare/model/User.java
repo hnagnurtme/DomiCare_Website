@@ -62,7 +62,7 @@ public class User {
     private Instant createAt;
     private Instant updateAt;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE})
     @JoinTable(
         name = "users_roles",
         joinColumns = @JoinColumn(name = "user_id"),

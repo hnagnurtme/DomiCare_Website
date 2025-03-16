@@ -2,6 +2,8 @@ package com.backend.domicare.security.dto;
 
 import java.util.Set;
 
+import com.backend.domicare.model.Role;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,5 +19,6 @@ public class RegisterResponse {
     private String password;
     private String accessToken;
     private String refreshToken;
-    private Set<String> roles;
+    private Set<Role> roles;
+    private boolean isEmailConfirmed;
 }

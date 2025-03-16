@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
+import com.backend.domicare.model.Token;
 import com.backend.domicare.model.User;
 
 public interface UserService {
@@ -24,4 +25,6 @@ public interface UserService {
     public UserDTO updateUser(UserDTO user);
 
     public void resetPassword(String email, String password);
+
+    public Token findByRefreshTokenWithUser(String refreshToken);
 }

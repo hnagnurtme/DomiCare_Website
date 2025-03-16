@@ -47,7 +47,7 @@ public class JwtTokenManager {
 
     Set<Role> roles = user.getRoles();
     if (roles == null || roles.isEmpty()) {
-        throw new NotFoundException("Người dùng không có quyền");
+        roles = Set.of(new Role(null, "ROLE_USER", email, false, email, email, expiration, expiration, null));
     }
     Set<String> roleNames = roles.stream().map(Role::getName).collect(Collectors.toSet());
 

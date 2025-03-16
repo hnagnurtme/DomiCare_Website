@@ -1,8 +1,8 @@
 package com.backend.domicare.mapper;
 
-import org.mapstruct.factory.Mappers;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
 
 import com.backend.domicare.dto.RoleDTO;
 import com.backend.domicare.model.Role;

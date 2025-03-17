@@ -12,6 +12,7 @@ import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.exception.EmailAlreadyExistException;
 import com.backend.domicare.exception.InvalidRefreshToken;
 import com.backend.domicare.exception.NotFoundException;
+import com.backend.domicare.exception.UnconfirmEmailException;
 import com.backend.domicare.model.Token;
 import com.backend.domicare.model.User;
 import com.backend.domicare.security.dto.LoginRequest;
@@ -55,7 +56,7 @@ public class JwtTokenService {
         throw new NotFoundException("Không tìm thấy người dùng");
     }
     if(!user.isEmailConfirmed()){
-        throw new NotFoundException("Email Not Confirmed");
+        throw new UnconfirmEmailException("Email chưa được xác nhận");
     }
     LoginResponse loginResponse = new LoginResponse();
     loginResponse.setAccessToken(accessToken);
@@ -72,7 +73,7 @@ public class JwtTokenService {
         String email = user.getEmail();
 
         if (userService.isEmailAlreadyExist(email)) {
-            throw new EmailAlreadyExistException("Email already exists: " + email);
+            throw new EmailAlreadyExistException("Đã tồn tại email : " + email);
         }
         
         UserDTO userResponse = userService.saveUser(user);
@@ -89,18 +90,6 @@ public class JwtTokenService {
         registerResponse.setRoles(userResponse.getRoles());
         return registerResponse;
     } 
-
-
-    // public RefreshTokenRespone createAccessTokenFromRefreshToken(String refreshToken) {
-    //     if (!jwtTokenManager.isRefreshTokenValid(refreshToken)) {
-    //         throw new InvalidRefreshToken("Refresh token không hợp lệ");
-    //     }
-
-    //     String email = jwtTokenManager.getUserFromRefreshToken(refreshToken).getEmail();
-    //     String accessToken =  jwtTokenManager.createAccessToken(email);
-    //     return new RefreshTokenRespone(accessToken, email);
-    // }
-
     @Transactional
     public RefreshTokenRespone createAccessTokenFromRefreshToken(String refreshToken) {
         if (!jwtTokenManager.isRefreshTokenValid(refreshToken)) {
@@ -112,7 +101,7 @@ public class JwtTokenService {
             throw new InvalidRefreshToken("Refresh token không hợp lệ");
         }
 
-        User user = token.getUser(); // User đã được load đầy đủ, không còn proxy
+        User user = token.getUser(); 
         String accessToken = jwtTokenManager.createAccessToken(user.getEmail());
 
         return new RefreshTokenRespone(accessToken, user.getEmail());

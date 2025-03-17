@@ -32,7 +32,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint{
 
             response.setContentType("application/json;charset=UTF-8");
             
-            RestResponse<Object> restResponse = new RestResponse<Object>();
+            RestResponse<Object> restResponse = new RestResponse<>();
 
             restResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
             String errorMessage = Optional.ofNullable(authException.getCause())

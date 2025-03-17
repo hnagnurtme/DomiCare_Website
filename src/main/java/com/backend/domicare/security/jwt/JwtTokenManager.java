@@ -77,12 +77,12 @@ public class JwtTokenManager {
 
         Object principal = authentication.getPrincipal();
 
-        if (principal instanceof UserDetails) {
-            return ((UserDetails) principal).getUsername(); 
-        } else if (principal instanceof Jwt) {
-            return ((Jwt) principal).getSubject();
-        } else if (principal instanceof String) {
-            return (String) principal;
+        if (principal instanceof UserDetails userDetails) {
+            return userDetails.getUsername(); 
+        } else if (principal instanceof Jwt jwt) {
+            return jwt.getSubject();
+        } else if (principal instanceof String string) {
+            return string;
         }
         return null;
     }

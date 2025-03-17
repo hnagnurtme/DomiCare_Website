@@ -31,7 +31,7 @@ public class JwtConfiguration {
         String secret = jwtProperties.getSecretKey();
         
         if (secret == null || secret.isEmpty()) {
-            throw new IllegalArgumentException("❌ Secret key không được để trống!");
+            throw new IllegalArgumentException(" Secret key không được để trống!");
         }
 
         byte[] secretBytes = Base64.from(secret).decode();

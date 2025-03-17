@@ -24,9 +24,12 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
     public Object beforeBodyWrite( Object body, MethodParameter returnType, MediaType selectedContentType,
             Class selectedConverterType,  ServerHttpRequest request,  ServerHttpResponse response) {
 
-            HttpServletResponse httpServletResponse = ((ServletServerHttpResponse) response).getServletResponse();
-            int status = httpServletResponse.getStatus();
+        HttpServletResponse httpServletResponse = ((ServletServerHttpResponse) response).getServletResponse();
+        int status = httpServletResponse.getStatus();
         
+        if( selectedContentType.equals(MediaType.IMAGE_JPEG) || selectedContentType.equals(MediaType.IMAGE_PNG)){
+            return body;
+        }
 
         RestResponse restResponse = new RestResponse();
 

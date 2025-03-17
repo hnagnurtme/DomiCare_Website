@@ -15,6 +15,7 @@ import org.springframework.util.CollectionUtils;
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.exception.DeleteAdminException;
+import com.backend.domicare.exception.EmailAlreadyExistException;
 import com.backend.domicare.exception.NotFoundException;
 import com.backend.domicare.mapper.UserMapper;
 import com.backend.domicare.model.Role;
@@ -55,7 +56,7 @@ public class UserServiceImp implements UserService {
     public UserDTO saveUser(UserDTO userDTO) {
         User user = UserMapper.INSTANCE.convertToUser(userDTO);
         if (userValidationService.isEmailAlreadyExist(user.getEmail())) {
-            throw new NotFoundException("Email already exists");
+            throw new EmailAlreadyExistException("Email đã tồn tại : " + user.getEmail());
         }
         Set<Role> roles = new HashSet<>();
         if (userDTO.getRoles() != null && !userDTO.getRoles().isEmpty()) {
@@ -78,7 +79,7 @@ public class UserServiceImp implements UserService {
     public User findUserByEmail(String email)  {
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            throw new NotFoundException("Email not found : " + email);
+            throw new NotFoundException("Không tìm thấy : " + email);
         }
         return user;
     }
@@ -106,14 +107,14 @@ public class UserServiceImp implements UserService {
         if(user.isPresent()){
             return UserMapper.INSTANCE.convertToUserDTO(user.get());
         }
-        throw new NotFoundException(" Not found user for token : " + token);
+        throw new NotFoundException(" Không tìm thấy người dùng cho token : " + token);
     }
 
     @Override
     public String createVerificationToken(String email){
         User user = userRepository.findByEmail(email);
         if(user == null){
-            throw new NotFoundException("Not found user for : " + email);
+            throw new NotFoundException("Không tìm thấy ngừoi dùng cho email : " + email);
         }
         String token = java.util.UUID.randomUUID().toString();
         user.setEmailConfirmationToken(token);
@@ -125,7 +126,7 @@ public class UserServiceImp implements UserService {
     public UserDTO updateUserInfo(UserDTO user){
         User oldUser = userRepository.findByEmail(user.getEmail());
         if(oldUser == null){
-            throw new NotFoundException("Not found user for : " + user.getEmail());
+            throw new NotFoundException("Không tìm thấy ngừoi dùng cho email : " + user.getEmail());
         }
         User userMapper= UserMapper.INSTANCE.convertToUser(user);
         User newUser = userRepository.save(userMapper);
@@ -140,7 +141,7 @@ public class UserServiceImp implements UserService {
     public UserDTO getUserById(Long id){
         User user = userRepository.findUserById(id);
         if(user == null){
-            throw new NotFoundException("Not found user for id : " + id);
+            throw new NotFoundException("Không tìm thấy người dùng cho id : " + id);
         }
         return UserMapper.INSTANCE.convertToUserDTO(user);
     }
@@ -149,20 +150,17 @@ public class UserServiceImp implements UserService {
     @Transactional
     public void deleteUserById(Long id) {
         User user = userRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("User not found with id " + id));
+            .orElseThrow(() -> new NotFoundException("Không tìm thấy người dùng cho id : " + id));
     
-        // Kiểm tra User là ADMIN không cho phép xóa
         boolean isAdmin = user.getRoles().stream()
             .anyMatch(role -> ProjectConstants.ROLE_ADMIN.equals(role.getName()));
     
         if (isAdmin) {
-            throw new DeleteAdminException("Cannot delete admin account");
+            throw new DeleteAdminException("Không thể xoá tài khoản ADMIN");
         }
     
-        // Xóa liên kết bảng trung gian
         userRepository.deleteRolesByUserId(id);
     
-        // Xóa dữ liệu liên quan nếu tồn tại (Bookings, Reviews, Tokens)
         if (!CollectionUtils.isEmpty(user.getBookings())) {
             bookingRepository.deleteAll(user.getBookings());
         }
@@ -174,8 +172,6 @@ public class UserServiceImp implements UserService {
         if (!CollectionUtils.isEmpty(user.getRefreshTokens())) {
             tokenRepository.deleteAll(user.getRefreshTokens());
         }
-    
-        // Xóa User sau cùng
         userRepository.delete(user);
     }
 
@@ -184,9 +180,15 @@ public class UserServiceImp implements UserService {
     public UserDTO updateUser(UserDTO user){
         User oldUser = userRepository.findUserById(user.getId());
         if(oldUser == null){
-            throw new NotFoundException("Not found user for : " + user.getId());
+            throw new NotFoundException("Không tìm thấy người dùng cho id : " + user.getId());
         }
         User userMapper= UserMapper.INSTANCE.convertToUser(user);
+        String password = oldUser.getPassword();
+        if(user.getPassword() == null){
+            userMapper.setPassword(password);
+        }else{
+            userMapper.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
         User newUser = userRepository.save(userMapper);
         return UserMapper.INSTANCE.convertToUserDTO(newUser);
     }
@@ -195,7 +197,7 @@ public class UserServiceImp implements UserService {
     public void resetPassword(String email, String password){
         User user = userRepository.findByEmail(email);
         if(user == null){
-            throw new NotFoundException("Not found user for : " + email);
+            throw new NotFoundException("Không tìm thấy người dùng cho id : " + email);
         }
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);

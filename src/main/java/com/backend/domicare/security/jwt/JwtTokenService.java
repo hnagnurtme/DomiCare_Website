@@ -13,6 +13,7 @@ import com.backend.domicare.exception.EmailAlreadyExistException;
 import com.backend.domicare.exception.InvalidRefreshToken;
 import com.backend.domicare.exception.NotFoundException;
 import com.backend.domicare.exception.UnconfirmEmailException;
+import com.backend.domicare.mapper.UserMapper;
 import com.backend.domicare.model.Token;
 import com.backend.domicare.model.User;
 import com.backend.domicare.security.dto.LoginRequest;
@@ -61,12 +62,13 @@ public class JwtTokenService {
     LoginResponse loginResponse = new LoginResponse();
     loginResponse.setAccessToken(accessToken);
     loginResponse.setRefreshToken(refreshToken);
-    loginResponse.setUser(user);
+    loginResponse.setUser(UserMapper.INSTANCE.convertToUserDTO(user));
     return loginResponse;
 }
 
     public void logout() {
         SecurityContextHolder.clearContext();
+
     }
 
     public RegisterResponse register(UserDTO user) {

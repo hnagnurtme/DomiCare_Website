@@ -1,5 +1,6 @@
 package com.backend.domicare.security.dto;
 
+import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.model.User;
 
 import lombok.AllArgsConstructor;
@@ -14,5 +15,5 @@ import lombok.Setter;
 public class LoginResponse {
     private String accessToken;
     private String refreshToken;
-    private User user;
+    private UserDTO user;
 }

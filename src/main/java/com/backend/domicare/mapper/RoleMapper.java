@@ -12,4 +12,5 @@ public interface RoleMapper {
     RoleMapper INSTANCE = Mappers.getMapper(RoleMapper.class);
     Role convertToRole(RoleDTO roleDTO);
     RoleDTO convertToRoleDTO(Role role);
+    
 }

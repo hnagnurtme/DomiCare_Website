@@ -82,14 +82,9 @@ public class JwtTokenService {
 
         String token = jwtTokenManager.createAccessToken(user.getEmail());
         String refreshToken = jwtTokenManager.createRefreshToken(user.getEmail());
-        RegisterResponse registerResponse = new RegisterResponse();
-        registerResponse.setId(userResponse.getId());
-        registerResponse.setEmail(userResponse.getEmail());
-        registerResponse.setPassword(userResponse.getPassword());
+        RegisterResponse registerResponse = UserMapper.INSTANCE.convertToRegisterResponse(userResponse);
         registerResponse.setAccessToken(token);
         registerResponse.setRefreshToken(refreshToken);
-        registerResponse.setEmailConfirmed(userResponse.isEmailConfirmed());
-        registerResponse.setRoles(userResponse.getRoles());
         return registerResponse;
     } 
     @Transactional

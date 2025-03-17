@@ -17,6 +17,4 @@ public class OAuth2Controller {
 
         return "oauth2_success";
     }
-
-
 }

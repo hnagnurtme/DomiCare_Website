@@ -56,6 +56,7 @@ public class User {
     @Column(name = "google_id", unique = true)
     private String googleId;
 
+    private String avatar;
 
     private String createBy;
     private String updateBy;

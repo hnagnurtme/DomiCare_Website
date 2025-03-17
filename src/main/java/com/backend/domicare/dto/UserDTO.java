@@ -21,6 +21,7 @@ public class UserDTO {
     private String password;
     private String phone;
     private String address;
+    private String avatar;
     private boolean isEmailConfirmed;
     private String emailConfirmationToken;
     private String createBy;

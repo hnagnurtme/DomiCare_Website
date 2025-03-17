@@ -16,10 +16,6 @@ public final class ProjectConstants {
 
 	public static final String DEFAULT_ROLE = "ROLE_USER";
 
-	public static final String CASH = "CASH";
-
-	public static final String MOMO = "MOMO";
-
 	private ProjectConstants() {
 
 		throw new UnsupportedOperationException();

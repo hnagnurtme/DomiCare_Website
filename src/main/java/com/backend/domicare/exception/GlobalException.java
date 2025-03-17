@@ -44,7 +44,7 @@ public class GlobalException {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<RestResponse<Object>> handleBadCredentials(BadCredentialsException e) {
-        return buildResponse(HttpStatus.UNAUTHORIZED, e.getMessage(), "Invalid credentials");
+        return buildResponse(HttpStatus.UNAUTHORIZED, e.getMessage(), "Lỗi xác thực");
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

@@ -16,6 +16,8 @@ public final class ProjectConstants {
 
 	public static final String DEFAULT_ROLE = "ROLE_USER";
 
+	public static final String DEFAULT_AVATAR = "http://localhost:8080/files/DEFAULT";
+
 	private ProjectConstants() {
 
 		throw new UnsupportedOperationException();

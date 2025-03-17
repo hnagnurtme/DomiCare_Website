@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.backend.domicare.security.jwt.JwtTokenManager;
+import com.backend.domicare.utils.ProjectConstants;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -93,6 +94,7 @@ public class User {
         }
         this.createAt = Instant.now();
         this.isEmailConfirmed = true;
+        this.avatar = ProjectConstants.DEFAULT_AVATAR;
     }
 
     @PreUpdate

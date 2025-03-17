@@ -34,7 +34,7 @@ public class FileEntity {
     private String type;
 
     @Lob
-    @Column(name = "data", nullable = false)
+    @Column(name = "data", nullable = false, columnDefinition = "longblob")
     private byte[] data;
 
     public FileEntity(String name, String type, byte[] data) {

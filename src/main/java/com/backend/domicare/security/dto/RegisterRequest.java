@@ -28,5 +28,4 @@ public class RegisterRequest {
     @NotEmpty(message = "{confirm_password_not_empty}")
     @Schema(example = "string")
     private String confirmPassword;
-    private String comfirmPassword;
 }

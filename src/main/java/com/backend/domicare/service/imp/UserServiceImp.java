@@ -1,5 +1,6 @@
 package com.backend.domicare.service.imp;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -11,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
@@ -25,6 +27,7 @@ import com.backend.domicare.repository.BookingsRepository;
 import com.backend.domicare.repository.ReviewsRepository;
 import com.backend.domicare.repository.TokensRepository;
 import com.backend.domicare.repository.UsersRepository;
+import com.backend.domicare.service.FileHandleService;
 import com.backend.domicare.service.RoleService;
 import com.backend.domicare.service.UserService;
 import com.backend.domicare.service.UserValidationService;
@@ -41,6 +44,8 @@ public class UserServiceImp implements UserService {
     private final UserValidationService userValidationService;
 
     private final RoleService roleService;
+
+    private final FileHandleService fileHandleService;
 
     private final BookingsRepository bookingRepository;
 
@@ -207,5 +212,22 @@ public class UserServiceImp implements UserService {
     @Override
     public Token findByRefreshTokenWithUser(String refreshToken){
         return tokenRepository.findByRefreshToken(refreshToken) ;
+    }
+
+    @Override
+    public String updateUserAvatar(String id,MultipartFile  avatar){
+        User user = userRepository.findUserById(Long.valueOf(id));
+        if(user == null){
+            throw new NotFoundException("Không tìm thấy người dùng cho id : " + id);
+        }
+        String fileName = user.getId() + "_" + avatar.getOriginalFilename();
+        try {
+            fileHandleService.store(avatar, fileName);
+        } catch (IOException e) {
+            throw new NotFoundException("Không thể lưu ảnh đại diện");
+        }
+        user.setAvatar(fileName);
+        userRepository.save(user);
+        return fileName;
     }
 }

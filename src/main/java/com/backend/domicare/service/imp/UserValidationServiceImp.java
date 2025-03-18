@@ -2,7 +2,6 @@ package com.backend.domicare.service.imp;
 
 import org.springframework.stereotype.Service;
 
-import com.backend.domicare.exception.EmailAlreadyExistException;
 import com.backend.domicare.repository.UsersRepository;
 import com.backend.domicare.service.UserValidationService;
 
@@ -16,10 +15,7 @@ public class UserValidationServiceImp implements UserValidationService {
 
     @Override
     public boolean isEmailAlreadyExist(String email) {
-        if (userRepository.existsByEmail(email)) {
-            return true;
-        }
-        return false;
+        return userRepository.existsByEmail(email);
     }
     
 }

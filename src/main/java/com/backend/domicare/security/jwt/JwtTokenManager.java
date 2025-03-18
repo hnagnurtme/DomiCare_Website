@@ -63,8 +63,6 @@ public class JwtTokenManager {
 
     return this.jwtEncoder.encode(JwtEncoderParameters.from(header, claims)).getTokenValue();
     }
-
-
         public static Optional<String> getCurrentUserLogin() {
             SecurityContext context = SecurityContextHolder.getContext();
             return Optional.ofNullable(extractPrincipal(context.getAuthentication()));

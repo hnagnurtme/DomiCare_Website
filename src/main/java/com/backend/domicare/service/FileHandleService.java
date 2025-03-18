@@ -10,7 +10,7 @@ import com.backend.domicare.model.FileEntity;
 
 @Service
 public interface FileHandleService {
-    FileEntity store(MultipartFile file)  throws IOException;
+    FileEntity store(MultipartFile file , String filename)  throws IOException;
 
     Stream<FileEntity> getAllFiles();
 

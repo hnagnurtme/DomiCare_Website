@@ -7,7 +7,6 @@ import java.util.stream.Stream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -22,11 +21,9 @@ public class FileHandleServiceImp implements FileHandleService {
     private FileRepository fileRepository;
 
     @Override
-    public FileEntity store(MultipartFile file) throws IOException {
-        String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-       
-        FileEntity fileEntity = new FileEntity(fileName, file.getContentType(), file.getBytes());
+    public FileEntity store(MultipartFile file , String fileName) throws IOException {
         try {
+            FileEntity fileEntity = new FileEntity(fileName, file.getContentType(), file.getBytes());
             return fileRepository.save(fileEntity);
         } catch (Exception e) {
             throw new IOException("Could not save the file", e);
@@ -41,23 +38,15 @@ public class FileHandleServiceImp implements FileHandleService {
     @Override
     public Stream<FileEntity> getFileByName(String filename) {
         List<FileEntity> fileEntityList = fileRepository.findByName(filename);
-        if (fileEntityList != null && !fileEntityList.isEmpty()) {
-            return Stream.of(fileEntityList.get(fileEntityList.size() - 1)); 
-        } else {
-            return Stream.empty(); 
-        }
+        return fileEntityList.isEmpty() ? Stream.empty() : Stream.of(fileEntityList.get(fileEntityList.size() - 1));
     }
 
-
-   @Override
+    @Override
     public void deleteFile(String filename) {
         List<FileEntity> fileEntityList = fileRepository.findByName(filename);
-        
-        if (fileEntityList != null && !fileEntityList.isEmpty()) {
-            fileRepository.delete(fileEntityList.get(fileEntityList.size() - 1)); 
-        } else {
+        if (fileEntityList.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "File not found");
         }
+        fileRepository.delete(fileEntityList.get(fileEntityList.size() - 1));
     }
-
 }

@@ -2,6 +2,7 @@ package com.backend.domicare.service;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
@@ -27,4 +28,6 @@ public interface UserService {
     public void resetPassword(String email, String password);
 
     public Token findByRefreshTokenWithUser(String refreshToken);
+
+    public String updateUserAvatar(String id,MultipartFile  avatar);
 }

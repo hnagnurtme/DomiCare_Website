@@ -3,6 +3,7 @@ package com.backend.domicare.security.jwt;
 import java.util.Optional;
 
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.exception.EmailAlreadyExistException;
+import com.backend.domicare.exception.InvalidEmailOrPassword;
 import com.backend.domicare.exception.InvalidRefreshToken;
 import com.backend.domicare.exception.NotFoundException;
 import com.backend.domicare.exception.UnconfirmEmailException;
@@ -33,38 +35,78 @@ public class JwtTokenService {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
 
-    public LoginResponse login(LoginRequest loginRequest) {
-    String email = loginRequest.getEmail();
-    String password = loginRequest.getPassword();
+        public LoginResponse login(LoginRequest loginRequest) {
+        String email = loginRequest.getEmail();
+        String password = loginRequest.getPassword();
 
-    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
-    Authentication authentication = authenticationManager.authenticate(authenticationToken);
+        // UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email, password);
+        // Authentication authentication = authenticationManager.authenticate(authenticationToken);
+        
 
-    SecurityContextHolder.getContext().setAuthentication(authentication);
+        // SecurityContextHolder.getContext().setAuthentication(authentication);
 
-    String accessToken = jwtTokenManager.createAccessToken(authentication.getName());
-    String refreshToken = jwtTokenManager.createRefreshToken(authentication.getName());
+        // String accessToken = jwtTokenManager.createAccessToken(authentication.getName());
+        // String refreshToken = jwtTokenManager.createRefreshToken(authentication.getName());
 
-    Optional<String> emailOptional = JwtTokenManager.getCurrentUserLogin();
-    if (!emailOptional.isPresent()) {
-        throw new NotFoundException("Không tìm thấy người dùng");
+        // Optional<String> emailOptional = JwtTokenManager.getCurrentUserLogin();
+        // if (!emailOptional.isPresent()) {
+        //     throw new NotFoundException("Không tìm thấy người dùng");
+        // }
+        // String emailUser = emailOptional.get();
+        
+
+        // User user = userService.findUserByEmail(emailUser);
+        // if(user == null){
+        //     throw new NotFoundException("Không tìm thấy người dùng");
+        // }
+        // if(!user.isEmailConfirmed()){
+        //     throw new UnconfirmEmailException("Email chưa được xác nhận");
+        // }
+        // LoginResponse loginResponse = new LoginResponse();
+        // loginResponse.setAccessToken(accessToken);
+        // loginResponse.setRefreshToken(refreshToken);
+        // loginResponse.setUser(UserMapper.INSTANCE.convertToUserDTO(user));
+        // return loginResponse;
+
+
+        try {
+                // Tạo đối tượng Authentication từ email và mật khẩu
+                UsernamePasswordAuthenticationToken authenticationToken = 
+                    new UsernamePasswordAuthenticationToken(email, password);
+                
+                // Xác thực tài khoản và mật khẩu
+                Authentication authentication = authenticationManager.authenticate(authenticationToken);
+                
+                // Nếu xác thực thành công, đặt Authentication vào SecurityContext
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                String accessToken = jwtTokenManager.createAccessToken(authentication.getName());
+                String refreshToken = jwtTokenManager.createRefreshToken(authentication.getName());
+            
+                Optional<String> emailOptional = JwtTokenManager.getCurrentUserLogin();
+                if (!emailOptional.isPresent()) {
+                    throw new NotFoundException("Không tìm thấy người dùng");
+                }
+                String emailUser = emailOptional.get();
+                
+            
+                User user = userService.findUserByEmail(emailUser);
+                if(user == null){
+                    throw new NotFoundException("Không tìm thấy người dùng");
+                }
+                if(!user.isEmailConfirmed()){
+                    throw new UnconfirmEmailException("Email chưa được xác nhận");
+                }
+                LoginResponse loginResponse = new LoginResponse();
+                loginResponse.setAccessToken(accessToken);
+                loginResponse.setRefreshToken(refreshToken);
+                loginResponse.setUser(UserMapper.INSTANCE.convertToUserDTO(user));
+                return loginResponse;
+            
+            } catch (InternalAuthenticationServiceException e) {
+                throw new InvalidEmailOrPassword("Email chưa được đăng kí ");
+            } 
     }
-    String emailUser = emailOptional.get();
-    
-
-    User user = userService.findUserByEmail(emailUser);
-    if(user == null){
-        throw new NotFoundException("Không tìm thấy người dùng");
-    }
-    if(!user.isEmailConfirmed()){
-        throw new UnconfirmEmailException("Email chưa được xác nhận");
-    }
-    LoginResponse loginResponse = new LoginResponse();
-    loginResponse.setAccessToken(accessToken);
-    loginResponse.setRefreshToken(refreshToken);
-    loginResponse.setUser(UserMapper.INSTANCE.convertToUserDTO(user));
-    return loginResponse;
-}
 
     public void logout() {
         SecurityContextHolder.clearContext();

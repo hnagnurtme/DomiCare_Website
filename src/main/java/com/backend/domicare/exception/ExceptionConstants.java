@@ -31,7 +31,11 @@ public enum ExceptionConstants {
 
     EMAIL_NOT_COMFIRMED(118, "email_not_confirmed"),
 
-    BAD_CREDENTIALS(119, "bad_credentials");
+    BAD_CREDENTIALS(119, "bad_credentials"),
+
+	INVALID_EMAIL(120, "invalid_email");
+
+	
 
 
 	private final int code;

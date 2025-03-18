@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.backend.domicare.dto.response.RestResponse;
 
 @RestControllerAdvice
-public class GlobalException {
+public class GlobalExceptionHandler {
 
     
     @ExceptionHandler(NotFoundException.class)
@@ -48,6 +48,11 @@ public class GlobalException {
         return buildResponse(ExceptionConstants.BAD_CREDENTIALS, "Mật khẩu không chính xác");
     }
 
+    @ExceptionHandler(InvalidEmailOrPassword.class)
+    public ResponseEntity<RestResponse<Object>> handleInvalidEmailOrPassword(InvalidEmailOrPassword e) {
+        return buildResponse(ExceptionConstants.INVALID_EMAIL, e.getMessage());
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<RestResponse<Object>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         BindingResult result = e.getBindingResult();
@@ -72,6 +77,14 @@ public class GlobalException {
         response.setStatus(error.getCode());
         response.setError(error.getMessageName());
         response.setMessage(message);
+        if(
+            error == ExceptionConstants.INVALID_EMAIL ||
+            error == ExceptionConstants.NOT_FOUND_EMAIL ||
+            error == ExceptionConstants.EMAIL_ALREADY_EXISTS ||
+            error == ExceptionConstants.BAD_CREDENTIALS
+        )
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
+        else
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 }

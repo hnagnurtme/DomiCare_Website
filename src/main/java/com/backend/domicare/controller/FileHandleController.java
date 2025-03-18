@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,20 +34,21 @@ public class FileHandleController {
     private final FileHandleService fileHandleService;
     private final FileRepository fileRepository;
     @PostMapping("/files")
-    public ResponseEntity<Message> uploadFile(@RequestBody MultipartFile file) {
-    
-        try{
-            fileHandleService.store(file);
-            String message = "Uploaded the file successfully: " + file.getOriginalFilename();
-            return ResponseEntity.status(200).body(new Message(message));
+    public ResponseEntity<Message> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("filename") String filename) {
+        try {
+            fileHandleService.store(file, filename); 
+            String message = "Uploaded the file successfully with filename: " + filename;
+            return ResponseEntity.status(HttpStatus.OK).body(new Message(message));
+            
         } catch (IOException e) {
             System.err.println("Error uploading file: " + e.getMessage());
-            String message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-            return ResponseEntity.status(500).body(new Message(message));
+            
+            String message = "Could not upload the file: " + filename + "!";
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Message(message));
         }
     }
     
-
+    
     @GetMapping("/files")
     public ResponseEntity<FileDTOResponse> getFileByName(@RequestParam("filename") String filename) {
         Stream<FileEntity> fileEntityList = fileHandleService.getFileByName(filename);

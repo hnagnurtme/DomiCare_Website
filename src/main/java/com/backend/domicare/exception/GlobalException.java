@@ -16,35 +16,36 @@ import com.backend.domicare.dto.response.RestResponse;
 
 @RestControllerAdvice
 public class GlobalException {
+
     
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<RestResponse<Object>> handleNotFoundException(NotFoundException e) {
-        return buildResponse(HttpStatus.NOT_FOUND, e.getMessage(), "Resource not found");
+        return buildResponse(ExceptionConstants.NOT_FOUND_EMAIL, e.getMessage());
     }
 
     @ExceptionHandler(InvalidRefreshToken.class)
     public ResponseEntity<RestResponse<Object>> handleInvalidRefreshToken(InvalidRefreshToken e) {
-        return buildResponse(HttpStatus.UNAUTHORIZED, e.getMessage(), "Invalid refresh token");
+        return buildResponse(ExceptionConstants.INVALID_REFRESH_TOKEN, e.getMessage());
     }
 
     @ExceptionHandler(EmailAlreadyExistException.class)
     public ResponseEntity<RestResponse<Object>> handleEmailAlreadyExist(EmailAlreadyExistException e) {
-        return buildResponse(HttpStatus.CONFLICT, e.getMessage(), "Email already exists");
+        return buildResponse(ExceptionConstants.EMAIL_ALREADY_EXISTS, e.getMessage());
     }
 
     @ExceptionHandler(UnconfirmEmailException.class)
     public ResponseEntity<RestResponse<Object>> handleUnconfirmEmail(UnconfirmEmailException e) {
-        return buildResponse(HttpStatus.FORBIDDEN, e.getMessage(), "Email not confirmed");
+        return buildResponse(ExceptionConstants.EMAIL_NOT_COMFIRMED, e.getMessage());
     }
 
     @ExceptionHandler(DeleteAdminException.class)
     public ResponseEntity<RestResponse<Object>> handleDeleteAdminException(DeleteAdminException e) {
-        return buildResponse(HttpStatus.FORBIDDEN, e.getMessage(), "Cannot delete admin");
+        return buildResponse(ExceptionConstants.UNAUTHORIZED_ADMIN_DELETE_OTHER_ADMINS, e.getMessage());
     }
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<RestResponse<Object>> handleBadCredentials(BadCredentialsException e) {
-        return buildResponse(HttpStatus.UNAUTHORIZED, e.getMessage(), "Lỗi xác thực");
+        return buildResponse(ExceptionConstants.BAD_CREDENTIALS, "Mật khẩu không chính xác");
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -63,15 +64,14 @@ public class GlobalException {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<RestResponse<Object>> handleGenericException(Exception e) {
-        return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), "An unexpected error occurred");
+        return buildResponse(ExceptionConstants.INTERNAL_SERVER_ERROR,e.getMessage());
     }
 
-    private ResponseEntity<RestResponse<Object>> buildResponse(HttpStatus status, String error, String message) {
+    private ResponseEntity<RestResponse<Object>> buildResponse(ExceptionConstants error, String message) {
         RestResponse<Object> response = new RestResponse<>();
-        response.setStatus(status.value());
-        response.setError(error);
+        response.setStatus(error.getCode());
+        response.setError(error.getMessageName());
         response.setMessage(message);
-
-        return ResponseEntity.status(status).body(response);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 }

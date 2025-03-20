@@ -3,8 +3,6 @@ package com.backend.domicare.dto;
 import java.time.Instant;
 import java.util.Set;
 
-import com.backend.domicare.model.Role;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,5 +26,5 @@ public class UserDTO {
     private String updateBy;
     private Instant createAt;
     private Instant updateAt;
-    private Set< Role >roles;
+    private Set< RoleDTO >roles;
 }

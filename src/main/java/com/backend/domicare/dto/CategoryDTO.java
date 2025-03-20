@@ -1,5 +1,7 @@
 package com.backend.domicare.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,10 +11,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleDTO {
+public class CategoryDTO {
     private Long id;
     private String name;
-    public RoleDTO(String name) {
-        this.name = name;
-    }
+    private String description;
+    private List<ProductDTO> products;
 }

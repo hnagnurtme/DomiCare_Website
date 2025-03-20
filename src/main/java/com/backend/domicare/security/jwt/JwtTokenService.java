@@ -121,12 +121,7 @@ public class JwtTokenService {
         }
         
         UserDTO userResponse = userService.saveUser(user);
-
-        String token = jwtTokenManager.createAccessToken(user.getEmail());
-        String refreshToken = jwtTokenManager.createRefreshToken(user.getEmail());
         RegisterResponse registerResponse = UserMapper.INSTANCE.convertToRegisterResponse(userResponse);
-        registerResponse.setAccessToken(token);
-        registerResponse.setRefreshToken(refreshToken);
         return registerResponse;
     } 
     @Transactional
@@ -172,6 +167,11 @@ public class JwtTokenService {
             throw new NotFoundException("Không tìm thấy người dùng");
         }
         return user.getEmail();
+    }
+
+    public void logout(String refreshToken) {
+        userService.deleteRefreshToken(refreshToken);
+        SecurityContextHolder.clearContext();
     }
 
 }

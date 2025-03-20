@@ -93,7 +93,7 @@ public class User {
             this.createBy = "system";
         }
         this.createAt = Instant.now();
-        this.isEmailConfirmed = true;
+        this.isEmailConfirmed = false;
         this.avatar = ProjectConstants.DEFAULT_AVATAR;
     }
 

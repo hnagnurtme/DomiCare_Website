@@ -50,9 +50,7 @@ public class UserServiceImp implements UserService {
 
     private final BookingsRepository bookingRepository;
 
-
     private final ReviewsRepository reviewRepository;
-
 
     private final TokensRepository tokenRepository;
 
@@ -130,13 +128,14 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserDTO updateUserInfo(UserDTO user){
-        User oldUser = userRepository.findByEmail(user.getEmail());
-        if(oldUser == null){
-            throw new NotFoundException("Không tìm thấy ngừoi dùng cho email : " + user.getEmail());
+        Long id = user.getId();
+        boolean isExist = userRepository.existsById(id);
+        if(!isExist){
+            throw new NotFoundException("Không tìm thấy người dùng cho id : " + id);
         }
-        User userMapper= UserMapper.INSTANCE.convertToUser(user);
-        User newUser = userRepository.save(userMapper);
-        return UserMapper.INSTANCE.convertToUserDTO(newUser);
+        User userMapper = UserMapper.INSTANCE.convertToUser(user);
+        userMapper.setEmailConfirmed(true);
+        return UserMapper.INSTANCE.convertToUserDTO(userRepository.save(userMapper));
     }
     @Override
     public boolean isEmailAlreadyExist(String email){
@@ -230,5 +229,14 @@ public class UserServiceImp implements UserService {
         user.setAvatar(fileName);
         userRepository.save(user);
         return fileName;
+    }
+
+    @Override
+    public void deleteRefreshToken(String refreshToken){
+        Token token = tokenRepository.findByRefreshToken(refreshToken);
+        if(token == null){
+            throw new NotFoundException("Không tìm thấy token : " + refreshToken);
+        }
+        tokenRepository.delete(token);
     }
 }

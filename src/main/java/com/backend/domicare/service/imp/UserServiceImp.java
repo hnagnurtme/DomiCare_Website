@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.backend.domicare.dto.RoleDTO;
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.exception.DeleteAdminException;
@@ -65,7 +66,7 @@ public class UserServiceImp implements UserService {
         }
         Set<Role> roles = new HashSet<>();
         if (userDTO.getRoles() != null && !userDTO.getRoles().isEmpty()) {
-            for (Role role : userDTO.getRoles()) {
+            for (RoleDTO role : userDTO.getRoles()) {
                 Role managedRole = roleService.getRoleByName(role.getName()); 
                 roles.add(managedRole);
             }

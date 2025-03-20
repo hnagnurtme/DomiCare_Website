@@ -30,4 +30,6 @@ public interface UserService {
     public Token findByRefreshTokenWithUser(String refreshToken);
 
     public String updateUserAvatar(String id,MultipartFile  avatar);
+
+    public void deleteRefreshToken(String refreshToken);
 }

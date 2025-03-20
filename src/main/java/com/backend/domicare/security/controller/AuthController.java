@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.domicare.dto.UserDTO;
+import com.backend.domicare.dto.response.Message;
 import com.backend.domicare.security.dto.LoginRequest;
 import com.backend.domicare.security.dto.LoginResponse;
 import com.backend.domicare.security.dto.RefreshTokenRequest;
@@ -52,5 +53,12 @@ public class AuthController {
         userService.resetPassword(email, password);
 
         return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+
+    @PostMapping("/logout")
+    public ResponseEntity<Message> logout(@Valid @RequestBody RefreshTokenRequest refreshToken) {
+        authService.logout(refreshToken.getRefreshToken());
+        return ResponseEntity.status(HttpStatus.OK).body(new Message("Logout success"));
     }
 }

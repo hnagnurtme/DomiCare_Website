@@ -133,7 +133,8 @@ public class UserServiceImp implements UserService {
         if(!isExist){
             throw new NotFoundException("Không tìm thấy người dùng cho id : " + id);
         }
-        User userMapper = UserMapper.INSTANCE.convertToUser(user);
+        User userMapper = new User();
+        userMapper = UserMapper.INSTANCE.convertToUser(user);
         userMapper.setEmailConfirmed(true);
         return UserMapper.INSTANCE.convertToUserDTO(userRepository.save(userMapper));
     }

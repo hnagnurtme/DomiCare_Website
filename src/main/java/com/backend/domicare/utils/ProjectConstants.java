@@ -16,7 +16,7 @@ public final class ProjectConstants {
 
 	public static final String DEFAULT_ROLE = "ROLE_USER";
 
-	public static final String DEFAULT_AVATAR = "http://localhost:8080/files/DEFAULT";
+	public static final String DEFAULT_AVATAR = "https://res.cloudinary.com/drtizu6d3/image/upload/v1742485551/jw7da5qpbc2gip1qc2bo.jpg";
 
 	private ProjectConstants() {
 

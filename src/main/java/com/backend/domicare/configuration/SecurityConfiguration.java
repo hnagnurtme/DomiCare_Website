@@ -8,17 +8,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
-import com.backend.domicare.security.service.CustomOAuth2SuccessHandler;
-
 import lombok.RequiredArgsConstructor;
 
 
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfiguration {
-    private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
   
-   
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http

@@ -39,7 +39,7 @@ public class AuthController {
         RegisterResponse userResponse = authService.register(userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
     }
-
+  
     @PostMapping("/refresh-token")
     public ResponseEntity<RefreshTokenRespone> refreshToken(@Valid @RequestBody RefreshTokenRequest refreshToken) {
         RefreshTokenRespone token = authService.createAccessTokenFromRefreshToken(refreshToken.getRefreshToken());

@@ -22,6 +22,7 @@ import com.backend.domicare.security.dto.LoginRequest;
 import com.backend.domicare.security.dto.LoginResponse;
 import com.backend.domicare.security.dto.RefreshTokenRespone;
 import com.backend.domicare.security.dto.RegisterResponse;
+import com.backend.domicare.service.EmailSendingService;
 import com.backend.domicare.service.UserService;
 
 import jakarta.transaction.Transactional;
@@ -34,6 +35,7 @@ public class JwtTokenService {
     private final JwtTokenManager jwtTokenManager;
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
+    private final EmailSendingService emailSendingService;
 
         public LoginResponse login(LoginRequest loginRequest) {
         String email = loginRequest.getEmail();
@@ -122,6 +124,16 @@ public class JwtTokenService {
         
         UserDTO userResponse = userService.saveUser(user);
         RegisterResponse registerResponse = UserMapper.INSTANCE.convertToRegisterResponse(userResponse);
+
+
+    //     @GetMapping("/email/verify")
+    // public ResponseEntity<Object> sendEmail(@RequestParam(value = "email") String email) {
+    //     String emailToken = this.sendingEmailService.sendEmailFromTemplateSync(email, "Verify your account", "SendingOTP");
+    //     EmailConfirmTokenResponse response = new EmailConfirmTokenResponse(email,emailToken);
+    //     return ResponseEntity.status(HttpStatus.OK).body(response);
+    // }
+        String emailToken = this.emailSendingService.sendEmailFromTemplateSync(email, "Verify your account", "SendingOTP");
+
         return registerResponse;
     } 
     @Transactional

@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+
+  db:
+    container_name: db
+    image: mysql:8.0  # MySQL image version (adjust as needed)
+    restart: always
+    ports:
+      - "3306:3306"  # MySQL default port
+    environment:
+      MYSQL_DATABASE: boilerplate
+      MYSQL_ROOT_PASSWORD: rootpassword  # Update as necessary
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+
+  app:
+    container_name: app
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    environment:
+      - "MYSQL_DB_SERVER_ADDRESS=db"
+      - "MYSQL_DB_SERVER_PORT=3306"  # MySQL default port
+      - "MYSQL_USER=user"
+      - "MYSQL_PASSWORD=password"
+    depends_on:
+      - db

@@ -56,9 +56,7 @@ public class User {
 
     @Column(name = "google_id", unique = true)
     private String googleId;
-
     private String avatar;
-
     private String createBy;
     private String updateBy;
     private Instant createAt;
@@ -82,16 +80,12 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<Token> refreshTokens;  
+    private List<Token> refreshTokens;
 
     @PrePersist
     public void prePersist() {
         Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
-        if(currentUserLogin.isPresent()) {
-            this.createBy = currentUserLogin.get();
-        } else {
-            this.createBy = "system";
-        }
+        this.createBy = currentUserLogin.orElse("system");
         this.createAt = Instant.now();
         this.isEmailConfirmed = false;
         this.avatar = ProjectConstants.DEFAULT_AVATAR;
@@ -101,11 +95,7 @@ public class User {
     public void preUpdate() {
         this.updateAt = Instant.now();
         Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
-        if(currentUserLogin.isPresent()) {
-            this.updateBy = currentUserLogin.get();
-        } else {
-            this.updateBy = "system";
-        }
+        this.updateBy = currentUserLogin.orElse("system");
     }
 }
 

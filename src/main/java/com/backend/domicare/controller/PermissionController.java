@@ -1,5 +1,6 @@
 package com.backend.domicare.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,7 @@ import org.springframework.data.domain.Pageable;
 import com.backend.domicare.model.Permission;
 import com.backend.domicare.service.PermissionService;
 
-import javax.validation.Valid;
+
 import lombok.RequiredArgsConstructor;
 
 @RestController

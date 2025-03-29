@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import com.backend.domicare.dto.FileDTO;
+import com.backend.domicare.model.File;
+import com.backend.domicare.service.CloudiaryService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -28,7 +31,6 @@ import com.backend.domicare.repository.BookingsRepository;
 import com.backend.domicare.repository.ReviewsRepository;
 import com.backend.domicare.repository.TokensRepository;
 import com.backend.domicare.repository.UsersRepository;
-import com.backend.domicare.service.FileHandleService;
 import com.backend.domicare.service.RoleService;
 import com.backend.domicare.service.UserService;
 import com.backend.domicare.service.UserValidationService;
@@ -46,7 +48,7 @@ public class UserServiceImp implements UserService {
 
     private final RoleService roleService;
 
-    private final FileHandleService fileHandleService;
+    private final CloudiaryService  cloudiaryService;
 
     private final BookingsRepository bookingRepository;
 
@@ -216,20 +218,16 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public String updateUserAvatar(String id,MultipartFile  avatar){
+    public UserDTO updateUserAvatar(String id, MultipartFile  avatar){
         User user = userRepository.findUserById(Long.valueOf(id));
         if(user == null){
             throw new NotFoundException("Không tìm thấy người dùng cho id : " + id);
         }
-        String fileName = user.getId() + "_" + avatar.getOriginalFilename();
-        try {
-            fileHandleService.store(avatar, fileName);
-        } catch (IOException e) {
-            throw new NotFoundException("Không thể lưu ảnh đại diện");
-        }
-        user.setAvatar(fileName);
-        userRepository.save(user);
-        return fileName;
+        FileDTO uploadFile =  cloudiaryService.uploadFile(avatar);
+        String avatarUrl = uploadFile.getUrl();
+        user.setAvatar(avatarUrl);
+        User updatedUser = userRepository.save(user);
+        return UserMapper.INSTANCE.convertToUserDTO(updatedUser);
     }
 
     @Override

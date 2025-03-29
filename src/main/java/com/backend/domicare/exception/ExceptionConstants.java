@@ -35,8 +35,6 @@ public enum ExceptionConstants {
 
 	INVALID_EMAIL(120, "invalid_email");
 
-	
-
 
 	private final int code;
 	private final String messageName;

@@ -1,5 +1,7 @@
 package com.backend.domicare.service;
 
+import com.backend.domicare.dto.FileDTO;
+import com.backend.domicare.model.File;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.web.multipart.MultipartFile;
@@ -29,7 +31,7 @@ public interface UserService {
 
     public Token findByRefreshTokenWithUser(String refreshToken);
 
-    public String updateUserAvatar(String id,MultipartFile  avatar);
+    public UserDTO updateUserAvatar(String id, MultipartFile  avatar);
 
     public void deleteRefreshToken(String refreshToken);
 }

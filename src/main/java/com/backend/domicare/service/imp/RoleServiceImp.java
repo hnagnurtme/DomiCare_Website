@@ -6,12 +6,13 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.backend.domicare.exception.NotFoundException;
+import com.backend.domicare.model.Permission;
 import com.backend.domicare.model.Role;
 import com.backend.domicare.repository.PermissionsRepository;
 import com.backend.domicare.repository.RolesRepository;
 import com.backend.domicare.service.RoleService;
-import com.backend.domicare.exception.NotFoundException;
-import com.backend.domicare.model.Permission;
+
 import lombok.RequiredArgsConstructor;
 
 @Service

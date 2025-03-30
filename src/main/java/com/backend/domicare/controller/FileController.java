@@ -25,7 +25,7 @@ public class FileController {
 
     @PostMapping("/files")
     public ResponseEntity<?> uploadFile(@Valid @RequestBody MultipartFile file) {
-        FileDTO fileDTO = fileService.uploadFile(file, file.getOriginalFilename());
+        FileDTO fileDTO = fileService.uploadFile(file, file.getOriginalFilename(),false);
         return ResponseEntity.status(HttpStatus.CREATED).body(fileDTO);
     }
     

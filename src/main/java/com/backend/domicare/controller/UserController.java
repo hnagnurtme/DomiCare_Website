@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +17,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
+import com.backend.domicare.dto.request.UpdateUserRequest;
+import com.backend.domicare.dto.response.Message;
 import com.backend.domicare.model.User;
 import com.backend.domicare.service.UserService;
 
@@ -72,15 +73,14 @@ public class UserController {
 
 
     @PutMapping("/users")
-    public ResponseEntity<UserDTO> updateUser( @RequestBody UserDTO user) {
+    public ResponseEntity<UserDTO> updateUser(@RequestBody UpdateUserRequest user) {
         return ResponseEntity.status(HttpStatus.OK).body(this.userService.updateUser(user));
     }
 
-    @PostMapping("/users/avatar")
-    public ResponseEntity<UserDTO> updateUserAvatar(@RequestParam("id") String id, @RequestBody MultipartFile avatar) {
-        this.userService.updateUserAvatar(id, avatar);
-        return ResponseEntity.status(HttpStatus.OK).body(null);
+    @PutMapping("/users/avatar")
+    public ResponseEntity<?> updateUserAvatar(@RequestParam("id") String id, @RequestBody MultipartFile avatar) {
+        String newUrl = this.userService.updateUserAvatar(id, avatar);
+        return ResponseEntity.status(HttpStatus.OK).body(new Message(newUrl));
     }
     
-
 }

@@ -17,6 +17,7 @@ import com.backend.domicare.service.FileService;
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -26,7 +27,22 @@ public class FileServiceImp implements FileService {
     private static final Logger logger = LoggerFactory.getLogger(FileServiceImp.class);
     private final Cloudinary cloudinary;
     @Override
-    public FileDTO uploadFile(MultipartFile file,String uniqueName) {
+    @Transactional
+    public FileDTO uploadFile(MultipartFile file,String uniqueName, boolean isDuplicate) {
+        // Kiểm tra xem file đã tồn tại trong cơ sở dữ liệu chưa
+        boolean fileExists = filesRepository.existsByName(uniqueName);
+        if (fileExists ) {
+            if (isDuplicate) {
+                // Nếu cho phép trùng tên, xóa file cũ
+                File existingFile = filesRepository.findByName(uniqueName);
+                if (existingFile != null) {
+                    filesRepository.delete(existingFile);
+                }
+            } else {
+                // Nếu không cho phép trùng tên, ném ngoại lệ
+                throw new RuntimeException("File with the same name already exists");
+            }
+        }
         try {
         Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
             String url = (String) uploadResult.get("url");

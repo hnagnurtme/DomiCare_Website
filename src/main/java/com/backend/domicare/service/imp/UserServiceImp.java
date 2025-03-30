@@ -1,6 +1,5 @@
 package com.backend.domicare.service.imp;
 
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -28,7 +27,6 @@ import com.backend.domicare.repository.BookingsRepository;
 import com.backend.domicare.repository.ReviewsRepository;
 import com.backend.domicare.repository.TokensRepository;
 import com.backend.domicare.repository.UsersRepository;
-import com.backend.domicare.service.FileHandleService;
 import com.backend.domicare.service.RoleService;
 import com.backend.domicare.service.UserService;
 import com.backend.domicare.service.UserValidationService;
@@ -46,7 +44,7 @@ public class UserServiceImp implements UserService {
 
     private final RoleService roleService;
 
-    private final FileHandleService fileHandleService;
+    // private final FileHandleService fileHandleService;
 
     private final BookingsRepository bookingRepository;
 
@@ -133,10 +131,8 @@ public class UserServiceImp implements UserService {
         if(!isExist){
             throw new NotFoundException("Không tìm thấy người dùng cho id : " + id);
         }
-        User userMapper = new User();
-        userMapper = UserMapper.INSTANCE.convertToUser(user);
-        userMapper.setEmailConfirmed(true);
-        return UserMapper.INSTANCE.convertToUserDTO(userRepository.save(userMapper));
+        user.setEmailConfirmed(true);
+        return UserMapper.INSTANCE.convertToUserDTO(userRepository.save(UserMapper.INSTANCE.convertToUser(user)));
     }
     @Override
     public boolean isEmailAlreadyExist(String email){
@@ -222,11 +218,11 @@ public class UserServiceImp implements UserService {
             throw new NotFoundException("Không tìm thấy người dùng cho id : " + id);
         }
         String fileName = user.getId() + "_" + avatar.getOriginalFilename();
-        try {
-            fileHandleService.store(avatar, fileName);
-        } catch (IOException e) {
-            throw new NotFoundException("Không thể lưu ảnh đại diện");
-        }
+        // try {
+        //     fileHandleService.store(avatar, fileName);
+        // } catch (IOException e) {
+        //     throw new NotFoundException("Không thể lưu ảnh đại diện");
+        // }
         user.setAvatar(fileName);
         userRepository.save(user);
         return fileName;

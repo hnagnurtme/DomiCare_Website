@@ -35,7 +35,6 @@ public class File {
     private  Instant createdAt;
     private  Instant updatedAt;
     private String url;
-    @Column(name = "file_name", unique=true)
     private String name;
     private String type;
     private String size;

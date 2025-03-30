@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
+import com.backend.domicare.dto.request.UpdateUserRequest;
 import com.backend.domicare.model.Token;
 import com.backend.domicare.model.User;
 
@@ -23,7 +24,7 @@ public interface UserService {
     public UserDTO getUserById(Long id);
     public void deleteUserById(Long id);
 
-    public UserDTO updateUser(UserDTO user);
+    public UserDTO updateUser(UpdateUserRequest user);
 
     public void resetPassword(String email, String password);
 

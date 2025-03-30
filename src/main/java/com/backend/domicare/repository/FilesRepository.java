@@ -8,4 +8,5 @@ import com.backend.domicare.model.File;
 @Repository
 public interface FilesRepository extends JpaRepository<File, Long> {
     File findByName(String name);
+    boolean existsByName(String name);
 }

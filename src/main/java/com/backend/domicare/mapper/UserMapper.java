@@ -5,6 +5,7 @@ import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
 
 import com.backend.domicare.dto.UserDTO;
+import com.backend.domicare.dto.request.UpdateUserRequest;
 import com.backend.domicare.model.User;
 import com.backend.domicare.security.dto.RegisterResponse;
 
@@ -14,4 +15,5 @@ public interface UserMapper {
     UserDTO convertToUserDTO(User user);
     User convertToUser(UserDTO userDTO);
     RegisterResponse convertToRegisterResponse(UserDTO user);
+    UserDTO convertToUserDTO(UpdateUserRequest userRequest);
 }

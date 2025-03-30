@@ -13,9 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.backend.domicare.dto.FileDTO;
 import com.backend.domicare.dto.RoleDTO;
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
+import com.backend.domicare.dto.request.UpdateUserRequest;
 import com.backend.domicare.exception.DeleteAdminException;
 import com.backend.domicare.exception.EmailAlreadyExistException;
 import com.backend.domicare.exception.NotFoundException;
@@ -27,6 +29,7 @@ import com.backend.domicare.repository.BookingsRepository;
 import com.backend.domicare.repository.ReviewsRepository;
 import com.backend.domicare.repository.TokensRepository;
 import com.backend.domicare.repository.UsersRepository;
+import com.backend.domicare.service.FileService;
 import com.backend.domicare.service.RoleService;
 import com.backend.domicare.service.UserService;
 import com.backend.domicare.service.UserValidationService;
@@ -44,7 +47,7 @@ public class UserServiceImp implements UserService {
 
     private final RoleService roleService;
 
-    // private final FileHandleService fileHandleService;
+    private final FileService fileService;
 
     private final BookingsRepository bookingRepository;
 
@@ -179,21 +182,39 @@ public class UserServiceImp implements UserService {
 
 
     @Override
-    public UserDTO updateUser(UserDTO user){
+    public UserDTO updateUser(UpdateUserRequest userUpdate) {
+        // Chuyển đổi từ UpdateUserRequest sang UserDTO
+        UserDTO user = UserMapper.INSTANCE.convertToUserDTO(userUpdate);
+
+        // Tìm người dùng cũ trong cơ sở dữ liệu
         User oldUser = userRepository.findUserById(user.getId());
-        if(oldUser == null){
+        if (oldUser == null) {
             throw new NotFoundException("Không tìm thấy người dùng cho id : " + user.getId());
         }
-        User userMapper= UserMapper.INSTANCE.convertToUser(user);
+
+        // Giữ lại mật khẩu cũ nếu không thay đổi mật khẩu
         String password = oldUser.getPassword();
-        if(user.getPassword() == null){
-            userMapper.setPassword(password);
-        }else{
-            userMapper.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (user.getPassword() != null) {
+            // Nếu có mật khẩu mới, mã hóa và lưu mật khẩu mới
+            oldUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        } else {
+            // Nếu không có mật khẩu mới, giữ mật khẩu cũ
+            oldUser.setPassword(password);
         }
-        User newUser = userRepository.save(userMapper);
+
+        // Cập nhật các thông tin còn lại (email, phone, address, avatar)
+        oldUser.setName(user.getName());
+        oldUser.setEmail(user.getEmail());
+        oldUser.setPhone(user.getPhone());
+        oldUser.setAddress(user.getAddress());
+
+        // Lưu đối tượng người dùng đã cập nhật vào cơ sở dữ liệu
+        User newUser = userRepository.save(oldUser);
+
+        // Chuyển đối tượng User thành UserDTO và trả về
         return UserMapper.INSTANCE.convertToUserDTO(newUser);
     }
+
     
     @Override
     public void resetPassword(String email, String password){
@@ -217,13 +238,16 @@ public class UserServiceImp implements UserService {
         if(user == null){
             throw new NotFoundException("Không tìm thấy người dùng cho id : " + id);
         }
-        String fileName = user.getId() + "_" + avatar.getOriginalFilename();
-        // try {
-        //     fileHandleService.store(avatar, fileName);
-        // } catch (IOException e) {
-        //     throw new NotFoundException("Không thể lưu ảnh đại diện");
-        // }
-        user.setAvatar(fileName);
+        String fileName = user.getEmail();
+        FileDTO fileDTO = fileService.uploadFile(avatar, fileName, true);
+        if(fileDTO == null){
+            throw new NotFoundException("Không tìm thấy file cho id : " + id);
+        }
+        String url = fileDTO.getUrl();
+        if(url == null){
+            throw new NotFoundException("Không tìm thấy url cho id : " + id);
+        }
+        user.setAvatar(url);
         userRepository.save(user);
         return fileName;
     }

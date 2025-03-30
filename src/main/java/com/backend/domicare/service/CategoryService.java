@@ -1,13 +1,15 @@
 package com.backend.domicare.service;
 
-import com.backend.domicare.dto.CategoryDTO;
-import com.backend.domicare.model.Category;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
+import com.backend.domicare.dto.CategoryDTO;
+import com.backend.domicare.dto.paging.ResultPagingDTO;
+import com.backend.domicare.model.Category;
 public interface  CategoryService {
     public CategoryDTO addCategory(CategoryDTO category);
     public void deleteCategory(Long id);
+    public CategoryDTO fetchCategoryById(Long categoryId);
     public CategoryDTO updateCategory(Long id, CategoryDTO category);
-    public void addProductToCategory(Long categoryId, Long productId);
-    public void removeProductFromCategory(Long categoryId, Long productId);
-    public Category fetchCategoryById(Long categoryId);
+    public ResultPagingDTO getAllCategories(Specification<Category> spec,Pageable pageable);
 }

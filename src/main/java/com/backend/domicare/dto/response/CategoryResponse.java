@@ -1,4 +1,6 @@
-package com.backend.domicare.dto;
+package com.backend.domicare.dto.response;
+
+import com.backend.domicare.dto.ProductDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,10 +13,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class RoleDTO {
+public class CategoryResponse {
     private Long id;
     private String name;
-    public RoleDTO(String name) {
-        this.name = name;
-    }
+    private String description;
+    private ProductDTO product;
 }

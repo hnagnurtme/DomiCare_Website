@@ -3,13 +3,18 @@ package com.backend.domicare.service.imp;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.domicare.dto.ProductDTO;
+import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.dto.request.AddProductRequest;
 import com.backend.domicare.dto.request.UpdateProductRequest;
 import com.backend.domicare.exception.NotFoundException;
+import com.backend.domicare.exception.ProductNameAlreadyExists;
 import com.backend.domicare.mapper.ProductMapper;
 import com.backend.domicare.model.Category;
 import com.backend.domicare.model.Product;
@@ -38,7 +43,7 @@ public class ProductServiceImp implements ProductService {
 
         // Check if product already exists
         if (productRepository.existsByName(productDTO.getName())) {
-            throw new NotFoundException("Product already exists");
+            throw new ProductNameAlreadyExists("Product with the same name already exists");
         }
 
         // Convert DTO to entity and set category
@@ -152,5 +157,25 @@ public class ProductServiceImp implements ProductService {
         Product product = productRepository.findById(id)
             .orElseThrow(() -> new NotFoundException("Product not found"));
         return ProductMapper.INSTANCE.convertToProductDTO(product);
+    }
+
+
+    @Override
+    public ResultPagingDTO getAllProducts(Specification<Product> spec,Pageable pageable){
+    // Fetch paginated products based on specification
+        Page<Product> allProducts = this.productRepository.findAll(spec, pageable);
+        // Convert to DTO list
+        List<ProductDTO> productDTOs = ProductMapper.INSTANCE.convertToProductDTOs(allProducts.getContent());
+        // Create ResultPagingDTO object
+        ResultPagingDTO result = new ResultPagingDTO();
+        ResultPagingDTO.Meta meta = new ResultPagingDTO.Meta();
+        meta.setPage(allProducts.getNumber());
+        meta.setSize(allProducts.getSize());
+        meta.setTotal(allProducts.getTotalElements());
+        meta.setTotalPages(allProducts.getTotalPages());
+        result.setMeta(meta);
+        result.setData(productDTOs);
+        // Return the result
+        return result;
     }
 }

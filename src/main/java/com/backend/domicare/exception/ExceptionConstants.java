@@ -33,10 +33,12 @@ public enum ExceptionConstants {
 
     BAD_CREDENTIALS(119, "bad_credentials"),
 
-	INVALID_EMAIL(120, "invalid_email");
+	INVALID_EMAIL(120, "invalid_email"),
 
+	PRODUCT_NAME_ALREADY_EXISTS(121, "product_name_already_exists"),
 	
-
+	NOT_FOUND_PRODUCT_ID(122, "not_found_product_id"),
+	NOT_FOUND_CATEGORY_ID(123, "not_found_category_id");
 
 	private final int code;
 	private final String messageName;

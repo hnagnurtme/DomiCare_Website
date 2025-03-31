@@ -18,8 +18,8 @@ import com.backend.domicare.dto.response.RestResponse;
 public class GlobalExceptionHandler {
 
     
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity<RestResponse<Object>> handleNotFoundException(NotFoundException e) {
+    @ExceptionHandler(NotFoundUserException.class)
+    public ResponseEntity<RestResponse<Object>> handleNotFoundException(NotFoundUserException e) {
         return buildResponse(ExceptionConstants.NOT_FOUND_EMAIL, e.getMessage());
     }
 

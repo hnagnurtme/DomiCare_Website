@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import io.swagger.v3.oas.models.OpenAPI;
+
 @Configuration
 public class CorsConfiguration {
 
@@ -19,5 +21,14 @@ public class CorsConfiguration {
                         .allowedHeaders("*");
             }
         };
+    }
+
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI()
+                .info(new io.swagger.v3.oas.models.info.Info()
+                        .title("Domicare API")
+                        .version("1.0.0")
+                        .description("API documentation for Domicare application"));
     }
 }

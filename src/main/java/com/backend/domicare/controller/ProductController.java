@@ -122,6 +122,6 @@ public class ProductController {
     @PostMapping("/products/image/{id}")
     public ResponseEntity<?> uploadProductImage(@PathVariable Long id, @RequestBody MultipartFile image) {
         ProductDTO productDTO = this.productService.addProductImage(id, image);
-        return ResponseEntity.status(HttpStatus.OK).body(productDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(productDTO);
     }
 }

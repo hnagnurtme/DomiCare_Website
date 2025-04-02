@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.3</version>
+		<version>3.4.4</version>
 		<relativePath/> 
 	</parent>
 	<groupId>com.backend</groupId>
@@ -81,17 +81,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-			<version>2.6.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.8.0</version> 
-		</dependency>
-
-		<dependency>
 			<groupId>org.mapstruct</groupId>
 			<artifactId>mapstruct</artifactId>
 			<version>1.4.2.Final</version>
@@ -129,11 +118,6 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
-			<groupId>io.swagger.core.v3</groupId>
-			<artifactId>swagger-annotations</artifactId>
-			<version>2.1.10</version>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
@@ -162,6 +146,13 @@
 			<artifactId>cloudinary-http44</artifactId>
 			<version>1.39.0</version>
 		</dependency>
+		 <dependency>
+        <groupId>org.springdoc</groupId>
+        <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        <version>2.7.0</version>
+    </dependency>
+    <!-- Swagger Core (Đảm bảo phiên bản tương thích) -->
+	<!-- Removed duplicate dependency for io.swagger.core.v3:swagger-annotations -->
 
 	</dependencies>
 

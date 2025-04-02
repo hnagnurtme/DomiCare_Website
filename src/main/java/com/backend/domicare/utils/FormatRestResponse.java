@@ -36,6 +36,13 @@ public class FormatRestResponse implements ResponseBodyAdvice<Object> {
         if( body instanceof String){
             return body;
         }
+        else if( body instanceof RestResponse){
+            return body;
+        }
+
+        else if( body instanceof byte[]){
+            return body;
+        }
 
         else
 

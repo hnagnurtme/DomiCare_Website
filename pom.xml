@@ -147,10 +147,15 @@
 			<version>1.39.0</version>
 		</dependency>
 		 <dependency>
-        <groupId>org.springdoc</groupId>
-        <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-        <version>2.7.0</version>
-    </dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.7.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.6.9</version> <!-- Phiên bản mới nhất của Springdoc OpenAPI -->
+		</dependency>
     <!-- Swagger Core (Đảm bảo phiên bản tương thích) -->
 	<!-- Removed duplicate dependency for io.swagger.core.v3:swagger-annotations -->
 

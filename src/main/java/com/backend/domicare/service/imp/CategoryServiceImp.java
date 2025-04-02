@@ -11,7 +11,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.domicare.dto.CategoryDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
-import com.backend.domicare.exception.NotFoundException;
+import com.backend.domicare.exception.CategoryAlreadyExists;
+import com.backend.domicare.exception.CategoryNotFoundException;
 import com.backend.domicare.mapper.CategoryMapper;
 import com.backend.domicare.model.Category;
 import com.backend.domicare.repository.CategoriesRepository;
@@ -33,7 +34,7 @@ public class CategoryServiceImp implements CategoryService {
     public CategoryDTO fetchCategoryById(Long categoryId) {
         // Retrieve category, throw exception if not found
         Category category = categoryRepository.findById(categoryId)
-            .orElseThrow(() -> new NotFoundException("Category not found"));
+            .orElseThrow(() -> new CategoryNotFoundException("Category not found with ID: " + categoryId));
         return CategoryMapper.INSTANCE.convertToCategoryDTO(category);
     }
 
@@ -42,6 +43,10 @@ public class CategoryServiceImp implements CategoryService {
     public CategoryDTO addCategory(CategoryDTO categoryDTO) {
         // Convert DTO to entity and save
         Category categoryEntity = CategoryMapper.INSTANCE.convertToCategory(categoryDTO);
+        // Check if category already exists
+        if (categoryRepository.existsByName(categoryEntity.getName())) {
+            throw new CategoryAlreadyExists("Category already exists with name: " + categoryEntity.getName());
+        }
         categoryRepository.save(categoryEntity);
         return CategoryMapper.INSTANCE.convertToCategoryDTO(categoryEntity);
     }
@@ -52,11 +57,17 @@ public class CategoryServiceImp implements CategoryService {
     public void deleteCategory(Long id) {
         // Check if category exists
         Category category = categoryRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("Category not found"));
+            .orElseThrow(() -> new CategoryNotFoundException("Category not found with ID: " + id));
 
         // If category has products, delete them in batch
         if (!category.getProducts().isEmpty()) {
-            productRepository.deleteByCategoryId(id);  // Deletes all products by category ID
+            // Deletes all products associated with the category
+            List<Long> productIds = category.getProducts().stream()
+                .map(product -> product.getId())
+                .collect(Collectors.toList());
+            productRepository.deleteAllById(productIds);
+            // Alternatively, if you want to delete products by category ID:
+            // Deletes all products by category ID
         }
 
         // Delete the category
@@ -68,7 +79,7 @@ public class CategoryServiceImp implements CategoryService {
     public CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO) {
         // Find existing category
         Category existingCategory = categoryRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("Category not found"));
+            .orElseThrow(() -> new CategoryNotFoundException("Category not found with ID: " + id));
 
         // Update fields with values from DTO
         existingCategory.setName(categoryDTO.getName());
@@ -86,7 +97,7 @@ public class CategoryServiceImp implements CategoryService {
 
         // Throw exception if no categories are found
         if (categories.isEmpty()) {
-            throw new NotFoundException("No categories found");
+            throw new CategoryNotFoundException("No categories found");
         }
 
         // Map entities to DTOs

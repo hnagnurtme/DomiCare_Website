@@ -38,7 +38,12 @@ public enum ExceptionConstants {
 	PRODUCT_NAME_ALREADY_EXISTS(121, "product_name_already_exists"),
 	
 	NOT_FOUND_PRODUCT_ID(122, "not_found_product_id"),
-	NOT_FOUND_CATEGORY_ID(123, "not_found_category_id");
+
+	CATEGORY_ALREADY_EXISTS(124, "category_already_exists"),
+
+	CATEGORY_NOT_FOUND(125, "category_not_found"),
+
+	PRODUCT_NOT_IN_CATEGORY(126, "product_not_in_category");
 
 	private final int code;
 	private final String messageName;

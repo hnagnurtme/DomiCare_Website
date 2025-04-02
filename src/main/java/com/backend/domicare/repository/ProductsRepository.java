@@ -15,4 +15,5 @@ public interface ProductsRepository extends JpaRepository<Product, Long> , JpaSp
     void deleteByCategoryId(Long categoryId);
 
     boolean existsByName(String name);
+    boolean existsByNameAndCategoryId(String name, Long categoryId);
 }

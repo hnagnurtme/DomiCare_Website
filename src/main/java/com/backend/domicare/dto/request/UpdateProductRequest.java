@@ -17,6 +17,9 @@ public class UpdateProductRequest {
     @NotNull(message = "Old category ID cannot be null")
     private Long oldCategoryId;
 
+    @NotNull(message = "Old product ID cannot be null")
+    private Long oldProductId;
+
     @NotNull(message = "Product cannot be null")
     private ProductDTO updateProduct;
 }

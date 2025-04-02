@@ -2,6 +2,7 @@ package com.backend.domicare.service;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.backend.domicare.dto.ProductDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
@@ -15,4 +16,5 @@ public interface ProductService {
     public void deleteProduct(Long id);
     public ProductDTO updateProduct(UpdateProductRequest productDTO);
     public ResultPagingDTO getAllProducts(Specification<Product> spec,Pageable pageable);
+    public ProductDTO addProductImage(Long id,MultipartFile image);
 }

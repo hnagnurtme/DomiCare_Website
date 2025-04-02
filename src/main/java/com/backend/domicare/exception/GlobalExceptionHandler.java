@@ -16,7 +16,35 @@ import com.backend.domicare.dto.response.RestResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    @ExceptionHandler(ProductNotInCategory.class)
+    public ResponseEntity<RestResponse<Object>> handleProductNotInCategory(ProductNotInCategory e) {
+        return buildResponse(ExceptionConstants.PRODUCT_NOT_IN_CATEGORY, e.getMessage());
+    }
 
+    @ExceptionHandler(NotFoundCategoryException.class)
+    public ResponseEntity<RestResponse<Object>> handleNotFoundCategoryException(NotFoundCategoryException e) {
+        return buildResponse(ExceptionConstants.CATEGORY_NOT_FOUND, e.getMessage());
+    }
+
+    @ExceptionHandler(NotFoundProductException.class)
+    public ResponseEntity<RestResponse<Object>> handleNotFoundProductException(NotFoundProductException e) {
+        return buildResponse(ExceptionConstants.NOT_FOUND_PRODUCT_ID, e.getMessage());
+    }
+
+    @ExceptionHandler(ProductNameAlreadyExists.class)
+    public ResponseEntity<RestResponse<Object>> handleProductNameAlreadyExists(ProductNameAlreadyExists e) {
+        return buildResponse(ExceptionConstants.PRODUCT_NAME_ALREADY_EXISTS, e.getMessage());
+    }
+
+    @ExceptionHandler(CategoryAlreadyExists.class)
+    public ResponseEntity<RestResponse<Object>> handleCategoryAlreadyExists(CategoryAlreadyExists e) {
+        return buildResponse(ExceptionConstants.CATEGORY_ALREADY_EXISTS, e.getMessage());
+    }
+
+    @ExceptionHandler(CategoryNotFoundException.class)
+    public ResponseEntity<RestResponse<Object>> handleCategoryNotFoundException(CategoryNotFoundException e) {
+        return buildResponse(ExceptionConstants.CATEGORY_NOT_FOUND, e.getMessage());
+    }
     
     @ExceptionHandler(NotFoundUserException.class)
     public ResponseEntity<RestResponse<Object>> handleNotFoundException(NotFoundUserException e) {
@@ -81,7 +109,13 @@ public class GlobalExceptionHandler {
             error == ExceptionConstants.INVALID_EMAIL ||
             error == ExceptionConstants.NOT_FOUND_EMAIL ||
             error == ExceptionConstants.EMAIL_ALREADY_EXISTS ||
-            error == ExceptionConstants.BAD_CREDENTIALS
+            error == ExceptionConstants.BAD_CREDENTIALS ||
+            error == ExceptionConstants.INVALID_AUTHENTICATED ||
+            error == ExceptionConstants.PRODUCT_NAME_ALREADY_EXISTS ||
+            error == ExceptionConstants.NOT_FOUND_PRODUCT_ID ||
+            error == ExceptionConstants.CATEGORY_NOT_FOUND ||
+            error == ExceptionConstants.CATEGORY_ALREADY_EXISTS ||
+            error == ExceptionConstants.PRODUCT_NOT_IN_CATEGORY
         )
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
         else

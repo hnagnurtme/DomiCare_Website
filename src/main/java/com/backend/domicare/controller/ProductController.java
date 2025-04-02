@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.backend.domicare.dto.ProductDTO;
 import com.backend.domicare.dto.request.AddProductRequest;
@@ -92,5 +93,11 @@ public class ProductController {
             }
         }
         return ResponseEntity.status(HttpStatus.OK).body(this.productService.getAllProducts(spec, pageable));
+    }
+
+    @PostMapping("/products/image/{id}")
+    public ResponseEntity<?> uploadProductImage(@PathVariable Long id, @RequestBody MultipartFile image) {
+        ProductDTO productDTO = this.productService.addProductImage(id, image);
+        return ResponseEntity.status(HttpStatus.OK).body(productDTO);
     }
 }

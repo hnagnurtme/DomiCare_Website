@@ -10,5 +10,15 @@ import com.backend.domicare.model.Category;
 public interface CategoryMapper {
     CategoryMapper INSTANCE = Mappers.getMapper(CategoryMapper.class);
     Category convertToCategory(CategoryDTO categoryDTO);
-    CategoryDTO convertToCategoryDTO(Category category);
+    default CategoryDTO convertToCategoryDTO(Category category){
+        if (category == null) {
+            return null;
+        }
+        return CategoryDTO.builder()
+                .id(category.getId())
+                .name(category.getName())
+                .description(category.getDescription())
+                .products(ProductMapper.INSTANCE.convertToProductDTOs(category.getProducts()))
+                .build();
+    }
 }

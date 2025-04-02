@@ -91,7 +91,8 @@ public class JwtTokenManager {
             throw new NotFoundException(email + " không tồn tại");
         }
         String refreshToken = UUID.randomUUID().toString();  
-        Instant expiration = Instant.now().plusSeconds(86400); 
+        //Set 1 week expiration time
+        Instant expiration = Instant.now().plusSeconds(604800); // 7 days
 
         Token token = new Token();
         token.setRefreshToken(refreshToken);

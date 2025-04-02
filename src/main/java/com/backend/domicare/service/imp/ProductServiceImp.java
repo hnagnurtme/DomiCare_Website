@@ -8,18 +8,26 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.backend.domicare.dto.FileDTO;
 import com.backend.domicare.dto.ProductDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.dto.request.AddProductRequest;
 import com.backend.domicare.dto.request.UpdateProductRequest;
+import com.backend.domicare.exception.CategoryNotFoundException;
+import com.backend.domicare.exception.NotFoundCategoryException;
 import com.backend.domicare.exception.NotFoundException;
+import com.backend.domicare.exception.NotFoundProductException;
 import com.backend.domicare.exception.ProductNameAlreadyExists;
+import com.backend.domicare.exception.ProductNotInCategory;
 import com.backend.domicare.mapper.ProductMapper;
 import com.backend.domicare.model.Category;
 import com.backend.domicare.model.Product;
 import com.backend.domicare.repository.CategoriesRepository;
 import com.backend.domicare.repository.ProductsRepository;
+import com.backend.domicare.service.FileService;
 import com.backend.domicare.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
@@ -30,6 +38,7 @@ import lombok.RequiredArgsConstructor;
 public class ProductServiceImp implements ProductService {
     private final ProductsRepository productRepository;
     private final CategoriesRepository categoryRepository;
+    private final FileService fileService;
 
     @Override
     @Transactional
@@ -37,63 +46,68 @@ public class ProductServiceImp implements ProductService {
         // Extract product and category IDs from request
         Long categoryID = request.getCategoryId();
         ProductDTO productDTO = request.getProduct();
+
         // Check if category exists
         Category category = categoryRepository.findById(categoryID)
-            .orElseThrow(() -> new NotFoundException("Category not found"));
+                .orElseThrow(() -> new CategoryNotFoundException("Category not found with ID: " + categoryID));
 
-        // Check if product already exists
-        if (productRepository.existsByName(productDTO.getName())) {
-            throw new ProductNameAlreadyExists("Product with the same name already exists");
+        // Check if product with the same name already exists in the specific category
+        if (productRepository.existsByNameAndCategoryId(productDTO.getName(), categoryID)) {
+            throw new ProductNameAlreadyExists("Product with the same name already exists in this category");
         }
 
         // Convert DTO to entity and set category
         Product productEntity = ProductMapper.INSTANCE.convertToProduct(productDTO);
         productEntity.setCategory(category);
 
-        // Save category 
-        List<Product> products = category.getProducts();
-        if (products == null) {
-            products = new ArrayList<>();
-        }
-        products.add(productEntity);
-        category.setProducts(products);
-        // Save category entity
-        categoryRepository.save(category);
-
-        // Save product entity and return DTO
+        // Save product entity
         productRepository.save(productEntity);
-        
-        //
+
         // Convert saved entity back to DTO
         ProductDTO savedProductDTO = ProductMapper.INSTANCE.convertToProductDTO(productEntity);
+
         // Set category information in DTO
         savedProductDTO.setCategoryID(categoryID);
-        return  savedProductDTO;
+
+        return savedProductDTO;
     }
+
 
     @Override
     public ProductDTO updateProduct(UpdateProductRequest request) {
         // Extract product ID and category ID from request
         ProductDTO productDTO = request.getUpdateProduct();
-        Long id = productDTO.getId();
+        Long id = request.getOldProductId();
         Long newCategoryID = productDTO.getCategoryID();
         Long oldCategoryID = request.getOldCategoryId();
-    
+        if ( newCategoryID == null) {
+            newCategoryID = oldCategoryID;
+        }
+
+        // Check if category not found
+        Category oldCategory = categoryRepository.findById(oldCategoryID)
+            .orElseThrow(() -> new CategoryNotFoundException("Old Category not found"));
+        // Check if product not in old category
+
+        if (oldCategory.getProducts().stream().noneMatch(p -> p.getId().equals(id))) {
+            throw new ProductNotInCategory("Product not found in the old category");
+        }
+
+        // Check if new category not found
+        Category newCategory = categoryRepository.findById(newCategoryID)
+            .orElseThrow(() -> new CategoryNotFoundException("New Category not found"));
+
         // Find existing product or throw exception
         Product productEntity = productRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("Product not found"));
+            .orElseThrow(() -> new NotFoundProductException("Product not found"));
     
         // Check if category has changed
         if (newCategoryID != null && !newCategoryID.equals(oldCategoryID)) {
             // Find the new category and old category
-            Category newCategory = categoryRepository.findById(newCategoryID)
-                .orElseThrow(() -> new NotFoundException("New Category not found"));
-    
-            Category oldCategory = categoryRepository.findById(oldCategoryID)
-                .orElseThrow(() -> new NotFoundException("Old Category not found"));
-    
+        
             // Remove product from the old category's product list
             List<Product> oldCategoryProducts = oldCategory.getProducts();
+
             oldCategoryProducts.removeIf(p -> p.getId().equals(id));
             categoryRepository.save(oldCategory); // Save the updated old category
     
@@ -138,7 +152,7 @@ public class ProductServiceImp implements ProductService {
         // Ensure product is associated with a category
         Category category = product.getCategory();
         if (category == null) {
-            throw new NotFoundException("Product is not associated with any category");
+            throw new NotFoundCategoryException("Product does not belong to any category");
         }
 
         // Remove the product from the category's product list (if necessary)
@@ -147,7 +161,7 @@ public class ProductServiceImp implements ProductService {
             // If the product is successfully removed from the category's list, delete it
             productRepository.deleteById(id);
         } else {
-            throw new NotFoundException("Product not found in the category");
+            throw new ProductNotInCategory("Product not found in the category");
         }
     }
 
@@ -155,7 +169,7 @@ public class ProductServiceImp implements ProductService {
     public ProductDTO fetchProductById(Long id) {
         // Retrieve product by ID or throw exception
         Product product = productRepository.findById(id)
-            .orElseThrow(() -> new NotFoundException("Product not found"));
+            .orElseThrow(() -> new NotFoundProductException("Product not found"));
         return ProductMapper.INSTANCE.convertToProductDTO(product);
     }
 
@@ -177,5 +191,28 @@ public class ProductServiceImp implements ProductService {
         result.setData(productDTOs);
         // Return the result
         return result;
+    }
+
+    @Override
+    public ProductDTO addProductImage(Long id,MultipartFile image){
+        // Retrieve product by ID or throw exception
+        Product product = productRepository.findById(id)
+            .orElseThrow(() -> new NotFoundProductException("Product not found"));
+
+        // Save to cloudinary
+        FileDTO fileDTO = fileService.uploadFile(image,product.getName(), false);
+
+        // Check if file upload was successful
+        if (fileDTO == null) {
+            throw new MaxUploadSizeExceededException(0);
+        }
+
+        // Set image URL in product entity
+        product.setImage(fileDTO.getUrl());
+        // Set image public ID in product entity
+        // Save updated product entity
+        productRepository.save(product);
+        // Convert updated product entity to DTO
+        return ProductMapper.INSTANCE.convertToProductDTO(product);
     }
 }

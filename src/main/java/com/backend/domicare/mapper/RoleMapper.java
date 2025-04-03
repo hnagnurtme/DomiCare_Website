@@ -1,5 +1,7 @@
 package com.backend.domicare.mapper;
 
+import java.util.Set;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
@@ -12,5 +14,7 @@ public interface RoleMapper {
     RoleMapper INSTANCE = Mappers.getMapper(RoleMapper.class);
     Role convertToRole(RoleDTO roleDTO);
     RoleDTO convertToRoleDTO(Role role);
+    Set<RoleDTO> convertToRoleDTOSet(Set<Role> roles);
+    Set<Role> convertToRoleSet(Set<RoleDTO> roleDTOs);
     
 }

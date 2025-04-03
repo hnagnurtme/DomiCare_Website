@@ -1,5 +1,7 @@
 package com.backend.domicare.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,24 +12,25 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.backend.domicare.model.Role;
+import com.backend.domicare.dto.RoleDTO;
 import com.backend.domicare.service.RoleService;
 
-import javax.validation.Valid;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
+@Transactional
 public class RoleController {
     private final RoleService roleService;
 
     @PostMapping("/roles")
-    public ResponseEntity<Role> createRole(@Valid @RequestBody Role role) {
+    public ResponseEntity<RoleDTO> createRole(@Valid @RequestBody RoleDTO role) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.roleService.createRole(role));
     }
 
     @PutMapping("/roles")
-    public ResponseEntity<Role> updateRole(@Valid @RequestBody Role role) {
+    public ResponseEntity<RoleDTO> updateRole(@Valid @RequestBody RoleDTO role) {
         return ResponseEntity.ok(this.roleService.updateRole(role));
     }
 
@@ -44,7 +47,7 @@ public class RoleController {
 
     @GetMapping("/roles/{id}")
     public ResponseEntity<?> getRole(@Valid @PathVariable("id") Long id) {
-        Role role = this.roleService.getRoleById(id);
+        RoleDTO role = this.roleService.getRoleById(id);
         return ResponseEntity.ok(role);
     }
 }

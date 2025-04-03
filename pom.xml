@@ -158,6 +158,10 @@
 		</dependency>
     <!-- Swagger Core (Đảm bảo phiên bản tương thích) -->
 	<!-- Removed duplicate dependency for io.swagger.core.v3:swagger-annotations -->
+			<dependency>
+				<groupId>org.postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+			</dependency>
 
 	</dependencies>
 

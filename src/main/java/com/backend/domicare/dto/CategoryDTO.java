@@ -1,5 +1,6 @@
 package com.backend.domicare.dto;
 
+import java.time.Instant;
 import java.util.List;
 
 import lombok.AllArgsConstructor;
@@ -18,4 +19,9 @@ public class CategoryDTO {
     private String name;
     private String description;
     private List<ProductDTO> products;
+
+    private String createBy;
+    private String updateBy;
+    private Instant createAt;
+    private Instant updateAt;
 }

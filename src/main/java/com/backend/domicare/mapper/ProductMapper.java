@@ -23,6 +23,10 @@ public interface  ProductMapper {
                 .image(product.getImage())
                 .name(product.getName())
                 .price(product.getPrice())
+                .createAt(product.getCreateAt())
+                .createBy(product.getCreateBy())
+                .updateAt(product.getUpdateAt())
+                .updateBy(product.getUpdateBy())
                 .categoryID(product.getCategory() != null ? product.getCategory().getId() : null)
                 .build();
     }

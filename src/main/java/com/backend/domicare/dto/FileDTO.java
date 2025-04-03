@@ -1,5 +1,7 @@
 package com.backend.domicare.dto;
 
+import java.time.Instant;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,4 +17,9 @@ public class FileDTO {
     private String type;
     private String size;
     private String url;
+
+    private String createBy;
+    private String updateBy;
+    private Instant createAt;
+    private Instant updateAt;
 }

@@ -8,6 +8,7 @@ import com.backend.domicare.model.Role;
 public interface RoleService {
     public RoleDTO getRoleById(Long id) ;
     public Role getRoleByName(String name);
+    public Role getRoleEntityById(Long id);
     public boolean isRoleExistsByName(String name);
     public RoleDTO createRole(RoleDTO role);
     public RoleDTO updateRole(RoleDTO role);

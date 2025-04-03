@@ -17,11 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
+import com.backend.domicare.dto.request.UpdateRoleForUserRequest;
 import com.backend.domicare.dto.request.UpdateUserRequest;
-import com.backend.domicare.dto.response.Message;
 import com.backend.domicare.model.User;
 import com.backend.domicare.service.UserService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -74,13 +75,18 @@ public class UserController {
 
     @PutMapping("/users")
     public ResponseEntity<UserDTO> updateUser(@RequestBody UpdateUserRequest user) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.userService.updateUser(user));
+        return ResponseEntity.status(HttpStatus.OK).body(this.userService.UpdateUserInformation(user));
     }
 
     @PutMapping("/users/avatar")
     public ResponseEntity<?> updateUserAvatar(@RequestParam("id") String id, @RequestBody MultipartFile avatar) {
-        String newUrl = this.userService.updateUserAvatar(id, avatar);
-        return ResponseEntity.status(HttpStatus.OK).body(new Message(newUrl));
+        UserDTO userDTO = this.userService.updateUserAvatar(id, avatar);
+        return ResponseEntity.status(HttpStatus.OK).body(userDTO);
+    }
+
+    @PutMapping("/users/roles")
+    public ResponseEntity<UserDTO> updateRoleForUser(@Valid @RequestBody UpdateRoleForUserRequest request) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.userService.updateRoleForUser(request));
     }
     
 }

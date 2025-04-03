@@ -29,7 +29,7 @@ public class RoleServiceImp  implements RoleService {
     public RoleDTO getRoleById(Long id) {
        Optional<Role> role = roleRepository.findById(id);
        if (!role.isPresent()) {
-           throw new NotFoundRoleException( "Role not found");
+           throw new NotFoundRoleException( "Role not found for id: " + id);
        }
         return RoleMapper.INSTANCE.convertToRoleDTO(role.get());
     }
@@ -37,7 +37,7 @@ public class RoleServiceImp  implements RoleService {
     public Role getRoleByName(String name) {
         Role role = roleRepository.findByName(name);
         if(role == null) {
-            throw new NotFoundRoleException("Role not found");
+            throw new NotFoundRoleException("Role not found for name: " + name);
         }
         return role;
     }
@@ -72,7 +72,7 @@ public class RoleServiceImp  implements RoleService {
     @Override
     public RoleDTO updateRole(RoleDTO role) {
         Role oldRole = roleRepository.findById(role.getId())
-                .orElseThrow(() -> new NotFoundRoleException("Role not found"));
+                .orElseThrow(() -> new NotFoundRoleException("Role not found for id: " + role.getId()));
         if ( role.getName()!= null) {
             oldRole.setName(role.getName());
         }
@@ -80,7 +80,7 @@ public class RoleServiceImp  implements RoleService {
         if ( role.getDescription() != null) {
             oldRole.setDescription(role.getDescription());
         }
-        
+
         oldRole.setActive(role.isActive());
         
         if ( role.getCreateBy() != null) {
@@ -126,7 +126,7 @@ public class RoleServiceImp  implements RoleService {
     public void deleteRoleById(Long id) {
         Optional<Role> role = roleRepository.findById(id);
         if (!role.isPresent()) {
-            throw new NotFoundRoleException("Role not found");
+            throw new NotFoundRoleException("Role not found for id: " + id);
         }
         roleRepository.deleteById(id);
     }
@@ -135,4 +135,14 @@ public class RoleServiceImp  implements RoleService {
     public Set<RoleDTO> getRoles() {
         return RoleMapper.INSTANCE.convertToRoleDTOSet(roleRepository.findAll().stream().collect(Collectors.toSet()));
     }
+
+    @Override
+    public Role getRoleEntityById(Long id){
+        Optional<Role> role = roleRepository.findById(id);
+        if (!role.isPresent()) {
+            throw new NotFoundRoleException("Role not found for id: " + id);
+        }
+        return role.get();
+    }
+
 }

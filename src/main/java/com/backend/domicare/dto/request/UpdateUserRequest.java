@@ -1,10 +1,8 @@
 package com.backend.domicare.dto.request;
 
-import java.util.Set;
-
-import com.backend.domicare.dto.RoleDTO;
-
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,13 +11,13 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class UpdateUserRequest {
-    private String id ;
+    @NotBlank(message = "ID cannot be blank")
+    private Long id ;
     private String email;
     private String name;
     private String password;
     private String address;
     private String phone;
-
-    private Set<RoleDTO> roles;
 }

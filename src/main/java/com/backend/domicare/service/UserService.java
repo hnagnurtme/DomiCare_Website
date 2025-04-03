@@ -6,6 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
+import com.backend.domicare.dto.request.UpdateRoleForUserRequest;
 import com.backend.domicare.dto.request.UpdateUserRequest;
 import com.backend.domicare.model.Token;
 import com.backend.domicare.model.User;
@@ -18,6 +19,7 @@ public interface UserService {
     public ResultPagingDTO getAllUsers(Specification<User> spec,Pageable pageable);
     public UserDTO findUserByEmailConfirmToken(String token);
     public String createVerificationToken(String email);
+
     public UserDTO updateUserInfo(UserDTO user);
     public boolean isEmailAlreadyExist(String email);
 
@@ -30,7 +32,11 @@ public interface UserService {
 
     public Token findByRefreshTokenWithUser(String refreshToken);
 
-    public String updateUserAvatar(String id,MultipartFile  avatar);
+    public UserDTO updateUserAvatar(String id,MultipartFile  avatar);
 
     public void deleteRefreshToken(String refreshToken);
+
+    public UserDTO UpdateUserInformation(UpdateUserRequest user);
+
+    public UserDTO updateRoleForUser(UpdateRoleForUserRequest user);
 }

@@ -1,6 +1,7 @@
 package com.backend.domicare.service.imp;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -17,10 +18,12 @@ import com.backend.domicare.dto.FileDTO;
 import com.backend.domicare.dto.RoleDTO;
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
+import com.backend.domicare.dto.request.UpdateRoleForUserRequest;
 import com.backend.domicare.dto.request.UpdateUserRequest;
 import com.backend.domicare.exception.DeleteAdminException;
 import com.backend.domicare.exception.EmailAlreadyExistException;
 import com.backend.domicare.exception.NotFoundException;
+import com.backend.domicare.exception.NotFoundRoleException;
 import com.backend.domicare.exception.NotFoundUserException;
 import com.backend.domicare.mapper.UserMapper;
 import com.backend.domicare.model.Role;
@@ -28,7 +31,6 @@ import com.backend.domicare.model.Token;
 import com.backend.domicare.model.User;
 import com.backend.domicare.repository.BookingsRepository;
 import com.backend.domicare.repository.ReviewsRepository;
-import com.backend.domicare.repository.RolesRepository;
 import com.backend.domicare.repository.TokensRepository;
 import com.backend.domicare.repository.UsersRepository;
 import com.backend.domicare.service.FileService;
@@ -50,8 +52,7 @@ public class UserServiceImp implements UserService {
     private final BookingsRepository bookingRepository;
     private final ReviewsRepository reviewRepository;
     private final TokensRepository tokenRepository;
-    private final RolesRepository roleRepository;
-
+    
     @Override
     public UserDTO saveUser(UserDTO userDTO) {
         User user = UserMapper.INSTANCE.convertToUser(userDTO);
@@ -105,14 +106,14 @@ public class UserServiceImp implements UserService {
         if (user.isPresent()) {
             return UserMapper.INSTANCE.convertToUserDTO(user.get());
         }
-        throw new NotFoundException("User not found for token: " + token);
+        throw new NotFoundUserException("User not found for token: " + token);
     }
 
     @Override
     public String createVerificationToken(String email) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            throw new NotFoundException("User not found for email: " + email);
+            throw new NotFoundUserException("User not found for email: " + email);
         }
         String token = java.util.UUID.randomUUID().toString();
         user.setEmailConfirmationToken(token);
@@ -159,7 +160,7 @@ public class UserServiceImp implements UserService {
     public UserDTO getUserById(Long id) {
         User user = userRepository.findUserById(id);
         if (user == null) {
-            throw new NotFoundException("User not found for id: " + id);
+            throw new NotFoundUserException("User not found for id: " + id);
         }
         return UserMapper.INSTANCE.convertToUserDTO(user);
     }
@@ -168,7 +169,7 @@ public class UserServiceImp implements UserService {
     @Transactional
     public void deleteUserById(Long id) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("User not found for id: " + id));
+                .orElseThrow(() -> new NotFoundUserException("User not found for id: " + id));
 
         boolean isAdmin = user.getRoles().stream()
                 .anyMatch(role -> ProjectConstants.ROLE_ADMIN.equals(role.getName()));
@@ -176,7 +177,6 @@ public class UserServiceImp implements UserService {
             throw new DeleteAdminException("Cannot delete an ADMIN account");
         }
 
-        userRepository.deleteAllRolesByUserID(id);
         if (!CollectionUtils.isEmpty(user.getBookings())) {
             bookingRepository.deleteAll(user.getBookings());
         }
@@ -241,7 +241,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public String updateUserAvatar(String id, MultipartFile avatar) {
+    public UserDTO updateUserAvatar(String id, MultipartFile avatar) {
         try {
             Long userId = Long.valueOf(id);
             User user = userRepository.findUserById(userId);
@@ -255,7 +255,8 @@ public class UserServiceImp implements UserService {
             }
             user.setAvatar(fileDTO.getUrl());
             userRepository.save(user);
-            return fileName;
+            
+            return UserMapper.INSTANCE.convertToUserDTO(user);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid user id: " + id);
         }
@@ -268,5 +269,60 @@ public class UserServiceImp implements UserService {
             throw new NotFoundException("Token not found: " + refreshToken);
         }
         tokenRepository.delete(token);
+    }
+
+    @Override
+    public UserDTO UpdateUserInformation(UpdateUserRequest user){
+        Long id = user.getId();
+        User oldUser = userRepository.findUserById(id);
+        if (oldUser == null) {
+            throw new NotFoundUserException("User not found for id: " + id);
+        }
+        if (user.getPassword() != null) {
+            oldUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        if( user.getName() != null){
+            oldUser.setName(user.getName());
+        }
+        if( user.getEmail() != null){
+            oldUser.setEmail(user.getEmail());
+        }
+        if( user.getPhone() != null){
+            oldUser.setPhone(user.getPhone());
+        }
+        if( user.getAddress() != null){
+            oldUser.setAddress(user.getAddress());
+        }
+        userRepository.save(oldUser);
+    
+        return UserMapper.INSTANCE.convertToUserDTO(oldUser);
+    }
+
+    @Override
+    public UserDTO updateRoleForUser(UpdateRoleForUserRequest request){
+        Long userId = request.getUserId();
+        List<Long> roleIds = request.getRoleIds();
+        User user = userRepository.findUserById(userId);
+        if (user == null) {
+            throw new NotFoundUserException("User not found for id: " + userId);
+        }
+        if (roleIds == null || roleIds.isEmpty()) {
+            throw new NotFoundRoleException("Role not found for id: " + roleIds);
+        }
+        for (Long roleId : roleIds) {
+            Role role = roleService.getRoleEntityById(roleId);
+            if (role == null) {
+                throw new NotFoundRoleException("Role not found for id: " + roleId);
+            }
+        }
+        
+        Set<Role> roles = new HashSet<>();
+        for (Long roleId : roleIds) {
+            Role role = roleService.getRoleEntityById(roleId);
+            roles.add(role);
+        }
+        user.setRoles(roles);
+        userRepository.save(user);
+        return UserMapper.INSTANCE.convertToUserDTO(user);
     }
 }

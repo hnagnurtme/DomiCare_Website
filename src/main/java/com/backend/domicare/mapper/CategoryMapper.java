@@ -18,6 +18,10 @@ public interface CategoryMapper {
                 .id(category.getId())
                 .name(category.getName())
                 .description(category.getDescription())
+                .createAt(category.getCreateAt())
+                .createBy(category.getCreateBy())
+                .updateAt(category.getUpdateAt())
+                .updateBy(category.getUpdateBy())
                 .products(ProductMapper.INSTANCE.convertToProductDTOs(category.getProducts()))
                 .build();
     }

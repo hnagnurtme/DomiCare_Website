@@ -2,16 +2,22 @@ package com.backend.domicare.service.imp;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.backend.domicare.dto.RoleDTO;
+import com.backend.domicare.exception.NotFoundException;
+import com.backend.domicare.exception.NotFoundRoleException;
+import com.backend.domicare.exception.RoleAlreadyExists;
+import com.backend.domicare.mapper.RoleMapper;
+import com.backend.domicare.model.Permission;
 import com.backend.domicare.model.Role;
 import com.backend.domicare.repository.PermissionsRepository;
 import com.backend.domicare.repository.RolesRepository;
 import com.backend.domicare.service.RoleService;
-import com.backend.domicare.exception.NotFoundException;
-import com.backend.domicare.model.Permission;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -20,18 +26,18 @@ public class RoleServiceImp  implements RoleService {
     private final RolesRepository roleRepository;
     private final PermissionsRepository permissionsRepository;
     @Override
-    public Role getRoleById(Long id) {
+    public RoleDTO getRoleById(Long id) {
        Optional<Role> role = roleRepository.findById(id);
        if (!role.isPresent()) {
-           throw new NotFoundException( "Role not found");
+           throw new NotFoundRoleException( "Role not found");
        }
-        return role.get();
+        return RoleMapper.INSTANCE.convertToRoleDTO(role.get());
     }
     @Override
     public Role getRoleByName(String name) {
         Role role = roleRepository.findByName(name);
         if(role == null) {
-            throw new NotFoundException("Role not found");
+            throw new NotFoundRoleException("Role not found");
         }
         return role;
     }
@@ -42,9 +48,10 @@ public class RoleServiceImp  implements RoleService {
     }
 
     @Override
-    public Role createRole(Role role) {
-        if( role.getPermissions() != null){
-            List<Long> reqPermissions = role.getPermissions().stream()
+    public RoleDTO createRole(RoleDTO role) {
+        Role roleEntity = RoleMapper.INSTANCE.convertToRole(role);
+        if( roleEntity.getPermissions() != null){
+            List<Long> reqPermissions = roleEntity.getPermissions().stream()
             .map(permission -> permission.getId())
             .collect(Collectors.toList());
 
@@ -52,20 +59,54 @@ public class RoleServiceImp  implements RoleService {
             if( permissions.size() != reqPermissions.size() ) {
                 throw new NotFoundException("Some permissions not found");
             }
-            role.setPermissions(permissions);
+            roleEntity.setPermissions(permissions);
+        }
+        if( this.isRoleExistsByName(roleEntity.getName()) ) {
+            throw new RoleAlreadyExists("Role already exists");
         }
 
-        return roleRepository.save(role);
+        Role newRole = roleRepository.save(roleEntity);
+        return RoleMapper.INSTANCE.convertToRoleDTO(newRole);
     }
     
     @Override
-    public Role updateRole(Role role) {
-        Role oldRole = this.getRoleById(role.getId());
-        if( oldRole == null ) {
-            throw new NotFoundException("Role not found");
+    public RoleDTO updateRole(RoleDTO role) {
+        Role oldRole = roleRepository.findById(role.getId())
+                .orElseThrow(() -> new NotFoundRoleException("Role not found"));
+        if ( role.getName()!= null) {
+            oldRole.setName(role.getName());
         }
-        if( role.getPermissions() != null){
-            List<Long> reqPermissions = role.getPermissions().stream()
+        
+        if ( role.getDescription() != null) {
+            oldRole.setDescription(role.getDescription());
+        }
+        
+        oldRole.setActive(role.isActive());
+        
+        if ( role.getCreateBy() != null) {
+            oldRole.setCreateBy(role.getCreateBy());
+        }
+        if ( role.getUpdateBy() != null) {
+            oldRole.setUpdateBy(role.getUpdateBy());
+        }
+        if ( role.getCreateAt() != null) {
+            oldRole.setCreateAt(role.getCreateAt());
+        }
+        if ( role.getUpdateAt() != null) {
+            oldRole.setUpdateAt(role.getUpdateAt());
+        }
+        if ( role.getId() != null) {
+            oldRole.setId(role.getId());
+        }
+        if ( role.getName() != null) {
+            oldRole.setName(role.getName());
+        }
+        if ( role.getDescription() != null) {
+            oldRole.setDescription(role.getDescription());
+        }
+        Role roleUpdate = RoleMapper.INSTANCE.convertToRole(role);
+        if( roleUpdate.getPermissions() != null){
+            List<Long> reqPermissions = roleUpdate.getPermissions().stream()
             .map(permission -> permission.getId())
             .collect(Collectors.toList());
 
@@ -73,24 +114,25 @@ public class RoleServiceImp  implements RoleService {
             if( permissions.size() != reqPermissions.size() ) {
                 throw new NotFoundException("Some permissions not found");
             }
-            oldRole.setPermissions(permissions);
+            roleUpdate.setPermissions(permissions);
         }
-        oldRole.setName(role.getName());
-        oldRole.setDescription(role.getDescription());
-        return roleRepository.save(oldRole);
+
+        oldRole.setPermissions(roleUpdate.getPermissions());
+        Role updatedRole = roleRepository.save(oldRole);
+        return RoleMapper.INSTANCE.convertToRoleDTO(updatedRole);
     }
 
     @Override
     public void deleteRoleById(Long id) {
         Optional<Role> role = roleRepository.findById(id);
         if (!role.isPresent()) {
-            throw new NotFoundException("Role not found");
+            throw new NotFoundRoleException("Role not found");
         }
-        roleRepository.delete(role.get());
+        roleRepository.deleteById(id);
     }
 
     @Override
-    public List<Role> getRoles() {
-        return roleRepository.findAll();
+    public Set<RoleDTO> getRoles() {
+        return RoleMapper.INSTANCE.convertToRoleDTOSet(roleRepository.findAll().stream().collect(Collectors.toSet()));
     }
 }

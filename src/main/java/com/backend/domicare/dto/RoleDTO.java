@@ -1,5 +1,7 @@
 package com.backend.domicare.dto;
 
+import java.time.Instant;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +16,11 @@ import lombok.Setter;
 public class RoleDTO {
     private Long id;
     private String name;
-    public RoleDTO(String name) {
-        this.name = name;
-    }
+    private String description;
+    private boolean active;
+    private String createBy;
+    private String updateBy;
+    private Instant createAt;
+    private Instant updateAt;
+
 }

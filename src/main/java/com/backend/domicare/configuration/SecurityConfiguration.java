@@ -27,8 +27,8 @@ public class SecurityConfiguration {
                             .requestMatchers("/login","/register","/refresh-token","/verify-email","/oauth2/**","/forgot-password","/reset-password")
                             .permitAll()
 
-                            .requestMatchers("/users","/users/**")
-                            .hasAnyRole("ADMIN","USER")
+                            // .requestMatchers("/users","/users/**")
+                            // .hasAnyRole("ADMIN","USER")
 
                             .requestMatchers("/email")
                             .hasRole("ADMIN")
@@ -53,7 +53,7 @@ public class SecurityConfiguration {
                             //Cloudinary
                             
 
-                            .anyRequest().authenticated()
+                            .anyRequest().permitAll()
                             )
             .formLogin(formLogin -> formLogin.disable())
 

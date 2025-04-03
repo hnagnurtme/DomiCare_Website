@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -23,9 +22,8 @@ public interface UsersRepository extends JpaRepository<User, Long>, JpaSpecifica
     public Optional<User> findByEmailConfirmationToken(String emailConfirmationToken);
     public Optional<User> findByGoogleId(String googleId);
 
-    @Modifying
-    @Query(value = "DELETE FROM users_roles WHERE user_id = :userId", nativeQuery = true)
-    void deleteRolesByUserId(@Param("userId") Long userId);
+    @Query(value = "DELETE FROM users_roles WHERE user_id = :id", nativeQuery = true)
+    void deleteAllRolesByUserID(@Param("id") Long id);
 
     @Query("SELECT t FROM Token t JOIN FETCH t.user WHERE t.refreshToken = :refreshToken")
     Optional<Token> findByRefreshTokenWithUser(@Param("refreshToken") String refreshToken);

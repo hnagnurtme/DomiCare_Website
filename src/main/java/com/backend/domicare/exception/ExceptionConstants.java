@@ -15,8 +15,6 @@ public enum ExceptionConstants {
 
 	UNAUTHORIZED(113,"unauthorized"),
 
-	ROLE_ID_NOT_EXISTS( 115, "not_found_role_id"),
-
 	ADMIN_UNAUTHORIZED(114,"admin_unauthorized"),
 
 	UNAUTHORIZED_ADMIN_DELETE_OTHER_ADMINS(113,"unauthorized_admin_delete_other_admins"),
@@ -43,7 +41,11 @@ public enum ExceptionConstants {
 
 	CATEGORY_NOT_FOUND(125, "category_not_found"),
 
-	PRODUCT_NOT_IN_CATEGORY(126, "product_not_in_category");
+	PRODUCT_NOT_IN_CATEGORY(126, "product_not_in_category"),
+
+	ROLE_ALREADY_EXISTS(127, "role_already_exists"),
+
+	NOT_FOUND_ROLE(128, "not_found_role");
 
 	private final int code;
 	private final String messageName;

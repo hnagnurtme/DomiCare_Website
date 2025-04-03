@@ -24,6 +24,7 @@ import com.backend.domicare.security.dto.RefreshTokenRespone;
 import com.backend.domicare.security.dto.RegisterResponse;
 import com.backend.domicare.service.EmailSendingService;
 import com.backend.domicare.service.UserService;
+import com.backend.domicare.utils.ProjectConstants;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -121,6 +122,8 @@ public class JwtTokenService {
         if (userService.isEmailAlreadyExist(email)) {
             throw new EmailAlreadyExistException("Đã tồn tại email : " + email);
         }
+        user.setEmailConfirmed(false);
+        user.setAvatar(ProjectConstants.DEFAULT_AVATAR);
         
         UserDTO userResponse = userService.saveUser(user);
         RegisterResponse registerResponse = UserMapper.INSTANCE.convertToRegisterResponse(userResponse);

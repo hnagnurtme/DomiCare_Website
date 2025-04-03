@@ -6,7 +6,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.backend.domicare.security.jwt.JwtTokenManager;
-import com.backend.domicare.utils.ProjectConstants;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -93,8 +92,6 @@ public class User {
             this.createBy = "system";
         }
         this.createAt = Instant.now();
-        this.isEmailConfirmed = false;
-        this.avatar = ProjectConstants.DEFAULT_AVATAR;
     }
 
     @PreUpdate
@@ -107,5 +104,6 @@ public class User {
             this.updateBy = "system";
         }
     }
+
 }
 

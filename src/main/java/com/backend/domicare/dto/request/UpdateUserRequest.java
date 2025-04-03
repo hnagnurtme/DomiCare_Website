@@ -1,5 +1,9 @@
 package com.backend.domicare.dto.request;
 
+import java.util.Set;
+
+import com.backend.domicare.dto.RoleDTO;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,4 +20,6 @@ public class UpdateUserRequest {
     private String password;
     private String address;
     private String phone;
+
+    private Set<RoleDTO> roles;
 }

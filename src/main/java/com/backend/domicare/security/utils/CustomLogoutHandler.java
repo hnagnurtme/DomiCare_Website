@@ -1,6 +1,7 @@
 package com.backend.domicare.security.utils;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Component;
 
@@ -22,5 +23,12 @@ public class CustomLogoutHandler implements LogoutHandler {
             String accessToken = token.substring(7);
             jwtTokenService.logout(accessToken);
         }
+
+        // Xóa thông tin xác thực trong SecurityContext
+        if (authentication != null) {
+            authentication.setAuthenticated(false);
+        }
+        // Xóa thông tin xác thực trong SecurityContext
+        SecurityContextHolder.clearContext();
     }
 }

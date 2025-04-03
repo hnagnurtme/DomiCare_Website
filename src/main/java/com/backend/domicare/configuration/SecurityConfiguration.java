@@ -8,7 +8,9 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.backend.domicare.dto.response.Message;
 import com.backend.domicare.security.utils.CustomLogoutHandler;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -61,8 +63,20 @@ public class SecurityConfiguration {
                 .logout(logoutCustomizer -> logoutCustomizer
                         .logoutUrl("/logout")
                         .addLogoutHandler(customLogoutHandler)
-                        .logoutSuccessUrl("/users")
-
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            response.setStatus(HttpServletResponse.SC_OK); // 200 OK
+                            response.setContentType("application/json"); // Đặt kiểu nội dung là JSON
+                    
+                            // Tạo đối tượng Message
+                            Message message = new Message("Logout successful");
+                            // Chuyển đối tượng Message thành JSON và trả về
+                            ObjectMapper objectMapper = new ObjectMapper();
+                            String jsonResponse = objectMapper.writeValueAsString(message);
+                    
+                            // Gửi phản hồi JSON
+                            response.getWriter().write(jsonResponse);
+                            response.getWriter().flush();
+                        })
                 )
                 .oauth2Login(oauth2 -> oauth2
                         .loginPage("/oauth2/authorization/google")

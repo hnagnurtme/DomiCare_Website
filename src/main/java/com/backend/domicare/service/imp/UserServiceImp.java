@@ -263,15 +263,6 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public void deleteRefreshToken(String refreshToken) {
-        Token token = tokenRepository.findByRefreshToken(refreshToken);
-        if (token == null) {
-            throw new NotFoundException("Token not found: " + refreshToken);
-        }
-        tokenRepository.delete(token);
-    }
-
-    @Override
     public UserDTO UpdateUserInformation(UpdateUserRequest user){
         Long id = user.getId();
         User oldUser = userRepository.findUserById(id);
@@ -324,5 +315,17 @@ public class UserServiceImp implements UserService {
         user.setRoles(roles);
         userRepository.save(user);
         return UserMapper.INSTANCE.convertToUserDTO(user);
+    }
+
+    @Override
+    public void deleteRefreshTokenByUserId(Long id){
+        User user = userRepository.findUserById(id);
+        if (user == null) {
+            throw new NotFoundUserException("User not found for id: " + id);
+        }
+        List<Token> tokens = tokenRepository.findByUserId(id);
+        if (tokens != null && !tokens.isEmpty()) {
+            tokenRepository.deleteAll(tokens);
+        }
     }
 }

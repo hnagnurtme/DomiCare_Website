@@ -24,6 +24,7 @@ public interface UserService {
     public boolean isEmailAlreadyExist(String email);
 
     public UserDTO getUserById(Long id);
+
     public void deleteUserById(Long id);
 
     public UserDTO updateUser(UpdateUserRequest user);
@@ -34,7 +35,7 @@ public interface UserService {
 
     public UserDTO updateUserAvatar(String id,MultipartFile  avatar);
 
-    public void deleteRefreshToken(String refreshToken);
+    public void deleteRefreshTokenByUserId(Long id);
 
     public UserDTO UpdateUserInformation(UpdateUserRequest user);
 

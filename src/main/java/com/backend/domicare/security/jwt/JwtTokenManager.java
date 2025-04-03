@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 public class JwtTokenManager {
     private final JwtProperties jwtProperties;
     private final JwtEncoder jwtEncoder;
+    private final JwtDecoder jwtDecoder;
     private final UserService userService;
     private final TokensRepository tokensRepository;
     public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS256;
@@ -52,12 +54,12 @@ public class JwtTokenManager {
     Set<String> roleNames = roles.stream().map(Role::getName).collect(Collectors.toSet());
 
     JwtClaimsSet claims = JwtClaimsSet.builder()
-            .subject(email) 
+            .subject(email)
             .issuedAt(now)
             .expiresAt(expiration)
             .claim("email", email)
-            .claim("roles", roleNames) 
-            .build();       
+            .claim("roles", roleNames)
+            .build();
 
     JwsHeader header = JwsHeader.with(JWT_ALGORITHM).build();
 
@@ -76,7 +78,7 @@ public class JwtTokenManager {
         Object principal = authentication.getPrincipal();
 
         if (principal instanceof UserDetails userDetails) {
-            return userDetails.getUsername(); 
+            return userDetails.getUsername();
         } else if (principal instanceof Jwt jwt) {
             return jwt.getSubject();
         } else if (principal instanceof String string) {
@@ -90,7 +92,7 @@ public class JwtTokenManager {
         if (user == null) {
             throw new NotFoundException(email + " không tồn tại");
         }
-        String refreshToken = UUID.randomUUID().toString();  
+        String refreshToken = UUID.randomUUID().toString();
         //Set 1 week expiration time
         Instant expiration = Instant.now().plusSeconds(604800); // 7 days
 
@@ -105,7 +107,8 @@ public class JwtTokenManager {
     }
 
     public void deleteRefreshToken(String refreshToken) {
-        tokensRepository.deleteByRefreshToken(refreshToken);
+        User user = getUserFromRefreshToken(refreshToken);
+        userService.deleteRefreshTokenByUserId(user.getId());
     }
 
     public User getUserFromRefreshToken(String refreshToken) {

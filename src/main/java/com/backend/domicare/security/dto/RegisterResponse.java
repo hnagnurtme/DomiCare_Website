@@ -20,5 +20,5 @@ public class RegisterResponse {
     private String avatar;
     private Set<Role> roles;
     private boolean isEmailConfirmed;
-
+    private String emailConfirmationToken;
 }

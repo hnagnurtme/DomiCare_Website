@@ -86,11 +86,6 @@ public class SecurityConfiguration {
                             response.getWriter().flush();
                         })
                 )
-                .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/oauth2/authorization/google")
-                        .defaultSuccessUrl("/login/oauth2/success")
-                        .failureUrl("/login/oauth2/failure"))
-                        
                 .exceptionHandling(exception -> exception
                         .authenticationEntryPoint((request, response, authException) -> {
                             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");

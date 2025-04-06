@@ -36,6 +36,7 @@ public interface UserMapper {
         userDTO.name( user.getName() );
         userDTO.password( user.getPassword() );
         userDTO.phone( user.getPhone() );
+        userDTO.googleId( user.getGoogleId() );
         userDTO.roles(RoleMapper.INSTANCE.convertToRoleDTOSet(user.getRoles()));
         userDTO.updateAt( user.getUpdateAt() );
         userDTO.updateBy( user.getUpdateBy() );

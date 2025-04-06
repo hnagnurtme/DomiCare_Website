@@ -22,6 +22,7 @@ public class UserDTO {
     private String phone;
     private String address;
     private String avatar;
+    private String googleId;
     private boolean isEmailConfirmed;
     private String emailConfirmationToken;
     private String createBy;

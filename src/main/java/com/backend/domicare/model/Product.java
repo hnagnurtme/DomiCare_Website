@@ -1,6 +1,7 @@
 package com.backend.domicare.model;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 import com.backend.domicare.security.jwt.JwtTokenManager;
@@ -12,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -38,10 +40,14 @@ public class Product {
     private double price;
     private String image;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
+
+    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    private List<Review> reviews;
+    
     private String createBy;
     private String updateBy;
     private Instant createAt;
@@ -67,6 +73,17 @@ public class Product {
         } else {
             this.updateBy = "system";
         }
+    }
+
+    public Float getRatingStar() {
+        if (reviews == null || reviews.isEmpty()) {
+            return 0f;
+        }
+        float totalRating = 0;
+        for (Review review : reviews) {
+            totalRating += review.getRating();
+        }
+        return totalRating / reviews.size();
     }
 
 }

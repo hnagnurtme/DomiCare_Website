@@ -32,36 +32,40 @@ public class SecurityConfiguration {
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/files/**", "/swagger-ui.html")
                         .permitAll()
 
+                        // Auth
                         .requestMatchers("/login", "/register", "/refresh-token", "/verify-email", "/oauth2/**",
                                 "/forgot-password", "/reset-password")
                         .permitAll()
 
-                        // .requestMatchers("/users","/users/**")
-                        // .hasAnyRole("ADMIN","USER")
+                        // Users
+                        .requestMatchers("/users","/users/**").hasAnyRole("ADMIN","USER")
+                        
+                        //Email Sending
+                        .requestMatchers("/email").hasRole("ADMIN")
 
-                        .requestMatchers("/email")
-                        .hasRole("ADMIN")
-
-                        .requestMatchers("/permissions", "/permissions/**")
-                        .hasAnyRole("ADMIN", "USER")
+                        .requestMatchers("/permissions", "/permissions/**").hasAnyRole("ADMIN", "USER")
 
                         // Product CRUD operations
-                        .requestMatchers(HttpMethod.GET, "api/products", "/api/products/**")
-                        .permitAll()
+                        .requestMatchers(HttpMethod.GET, "api/products", "/api/products/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/products", "/api/products/**").hasAnyRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/products", "/api/products/**").hasAnyRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/products", "/api/products/**").hasAnyRole("ADMIN")
 
                         // Category
-                        .requestMatchers(HttpMethod.GET, "api/categories", "/api/categories/**")
-                        .permitAll()
+                        .requestMatchers(HttpMethod.GET, "api/categories", "/api/categories/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/categories", "/api/categories/**").hasAnyRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/categories", "/api/categories/**").hasAnyRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/categories", "/api/categories/**").hasAnyRole("ADMIN")
 
-                        // Cloudinary
+                        // Review
+                        .requestMatchers(HttpMethod.GET, "api/reviews", "/api/reviews/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/reviews", "/api/reviews/**").hasAnyRole("USER")
+                        .requestMatchers(HttpMethod.PUT, "/api/reviews", "/api/reviews/**").hasAnyRole("USER")
+                        .requestMatchers(HttpMethod.DELETE, "/api/reviews", "/api/reviews/**").hasAnyRole("USER")
 
+                        // Cloudinary
                         .anyRequest().permitAll())
+
                 .formLogin(formLogin -> formLogin.disable())
 
                 .logout(logoutCustomizer -> logoutCustomizer
@@ -93,8 +97,10 @@ public class SecurityConfiguration {
                         }))
                 .headers(headers -> headers
                         .frameOptions(frameOptions -> frameOptions.sameOrigin()))
-
+                
+                //Oauth2
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+                // Cấu hình session
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();

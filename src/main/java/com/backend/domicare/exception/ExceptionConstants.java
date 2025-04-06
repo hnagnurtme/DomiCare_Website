@@ -45,7 +45,9 @@ public enum ExceptionConstants {
 
 	ROLE_ALREADY_EXISTS(127, "role_already_exists"),
 
-	NOT_FOUND_ROLE(128, "not_found_role");
+	NOT_FOUND_ROLE(128, "not_found_role"),
+
+	ALREADY_REVIEWED(129, "already_reviewed");
 
 	private final int code;
 	private final String messageName;

@@ -17,6 +17,11 @@ import com.backend.domicare.dto.response.RestResponse;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(AlreadyReviewProduct.class)
+    public ResponseEntity<RestResponse<Object>> handleAlreadyReviewProduct(AlreadyReviewProduct e) {
+        return buildResponse(ExceptionConstants.ALREADY_REVIEWED, e.getMessage());
+    }
+
     @ExceptionHandler(NotFoundRoleException.class)
     public ResponseEntity<RestResponse<Object>> handleRoleNotFoundException(NotFoundRoleException e) {
         return buildResponse(ExceptionConstants.NOT_FOUND_ROLE, e.getMessage());
@@ -128,7 +133,8 @@ public class GlobalExceptionHandler {
             error == ExceptionConstants.CATEGORY_ALREADY_EXISTS ||
             error == ExceptionConstants.PRODUCT_NOT_IN_CATEGORY ||
             error == ExceptionConstants.ROLE_ALREADY_EXISTS ||
-            error == ExceptionConstants.NOT_FOUND_ROLE
+            error == ExceptionConstants.NOT_FOUND_ROLE ||
+            error == ExceptionConstants.ALREADY_REVIEWED
         )
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
         else

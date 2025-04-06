@@ -7,25 +7,22 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @Builder
-
-public class ProductDTO {
+@NoArgsConstructor
+@AllArgsConstructor
+public class  ReviewDTO {
     private Long id;
-    private String name;
-    private String description;
-    private double price;
-    private String image;
-    private Float ratingStar;
-    private Long categoryID;
+    private Integer rating;
+    private String comment;
 
-    private String createBy;
-    private String updateBy;
     private Instant createAt;
     private Instant updateAt;
+    private String createBy;
+    private String updateBy;
+    
+    private Long userId;
+    private Long productId;
+
 }

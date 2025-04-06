@@ -7,5 +7,5 @@ import com.backend.domicare.model.Review;
 
 @Repository
 public interface ReviewsRepository  extends JpaRepository<Review, Long> {
-    
+    boolean existsByProductIdAndUserId(Long productId, Long userId);
 }

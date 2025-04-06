@@ -31,6 +31,8 @@ public class CustomOAuth2SuccessHandler  {
             user.setAvatar(picture);
             user.setAddress(locale);
             user.setGoogleId(subId);
+            user.setEmailConfirmed(true);
+            user.setEmailConfirmationToken(null);
             userRepository.save(user);
         } else {
             // Cập nhật thông tin người dùng nếu đã tồn tại

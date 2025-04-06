@@ -125,10 +125,22 @@ public class ProductServiceImp implements ProductService {
         }
     
         // Update product information from DTO
-        productEntity.setName(productDTO.getName());
-        productEntity.setDescription(productDTO.getDescription());
-        productEntity.setPrice(productDTO.getPrice());
-        productEntity.setImage(productDTO.getImage());
+
+        if ( productDTO.getName() != null) {
+            productEntity.setName(productDTO.getName());
+        }
+        if (productDTO.getDescription() != null) {
+            productEntity.setDescription(productDTO.getDescription());
+        }
+        if (productDTO.getPrice() > 0) {
+            productEntity.setPrice(productDTO.getPrice());
+        }
+        if (productDTO.getImage() != null) {
+            productEntity.setImage(productDTO.getImage());
+        }
+        if (productDTO.getDiscount() != null) {
+            productEntity.setDiscount(productDTO.getDiscount());
+        }
     
         // Save the updated product and return DTO
         productRepository.save(productEntity);
@@ -183,7 +195,7 @@ public class ProductServiceImp implements ProductService {
         // Create ResultPagingDTO object
         ResultPagingDTO result = new ResultPagingDTO();
         ResultPagingDTO.Meta meta = new ResultPagingDTO.Meta();
-        meta.setPage(allProducts.getNumber());
+        meta.setPage(allProducts.getNumber()+ 1);
         meta.setSize(allProducts.getSize());
         meta.setTotal(allProducts.getTotalElements());
         meta.setTotalPages(allProducts.getTotalPages());

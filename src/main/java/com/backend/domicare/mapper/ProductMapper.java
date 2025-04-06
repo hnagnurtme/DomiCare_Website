@@ -24,6 +24,7 @@ public interface  ProductMapper {
                 .name(product.getName())
                 .price(product.getPrice())
                 .ratingStar(product.getRatingStar())
+                .discount(product.getDiscount())
                 .createAt(product.getCreateAt())
                 .createBy(product.getCreateBy())
                 .updateAt(product.getUpdateAt())

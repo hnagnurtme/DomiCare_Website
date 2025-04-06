@@ -22,6 +22,7 @@ public class ProductDTO {
     private double price;
     private String image;
     private Float ratingStar;
+    private Double discount;
     private Long categoryID;
 
     private String createBy;

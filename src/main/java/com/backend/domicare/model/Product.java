@@ -38,6 +38,7 @@ public class Product {
     private String name;
     private String description;
     private double price;
+    private double discount;
     private String image;
 
     @ManyToOne(fetch = FetchType.LAZY)

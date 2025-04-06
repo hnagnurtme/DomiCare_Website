@@ -1,9 +1,9 @@
 package com.backend.domicare.controller;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +21,7 @@ import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.dto.response.Message;
 import com.backend.domicare.model.Category;
 import com.backend.domicare.service.CategoryService;
+import com.turkraft.springfilter.boot.Filter;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -68,30 +69,18 @@ public class CategoryController {
     //
     @GetMapping("/categories")
     public ResponseEntity<ResultPagingDTO> getCategories(
-        @RequestParam(required = false) String search,
-        @PageableDefault(page = 0, size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable
-    ) {
-    Specification<Category> spec = Specification.where(null);
+        @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false, defaultValue = "asc") String sortDirection,
+            @Filter Specification<Category> spec, Pageable pageable) {
 
-    if (search != null && !search.isBlank()) {
-        String[] criteria = search.split(",");
-
-        for (String criterion : criteria) {
-            String[] parts = criterion.split(":|<|>");
-
-            if (parts.length == 2) {
-                String key = parts[0];
-                String value = parts[1];
-
-                if (criterion.contains(":")) {
-                    spec = spec.and((root, query, cb) -> cb.like(root.get(key), "%" + value + "%"));
-                } else if (criterion.contains(">")) {
-                    spec = spec.and((root, query, cb) -> cb.greaterThanOrEqualTo(root.get(key), value));
-                } else if (criterion.contains("<")) {
-                    spec = spec.and((root, query, cb) -> cb.lessThanOrEqualTo(root.get(key), value));
-                }
-            }
-        }
+        if (sortBy != null && !sortBy.isEmpty()) {
+        // Xử lý sắp xếp theo tham số sortBy và sortDirection
+        Sort sort = Sort.by(sortDirection.equalsIgnoreCase("desc") ? Sort.Order.desc(sortBy) : Sort.Order.asc(sortBy));
+        pageable = PageRequest.of(page - 1, size, sort);  // Cập nhật pageable với sort
+    } else {
+        pageable = PageRequest.of(page - 1, size);  // Không có sắp xếp, chỉ phân trang
     }
         return ResponseEntity.status(HttpStatus.OK).body(this.categoryService.getAllCategories(spec, pageable));
     }

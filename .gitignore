@@ -38,3 +38,4 @@ build/
 # Local configuration files (specific to environment)
 src/main/resources/application-cloud.properties
 src/main/resources/application-local.properties
+

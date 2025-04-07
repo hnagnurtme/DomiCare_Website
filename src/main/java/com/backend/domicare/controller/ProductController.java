@@ -66,19 +66,34 @@ public class ProductController {
     // Fetch all products with pagination and sorting
     @GetMapping("/products")
     public ResponseEntity<?> getAllProducts(
+            @RequestParam(defaultValue = "0") Long categoryId,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sortDirection,
+            @RequestParam(required = false, defaultValue = "false") Boolean sortByStar,
+            @RequestParam(required = false, defaultValue = "false") Boolean isAcsending,
             @Filter Specification<Product> spec, Pageable pageable) {
 
         if (sortBy != null && !sortBy.isEmpty()) {
-        // Xử lý sắp xếp theo tham số sortBy và sortDirection
-        Sort sort = Sort.by(sortDirection.equalsIgnoreCase("desc") ? Sort.Order.desc(sortBy) : Sort.Order.asc(sortBy));
-        pageable = PageRequest.of(page - 1, size, sort);  // Cập nhật pageable với sort
-    } else {
-        pageable = PageRequest.of(page - 1, size);  // Không có sắp xếp, chỉ phân trang
-    }
+            // Xử lý sắp xếp theo tham số sortBy và sortDirection
+            Sort sort = Sort
+                    .by(sortDirection.equalsIgnoreCase("desc") ? Sort.Order.desc(sortBy) : Sort.Order.asc(sortBy));
+            pageable = PageRequest.of(page - 1, size, sort); // Cập nhật pageable với sort
+        } else {
+            pageable = PageRequest.of(page - 1, size); // Không có sắp xếp, chỉ phân trang
+        }
+
+        // Nếu có sortByStar, sử dụng phương thức sortProductByStar
+        if (sortByStar != null && sortByStar) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(productService.sortProductByStar(spec, pageable, sortByStar, isAcsending));
+        }
+        // Nếu có categoryId, sử dụng phương thức getAllProductsInCategory
+        if (categoryId > 0) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(productService.getAllProductsInCategory(spec, pageable, (long) categoryId));
+        }
         // Use the specification and pageable to fetch products
         return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProducts(spec, pageable));
     }

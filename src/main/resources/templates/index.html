@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messenger</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+</head>
+<body>
+    <h2>Messenger App</h2>
+    <div id="chat-box" style="width: 300px; height: 300px; border: 1px solid black; overflow: auto;"></div>
+    <input type="text" id="message" placeholder="Enter message" style="width: 200px;">
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        var userId = prompt("Enter your User ID:");  // Lấy ID người dùng
+        var receiverId = prompt("Enter the receiver's User ID:");  // Lấy ID người nhận
+
+        // Kết nối tới WebSocket
+        var socket = new SockJS('https://localhost:8443/ws');
+        var stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, function (frame) {
+            console.log('Connected: ' + frame);
+
+            // Đăng ký theo dõi tin nhắn chỉ cho người nhận
+            stompClient.subscribe('/user/' + receiverId + '/queue/messages', function (message) {
+                var chatBox = document.getElementById("chat-box");
+                var messageElement = document.createElement("div");
+                messageElement.textContent = 'Receiver: ' + message.body; // Tin nhắn từ người nhận
+                chatBox.appendChild(messageElement);
+            });
+        });
+
+        // Hàm gửi tin nhắn
+        function sendMessage() {
+            var message = document.getElementById("message").value;
+
+            // Hiển thị tin nhắn đã gửi ngay lập tức
+            var chatBox = document.getElementById("chat-box");
+            var messageElement = document.createElement("div");
+            messageElement.textContent = 'You: ' + message;  // Tin nhắn đã gửi
+            chatBox.appendChild(messageElement);
+
+            // Gửi tin nhắn đến người nhận
+            stompClient.send("/app/chat/" + receiverId, {}, message);  
+            document.getElementById("message").value = ''; // Xóa ô nhập sau khi gửi
+        }
+    </script>
+</body>
+</html>

@@ -41,4 +41,6 @@ public interface UserService {
 
     public UserDTO updateRoleForUser(UpdateRoleForUserRequest user);
 
+
+
 }

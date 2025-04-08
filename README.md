@@ -50,19 +50,12 @@ DomiCare là một nền tảng web chuyên cung cấp dịch vụ dọn dẹp v
 - **React Router**: Định tuyến các trang trong ứng dụng React.
 
 ## Kết quả ban đầu
-- **Triển khai giao diện**: [DomiCare Frontend](https://domicare-frontend.vercel.app/)
- ### Login Page
- ![Login Page](https://github.com/user-attachments/assets/95a231c9-1b09-4e98-80d1-8ede7da9c198)
- 
- ### Signup Page
- ![Signup Page](https://github.com/user-attachments/assets/45dd4d0a-73ee-4b99-8a6c-b98313311787)
- 
- ### Homepage
- ![Homepage](https://github.com/user-attachments/assets/ca54c76a-223f-4f3f-9de1-fde5788aa2f6)
- 
- ### Service Dashboard
- ![Service Dashboard](https://github.com/user-attachments/assets/23343f70-32cc-4426-8f8c-871648849954)
- 
+- **Triển khai giao diện**: DomiCare Frontend
+
+    - **Login Page**:
+    - **Signup Page**:
+    - **Homepage**:
+    - **Service Dashboard**:
 
 ## Cấu hình dự án
 

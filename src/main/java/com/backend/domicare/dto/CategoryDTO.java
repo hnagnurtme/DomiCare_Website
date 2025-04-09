@@ -19,6 +19,7 @@ public class CategoryDTO {
     private String name;
     private String description;
     private List<ProductDTO> products;
+    private String image;
 
     private String createBy;
     private String updateBy;

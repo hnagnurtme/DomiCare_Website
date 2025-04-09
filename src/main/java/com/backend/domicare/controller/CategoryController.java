@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.domicare.dto.CategoryDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
+import com.backend.domicare.dto.request.AddCategoryRequest;
 import com.backend.domicare.dto.response.Message;
 import com.backend.domicare.model.Category;
 import com.backend.domicare.service.CategoryService;
@@ -36,7 +37,7 @@ public class CategoryController {
 
     //Add category
     @PostMapping("/categories")
-    public ResponseEntity<?> createCategory (@Valid @RequestBody CategoryDTO categoryDTO) {
+    public ResponseEntity<?> createCategory (@Valid @RequestBody AddCategoryRequest categoryDTO) {
         CategoryDTO category = categoryService.addCategory(categoryDTO);
         return  ResponseEntity.status(HttpStatus.CREATED).body(category);
     }

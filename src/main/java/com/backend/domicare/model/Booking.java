@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.backend.domicare.security.jwt.JwtTokenManager;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -63,9 +64,11 @@ public class Booking {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user;
 
     @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private Payment payment;
 
     @PrePersist

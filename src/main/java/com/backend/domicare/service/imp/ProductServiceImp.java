@@ -8,26 +8,27 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.backend.domicare.dto.FileDTO;
 import com.backend.domicare.dto.ProductDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
+import com.backend.domicare.dto.request.AddProductImageRequest;
 import com.backend.domicare.dto.request.AddProductRequest;
 import com.backend.domicare.dto.request.UpdateProductRequest;
 import com.backend.domicare.exception.CategoryNotFoundException;
 import com.backend.domicare.exception.NotFoundCategoryException;
 import com.backend.domicare.exception.NotFoundException;
+import com.backend.domicare.exception.NotFoundFileException;
 import com.backend.domicare.exception.NotFoundProductException;
 import com.backend.domicare.exception.ProductNameAlreadyExists;
 import com.backend.domicare.exception.ProductNotInCategory;
+import com.backend.domicare.exception.UrlAlreadyExistsException;
 import com.backend.domicare.mapper.ProductMapper;
 import com.backend.domicare.model.Category;
+import com.backend.domicare.model.File;
 import com.backend.domicare.model.Product;
 import com.backend.domicare.repository.CategoriesRepository;
+import com.backend.domicare.repository.FilesRepository;
 import com.backend.domicare.repository.ProductsRepository;
-import com.backend.domicare.service.FileService;
 import com.backend.domicare.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,7 @@ import lombok.RequiredArgsConstructor;
 public class ProductServiceImp implements ProductService {
     private final ProductsRepository productRepository;
     private final CategoriesRepository categoryRepository;
-    private final FileService fileService;
+    private final FilesRepository fileRepository;
 
     @Override
     @Transactional
@@ -47,6 +48,9 @@ public class ProductServiceImp implements ProductService {
         Long categoryID = request.getCategoryId();
         ProductDTO productDTO = request.getProduct();
 
+        Long mainImageId = request.getMainImageId();
+        List<Long> landingImageIds = request.getLandingImageIds();
+        
         // Check if category exists
         Category category = categoryRepository.findById(categoryID)
                 .orElseThrow(() -> new CategoryNotFoundException("Category not found with ID: " + categoryID));
@@ -56,6 +60,22 @@ public class ProductServiceImp implements ProductService {
             throw new ProductNameAlreadyExists("Product with the same name already exists in this category");
         }
 
+        // Check if the image is already associated with the product
+        if(mainImageId != null){
+            File mainImage = fileRepository.findById(mainImageId)
+                .orElseThrow(() -> new NotFoundFileException("Main image not found"));
+            productDTO.setImage(mainImage.getUrl());
+        }
+        if (landingImageIds != null) {
+            List<String> landingImages = new ArrayList<>();
+            for (Long imageId : landingImageIds) {
+                File landingImage = fileRepository.findById(imageId)
+                    .orElseThrow(() -> new NotFoundFileException("Landing image not found"));
+                landingImages.add(landingImage.getUrl());
+            }
+            productDTO.setLandingImages(landingImages);
+        }
+    
         // Convert DTO to entity and set category
         Product productEntity = ProductMapper.INSTANCE.convertToProduct(productDTO);
         productEntity.setCategory(category);
@@ -206,25 +226,35 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public ProductDTO addProductImage(Long id,MultipartFile image){
+    public ProductDTO addProductImage(AddProductImageRequest addProductImageRequest){
+        // Extract product ID and image from request
+        Long productId = addProductImageRequest.getProductId();
+        Long imageId = addProductImageRequest.getImageId();
+        Boolean isMainImage = addProductImageRequest.getIsMainImage();
         // Retrieve product by ID or throw exception
-        Product product = productRepository.findById(id)
+        Product product = productRepository.findById(productId)
             .orElseThrow(() -> new NotFoundProductException("Product not found"));
-
-        // Save to cloudinary
-        FileDTO fileDTO = fileService.uploadFile(image,product.getName(), false);
-
-        // Check if file upload was successful
-        if (fileDTO == null) {
-            throw new MaxUploadSizeExceededException(0);
+        //
+        // Retrieve image by ID or throw exception
+        File image = fileRepository.findById(imageId)
+            .orElseThrow(() -> new NotFoundFileException("Image not found"));
+        if( isMainImage){
+            product.setImage(image.getUrl());
         }
-
-        // Set image URL in product entity
-        product.setImage(fileDTO.getUrl());
-        // Set image public ID in product entity
-        // Save updated product entity
+        else{
+            // Check if the image is already associated with the product
+            if (product.getLandingImages() == null) {
+                product.setLandingImages(new ArrayList<>());
+            }
+            if (!product.getLandingImages().contains(image.getUrl())) {
+                product.getLandingImages().add(image.getUrl());
+            } else {
+                throw new UrlAlreadyExistsException("Image already exists in the product's landing images");
+            }
+        }
+        // Check if the image is already associated with the product
         productRepository.save(product);
-        // Convert updated product entity to DTO
+        
         return ProductMapper.INSTANCE.convertToProductDTO(product);
     }
 

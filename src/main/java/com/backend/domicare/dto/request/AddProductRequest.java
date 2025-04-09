@@ -1,5 +1,7 @@
 package com.backend.domicare.dto.request;
 
+import java.util.List;
+
 import com.backend.domicare.dto.ProductDTO;
 
 import lombok.AllArgsConstructor;
@@ -14,4 +16,6 @@ import lombok.Setter;
 public class AddProductRequest {
     private Long categoryId;
     private ProductDTO product;
+    private Long mainImageId;
+    private List<Long> landingImageIds;
 }

@@ -18,6 +18,7 @@ public interface CategoryMapper {
                 .id(category.getId())
                 .name(category.getName())
                 .description(category.getDescription())
+                .image(category.getImage())
                 .createAt(category.getCreateAt())
                 .createBy(category.getCreateBy())
                 .updateAt(category.getUpdateAt())

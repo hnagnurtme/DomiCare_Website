@@ -11,11 +11,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.domicare.dto.CategoryDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
+import com.backend.domicare.dto.request.AddCategoryRequest;
 import com.backend.domicare.exception.CategoryAlreadyExists;
 import com.backend.domicare.exception.CategoryNotFoundException;
+import com.backend.domicare.exception.NotFoundFileException;
 import com.backend.domicare.mapper.CategoryMapper;
 import com.backend.domicare.model.Category;
+import com.backend.domicare.model.File;
 import com.backend.domicare.repository.CategoriesRepository;
+import com.backend.domicare.repository.FilesRepository;
 import com.backend.domicare.repository.ProductsRepository;
 import com.backend.domicare.service.CategoryService;
 
@@ -28,6 +32,7 @@ public class CategoryServiceImp implements CategoryService {
 
     private final CategoriesRepository categoryRepository;
     private final ProductsRepository productRepository;
+    private final FilesRepository fileRepository;
 
     // Fetch category by ID
     @Override
@@ -40,12 +45,21 @@ public class CategoryServiceImp implements CategoryService {
 
     // Add a new category
     @Override
-    public CategoryDTO addCategory(CategoryDTO categoryDTO) {
+    public CategoryDTO addCategory(AddCategoryRequest request){
+        // Convert request to DTO
+        CategoryDTO categoryDTO =  request.getCategory();
+        Long imageId = request.getImageId();
         // Convert DTO to entity and save
         Category categoryEntity = CategoryMapper.INSTANCE.convertToCategory(categoryDTO);
         // Check if category already exists
         if (categoryRepository.existsByName(categoryEntity.getName())) {
             throw new CategoryAlreadyExists("Category already exists with name: " + categoryEntity.getName());
+        }
+        // If image ID is provided, set it in the category entity
+        if (imageId != null) {
+            File image = this.fileRepository.findById(imageId)
+                .orElseThrow(() -> new NotFoundFileException("Image not found with ID: " + imageId));
+            categoryEntity.setImage(image.getUrl());
         }
         categoryRepository.save(categoryEntity);
         return CategoryMapper.INSTANCE.convertToCategoryDTO(categoryEntity);

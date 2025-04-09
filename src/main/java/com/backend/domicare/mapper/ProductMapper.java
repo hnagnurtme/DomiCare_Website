@@ -25,10 +25,13 @@ public interface  ProductMapper {
                 .price(product.getPrice())
                 .ratingStar(product.getRatingStar())
                 .discount(product.getDiscount())
+                .priceAfterDiscount(product.getPrice() - (product.getPrice() * product.getDiscount() / 100))
+                .landingImages(product.getLandingImages())
                 .createAt(product.getCreateAt())
                 .createBy(product.getCreateBy())
                 .updateAt(product.getUpdateAt())
                 .updateBy(product.getUpdateBy())
+                .reviewDTOs(product.getReviews() != null ? ReviewMapper.INSTANCE.convertToReviewDTOs(product.getReviews()) : null)
                 .categoryID(product.getCategory() != null ? product.getCategory().getId() : null)
                 .build();
     }

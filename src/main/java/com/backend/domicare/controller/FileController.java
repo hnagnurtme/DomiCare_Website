@@ -2,6 +2,7 @@ package com.backend.domicare.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.backend.domicare.dto.FileDTO;
+import com.backend.domicare.dto.response.Message;
 import com.backend.domicare.service.FileService;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
@@ -39,6 +41,18 @@ public class FileController {
     public ResponseEntity<?> fetchFileByName(@RequestParam String name) {
         FileDTO fileDTO = fileService.fetchFileByName(name);
         return ResponseEntity.status(HttpStatus.OK).body(fileDTO);
+    }
+
+    @GetMapping("/files/all")
+    public ResponseEntity<?> fetchAllFiles() {
+        return ResponseEntity.status(HttpStatus.OK).body(fileService.fetchAllFiles());
+    }
+
+    @DeleteMapping("/files/{id}")
+    public ResponseEntity<?> deleteFile(@PathVariable Long id) {
+        fileService.deleteFile(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .body(new Message("File deleted successfully"));
     }
 
 }

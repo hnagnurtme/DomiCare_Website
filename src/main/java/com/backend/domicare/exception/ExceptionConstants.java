@@ -10,8 +10,8 @@ public enum ExceptionConstants {
 	INVALID_SYNTAX(104, "invalid_syntax"),
 
 	EMAIL_ALREADY_EXISTS(108, "email_already_exists"),
-
-	USER_ID_NOT_EXISTS( 112, "not_found_user_id"),
+	
+	NOT_FOUND_FILE(109, "not_found_file"),
 
 	UNAUTHORIZED(113,"unauthorized"),
 
@@ -47,7 +47,9 @@ public enum ExceptionConstants {
 
 	NOT_FOUND_ROLE(128, "not_found_role"),
 
-	ALREADY_REVIEWED(129, "already_reviewed");
+	ALREADY_REVIEWED(129, "already_reviewed"),
+
+	URL_ALREADY_EXISTS(130, "url_already_exists");
 
 	private final int code;
 	private final String messageName;

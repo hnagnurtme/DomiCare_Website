@@ -2,10 +2,10 @@ package com.backend.domicare.service;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.backend.domicare.dto.ProductDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
+import com.backend.domicare.dto.request.AddProductImageRequest;
 import com.backend.domicare.dto.request.AddProductRequest;
 import com.backend.domicare.dto.request.UpdateProductRequest;
 import com.backend.domicare.model.Product;
@@ -16,7 +16,7 @@ public interface ProductService {
     public void deleteProduct(Long id);
     public ProductDTO updateProduct(UpdateProductRequest productDTO);
     public ResultPagingDTO getAllProducts(Specification<Product> spec,Pageable pageable);
-    public ProductDTO addProductImage(Long id,MultipartFile image);
+    public ProductDTO addProductImage(AddProductImageRequest addProductImageRequest);
     public ResultPagingDTO getAllProductsInCategory(Specification<Product> spec,Pageable pageable, Long categoryId);
     public ResultPagingDTO sortProductByStar(Specification<Product> spec,Pageable pageable, Boolean sortByStar, Boolean isAcs);
 }

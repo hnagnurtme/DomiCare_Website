@@ -1,6 +1,7 @@
 package com.backend.domicare.dto;
 
 import java.time.Instant;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,8 +24,11 @@ public class ProductDTO {
     private String image;
     private Float ratingStar;
     private Double discount;
+    private Double priceAfterDiscount;
+    private List<String> landingImages;
     private Long categoryID;
 
+    private List<ReviewDTO> reviewDTOs;
     private String createBy;
     private String updateBy;
     private Instant createAt;

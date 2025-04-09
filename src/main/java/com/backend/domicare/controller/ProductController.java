@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.backend.domicare.dto.ProductDTO;
+import com.backend.domicare.dto.request.AddProductImageRequest;
 import com.backend.domicare.dto.request.AddProductRequest;
 import com.backend.domicare.dto.request.UpdateProductRequest;
 import com.backend.domicare.dto.response.Message;
@@ -71,10 +71,21 @@ public class ProductController {
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sortDirection,
-            @RequestParam(required = false, defaultValue = "false") Boolean sortByStar,
-            @RequestParam(required = false, defaultValue = "false") Boolean isAcsending,
             @Filter Specification<Product> spec, Pageable pageable) {
 
+        
+        // Nếu có sortByStar, sử dụng phương thức sortProductByStar
+        if (sortBy != null && sortBy.equals("ratingStar")) {
+            Boolean sortByStar = true;
+            Boolean isAcsending = true;
+            if (sortDirection.equalsIgnoreCase("asc")) {
+                isAcsending = true;
+            } else if (sortDirection.equalsIgnoreCase("desc")) {
+                isAcsending = false;
+            }
+            return ResponseEntity.status(HttpStatus.OK)
+                .body(productService.sortProductByStar(spec, pageable, sortByStar, isAcsending));
+        }
         if (sortBy != null && !sortBy.isEmpty()) {
             // Xử lý sắp xếp theo tham số sortBy và sortDirection
             Sort sort = Sort
@@ -84,11 +95,7 @@ public class ProductController {
             pageable = PageRequest.of(page - 1, size); // Không có sắp xếp, chỉ phân trang
         }
 
-        // Nếu có sortByStar, sử dụng phương thức sortProductByStar
-        if (sortByStar != null && sortByStar) {
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(productService.sortProductByStar(spec, pageable, sortByStar, isAcsending));
-        }
+        
         // Nếu có categoryId, sử dụng phương thức getAllProductsInCategory
         if (categoryId > 0) {
             return ResponseEntity.status(HttpStatus.OK)
@@ -98,9 +105,9 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProducts(spec, pageable));
     }
 
-    @PostMapping("/products/image/{id}")
-    public ResponseEntity<?> uploadProductImage(@PathVariable Long id, @RequestBody MultipartFile image) {
-        ProductDTO productDTO = this.productService.addProductImage(id, image);
+    @PutMapping("/products/images")
+    public ResponseEntity<?> uploadProductImage(@RequestBody AddProductImageRequest addProductRequest) {
+        ProductDTO productDTO = this.productService.addProductImage(addProductRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(productDTO);
     }
 }

@@ -17,6 +17,15 @@ import com.backend.domicare.dto.response.RestResponse;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(NotFoundFileException.class)
+    public ResponseEntity<RestResponse<Object>> handleFileNotFoundException(NotFoundFileException e) {
+        return buildResponse(ExceptionConstants.NOT_FOUND_FILE, e.getMessage());
+    }
+    @ExceptionHandler(UrlAlreadyExistsException.class)
+    public ResponseEntity<RestResponse<Object>> handleUrlAlreadyExistsException(UrlAlreadyExistsException e) {
+        return buildResponse(ExceptionConstants.URL_ALREADY_EXISTS, e.getMessage());
+    }
+
     @ExceptionHandler(AlreadyReviewProduct.class)
     public ResponseEntity<RestResponse<Object>> handleAlreadyReviewProduct(AlreadyReviewProduct e) {
         return buildResponse(ExceptionConstants.ALREADY_REVIEWED, e.getMessage());
@@ -134,7 +143,9 @@ public class GlobalExceptionHandler {
             error == ExceptionConstants.PRODUCT_NOT_IN_CATEGORY ||
             error == ExceptionConstants.ROLE_ALREADY_EXISTS ||
             error == ExceptionConstants.NOT_FOUND_ROLE ||
-            error == ExceptionConstants.ALREADY_REVIEWED
+            error == ExceptionConstants.ALREADY_REVIEWED ||
+            error == ExceptionConstants.URL_ALREADY_EXISTS ||
+            error == ExceptionConstants.NOT_FOUND_FILE
         )
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
         else

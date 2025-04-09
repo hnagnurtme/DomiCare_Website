@@ -1,6 +1,7 @@
 package com.backend.domicare.service.imp;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.backend.domicare.dto.FileDTO;
 import com.backend.domicare.exception.NotFoundException;
+import com.backend.domicare.exception.NotFoundFileException;
 import com.backend.domicare.mapper.FileMapper;
 import com.backend.domicare.model.File;
 import com.backend.domicare.repository.FilesRepository;
@@ -67,19 +69,52 @@ public class FileServiceImp implements FileService {
 
     @Override
     public FileDTO fetchFileById(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'fetchFileById'");
+        File file = filesRepository.findById(id).orElseThrow(() -> new NotFoundFileException("File not found with id: " + id));
+        return FileMapper.INSTANCE.convertToFileDTO(file);
     }
 
     @Override
     public void deleteFile(Long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteFile'");
+        // Lấy file từ cơ sở dữ liệu
+        File file = filesRepository.findById(id).orElseThrow(() -> new NotFoundFileException("File not found with id: " + id));
+
+        // Lấy URL của file
+        String fileUrl = file.getUrl();
+        
+        // Trích xuất public_id từ URL
+        String publicId = extractPublicIdFromUrl(fileUrl);
+
+        try {
+            // Xóa file trên Cloudinary
+            cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+            logger.info("File with public_id {} has been deleted from Cloudinary", publicId);
+
+            // Xóa file khỏi cơ sở dữ liệu
+            filesRepository.delete(file);
+            logger.info("File with id {} has been deleted from database", id);
+
+        } catch (IOException e) {
+            // Log lỗi nếu có vấn đề trong việc xóa file
+            logger.error("Error deleting file from Cloudinary: {}", e.getMessage(), e);
+            throw new RuntimeException("Error deleting file", e);
+        }
     }
+
+    // Hàm trích xuất public_id từ URL Cloudinary
+    private String extractPublicIdFromUrl(String fileUrl) {
+        // Lấy phần public_id từ URL
+        String[] urlParts = fileUrl.split("/v\\d+/");
+        if (urlParts.length > 1) {
+            String[] publicIdParts = urlParts[1].split("\\.");
+            return publicIdParts[0];
+        }
+        return null;
+    }
+
 
     @Override
     public FileDTO updateFile(Long id, FileDTO file) {
-        // TODO Auto-generated method stub
+        
         throw new UnsupportedOperationException("Unimplemented method 'updateFile'");
     }
 
@@ -93,6 +128,10 @@ public class FileServiceImp implements FileService {
 
     }
 
-    
+    @Override
+    public List<FileDTO> fetchAllFiles() {
+        List<File> files = filesRepository.findAll();
+        return FileMapper.INSTANCE.convertToFileDTOs(files);
+    }
     
 }

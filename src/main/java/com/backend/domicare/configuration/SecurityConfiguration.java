@@ -46,22 +46,25 @@ public class SecurityConfiguration {
                         .requestMatchers("/permissions", "/permissions/**").hasAnyRole("ADMIN", "USER")
 
                         // Product CRUD operations
-                        .requestMatchers(HttpMethod.GET, "api/products", "/api/products/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/products", "/api/products/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/products", "/api/products/**").hasAnyRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/products", "/api/products/**").hasAnyRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/products", "/api/products/**").hasAnyRole("ADMIN")
 
                         // Category
-                        .requestMatchers(HttpMethod.GET, "api/categories", "/api/categories/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/categories", "/api/categories/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/categories", "/api/categories/**").hasAnyRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/api/categories", "/api/categories/**").hasAnyRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/api/categories", "/api/categories/**").hasAnyRole("ADMIN")
 
                         // Review
-                        .requestMatchers(HttpMethod.GET, "api/reviews", "/api/reviews/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/reviews", "/api/reviews/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/reviews", "/api/reviews/**").hasAnyRole("USER")
                         .requestMatchers(HttpMethod.PUT, "/api/reviews", "/api/reviews/**").hasAnyRole("USER")
                         .requestMatchers(HttpMethod.DELETE, "/api/reviews", "/api/reviews/**").hasAnyRole("USER")
+
+                        //File
+                        .requestMatchers(HttpMethod.GET, "/api/cloudinary/files", "/api/cloudinary/files/**").authenticated()
 
                         // Cloudinary
                         .anyRequest().permitAll())

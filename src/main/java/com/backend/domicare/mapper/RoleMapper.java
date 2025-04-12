@@ -16,5 +16,4 @@ public interface RoleMapper {
     RoleDTO convertToRoleDTO(Role role);
     Set<RoleDTO> convertToRoleDTOSet(Set<Role> roles);
     Set<Role> convertToRoleSet(Set<RoleDTO> roleDTOs);
-    
 }

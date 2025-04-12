@@ -259,7 +259,7 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public ResultPagingDTO getAllProductsInCategory(Specification<Product> spec,Pageable pageable, Long categoryId){
+    public ResultPagingDTO getAllProductsInCategory(Specification<Product> spec,Pageable pageable, Long categoryId) {
 
         // Check if category exists
         if ( categoryRepository.existsById(categoryId) == false) {
@@ -270,13 +270,7 @@ public class ProductServiceImp implements ProductService {
         // Convert to DTO list
         List<ProductDTO> productDTOs = ProductMapper.INSTANCE.convertToProductDTOs(allProducts.getContent());
 
-        // Check if products belong to the specified category
-        List<ProductDTO> filteredProducts = new ArrayList<>();
-        for (ProductDTO productDTO : productDTOs) {
-            if (productDTO.getCategoryID() != null && productDTO.getCategoryID().equals(categoryId)) {
-                filteredProducts.add(productDTO);
-            }
-        }
+
         // Create ResultPagingDTO object
         ResultPagingDTO result = new ResultPagingDTO();
         ResultPagingDTO.Meta meta = new ResultPagingDTO.Meta();
@@ -285,7 +279,7 @@ public class ProductServiceImp implements ProductService {
         meta.setTotal(allProducts.getTotalElements());
         meta.setTotalPages(allProducts.getTotalPages());
         result.setMeta(meta);
-        result.setData(filteredProducts);
+        result.setData(productDTOs);
         // Return the result
         return result;
     }
@@ -297,15 +291,6 @@ public class ProductServiceImp implements ProductService {
         // Convert to DTO list
         List<ProductDTO> productDTOs = ProductMapper.INSTANCE.convertToProductDTOs(allProducts.getContent());
         // Sort products by rating star
-        if (sortByStar != null && sortByStar) {
-            productDTOs.sort((p1, p2) -> {
-                if (isAcs) {
-                    return Float.compare(p1.getRatingStar(), p2.getRatingStar());
-                } else {
-                    return Float.compare(p2.getRatingStar(), p1.getRatingStar());
-                }
-            });
-        }
 
         // Create ResultPagingDTO object
         ResultPagingDTO result = new ResultPagingDTO();

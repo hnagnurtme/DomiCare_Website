@@ -23,7 +23,7 @@ public interface  ProductMapper {
                 .image(product.getImage())
                 .name(product.getName())
                 .price(product.getPrice())
-                .ratingStar(product.getRatingStar())
+                .ratingStar(product.getOverralRating())
                 .discount(product.getDiscount())
                 .priceAfterDiscount(product.getPrice() - (product.getPrice() * product.getDiscount() / 100))
                 .landingImages(product.getLandingImages())

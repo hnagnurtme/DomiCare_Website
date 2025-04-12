@@ -22,7 +22,7 @@ public class ProductDTO {
     private String description;
     private double price;
     private String image;
-    private Float ratingStar;
+    private Double ratingStar;
     private Double discount;
     private Double priceAfterDiscount;
     private List<String> landingImages;

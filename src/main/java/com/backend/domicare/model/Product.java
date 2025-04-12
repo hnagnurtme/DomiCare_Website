@@ -41,6 +41,8 @@ public class Product {
     private double discount;
     private String image;
 
+    private Double overralRating;
+
     private List<String> landingImages;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -48,7 +50,7 @@ public class Product {
     private Category category;
 
 
-    @OneToMany(mappedBy = "product", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private List<Review> reviews;
     
     private String createBy;
@@ -65,6 +67,8 @@ public class Product {
             this.createBy = "system";
         }
         this.createAt = Instant.now();
+
+        this.overralRating = 0.0;
     }
 
     @PreUpdate
@@ -78,15 +82,16 @@ public class Product {
         }
     }
 
-    public Float getRatingStar() {
+    public Double calculateRatingStar() {
         if (reviews == null || reviews.isEmpty()) {
-            return 0f;
+            return 0.0;
         }
         float totalRating = 0;
         for (Review review : reviews) {
             totalRating += review.getRating();
         }
-        return totalRating / reviews.size();
+        double calculatedRating = (double) (totalRating / reviews.size());
+        return calculatedRating;
     }
 
 }

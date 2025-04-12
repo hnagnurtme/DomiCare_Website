@@ -53,6 +53,7 @@ public class ReviewServiceImp implements ReviewService {
         // Check if the product and user exist (you may need to implement these checks)
         Product product = productsRepository.findById(productId)
                 .orElseThrow(() -> new NotFoundProductException("Product not found with ID: " + productId));
+
         User user = usersRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundProductException("User not found with ID: " + userId));
 
@@ -66,6 +67,13 @@ public class ReviewServiceImp implements ReviewService {
         // Set the product and user in the review entity
         reviewEntity.setProduct(product);
         reviewEntity.setUser(user);
+        // Save the review entity
+        List<Review> reviews = product.getReviews();
+        reviews.add(reviewEntity);
+        product.setReviews(reviews);
+        product.setOverralRating(product.calculateRatingStar());
+        // Save the product entity to update the relationship
+        productsRepository.save(product);
 
         return ReviewMapper.INSTANCE.convertToReviewDTO(reviewsRepository.save(reviewEntity));
     }

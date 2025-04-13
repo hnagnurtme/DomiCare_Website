@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.dto.request.UpdateRoleForUserRequest;
+import com.backend.domicare.dto.request.UpdateUserAvatarRequest;
 import com.backend.domicare.dto.request.UpdateUserRequest;
 import com.backend.domicare.model.User;
 import com.backend.domicare.service.UserService;
@@ -68,8 +68,8 @@ public class UserController {
     }
 
     @PutMapping("/users/avatar")
-    public ResponseEntity<?> updateUserAvatar(@RequestParam("id") String id, @RequestBody MultipartFile avatar) {
-        UserDTO userDTO = this.userService.updateUserAvatar(id, avatar);
+    public ResponseEntity<?> updateUserAvatar(@RequestBody UpdateUserAvatarRequest avatar) {
+        UserDTO userDTO = this.userService.updateUserAvatar(avatar);
         return ResponseEntity.status(HttpStatus.OK).body(userDTO);
     }
 
@@ -77,5 +77,4 @@ public class UserController {
     public ResponseEntity<UserDTO> updateRoleForUser(@Valid @RequestBody UpdateRoleForUserRequest request) {
         return ResponseEntity.status(HttpStatus.OK).body(this.userService.updateRoleForUser(request));
     }
-    
 }

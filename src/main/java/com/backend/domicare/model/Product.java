@@ -41,7 +41,7 @@ public class Product {
     private Double discount;
     private String image;
 
-    private Double overralRating;
+    private Double overalRating;
 
     private List<String> landingImages;
 
@@ -68,7 +68,7 @@ public class Product {
         }
         this.createAt = Instant.now();
 
-        this.overralRating = 0.0;
+        this.overalRating = 0.0;
     }
 
     @PreUpdate

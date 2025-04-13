@@ -12,13 +12,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.backend.domicare.dto.FileDTO;
 import com.backend.domicare.dto.RoleDTO;
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.dto.request.UpdateRoleForUserRequest;
+import com.backend.domicare.dto.request.UpdateUserAvatarRequest;
 import com.backend.domicare.dto.request.UpdateUserRequest;
 import com.backend.domicare.exception.DeleteAdminException;
 import com.backend.domicare.exception.EmailAlreadyExistException;
@@ -241,25 +241,22 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public UserDTO updateUserAvatar(String id, MultipartFile avatar) {
-        try {
-            Long userId = Long.valueOf(id);
-            User user = userRepository.findUserById(userId);
-            if (user == null) {
-                throw new NotFoundException("User not found for id: " + id);
-            }
-            String fileName = user.getEmail();
-            FileDTO fileDTO = fileService.uploadFile(avatar, fileName, true);
-            if (fileDTO == null || fileDTO.getUrl() == null) {
-                throw new NotFoundException("Failed to upload avatar for id: " + id);
-            }
-            user.setAvatar(fileDTO.getUrl());
-            userRepository.save(user);
-            
-            return UserMapper.INSTANCE.convertToUserDTO(user);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid user id: " + id);
+    public UserDTO updateUserAvatar(UpdateUserAvatarRequest request) {
+        Long userId = request.getUserId();
+        Long imageId = request.getImageId();
+        
+        User user = userRepository.findUserById(userId);
+        if (user == null) {
+            throw new NotFoundUserException("User not found for id: " + userId);
         }
+
+        FileDTO file = fileService.fetchFileById(imageId);
+
+        user.setAvatar(file.getUrl());
+
+        userRepository.save(user);
+        return UserMapper.INSTANCE.convertToUserDTO(user);
+ 
     }
 
     @Override

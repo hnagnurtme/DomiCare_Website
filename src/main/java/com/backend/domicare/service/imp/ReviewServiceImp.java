@@ -71,7 +71,7 @@ public class ReviewServiceImp implements ReviewService {
         List<Review> reviews = product.getReviews();
         reviews.add(reviewEntity);
         product.setReviews(reviews);
-        product.setOverralRating(product.calculateRatingStar());
+        product.setOveralRating(product.calculateRatingStar());
         // Save the product entity to update the relationship
         productsRepository.save(product);
 

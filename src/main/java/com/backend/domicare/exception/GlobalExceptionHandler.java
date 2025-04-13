@@ -11,7 +11,9 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
+import com.backend.domicare.dto.response.Message;
 import com.backend.domicare.dto.response.RestResponse;
 
 @RestControllerAdvice
@@ -132,6 +134,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<RestResponse<Object>> handleGenericException(Exception e) {
         return buildResponse(ExceptionConstants.INTERNAL_SERVER_ERROR,e.getMessage());
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<Message> handleMaxSizeException(MaxUploadSizeExceededException exc) {
+        return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED)
+                             .body(new Message("File quá lớn!"));
     }
 
     private ResponseEntity<RestResponse<Object>> buildResponse(ExceptionConstants error, String message) {

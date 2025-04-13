@@ -9,8 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AddCategoryRequest {
-    @NotNull(message = "Category cannot be null")
+    @NotNull(message = "Không được để trống danh mục")
     private CategoryDTO category;
-    @NotNull(message = "Image ID cannot be null")
+    @NotNull(message = "Không được để trống ảnh")
     private Long imageId;
 }

@@ -10,4 +10,5 @@ import com.backend.domicare.model.Category;
 public interface CategoriesRepository extends JpaRepository<Category, Long> , JpaSpecificationExecutor<Category>{
     Category findByName(String name);
     boolean existsByName(String name);
+    boolean existsByNameAndIdNot(String name, Long id);
 }

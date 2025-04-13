@@ -17,6 +17,15 @@ import com.backend.domicare.dto.response.RestResponse;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(BookingStatusException.class)
+    public ResponseEntity<RestResponse<Object>> handleBookingStatusException(BookingStatusException e) {
+        return buildResponse(ExceptionConstants.BOOKING_STATUS_INVALID, e.getMessage());
+    }
+    @ExceptionHandler(NotFoundBookingException.class)
+    public ResponseEntity<RestResponse<Object>> handleNotFoundBookingException(NotFoundBookingException e) {
+        return buildResponse(ExceptionConstants.BOOKING_NOT_FOUND, e.getMessage());
+    }
+
     @ExceptionHandler(NotFoundFileException.class)
     public ResponseEntity<RestResponse<Object>> handleFileNotFoundException(NotFoundFileException e) {
         return buildResponse(ExceptionConstants.NOT_FOUND_FILE, e.getMessage());
@@ -145,7 +154,8 @@ public class GlobalExceptionHandler {
             error == ExceptionConstants.NOT_FOUND_ROLE ||
             error == ExceptionConstants.ALREADY_REVIEWED ||
             error == ExceptionConstants.URL_ALREADY_EXISTS ||
-            error == ExceptionConstants.NOT_FOUND_FILE
+            error == ExceptionConstants.NOT_FOUND_FILE ||
+            error == ExceptionConstants.BOOKING_NOT_FOUND
         )
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
         else

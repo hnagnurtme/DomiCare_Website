@@ -14,12 +14,12 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UpdateProductRequest {
     
-    @NotNull(message = "Old category ID cannot be null")
+    @NotNull(message = "Không được để trống danh mục cũ")
     private Long oldCategoryId;
 
-    @NotNull(message = "Old product ID cannot be null")
+    @NotNull(message = "Không được để trống id sản phẩm cũ")
     private Long oldProductId;
 
-    @NotNull(message = "Product cannot be null")
+    @NotNull(message = "Không được để trống sản phẩm mới")
     private ProductDTO updateProduct;
 }

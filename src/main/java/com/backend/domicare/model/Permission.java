@@ -43,7 +43,7 @@ public class Permission {
     private Instant updateAt;
 
     @ManyToMany(mappedBy = "permissions")
-    @JsonIgnoreProperties("permissions") 
+    @JsonIgnoreProperties("permissions")
     private List<Role> roles;
 
     @PrePersist

@@ -42,8 +42,8 @@ public class Booking {
     private Long id;
     private String address;
     private Instant bookingDate;
-    private Float totalHours;
-    private Float totalPrice;
+    private Double totalHours;
+    private Double totalPrice;
     private String note;
    
     @Enumerated(EnumType.STRING)
@@ -93,8 +93,4 @@ public class Booking {
             this.updateBy = "system";
         }
     }
-}
-
-enum BookingStatus {
-    PENDING, ACCEPTED, REJECTED, CANCELLED
 }

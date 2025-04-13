@@ -1,0 +1,1962 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "Domicare API",
+      "description": "API documentation for Domicare application",
+      "license": {
+        "name": "Apache 2.0",
+        "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+      },
+      "version": "1.0.0"
+    },
+    "servers": [
+      {
+        "url": "https://localhost:8443",
+        "description": "Generated server url"
+      }
+    ],
+    "paths": {
+      "/users": {
+        "get": {
+          "tags": [
+            "user-controller"
+          ],
+          "operationId": "getUsers",
+          "parameters": [
+            {
+              "name": "page",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "format": "int32",
+                "default": 1
+              }
+            },
+            {
+              "name": "size",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "format": "int32",
+                "default": 20
+              }
+            },
+            {
+              "name": "sortBy",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "sortDirection",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "default": "asc"
+              }
+            },
+            {
+              "name": "spec",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "$ref": "#/components/schemas/SpecificationUser"
+              }
+            },
+            {
+              "name": "pageable",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "$ref": "#/components/schemas/Pageable"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResultPagingDTO"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put": {
+          "tags": [
+            "user-controller"
+          ],
+          "operationId": "updateUser",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUserRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/users/roles": {
+        "put": {
+          "tags": [
+            "user-controller"
+          ],
+          "operationId": "updateRoleForUser",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateRoleForUserRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/users/avatar": {
+        "put": {
+          "tags": [
+            "user-controller"
+          ],
+          "operationId": "updateUserAvatar",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "avatar": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/roles": {
+        "get": {
+          "tags": [
+            "role-controller"
+          ],
+          "operationId": "getRoles",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put": {
+          "tags": [
+            "role-controller"
+          ],
+          "operationId": "updateRole",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleDTO"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "$ref": "#/components/schemas/RoleDTO"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "role-controller"
+          ],
+          "operationId": "createRole",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleDTO"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "$ref": "#/components/schemas/RoleDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/permissions": {
+        "get": {
+          "tags": [
+            "permission-controller"
+          ],
+          "operationId": "getPermissions",
+          "parameters": [
+            {
+              "name": "search",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "pageable",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "$ref": "#/components/schemas/Pageable"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put": {
+          "tags": [
+            "permission-controller"
+          ],
+          "operationId": "updatePermission",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Permission"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Permission"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "permission-controller"
+          ],
+          "operationId": "createPermission",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Permission"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Permission"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/products": {
+        "get": {
+          "tags": [
+            "product-controller"
+          ],
+          "operationId": "getAllProducts",
+          "parameters": [
+            {
+              "name": "categoryId",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "format": "int64",
+                "default": 0
+              }
+            },
+            {
+              "name": "page",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "format": "int32",
+                "default": 1
+              }
+            },
+            {
+              "name": "size",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "format": "int32",
+                "default": 20
+              }
+            },
+            {
+              "name": "searchName",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string"
+              }
+            },
+            {
+              "name": "sortBy",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "default": "id"
+              }
+            },
+            {
+              "name": "sortDirection",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "default": "asc"
+              }
+            },
+            {
+              "name": "spec",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "$ref": "#/components/schemas/SpecificationProduct"
+              }
+            },
+            {
+              "name": "pageable",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "$ref": "#/components/schemas/Pageable"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put": {
+          "tags": [
+            "product-controller"
+          ],
+          "operationId": "updateProduct",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateProductRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "product-controller"
+          ],
+          "operationId": "createProduct",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddProductRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/products/images": {
+        "put": {
+          "tags": [
+            "product-controller"
+          ],
+          "operationId": "uploadProductImage",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddProductImageRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/categories": {
+        "get": {
+          "tags": [
+            "category-controller"
+          ],
+          "operationId": "getCategories",
+          "parameters": [
+            {
+              "name": "page",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "format": "int32",
+                "default": 1
+              }
+            },
+            {
+              "name": "size",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "integer",
+                "format": "int32",
+                "default": 20
+              }
+            },
+            {
+              "name": "sortBy",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "default": "id"
+              }
+            },
+            {
+              "name": "sortDirection",
+              "in": "query",
+              "required": false,
+              "schema": {
+                "type": "string",
+                "default": "asc"
+              }
+            },
+            {
+              "name": "spec",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "$ref": "#/components/schemas/SpecificationCategory"
+              }
+            },
+            {
+              "name": "pageable",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "$ref": "#/components/schemas/Pageable"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ResultPagingDTO"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "put": {
+          "tags": [
+            "category-controller"
+          ],
+          "operationId": "updateCategory",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateCategoryRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "category-controller"
+          ],
+          "operationId": "createCategory",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddCategoryRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/reset-password": {
+        "post": {
+          "tags": [
+            "auth-controller"
+          ],
+          "operationId": "resetPassword",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTO"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      },
+      "/register": {
+        "post": {
+          "tags": [
+            "auth-controller"
+          ],
+          "operationId": "registerUser",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "$ref": "#/components/schemas/RegisterResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/refresh-token": {
+        "post": {
+          "tags": [
+            "auth-controller"
+          ],
+          "operationId": "refreshToken",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshTokenRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "$ref": "#/components/schemas/RefreshTokenRespone"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/login": {
+        "post": {
+          "tags": [
+            "auth-controller"
+          ],
+          "operationId": "login",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "$ref": "#/components/schemas/LoginResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/reviews": {
+        "get": {
+          "tags": [
+            "review-controller"
+          ],
+          "operationId": "getAllReviews",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "review-controller"
+          ],
+          "operationId": "createReview",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewRequest"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "$ref": "#/components/schemas/ReviewDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/cloudinary/files": {
+        "get": {
+          "tags": [
+            "file-controller"
+          ],
+          "operationId": "fetchFileByName",
+          "parameters": [
+            {
+              "name": "name",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "tags": [
+            "file-controller"
+          ],
+          "operationId": "uploadFile",
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "file": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/users/{id}": {
+        "get": {
+          "tags": [
+            "user-controller"
+          ],
+          "operationId": "getUserById",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "$ref": "#/components/schemas/UserDTO"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "user-controller"
+          ],
+          "operationId": "deleteUserById",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      },
+      "/roles/{id}": {
+        "get": {
+          "tags": [
+            "role-controller"
+          ],
+          "operationId": "getRole",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "role-controller"
+          ],
+          "operationId": "deleteRole",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      },
+      "/permissions/{id}": {
+        "get": {
+          "tags": [
+            "permission-controller"
+          ],
+          "operationId": "getPermissionById",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "permission-controller"
+          ],
+          "operationId": "deletePermission",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK"
+            }
+          }
+        }
+      },
+      "/email/verify": {
+        "get": {
+          "tags": [
+            "email-sending-controller"
+          ],
+          "operationId": "sendEmail",
+          "parameters": [
+            {
+              "name": "email",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/email/reset-password": {
+        "get": {
+          "tags": [
+            "email-sending-controller"
+          ],
+          "operationId": "sendResetPasswordEmail",
+          "parameters": [
+            {
+              "name": "email",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/auth/callback": {
+        "get": {
+          "tags": [
+            "o-auth-2-controller"
+          ],
+          "operationId": "exchangeAuthorizationCode",
+          "parameters": [
+            {
+              "name": "code",
+              "in": "query",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/products/{id}": {
+        "get": {
+          "tags": [
+            "product-controller"
+          ],
+          "operationId": "getProductById",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "product-controller"
+          ],
+          "operationId": "deleteProduct",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/cloudinary/files/{id}": {
+        "get": {
+          "tags": [
+            "file-controller"
+          ],
+          "operationId": "fetchFileById",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "file-controller"
+          ],
+          "operationId": "deleteFile",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/cloudinary/files/all": {
+        "get": {
+          "tags": [
+            "file-controller"
+          ],
+          "operationId": "fetchAllFiles",
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/categories/{id}": {
+        "get": {
+          "tags": [
+            "category-controller"
+          ],
+          "operationId": "getCategoryById",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "delete": {
+          "tags": [
+            "category-controller"
+          ],
+          "operationId": "deleteCategory",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "schema": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "OK",
+              "content": {
+                "*/*": {
+                  "schema": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "UpdateUserRequest": {
+          "required": [
+            "id"
+          ],
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "email": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "address": {
+              "type": "string"
+            },
+            "phone": {
+              "type": "string"
+            }
+          }
+        },
+        "RoleDTO": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "active": {
+              "type": "boolean"
+            },
+            "createBy": {
+              "type": "string"
+            },
+            "updateBy": {
+              "type": "string"
+            },
+            "createAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updateAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "UserDTO": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "phone": {
+              "type": "string"
+            },
+            "address": {
+              "type": "string"
+            },
+            "avatar": {
+              "type": "string"
+            },
+            "googleId": {
+              "type": "string"
+            },
+            "emailConfirmationToken": {
+              "type": "string"
+            },
+            "createBy": {
+              "type": "string"
+            },
+            "updateBy": {
+              "type": "string"
+            },
+            "createAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updateAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "roles": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/RoleDTO"
+              }
+            },
+            "emailConfirmed": {
+              "type": "boolean"
+            }
+          }
+        },
+        "UpdateRoleForUserRequest": {
+          "required": [
+            "roleIds",
+            "userId"
+          ],
+          "type": "object",
+          "properties": {
+            "userId": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "roleIds": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          }
+        },
+        "Permission": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "name": {
+              "type": "string"
+            },
+            "apiPath": {
+              "type": "string"
+            },
+            "method": {
+              "type": "string"
+            },
+            "module": {
+              "type": "string"
+            },
+            "createBy": {
+              "type": "string"
+            },
+            "updateBy": {
+              "type": "string"
+            },
+            "createAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updateAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "roles": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "ProductDTO": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "price": {
+              "type": "number",
+              "format": "double"
+            },
+            "image": {
+              "type": "string"
+            },
+            "ratingStar": {
+              "type": "number",
+              "format": "double"
+            },
+            "discount": {
+              "type": "number",
+              "format": "double"
+            },
+            "priceAfterDiscount": {
+              "type": "number",
+              "format": "double"
+            },
+            "landingImages": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "categoryID": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "reviewDTOs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ReviewDTO"
+              }
+            },
+            "createBy": {
+              "type": "string"
+            },
+            "updateBy": {
+              "type": "string"
+            },
+            "createAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updateAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "ReviewDTO": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "rating": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "comment": {
+              "type": "string"
+            },
+            "createAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updateAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "createBy": {
+              "type": "string"
+            },
+            "updateBy": {
+              "type": "string"
+            },
+            "userId": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "productId": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        },
+        "UpdateProductRequest": {
+          "required": [
+            "oldCategoryId",
+            "oldProductId",
+            "updateProduct"
+          ],
+          "type": "object",
+          "properties": {
+            "oldCategoryId": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "oldProductId": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "updateProduct": {
+              "$ref": "#/components/schemas/ProductDTO"
+            }
+          }
+        },
+        "AddProductImageRequest": {
+          "required": [
+            "imageId",
+            "productId"
+          ],
+          "type": "object",
+          "properties": {
+            "productId": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "imageId": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "isMainImage": {
+              "type": "boolean"
+            }
+          }
+        },
+        "UpdateCategoryRequest": {
+          "required": [
+            "categoryId"
+          ],
+          "type": "object",
+          "properties": {
+            "categoryId": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "imageId": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        },
+        "RegisterRequest": {
+          "required": [
+            "email",
+            "password"
+          ],
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "example": "string"
+            },
+            "password": {
+              "type": "string",
+              "example": "string"
+            }
+          }
+        },
+        "RegisterResponse": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "avatar": {
+              "type": "string"
+            },
+            "roles": {
+              "uniqueItems": true,
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "emailConfirmationToken": {
+              "type": "string"
+            },
+            "emailConfirmed": {
+              "type": "boolean"
+            }
+          }
+        },
+        "RefreshTokenRequest": {
+          "type": "object",
+          "properties": {
+            "refreshToken": {
+              "type": "string"
+            }
+          }
+        },
+        "RefreshTokenRespone": {
+          "type": "object",
+          "properties": {
+            "accessToken": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            }
+          }
+        },
+        "LoginRequest": {
+          "required": [
+            "email",
+            "password"
+          ],
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "description": "Email must be a valid email address"
+            },
+            "password": {
+              "type": "string",
+              "description": "Password must contain at least 8 characters, including uppercase, lowercase, and numbers"
+            }
+          }
+        },
+        "LoginResponse": {
+          "type": "object",
+          "properties": {
+            "accessToken": {
+              "type": "string"
+            },
+            "refreshToken": {
+              "type": "string"
+            },
+            "user": {
+              "$ref": "#/components/schemas/UserDTO"
+            }
+          }
+        },
+        "ReviewRequest": {
+          "required": [
+            "productId",
+            "rating"
+          ],
+          "type": "object",
+          "properties": {
+            "productId": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "rating": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "comment": {
+              "type": "string"
+            }
+          }
+        },
+        "AddProductRequest": {
+          "required": [
+            "categoryId",
+            "mainImageId",
+            "product"
+          ],
+          "type": "object",
+          "properties": {
+            "categoryId": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "product": {
+              "$ref": "#/components/schemas/ProductDTO"
+            },
+            "mainImageId": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "landingImageIds": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          }
+        },
+        "AddCategoryRequest": {
+          "required": [
+            "category",
+            "imageId"
+          ],
+          "type": "object",
+          "properties": {
+            "category": {
+              "$ref": "#/components/schemas/CategoryDTO"
+            },
+            "imageId": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        },
+        "CategoryDTO": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "name": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "products": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/ProductDTO"
+              }
+            },
+            "image": {
+              "type": "string"
+            },
+            "createBy": {
+              "type": "string"
+            },
+            "updateBy": {
+              "type": "string"
+            },
+            "createAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updateAt": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        },
+        "SpecificationUser": {
+          "type": "object"
+        },
+        "Pageable": {
+          "type": "object",
+          "properties": {
+            "page": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32"
+            },
+            "size": {
+              "minimum": 1,
+              "type": "integer",
+              "format": "int32"
+            },
+            "sort": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "Meta": {
+          "type": "object",
+          "properties": {
+            "page": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "size": {
+              "type": "integer",
+              "format": "int32"
+            },
+            "total": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "totalPages": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        },
+        "ResultPagingDTO": {
+          "type": "object",
+          "properties": {
+            "meta": {
+              "$ref": "#/components/schemas/Meta"
+            },
+            "data": {
+              "type": "object"
+            }
+          }
+        },
+        "SpecificationProduct": {
+          "type": "object"
+        },
+        "SpecificationCategory": {
+          "type": "object"
+        }
+      }
+    }
+  }

@@ -12,10 +12,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AddProductImageRequest {
-    @NotNull(message = "Không được để trống sản phẩm")
-    private Long productId;
-    @NotNull(message = "Không được để trống ảnh")
+public class UpdateCategoryRequest {
+    @NotNull(message = "Category ID cannot be null")
+    private Long categoryId;
+    private String name;
+    private String description;
     private Long imageId;
-    private Boolean isMainImage;
 }

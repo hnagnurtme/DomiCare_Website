@@ -40,7 +40,6 @@ public interface UserMapper {
         userDTO.roles(RoleMapper.INSTANCE.convertToRoleDTOSet(user.getRoles()));
         userDTO.updateAt( user.getUpdateAt() );
         userDTO.updateBy( user.getUpdateBy() );
-
         return userDTO.build();
     }
 }

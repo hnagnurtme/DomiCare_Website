@@ -11,6 +11,7 @@ import com.backend.domicare.security.dto.LoginRequest;
 import com.backend.domicare.security.dto.LoginResponse;
 import com.backend.domicare.security.dto.RefreshTokenRequest;
 import com.backend.domicare.security.dto.RefreshTokenRespone;
+import com.backend.domicare.security.dto.RegisterRequest;
 import com.backend.domicare.security.dto.RegisterResponse;
 import com.backend.domicare.security.jwt.JwtTokenService;
 import com.backend.domicare.service.UserService;
@@ -34,7 +35,7 @@ public class AuthController {
 
     
     @PostMapping("/register")
-    public ResponseEntity<RegisterResponse> registerUser(@Valid @RequestBody UserDTO userDTO) {
+    public ResponseEntity<RegisterResponse> registerUser(@Valid @RequestBody RegisterRequest userDTO) {
         RegisterResponse userResponse = authService.register(userDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(userResponse);
     }

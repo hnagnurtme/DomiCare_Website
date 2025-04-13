@@ -18,6 +18,14 @@ public final class ProjectConstants {
 
 	public static final String DEFAULT_AVATAR = "https://res.cloudinary.com/drtizu6d3/image/upload/v1742485551/jw7da5qpbc2gip1qc2bo.jpg";
 
+	public static final String PENDING = "PENDING";
+
+	public static final String ACCEPTED = "ACCEPTED";
+	
+	public static final String REJECTED = "REJECTED";
+
+	public static final String CANCELLED = "CANCELLED";
+
 	private ProjectConstants() {
 
 		throw new UnsupportedOperationException();

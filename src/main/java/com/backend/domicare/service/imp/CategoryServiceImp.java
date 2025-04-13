@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.backend.domicare.dto.CategoryDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.dto.request.AddCategoryRequest;
+import com.backend.domicare.dto.request.UpdateCategoryRequest;
 import com.backend.domicare.exception.CategoryAlreadyExists;
 import com.backend.domicare.exception.CategoryNotFoundException;
 import com.backend.domicare.exception.NotFoundFileException;
@@ -90,15 +91,33 @@ public class CategoryServiceImp implements CategoryService {
 
     // Update category information
     @Override
-    public CategoryDTO updateCategory(Long id, CategoryDTO categoryDTO) {
+    public CategoryDTO updateCategory(UpdateCategoryRequest request) {
+        Long id = request.getCategoryId();
+        Long imageId = request.getImageId();
+
+       
         // Find existing category
         Category existingCategory = categoryRepository.findById(id)
             .orElseThrow(() -> new CategoryNotFoundException("Category not found with ID: " + id));
-
+        if (imageId != null) {
+            File image = this.fileRepository.findById(imageId)
+                .orElseThrow(() -> new NotFoundFileException("Image not found with ID: " + imageId));
+            existingCategory.setImage(image.getUrl());
+        }
+        // Check if category name already exists
+        if (categoryRepository.existsByNameAndIdNot(request.getName(), id)) {
+            throw new CategoryAlreadyExists("Category already exists with name: " + request.getName());
+        }
         // Update fields with values from DTO
-        existingCategory.setName(categoryDTO.getName());
-        existingCategory.setDescription(categoryDTO.getDescription());
+        if( request.getName() != null) {
+            existingCategory.setName(request.getName());
+        }
+        if( request.getDescription() != null) {
+            existingCategory.setDescription(request.getDescription());
+        }
 
+        // Save updated category
+        categoryRepository.save(existingCategory);
         // Return updated category as DTO
         return CategoryMapper.INSTANCE.convertToCategoryDTO(existingCategory);
     }

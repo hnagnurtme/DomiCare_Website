@@ -259,50 +259,15 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
-    public ResultPagingDTO getAllProductsInCategory(Specification<Product> spec,Pageable pageable, Long categoryId) {
-
-        // Check if category exists
-        if ( categoryRepository.existsById(categoryId) == false) {
-            throw new NotFoundCategoryException("Category not found with ID: " + categoryId);
+    public List<Product> findAllByIdIn(List<Long> ids){
+        // Fetch products by IDs
+        List<Product> products = productRepository.findAllById(ids);
+        // Check if any products are found
+        if (products.isEmpty()) {
+            throw new NotFoundProductException("No products found with the provided IDs");
         }
-        // Fetch paginated products based on specification and category ID
-        Page<Product> allProducts = this.productRepository.findAll(spec, pageable);
-        // Convert to DTO list
-        List<ProductDTO> productDTOs = ProductMapper.INSTANCE.convertToProductDTOs(allProducts.getContent());
+        return products;
 
-
-        // Create ResultPagingDTO object
-        ResultPagingDTO result = new ResultPagingDTO();
-        ResultPagingDTO.Meta meta = new ResultPagingDTO.Meta();
-        meta.setPage(allProducts.getNumber()+ 1);
-        meta.setSize(allProducts.getSize());
-        meta.setTotal(allProducts.getTotalElements());
-        meta.setTotalPages(allProducts.getTotalPages());
-        result.setMeta(meta);
-        result.setData(productDTOs);
-        // Return the result
-        return result;
-    }
-
-    @Override
-    public ResultPagingDTO sortProductByStar(Specification<Product> spec,Pageable pageable, Boolean sortByStar, Boolean isAcs){
-        // Fetch paginated products based on specification and category ID
-        Page<Product> allProducts = this.productRepository.findAll(spec, pageable);
-        // Convert to DTO list
-        List<ProductDTO> productDTOs = ProductMapper.INSTANCE.convertToProductDTOs(allProducts.getContent());
-        // Sort products by rating star
-
-        // Create ResultPagingDTO object
-        ResultPagingDTO result = new ResultPagingDTO();
-        ResultPagingDTO.Meta meta = new ResultPagingDTO.Meta();
-        meta.setPage(allProducts.getNumber()+ 1);
-        meta.setSize(allProducts.getSize());
-        meta.setTotal(allProducts.getTotalElements());
-        meta.setTotalPages(allProducts.getTotalPages());
-        result.setMeta(meta);
-        result.setData(productDTOs);
-        // Return the result
-        return result;
     }
 
 }

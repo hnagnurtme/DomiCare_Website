@@ -1,5 +1,6 @@
 package com.backend.domicare.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,10 +13,9 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AddProductImageRequest {
-    @NotNull(message = "Không được để trống sản phẩm")
-    private Long productId;
-    @NotNull(message = "Không được để trống ảnh")
-    private Long imageId;
-    private Boolean isMainImage;
+public class UpdateBookingStatusRequest {
+    @NotNull(message = "Không được để trống bookingId")
+    private Long bookingId;
+    @NotBlank(message = "Không được để trống trạng thái")
+    private String status;
 }

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backend.domicare.dto.CategoryDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.dto.request.AddCategoryRequest;
+import com.backend.domicare.dto.request.UpdateCategoryRequest;
 import com.backend.domicare.dto.response.Message;
 import com.backend.domicare.model.Category;
 import com.backend.domicare.service.CategoryService;
@@ -44,13 +45,8 @@ public class CategoryController {
 
     //Update category
     @PutMapping("/categories")
-    public ResponseEntity<?> updateCategory (@Valid @RequestBody CategoryDTO categoryDTO) {
-        Long id = categoryDTO.getId();
-        if (id == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Category ID is required");
-        }
-        CategoryDTO category = categoryService.updateCategory(id,categoryDTO);
-        return  ResponseEntity.status(HttpStatus.OK).body(category);
+    public ResponseEntity<?> updateCategory (@Valid @RequestBody UpdateCategoryRequest categoryDTO) {
+        return  ResponseEntity.status(HttpStatus.OK).body(this.categoryService.updateCategory(categoryDTO));
     }
 
     //Delete category
@@ -72,16 +68,16 @@ public class CategoryController {
     public ResponseEntity<ResultPagingDTO> getCategories(
         @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int size,
-            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false, defaultValue= "id") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sortDirection,
             @Filter Specification<Category> spec, Pageable pageable) {
 
         if (sortBy != null && !sortBy.isEmpty()) {
         // Xử lý sắp xếp theo tham số sortBy và sortDirection
         Sort sort = Sort.by(sortDirection.equalsIgnoreCase("desc") ? Sort.Order.desc(sortBy) : Sort.Order.asc(sortBy));
-        pageable = PageRequest.of(page - 1, size, sort);  // Cập nhật pageable với sort
+        pageable = PageRequest.of(page - 1, size, sort);
     } else {
-        pageable = PageRequest.of(page - 1, size);  // Không có sắp xếp, chỉ phân trang
+        pageable = PageRequest.of(page - 1, size);
     }
         return ResponseEntity.status(HttpStatus.OK).body(this.categoryService.getAllCategories(spec, pageable));
     }

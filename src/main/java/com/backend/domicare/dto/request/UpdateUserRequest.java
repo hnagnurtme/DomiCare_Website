@@ -1,6 +1,6 @@
 package com.backend.domicare.dto.request;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class UpdateUserRequest {
-    @NotBlank(message = "ID cannot be blank")
+    @NotNull(message = "Không được để trống id người dùng")
     private Long id ;
     private String email;
     private String name;

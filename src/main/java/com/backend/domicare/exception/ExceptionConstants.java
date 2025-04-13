@@ -49,7 +49,12 @@ public enum ExceptionConstants {
 
 	ALREADY_REVIEWED(129, "already_reviewed"),
 
-	URL_ALREADY_EXISTS(130, "url_already_exists");
+	URL_ALREADY_EXISTS(130, "url_already_exists"),
+
+	BOOKING_NOT_FOUND(131, "booking_not_found"),
+
+	BOOKING_STATUS_INVALID(132, "booking_status_invalid");
+
 
 	private final int code;
 	private final String messageName;

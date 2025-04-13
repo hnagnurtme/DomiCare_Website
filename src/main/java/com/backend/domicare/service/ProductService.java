@@ -1,5 +1,7 @@
 package com.backend.domicare.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -17,6 +19,5 @@ public interface ProductService {
     public ProductDTO updateProduct(UpdateProductRequest productDTO);
     public ResultPagingDTO getAllProducts(Specification<Product> spec,Pageable pageable);
     public ProductDTO addProductImage(AddProductImageRequest addProductImageRequest);
-    public ResultPagingDTO getAllProductsInCategory(Specification<Product> spec,Pageable pageable, Long categoryId);
-    public ResultPagingDTO sortProductByStar(Specification<Product> spec,Pageable pageable, Boolean sortByStar, Boolean isAcs);
+    public List<Product> findAllByIdIn(List<Long> ids);
 }

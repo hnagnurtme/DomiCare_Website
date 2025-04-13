@@ -23,9 +23,4 @@ public class RegisterRequest {
     @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{6,}$", message = "{password_invalid}")
     @Schema(example = "string")
     private String password;
-
-
-    @NotEmpty(message = "{confirm_password_not_empty}")
-    @Schema(example = "string")
-    private String confirmPassword;
 }

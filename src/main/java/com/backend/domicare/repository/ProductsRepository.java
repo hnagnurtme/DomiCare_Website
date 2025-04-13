@@ -16,4 +16,5 @@ public interface ProductsRepository extends JpaRepository<Product, Long> , JpaSp
 
     boolean existsByName(String name);
     boolean existsByNameAndCategoryId(String name, Long categoryId);
+
 }

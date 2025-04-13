@@ -37,8 +37,8 @@ public class Product {
 
     private String name;
     private String description;
-    private double price;
-    private double discount;
+    private Double price;
+    private Double discount;
     private String image;
 
     private Double overralRating;
@@ -92,6 +92,10 @@ public class Product {
         }
         double calculatedRating = (double) (totalRating / reviews.size());
         return calculatedRating;
+    }
+
+    public Double getPriceAfterDiscount() {
+        return price - (price * discount / 100);
     }
 
 }

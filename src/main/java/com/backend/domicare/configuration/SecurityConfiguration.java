@@ -25,9 +25,6 @@ public class SecurityConfiguration {
         http
                 .csrf(csrf -> csrf.disable())
 
-                .requiresChannel(channel -> {
-                    channel.anyRequest().requiresSecure();
-                })
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/files/**", "/swagger-ui.html")
                         .permitAll()
@@ -64,8 +61,10 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.DELETE, "/api/reviews", "/api/reviews/**").hasAnyRole("USER")
 
                         //File
-                        .requestMatchers(HttpMethod.GET, "/api/cloudinary/files", "/api/cloudinary/files/**").authenticated()
+                        .requestMatchers( "/api/cloudinary/files", "/api/cloudinary/files/**").authenticated()
 
+                        // Booking Status
+                        .requestMatchers(HttpMethod.GET, "/api/booking-status", "/api/booking-status/**").permitAll()
                         // Cloudinary
                         .anyRequest().permitAll())
 
@@ -93,9 +92,7 @@ public class SecurityConfiguration {
                         .authenticationEntryPoint((request, response, authException) -> {
                             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
                         }))
-                .headers(headers -> headers
-                        .frameOptions(frameOptions -> frameOptions.sameOrigin()))
-                
+
                 //Oauth2
                 .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                 // Cấu hình session

@@ -41,9 +41,9 @@ public class Token {
         this.expiration = Instant.now().plusSeconds(86400);
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)  
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    @JsonIgnore  
-    private User user;  
+    @JsonIgnore
+    private User user;
    
 }

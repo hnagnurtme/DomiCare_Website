@@ -14,7 +14,6 @@ import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Component;
@@ -33,7 +32,6 @@ import lombok.RequiredArgsConstructor;
 public class JwtTokenManager {
     private final JwtProperties jwtProperties;
     private final JwtEncoder jwtEncoder;
-    private final JwtDecoder jwtDecoder;
     private final UserService userService;
     private final TokensRepository tokensRepository;
     public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS256;

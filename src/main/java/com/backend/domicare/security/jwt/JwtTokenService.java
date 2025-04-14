@@ -1,6 +1,8 @@
 package com.backend.domicare.security.jwt;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -102,9 +104,22 @@ public class JwtTokenService {
 
         UserDTO userResponse = userService.saveUser(user);
         RegisterResponse registerResponse = UserMapper.INSTANCE.convertToRegisterResponse(userResponse);
-        String emailToken = this.emailSendingService.sendEmailFromTemplateSync(email, "Verify your account",
-                "SendingOTP");
-        registerResponse.setEmailConfirmationToken(emailToken);
+        
+        CompletableFuture<String> futureToken = this.emailSendingService.sendEmailFromTemplate(
+            email,
+            "Verify your account",
+            "SendingOTP",
+            EmailSendingService.TemplateType.VERIFICATION.name()
+        );
+        
+        try {
+            String emailToken = futureToken.get();
+            registerResponse.setEmailConfirmationToken(emailToken);
+        } catch (InterruptedException | ExecutionException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Failed to send verification email", e);
+        }
+        
         return registerResponse;
     }
 

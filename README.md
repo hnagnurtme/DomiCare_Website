@@ -1,173 +1,360 @@
+# DomiCare Website - Cleaning Service Platform
 
-# DomiCare Website - Cleaning Service
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Status](https://img.shields.io/badge/status-in%20development-yellow.svg)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7+-green.svg)
+![JDK](https://img.shields.io/badge/JDK-11+-orange.svg)
 
-## Giới thiệu
-DomiCare là một nền tảng web chuyên cung cấp dịch vụ dọn dẹp và bảo trì, giúp khách hàng dễ dàng tìm kiếm và đặt dịch vụ. Đồng thời, hệ thống hỗ trợ quản lý thông qua các vai trò như nhân viên sales, nhân viên thi công và admin. Website hiện đang trong giai đoạn phát triển và hoàn thiện.
+## 📑 Mục lục
+- [Giới thiệu](#giới-thiệu)
+- [Tính năng chính](#tính-năng-chính)
+- [Kiến trúc hệ thống](#kiến-trúc-hệ-thống)
+- [Công nghệ sử dụng](#công-nghệ-sử-dụng)
+- [Cấu trúc cơ sở dữ liệu](#cấu-trúc-cơ-sở-dữ-liệu)
+- [Hướng dẫn cài đặt](#hướng-dẫn-cài-đặt)
+- [Quy trình triển khai](#quy-trình-triển-khai)
+- [API Documentation](#api-documentation)
+- [Bảo mật](#bảo-mật)
+- [Demo](#demo)
+- [Đóng góp](#đóng-góp)
+- [Liên hệ](#liên-hệ)
+- [Giấy phép](#giấy-phép)
 
-## Các chức năng chính
+## 🌟 Giới thiệu
+
+**DomiCare** là nền tảng web chuyên cung cấp dịch vụ dọn dẹp và bảo trì chất lượng cao, kết nối khách hàng với đội ngũ nhân viên chuyên nghiệp. Hệ thống được xây dựng trên kiến trúc hiện đại với backend Spring Boot và frontend ReactJS, mang đến trải nghiệm người dùng tối ưu và quản lý hiệu quả.
+
+Dự án hướng đến các giá trị:
+- **Tiện lợi**: Đơn giản hóa việc đặt dịch vụ dọn dẹp
+- **Minh bạch**: Thông tin dịch vụ, giá cả rõ ràng
+- **Chất lượng**: Đảm bảo dịch vụ đạt tiêu chuẩn cao
+- **Phát triển bền vững**: Sử dụng sản phẩm thân thiện với môi trường
+
+## 🚀 Tính năng chính
 
 ### 1. Khách hàng
-- **Tìm kiếm dịch vụ**: Khách hàng có thể tìm kiếm dịch vụ dựa trên giá cả, chất lượng, thời gian và thông tin chi tiết khác.
-- **Đặt dịch vụ**: Khách hàng chọn dịch vụ, nhập số điện thoại để nhận OTP, đăng ký dịch vụ và trở thành thành viên.
-- **Lịch sử dịch vụ**: Xem lịch sử các dịch vụ đã sử dụng.
-- **Đánh giá dịch vụ**: Đánh giá dịch vụ bằng số sao.
-- **Đặt lịch**: Đặt lịch dịch vụ qua form hoặc liên lạc trực tiếp.
+- **Tìm kiếm dịch vụ**: Tìm kiếm dựa trên nhiều tiêu chí (giá cả, đánh giá, thời gian, vị trí)
+- **Đặt dịch vụ**: Quy trình đặt dịch vụ liền mạch, xác thực qua OTP
+- **Quản lý tài khoản**: Đăng ký, đăng nhập (hỗ trợ OAuth2), khôi phục mật khẩu
+- **Lịch sử dịch vụ**: Xem chi tiết lịch sử và trạng thái các dịch vụ đã sử dụng
+- **Đánh giá dịch vụ**: Đánh giá chất lượng bằng hệ thống sao và bình luận
+- **Đặt lịch linh hoạt**: Đặt lịch qua form trực tuyến hoặc liên hệ trực tiếp
+- **Thanh toán trực tuyến**: Hỗ trợ nhiều phương thức thanh toán an toàn
 
 ### 2. Nhân viên Sales
-- **Đăng nhập**: Đăng nhập để tiếp nhận đơn hàng từ khách hàng.
-- **Quản lý đơn hàng**: Chọn đơn hàng, chốt đơn và theo dõi doanh thu theo thời gian.
+- **Quản lý đơn hàng**: Tiếp nhận, xử lý đơn hàng từ khách hàng
+- **Chốt đơn**: Xác nhận đơn hàng, điều phối nhân viên kỹ thuật
+- **Báo cáo doanh thu**: Theo dõi doanh thu theo nhiều khung thời gian
+- **Quản lý khách hàng**: Xem thông tin và lịch sử giao dịch của khách hàng
+- **Thông báo**: Nhận thông báo realtime khi có đơn hàng mới
 
 ### 3. Nhân viên Thi Công (Trưởng Bộ Phận Kỹ Thuật)
-- **Đăng nhập**: Đăng nhập và tiếp nhận thông tin công việc.
-- **Xác nhận hoàn thành**: Chụp hình và xác nhận công việc sau khi hoàn tất.
-- **Đánh giá chất lượng**: Yêu cầu khách hàng đánh giá chất lượng dịch vụ.
+- **Quản lý lịch trình**: Xem và quản lý lịch trình công việc
+- **Cập nhật tiến độ**: Cập nhật trạng thái công việc theo thời gian thực
+- **Xác nhận hoàn thành**: Ghi nhận hình ảnh trước và sau khi hoàn thành
+- **Đánh giá chất lượng**: Yêu cầu khách hàng đánh giá sau khi hoàn thành
+- **Báo cáo sự cố**: Báo cáo các vấn đề phát sinh trong quá trình thực hiện
 
 ### 4. Admin
-- **Đăng nhập**: Quản lý hệ thống qua tài khoản quản trị.
-- **Quản lý nhân viên sales**: Thêm, sửa hoặc xóa nhân viên sales.
-- **Quản lý đơn hàng**: Theo dõi tất cả đơn hàng và doanh thu.
-- **Quản lý khách hàng**: Quản lý thông tin khách hàng.
-- **Quản lý dịch vụ**: Quản lý các dịch vụ dọn dẹp vệ sinh (CRUD).
-- **Quản lý tin tức và bài viết**: Đăng bài viết, tin tức để quảng bá dịch vụ và công ty.
+- **Quản lý toàn diện**: Bảng điều khiển thống kê tổng quan
+- **Quản lý nhân viên**: Thêm, sửa, xóa, phân quyền nhân viên sales và kỹ thuật
+- **Quản lý đơn hàng**: Giám sát toàn bộ đơn hàng và doanh thu
+- **Quản lý khách hàng**: Quản lý thông tin và lịch sử giao dịch khách hàng
+- **Quản lý dịch vụ**: CRUD các dịch vụ, phân loại, cập nhật giá
+- **Quản lý nội dung**: Quản lý tin tức, bài viết, hình ảnh quảng cáo
+- **Báo cáo phân tích**: Xuất báo cáo kinh doanh theo nhiều tiêu chí
 
-## Công nghệ sử dụng
+## 🏗️ Kiến trúc hệ thống
+
+DomiCare được xây dựng theo kiến trúc microservices, với các thành phần chính:
+
+### Backend (Spring Boot)
+- **API Layer**: RESTful API endpoints, xử lý request/response
+- **Service Layer**: Chứa business logic của ứng dụng
+- **Repository Layer**: Tương tác với database
+- **Security Layer**: Xác thực và phân quyền
+- **Email Service**: Xử lý gửi email tự động
+- **File Storage Service**: Quản lý lưu trữ file/hình ảnh
+
+### Frontend (ReactJS)
+- **Public Portal**: Giao diện cho khách hàng
+- **Admin Portal**: Giao diện cho admin quản lý hệ thống
+- **Sales Portal**: Giao diện cho nhân viên sales
+- **Technical Portal**: Giao diện cho nhân viên kỹ thuật
+
+### Infrastructure
+- **Database**: PostgreSQL trên Cloud
+- **File Storage**: Cloudinary
+- **Authentication**: JWT + OAuth2
+- **Caching**: Redis (optinoal)
+- **CI/CD**: GitHub Actions/Jenkins
+
+## 💻 Công nghệ sử dụng
 
 ### Backend
-- **Spring Boot**: Framework Java để phát triển ứng dụng backend.
-- **Spring Security**: Bảo mật ứng dụng, bao gồm xác thực và phân quyền.
-- **JWT (JSON Web Token)**: Cơ chế xác thực an toàn cho API.
-- **OAuth2 với Google**: Hỗ trợ đăng nhập bằng tài khoản Google.
-- **Spring JPA**: Quản lý dữ liệu với tính năng query và phân trang.
-- **Cloud PostgreSQL Database**: Cơ sở dữ liệu PostgreSQL trên nền tảng đám mây (Heroku, AWS RDS, v.v.).
-- **OpenAPI 3**: Tài liệu hóa API bằng OpenAPI Specification.
-- **SSL Certificate**: Mã hóa kết nối API để bảo mật.
-- **Postman**: Kiểm thử API RESTful.
-- **Email Service**: Sử dụng JavaMail trong Spring Boot để gửi email (xác nhận đăng ký, thông báo đơn hàng, v.v.).
+- **Spring Boot**: Framework Java toàn diện để phát triển ứng dụng
+- **Spring Security**: Bảo mật ứng dụng với xác thực và phân quyền
+- **Spring Data JPA**: ORM framework để tương tác với database
+- **JWT**: Cơ chế xác thực stateless cho REST API
+- **OAuth2**: Hỗ trợ đăng nhập qua Google, Facebook
+- **PostgreSQL**: Hệ quản trị cơ sở dữ liệu quan hệ
+- **Hibernate**: ORM framework
+- **Swagger/OpenAPI 3**: Tài liệu hóa API
+- **Maven**: Quản lý dependency và build
+- **JUnit & Mockito**: Unit testing
+- **JavaMail**: Gửi email thông báo
+- **Cloudinary**: Lưu trữ hình ảnh trên cloud
+- **Lombok**: Giảm boilerplate code
 
 ### Frontend
-- **ReactJS**: Framework JavaScript để xây dựng giao diện người dùng.
-- **Axios**: Gọi API từ backend.
-- **React Router**: Định tuyến các trang trong ứng dụng React.
+- **ReactJS**: Framework JavaScript xây dựng UI
+- **Redux**: Quản lý state
+- **Axios**: HTTP client gọi API
+- **React Router**: Định tuyến
+- **Material-UI**: Component library
+- **Formik**: Quản lý form
+- **React Query**: Data fetching và caching
+- **i18next**: Đa ngôn ngữ
+- **Jest & React Testing Library**: Testing
+- **ESLint & Prettier**: Code quality
 
-## Kết quả ban đầu
-- **Triển khai giao diện**: DomiCare Frontend
+### DevOps & Tools
+- **Docker**: Containerization
+- **Git**: Version control
+- **Postman**: API testing
+- **SonarQube**: Code quality analysis
+- **Prometheus & Grafana**: Monitoring (optional)
+- **ELK Stack**: Logging (optional)
 
-    - **Login Page**:
-    - **Signup Page**:
-    - **Homepage**:
-    - **Service Dashboard**:
+## 📊 Cấu trúc cơ sở dữ liệu
 
-## Cấu hình dự án
+### Các bảng chính
+- **users**: Thông tin người dùng (khách hàng, nhân viên sales, kỹ thuật, admin)
+- **roles**: Vai trò người dùng trong hệ thống
+- **services**: Thông tin các dịch vụ
+- **service_categories**: Phân loại dịch vụ
+- **orders**: Đơn hàng dịch vụ
+- **order_items**: Chi tiết đơn hàng
+- **payments**: Thông tin thanh toán
+- **reviews**: Đánh giá dịch vụ
+- **notifications**: Thông báo hệ thống
+- **media**: Lưu trữ thông tin hình ảnh, tài liệu
+- **posts**: Bài viết, tin tức
 
-### Cài đặt Backend (Spring Boot)
+### Sơ đồ quan hệ
+```
+users --(1:N)--> orders
+orders --(N:1)--> services
+users --(1:N)--> reviews
+services --(1:N)--> reviews
+services --(N:1)--> service_categories
+orders --(1:1)--> payments
+users --(N:M)--> roles
+```
 
-**Yêu cầu**:
-- Cài đặt JDK 11+ và Maven.
+## 🛠️ Hướng dẫn cài đặt
 
-**Cấu hình `application.properties`:**
-- Kết nối tới cơ sở dữ liệu PostgreSQL trên đám mây.
-- Cấu hình JWT để bảo vệ API.
-- Cấu hình OAuth2 để đăng nhập qua Google.
-- Cấu hình JavaMail để gửi email.
+### Yêu cầu hệ thống
+- JDK 11 trở lên
+- Maven 3.6+
+- Node.js 14+ và npm 6+
+- PostgreSQL 12+
+- Git
 
-**Tạo cơ sở dữ liệu**:
-- Sử dụng Cloud PostgreSQL (Heroku, AWS RDS, Google Cloud).
+### Cài đặt Backend
 
-**API**: Tạo API với Spring JPA, hỗ trợ phân trang bằng `PagingAndSortingRepository`.
+#### 1. Clone repository
+```bash
+git clone https://github.com/your-username/domicare.git
+cd domicare/backend
+```
 
-**Bảo mật**: Mã hóa kết nối API bằng SSL Certificate.
+#### 2. Cấu hình database
+Tạo database PostgreSQL:
+```sql
+CREATE DATABASE domicare;
+```
 
-#### a. Database Configuration
+#### 3. Cấu hình application.properties
+Tạo file `src/main/resources/application-local.properties`:
+
 ```properties
+# Database Configuration
 spring.datasource.url=jdbc:postgresql://localhost:5432/domicare
 spring.datasource.username=your-db-username
 spring.datasource.password=your-db-password
 spring.datasource.driver-class-name=org.postgresql.Driver
-```
-Thay `your-db-username` và `your-db-password` bằng thông tin đăng nhập của bạn.
 
-#### b. JWT Configuration
-```properties
-jwt.secretKey=your-jwt-secret-key
-jwt.expirationMinutes=15
-```
-Thay `your-jwt-secret-key` bằng khóa bí mật của bạn.
+# JPA Configuration
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 
-#### c. Email Configuration
-```properties
+# JWT Configuration
+jwt.secret=your-jwt-secret-key
+jwt.expiration=86400000
+
+# Mail Configuration
 spring.mail.host=smtp.gmail.com
 spring.mail.port=587
 spring.mail.username=your-email@gmail.com
-spring.mail.password=your-email-password
+spring.mail.password=your-email-app-password
 spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
-spring.mail.properties.mail.smtp.ssl.trust=smtp.gmail.com
-spring.mail.properties.mail.smtp.ssl.protocols=TLSv1.2
-spring.mail.properties.mail.smtp.ssl.checkserveridentity=false
-```
-Thay `your-email@gmail.com` và `your-email-password` bằng thông tin email của bạn.
 
-#### d. Cloudinary Configuration
-```properties
-cloudinary.url=cloudinary://your-api-key:your-api-secret@your-cloud-name
-```
-Thay `your-api-key`, `your-api-secret`, và `your-cloud-name` bằng thông tin từ Cloudinary.
-
-#### e. OAuth2 Configuration (Google)
-```properties
+# OAuth2 Configuration
 spring.security.oauth2.client.registration.google.client-id=your-google-client-id
 spring.security.oauth2.client.registration.google.client-secret=your-google-client-secret
 spring.security.oauth2.client.registration.google.scope=profile,email
-```
-Thay `your-google-client-id` và `your-google-client-secret` bằng thông tin từ Google Developer Console.
 
-#### f. Cài đặt và chạy
-- **Cài đặt phụ thuộc**:
-    ```bash
-    mvn clean install
-    ```
+# Cloudinary Configuration
+cloudinary.cloud-name=your-cloud-name
+cloudinary.api-key=your-api-key
+cloudinary.api-secret=your-api-secret
 
-- **Chạy ứng dụng**:
-    ```bash
-    mvn spring-boot:run
-    ```
-
-- **Kích hoạt profile (ví dụ: dev)**:
-    ```bash
-    java -jar domicare.jar --spring.profiles.active=dev
-    ```
-
-#### g. Cấu hình SSL
-```properties
-server.ssl.enabled=true
-server.ssl.key-store=classpath:keystore.p12
-server.ssl.key-store-password=your-keystore-password
-server.ssl.key-store-type=PKCS12
-server.ssl.key-alias=your-key-alias
+# Server Configuration
+server.port=8080
 ```
 
-#### h. Kiểm tra API
-- Truy cập Swagger UI sau khi chạy ứng dụng: `http://localhost:8080/swagger-ui.html`
-
-### Cài đặt Frontend (ReactJS)
-
-**Yêu cầu**:
-- Cài đặt Node.js và npm.
-
-**Cài đặt dự án**:
+#### 4. Build và chạy ứng dụng
 ```bash
-cd frontend
+mvn clean install
+mvn spring-boot:run -Dspring-boot.run.profiles=local
+```
+
+Hoặc chạy bằng JAR file:
+```bash
+java -jar target/domicare-0.0.1-SNAPSHOT.jar --spring.profiles.active=local
+```
+
+### Cài đặt Frontend
+
+#### 1. Di chuyển đến thư mục frontend
+```bash
+cd ../frontend
+```
+
+#### 2. Cài đặt dependencies
+```bash
 npm install
+```
+
+#### 3. Cấu hình API endpoint
+Tạo file `.env.local`:
+```
+REACT_APP_API_BASE_URL=http://localhost:8080/api
+REACT_APP_CLOUDINARY_URL=https://api.cloudinary.com/v1_1/your-cloud-name/upload
+REACT_APP_GOOGLE_CLIENT_ID=your-google-client-id
+```
+
+#### 4. Chạy ứng dụng frontend
+```bash
 npm start
 ```
 
-## Bảo mật
-Không commit thông tin nhạy cảm (mật khẩu, khóa API) lên Git. Thêm vào `.gitignore`:
+#### 5. Build cho production
 ```bash
-# .gitignore
-application.properties
-application-dev.properties
+npm run build
 ```
 
-#### h. Kiểm tra API
-- Truy cập Swagger UI sau khi chạy ứng dụng: `http://localhost:8080/swagger-ui.html`
+## 🚢 Quy trình triển khai
+
+### Môi trường phát triển
+1. **Local**: Phát triển trên máy tính cá nhân
+2. **Development**: Môi trường test nội bộ
+3. **Staging**: Môi trường kiểm thử UAT
+4. **Production**: Môi trường chính thức
+
+### CI/CD Pipeline
+- **Commit Code**: Push code lên Git repository
+- **Automated Tests**: Chạy unit tests, integration tests
+- **Code Quality**: Kiểm tra code quality với SonarQube
+- **Build**: Build ứng dụng với Maven/npm
+- **Deploy**: Deploy lên môi trường tương ứng
+- **Monitor**: Giám sát ứng dụng sau khi deploy
+
+## 📚 API Documentation
+
+API được tài liệu hóa bằng Swagger/OpenAPI. Sau khi chạy backend, truy cập:
+```
+http://localhost:8080/swagger-ui.html
+```
+
+### Các nhóm API chính
+- **/api/auth**: Xác thực và phân quyền
+- **/api/users**: Quản lý người dùng
+- **/api/services**: Quản lý dịch vụ
+- **/api/orders**: Quản lý đơn hàng
+- **/api/payments**: Xử lý thanh toán
+- **/api/reviews**: Đánh giá dịch vụ
+- **/api/media**: Upload và quản lý media
+- **/api/posts**: Quản lý bài viết
+
+## 🔒 Bảo mật
+
+### Nguyên tắc bảo mật:
+- **Authentication**: JWT + OAuth2
+- **Authorization**: Role-based Access Control (RBAC)
+- **Data Protection**: HTTPS/SSL
+- **Password Storage**: BCrypt hashing
+- **Input Validation**: Kiểm tra và sanitize input
+- **CORS Configuration**: Bảo vệ từ cross-origin requests
+- **Rate Limiting**: Bảo vệ chống DOS attacks
+
+### Quản lý Secrets:
+- Sử dụng biến môi trường hoặc vault service
+- Không commit secrets lên Git
+- File nhạy cảm cần thêm vào .gitignore:
+```
+# .gitignore
+application-local.properties
+application-dev.properties
+application-prod.properties
+.env.local
+.env.development
+.env.production
+```
+
+## 🖥️ Demo
+
+### Screenshots
+- **Trang chủ**: [Screenshot URL]
+- **Trang đăng nhập**: [Screenshot URL]
+- **Trang đặt dịch vụ**: [Screenshot URL]
+- **Bảng điều khiển admin**: [Screenshot URL]
+
+### Demo Online
+- **Website**: [https://domicare.example.com](https://domicare.example.com)
+- **Admin Portal**: [https://admin.domicare.example.com](https://admin.domicare.example.com)
+
+## 👥 Đóng góp
+
+Chúng tôi chào đón mọi đóng góp! Để tham gia phát triển:
+
+1. Fork repository
+2. Tạo nhánh cho tính năng mới: `git checkout -b feature/amazing-feature`
+3. Commit thay đổi: `git commit -m 'Add amazing feature'`
+4. Push lên nhánh của bạn: `git push origin feature/amazing-feature`
+5. Tạo Pull Request
+
+### Quy tắc đóng góp
+- Tuân thủ coding standards
+- Viết unit tests cho code mới
+- Cập nhật tài liệu khi cần thiết
+- Mô tả chi tiết về thay đổi trong Pull Request
+
+## 📞 Liên hệ
+
+- **Website**: [https://domicare.example.com](https://domicare.example.com)
+- **Email**: contact@domicare.example.com
+- **Facebook**: [DomiCare Facebook](https://facebook.com/domicare)
+- **LinkedIn**: [DomiCare LinkedIn](https://linkedin.com/company/domicare)
+
+## 📄 Giấy phép
+
+Dự án này được phân phối dưới giấy phép MIT. Xem file `LICENSE` để biết thêm chi tiết.
+
+---
+
+&copy; 2025 DomiCare. Bản quyền thuộc về [Tên công ty của bạn].

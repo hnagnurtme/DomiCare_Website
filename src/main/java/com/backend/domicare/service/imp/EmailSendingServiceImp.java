@@ -2,10 +2,12 @@ package com.backend.domicare.service.imp;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.CompletableFuture;
 
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -33,7 +35,7 @@ public class EmailSendingServiceImp implements EmailSendingService {
 
     private void sendEmailSync(String to, String subject, String content, boolean isMultiparts, boolean isHtml) {
         MimeMessage message = this.javaMailSender.createMimeMessage();
-        try { 
+        try {
             MimeMessageHelper helper = new MimeMessageHelper(message, isMultiparts, StandardCharsets.UTF_8.name());
             helper.setTo(to);
             helper.setSubject(subject);
@@ -43,8 +45,27 @@ public class EmailSendingServiceImp implements EmailSendingService {
         } catch (MailException | MessagingException e) {
             throw new EmailSendingException("Failed to send email : " + e);
         }
-
     }
+    
+    @Async
+    @Override
+    public CompletableFuture<String> sendEmailFromTemplate(String to, String subject, String templateName, String templateType) {
+        Context context = new Context();
+        String verificationToken = this.userService.createVerificationToken(to);
+        String encodedVerificationToken = URLEncoder.encode(verificationToken, StandardCharsets.UTF_8);
+        context.setVariable("verificationToken", encodedVerificationToken);
+        
+        // Add email to context if it's a reset password request
+        if (templateType.equals(TemplateType.RESET_PASSWORD.name())) {
+            context.setVariable("email", to);
+        }
+        
+        String content = templateEngine.process(templateName, context);
+        this.sendEmailSync(to, subject, content, false, true);
+        return CompletableFuture.completedFuture(encodedVerificationToken);
+    }
+    
+    // Helper methods for internal use - not part of the interface
     @Override
     public String sendEmailFromTemplateSync(String to, String subject, String templateName) {
         Context context = new Context();
@@ -67,7 +88,4 @@ public class EmailSendingServiceImp implements EmailSendingService {
         this.sendEmailSync(to, subject, content, false, true);
         return encodedVerificationToken;
     }
-
-
-
 }

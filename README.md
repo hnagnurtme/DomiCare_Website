@@ -347,14 +347,6 @@ Chúng tôi chào đón mọi đóng góp! Để tham gia phát triển:
 ## 📞 Liên hệ
 
 - **Website**: [https://domicare.example.com](https://domicare.example.com)
-- **Email**: contact@domicare.example.com
-- **Facebook**: [DomiCare Facebook](https://facebook.com/domicare)
-- **LinkedIn**: [DomiCare LinkedIn](https://linkedin.com/company/domicare)
-
 ## 📄 Giấy phép
 
 Dự án này được phân phối dưới giấy phép MIT. Xem file `LICENSE` để biết thêm chi tiết.
-
----
-
-&copy; 2025 DomiCare. Bản quyền thuộc về [Tên công ty của bạn].

@@ -344,9 +344,3 @@ Chúng tôi chào đón mọi đóng góp! Để tham gia phát triển:
 - Cập nhật tài liệu khi cần thiết
 - Mô tả chi tiết về thay đổi trong Pull Request
 
-## 📞 Liên hệ
-
-- **Website**: [https://domicare.example.com](https://domicare.example.com)
-## 📄 Giấy phép
-
-Dự án này được phân phối dưới giấy phép MIT. Xem file `LICENSE` để biết thêm chi tiết.

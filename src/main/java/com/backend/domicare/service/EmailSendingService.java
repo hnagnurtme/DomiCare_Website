@@ -22,4 +22,6 @@ public interface EmailSendingService {
     enum TemplateType {
         VERIFICATION, RESET_PASSWORD
     }
+
+    
 }

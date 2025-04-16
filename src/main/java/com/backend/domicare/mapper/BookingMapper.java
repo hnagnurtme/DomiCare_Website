@@ -24,6 +24,8 @@ public interface  BookingMapper {
                 .updateAt(booking.getUpdateAt())
                 .updateBy(booking.getUpdateBy())
                 .address(booking.getAddress())
+                .note(booking.getNote())
+                .isPeriodic(booking.getIsPeriodic())
                 .bookingDate(booking.getBookingDate())
                 .totalHours(booking.getTotalHours())
                 .totalPrice(booking.getTotalPrice())

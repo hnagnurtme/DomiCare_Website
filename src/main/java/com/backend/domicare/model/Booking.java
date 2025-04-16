@@ -43,6 +43,8 @@ public class Booking {
     private Double totalHours;
     private Double totalPrice;
     private String note;
+    private Boolean isPeriodic;
+
    
     @Enumerated(EnumType.STRING)
     private BookingStatus bookingStatus;

@@ -23,6 +23,7 @@ public class BookingDTO {
     private Double totalHours;
     private Double totalPrice;
     private String note;
+    private Boolean isPeriodic;
     private BookingStatus bookingStatus;
     private String createBy;
     private String updateBy;

@@ -30,4 +30,5 @@ public class EmailSendingController {
         EmailConfirmTokenResponse response = new EmailConfirmTokenResponse(email,emailToken);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
+
 }

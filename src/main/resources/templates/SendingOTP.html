@@ -50,7 +50,7 @@
         .btn {
             display: inline-block;
             padding: 12px 24px;
-            background-color: #2a89f1; 
+            background-color: #2a89f1;
             color: #ffffff;
             text-decoration: none;
             border-radius: 5px;
@@ -64,7 +64,7 @@
         <p>We noticed that you just signed up with us. Please confirm that it's really you by clicking the link below. If you have already confirmed, please disregard this email.</p>
 
         <!-- Updated link with encoded token -->
-        <p><a th:href="'https://localhost:8443/verify-email?token=' + ${verificationToken}">Xác nhận Email</a></p>
+        <p><a th:href="'https://localhost:8080/verify-email?token=' + ${verificationToken}">Xác nhận Email</a></p>
         <p class="footer">© 2025 DomiCare. All rights reserved.</p>
     </div>
 </body>

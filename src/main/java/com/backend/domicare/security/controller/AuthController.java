@@ -33,7 +33,6 @@ public class AuthController {
        
     }
 
-    
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> registerUser(@Valid @RequestBody RegisterRequest userDTO) {
         RegisterResponse userResponse = authService.register(userDTO);
@@ -46,12 +45,11 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body(token);
     }
 
-    @PostMapping("reset-password")
+    @PostMapping("/reset-password")
     public ResponseEntity<Void> resetPassword(@Valid @RequestBody UserDTO userDTO) {
         String email = userDTO.getEmail();
         String password = userDTO.getPassword();
         userService.resetPassword(email, password);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
-
 }

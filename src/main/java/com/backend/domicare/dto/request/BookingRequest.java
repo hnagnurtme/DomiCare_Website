@@ -24,4 +24,6 @@ public class BookingRequest {
     private Long userId;
     @NotNull(message = "Không được để trống sản phẩm")
     private List<Long> productIds;
+    @NotNull(message = "Chọn định kì hoặc không")
+    private Boolean isPeriodic;
 }

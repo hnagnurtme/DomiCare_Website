@@ -30,7 +30,7 @@ public interface  ReviewMapper {
                 .updateAt(review.getUpdateAt())
                 .updateBy(review.getUpdateBy())
                 .productId(review.getProduct() != null ? review.getProduct().getId() : null)
-                .userId(review.getUser() != null ? review.getUser().getId() : null)
+                .userDTO(UserMapper.INSTANCE.convertToUserDTO(review.getUser()))
                 .rating(review.getRating())
                 .build();
     }

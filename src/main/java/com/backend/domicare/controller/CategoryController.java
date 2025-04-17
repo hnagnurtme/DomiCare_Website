@@ -57,14 +57,14 @@ public class CategoryController {
     }
 
     //Get category by id
-    @GetMapping("/categories/{id}")
+    @GetMapping("/public/categories/{id}")
     public ResponseEntity<?> getCategoryById (@PathVariable Long id) {
         CategoryDTO category = categoryService.fetchCategoryById(id);
         return  ResponseEntity.status(HttpStatus.OK).body(category);
     }
 
     //
-    @GetMapping("/categories")
+    @GetMapping("/public/categories")
     public ResponseEntity<ResultPagingDTO> getCategories(
         @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int size,

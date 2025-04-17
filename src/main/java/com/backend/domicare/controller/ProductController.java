@@ -50,7 +50,7 @@ public class ProductController {
     }
 
     // Fetch product by id
-    @GetMapping("/products/{id}")
+    @GetMapping("/public/products/{id}")
     public ResponseEntity<?> getProductById(@PathVariable Long id) {
         ProductDTO product = productService.fetchProductById(id);
         return ResponseEntity.status(HttpStatus.OK).body(product);
@@ -71,7 +71,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.CREATED).body(productDTO);
     }
 
-    @GetMapping("/products")
+    @GetMapping("/public/products")
     public ResponseEntity<?> getAllProducts(
             @RequestParam(defaultValue = "0") Long categoryId,
             @RequestParam(defaultValue = "1") int page,

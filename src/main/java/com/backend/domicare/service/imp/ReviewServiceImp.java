@@ -3,9 +3,13 @@ package com.backend.domicare.service.imp;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.backend.domicare.dto.ReviewDTO;
+import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.dto.request.ReviewRequest;
 import com.backend.domicare.exception.AlreadyReviewProduct;
 import com.backend.domicare.exception.NotFoundProductException;
@@ -31,7 +35,7 @@ public class ReviewServiceImp implements ReviewService {
 
     @Override
     public ReviewDTO getReviewById(Long id) {
-        
+
         return null;
     }
 
@@ -40,9 +44,9 @@ public class ReviewServiceImp implements ReviewService {
         Long productId = review.getProductId();
         Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
         final Long userId;
-        if(currentUserLogin.isPresent()) {
+        if (currentUserLogin.isPresent()) {
             User user = usersRepository.findByEmail(currentUserLogin.get());
-            if(user != null) {
+            if (user != null) {
                 userId = user.getId();
             } else {
                 throw new NotFoundUserException("User not found with email: " + currentUserLogin.get());
@@ -78,9 +82,20 @@ public class ReviewServiceImp implements ReviewService {
         return ReviewMapper.INSTANCE.convertToReviewDTO(reviewsRepository.save(reviewEntity));
     }
 
-
     @Override
-    public List<ReviewDTO> getAllReviews() {
-        return ReviewMapper.INSTANCE.convertToReviewDTOs(reviewsRepository.findAll());
+    public ResultPagingDTO getAllReviews(Specification<Review> spec, Pageable pageable) {
+        Page<Review> reviews = reviewsRepository.findAll(spec, pageable);
+        ResultPagingDTO resultPagingDTO = new ResultPagingDTO();
+        ResultPagingDTO.Meta meta = new ResultPagingDTO.Meta();
+
+        meta.setPage(reviews.getNumber()+1);
+        meta.setSize(reviews.getSize());
+        meta.setTotal(reviews.getTotalElements());
+        meta.setTotalPages(reviews.getTotalPages());
+
+        resultPagingDTO.setMeta(meta);
+        resultPagingDTO.setData(reviews.getContent());
+
+        return resultPagingDTO;
     }
 }

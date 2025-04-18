@@ -146,9 +146,9 @@ public class JwtTokenService {
         if (user != null) {
             user.setEmailConfirmed(true);
             user.setEmailConfirmationToken(null);
-            userService.updateUserInfo(user);
+            userService.updateConfirmedEmail(user);
         } else {
-            throw new NotFoundException("Không tìm thấy người dùng");
+            throw new NotFoundUserException("Không tìm thấy người dùng");
         }
     }
 
@@ -158,9 +158,9 @@ public class JwtTokenService {
         if (user != null) {
             user.setEmailConfirmed(true);
             user.setEmailConfirmationToken(null);
-            userService.updateUserInfo(user);
+            userService.updateConfirmedEmail(user);
         } else {
-            throw new NotFoundException("Không tìm thấy người dùng");
+            throw new NotFoundUserException("Không tìm thấy người dùng");
         }
         return user.getEmail();
     }

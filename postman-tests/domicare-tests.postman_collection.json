@@ -1,0 +1,2998 @@
+{
+  "info": {
+    "_postman_id": "2e02e049-d510-4152-9e22-b692ebcf0848",
+    "name": "Domicare API",
+    "description": "API documentation for Domicare application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "User Controller",
+      "item": [
+        {
+          "name": "getUsers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "size",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "sortDirection",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "spec",
+                  "value": "",
+                  "description": "",
+                  "disabled": false
+                },
+                {
+                  "key": "pageable",
+                  "value": "",
+                  "description": "",
+                  "disabled": false
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"getUsers successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "updateUser",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 0,\n  \"email\": \"string\",\n  \"name\": \"string\",\n  \"password\": \"string\",\n  \"address\": \"string\",\n  \"phone\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"updateUser successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "updateRoleForUser",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/roles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "roles"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": 0,\n  \"roleIds\": [\n    0\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"updateRoleForUser successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "updateUserAvatar",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/avatar",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "avatar"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"imageId\": 0,\n  \"userId\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"updateUserAvatar successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "getUserById",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"getUserById successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "deleteUserById",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "{{id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"deleteUserById successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Role Controller",
+      "item": [
+        {
+          "name": "getRoles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/roles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"getRoles successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "updateRole",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/roles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 0,\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"active\": false,\n  \"createBy\": \"string\",\n  \"updateBy\": \"string\",\n  \"createAt\": \"string\",\n  \"updateAt\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"updateRole successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "createRole",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/roles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 0,\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"active\": false,\n  \"createBy\": \"string\",\n  \"updateBy\": \"string\",\n  \"createAt\": \"string\",\n  \"updateAt\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"createRole successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "getRole",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/roles/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles",
+                "{{id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"getRole successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "deleteRole",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/roles/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles",
+                "{{id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"deleteRole successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Permission Controller",
+      "item": [
+        {
+          "name": "getPermissions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/permissions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "permissions"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "pageable",
+                  "value": "",
+                  "description": "",
+                  "disabled": false
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"getPermissions successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "updatePermission",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/permissions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "permissions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 0,\n  \"name\": \"string\",\n  \"apiPath\": \"string\",\n  \"method\": \"string\",\n  \"module\": \"string\",\n  \"createBy\": \"string\",\n  \"updateBy\": \"string\",\n  \"createAt\": \"string\",\n  \"updateAt\": \"string\",\n  \"roles\": [\n    \"string\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"updatePermission successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "createPermission",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/permissions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "permissions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 0,\n  \"name\": \"string\",\n  \"apiPath\": \"string\",\n  \"method\": \"string\",\n  \"module\": \"string\",\n  \"createBy\": \"string\",\n  \"updateBy\": \"string\",\n  \"createAt\": \"string\",\n  \"updateAt\": \"string\",\n  \"roles\": [\n    \"string\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"createPermission successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "getPermissionById",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/permissions/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "permissions",
+                "{{id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"getPermissionById successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "deletePermission",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/permissions/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "permissions",
+                "{{id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"deletePermission successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Product Controller",
+      "item": [
+        {
+          "name": "updateProduct",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"oldCategoryId\": 0,\n  \"oldProductId\": 0,\n  \"updateProduct\": {\n    \"id\": 0,\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"price\": 0,\n    \"image\": \"string\",\n    \"ratingStar\": 0,\n    \"discount\": 0,\n    \"priceAfterDiscount\": 0,\n    \"landingImages\": [\n      \"string\"\n    ],\n    \"categoryID\": 0,\n    \"reviewDTOs\": [\n      {\n        \"id\": 0,\n        \"rating\": 0,\n        \"comment\": \"string\",\n        \"createAt\": \"string\",\n        \"updateAt\": \"string\",\n        \"createBy\": \"string\",\n        \"updateBy\": \"string\",\n        \"userDTO\": {\n          \"id\": 0,\n          \"name\": \"string\",\n          \"email\": \"string\",\n          \"password\": \"string\",\n          \"phone\": \"string\",\n          \"address\": \"string\",\n          \"avatar\": \"string\",\n          \"googleId\": \"string\",\n          \"emailConfirmationToken\": \"string\",\n          \"createBy\": \"string\",\n          \"updateBy\": \"string\",\n          \"createAt\": \"string\",\n          \"updateAt\": \"string\",\n          \"roles\": [\n            {\n              \"id\": 0,\n              \"name\": \"string\",\n              \"description\": \"string\",\n              \"active\": false,\n              \"createBy\": \"string\",\n              \"updateBy\": \"string\",\n              \"createAt\": \"string\",\n              \"updateAt\": \"string\"\n            }\n          ],\n          \"emailConfirmed\": false\n        },\n        \"productId\": 0\n      }\n    ],\n    \"createBy\": \"string\",\n    \"updateBy\": \"string\",\n    \"createAt\": \"string\",\n    \"updateAt\": \"string\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"updateProduct successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "createProduct",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": 0,\n  \"product\": {\n    \"id\": 0,\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"price\": 0,\n    \"image\": \"string\",\n    \"ratingStar\": 0,\n    \"discount\": 0,\n    \"priceAfterDiscount\": 0,\n    \"landingImages\": [\n      \"string\"\n    ],\n    \"categoryID\": 0,\n    \"reviewDTOs\": [\n      {\n        \"id\": 0,\n        \"rating\": 0,\n        \"comment\": \"string\",\n        \"createAt\": \"string\",\n        \"updateAt\": \"string\",\n        \"createBy\": \"string\",\n        \"updateBy\": \"string\",\n        \"userDTO\": {\n          \"id\": 0,\n          \"name\": \"string\",\n          \"email\": \"string\",\n          \"password\": \"string\",\n          \"phone\": \"string\",\n          \"address\": \"string\",\n          \"avatar\": \"string\",\n          \"googleId\": \"string\",\n          \"emailConfirmationToken\": \"string\",\n          \"createBy\": \"string\",\n          \"updateBy\": \"string\",\n          \"createAt\": \"string\",\n          \"updateAt\": \"string\",\n          \"roles\": [\n            {\n              \"id\": 0,\n              \"name\": \"string\",\n              \"description\": \"string\",\n              \"active\": false,\n              \"createBy\": \"string\",\n              \"updateBy\": \"string\",\n              \"createAt\": \"string\",\n              \"updateAt\": \"string\"\n            }\n          ],\n          \"emailConfirmed\": false\n        },\n        \"productId\": 0\n      }\n    ],\n    \"createBy\": \"string\",\n    \"updateBy\": \"string\",\n    \"createAt\": \"string\",\n    \"updateAt\": \"string\"\n  },\n  \"mainImageId\": 0,\n  \"landingImageIds\": [\n    0\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"createProduct successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "uploadProductImage",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/images",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "images"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 0,\n  \"imageId\": 0,\n  \"isMainImage\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"uploadProductImage successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "getAllProducts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/public/products",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "public",
+                "products"
+              ],
+              "query": [
+                {
+                  "key": "categoryId",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "size",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "searchName",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "sortDirection",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "spec",
+                  "value": "",
+                  "description": "",
+                  "disabled": false
+                },
+                {
+                  "key": "pageable",
+                  "value": "",
+                  "description": "",
+                  "disabled": false
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"getAllProducts successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "getProductById",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/public/products/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "public",
+                "products",
+                "{{id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"getProductById successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "deleteProduct",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/products/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "products",
+                "{{id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"deleteProduct successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Category Controller",
+      "item": [
+        {
+          "name": "updateCategory",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"categoryId\": 0,\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"imageId\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"updateCategory successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "createCategory",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"category\": {\n    \"id\": 0,\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"products\": [\n      {\n        \"id\": 0,\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"price\": 0,\n        \"image\": \"string\",\n        \"ratingStar\": 0,\n        \"discount\": 0,\n        \"priceAfterDiscount\": 0,\n        \"landingImages\": [\n          \"string\"\n        ],\n        \"categoryID\": 0,\n        \"reviewDTOs\": [\n          {\n            \"id\": 0,\n            \"rating\": 0,\n            \"comment\": \"string\",\n            \"createAt\": \"string\",\n            \"updateAt\": \"string\",\n            \"createBy\": \"string\",\n            \"updateBy\": \"string\",\n            \"userDTO\": {\n              \"id\": 0,\n              \"name\": \"string\",\n              \"email\": \"string\",\n              \"password\": \"string\",\n              \"phone\": \"string\",\n              \"address\": \"string\",\n              \"avatar\": \"string\",\n              \"googleId\": \"string\",\n              \"emailConfirmationToken\": \"string\",\n              \"createBy\": \"string\",\n              \"updateBy\": \"string\",\n              \"createAt\": \"string\",\n              \"updateAt\": \"string\",\n              \"roles\": [\n                {\n                  \"id\": 0,\n                  \"name\": \"string\",\n                  \"description\": \"string\",\n                  \"active\": false,\n                  \"createBy\": \"string\",\n                  \"updateBy\": \"string\",\n                  \"createAt\": \"string\",\n                  \"updateAt\": \"string\"\n                }\n              ],\n              \"emailConfirmed\": false\n            },\n            \"productId\": 0\n          }\n        ],\n        \"createBy\": \"string\",\n        \"updateBy\": \"string\",\n        \"createAt\": \"string\",\n        \"updateAt\": \"string\"\n      }\n    ],\n    \"image\": \"string\",\n    \"createBy\": \"string\",\n    \"updateBy\": \"string\",\n    \"createAt\": \"string\",\n    \"updateAt\": \"string\"\n  },\n  \"imageId\": 0\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"createCategory successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "getCategories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/public/categories",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "public",
+                "categories"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "size",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "sortDirection",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "spec",
+                  "value": "",
+                  "description": "",
+                  "disabled": false
+                },
+                {
+                  "key": "pageable",
+                  "value": "",
+                  "description": "",
+                  "disabled": false
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"getCategories successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "getCategoryById",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/public/categories/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "public",
+                "categories",
+                "{{id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"getCategoryById successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "deleteCategory",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/categories/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "categories",
+                "{{id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"deleteCategory successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Booking Controller",
+      "item": [
+        {
+          "name": "updateBooking",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/bookings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "bookings"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bookingId\": 0,\n  \"address\": \"string\",\n  \"totalHours\": 0,\n  \"note\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"updateBooking successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "createBooking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/bookings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "bookings"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"address\": \"string\",\n  \"totalHours\": 0,\n  \"note\": \"string\",\n  \"userId\": 0,\n  \"productIds\": [\n    0\n  ],\n  \"isPeriodic\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"createBooking successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "updateBookingStatus",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/bookings/status",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "bookings",
+                "status"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bookingId\": 0,\n  \"status\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"updateBookingStatus successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "getBookingById",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/bookings/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "bookings",
+                "{{id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"getBookingById successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "deleteBooking",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/bookings/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "bookings",
+                "{{id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"deleteBooking successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Auth Controller",
+      "item": [
+        {
+          "name": "resetPassword",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/reset-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "reset-password"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"id\": 0,\n  \"name\": \"string\",\n  \"email\": \"string\",\n  \"password\": \"string\",\n  \"phone\": \"string\",\n  \"address\": \"string\",\n  \"avatar\": \"string\",\n  \"googleId\": \"string\",\n  \"emailConfirmationToken\": \"string\",\n  \"createBy\": \"string\",\n  \"updateBy\": \"string\",\n  \"createAt\": \"string\",\n  \"updateAt\": \"string\",\n  \"roles\": [\n    {\n      \"id\": 0,\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"active\": false,\n      \"createBy\": \"string\",\n      \"updateBy\": \"string\",\n      \"createAt\": \"string\",\n      \"updateAt\": \"string\"\n    }\n  ],\n  \"emailConfirmed\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"resetPassword successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "registerUser",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "register"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"string\",\n  \"password\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"registerUser successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "refreshToken",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/refresh-token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "refresh-token"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"refreshToken successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"string\",\n  \"password\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"login successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Review Controller",
+      "item": [
+        {
+          "name": "getAllReviews",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/reviews",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reviews"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "size",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "sortBy",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "sortDirection",
+                  "value": "",
+                  "description": "",
+                  "disabled": true
+                },
+                {
+                  "key": "spec",
+                  "value": "",
+                  "description": "",
+                  "disabled": false
+                },
+                {
+                  "key": "pageable",
+                  "value": "",
+                  "description": "",
+                  "disabled": false
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"getAllReviews successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "createReview",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/reviews",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "reviews"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"productId\": 0,\n  \"rating\": 0,\n  \"comment\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"createReview successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "File Controller",
+      "item": [
+        {
+          "name": "fetchFileByName",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cloudinary/files",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cloudinary",
+                "files"
+              ],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "",
+                  "description": "",
+                  "disabled": false
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"fetchFileByName successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "uploadFile",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/cloudinary/files",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cloudinary",
+                "files"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"file\": \"string\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"uploadFile successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "fetchFileById",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cloudinary/files/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cloudinary",
+                "files",
+                "{{id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"fetchFileById successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "deleteFile",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cloudinary/files/{{id}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cloudinary",
+                "files",
+                "{{id}}"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"deleteFile successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "fetchAllFiles",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/cloudinary/files/all",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "cloudinary",
+                "files",
+                "all"
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"fetchAllFiles successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "View Controller",
+      "item": [
+        {
+          "name": "verifyEmail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/verify-email",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "verify-email"
+              ],
+              "query": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "description": "",
+                  "disabled": false
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"verifyEmail successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "forgotPassword",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/forgot-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "forgot-password"
+              ],
+              "query": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "description": "",
+                  "disabled": false
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"forgotPassword successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Email Sending Controller",
+      "item": [
+        {
+          "name": "sendEmail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/email/verify",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "email",
+                "verify"
+              ],
+              "query": [
+                {
+                  "key": "email",
+                  "value": "",
+                  "description": "",
+                  "disabled": false
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"sendEmail successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "sendResetPasswordEmail",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/email/reset-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "email",
+                "reset-password"
+              ],
+              "query": [
+                {
+                  "key": "email",
+                  "value": "",
+                  "description": "",
+                  "disabled": false
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"sendResetPasswordEmail successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "O Auth 2 Controller",
+      "item": [
+        {
+          "name": "exchangeAuthorizationCode",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/callback",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "callback"
+              ],
+              "query": [
+                {
+                  "key": "code",
+                  "value": "",
+                  "description": "",
+                  "disabled": false
+                }
+              ]
+            },
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_token}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"exchangeAuthorizationCode successful\", function () {",
+                  "              pm.response.to.have.status(200);",
+                  "              ",
+                  "              const responseData = pm.response.json();",
+                  "              pm.expect(responseData).to.be.an('object');",
+                  "              pm.expect(responseData).to.have.property('code');",
+                  "              ",
+                  "              // Store response data if needed",
+                  "              if (responseData.data) {",
+                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
+                  "              }",
+                  "            });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [],
+  "variable": []
+}

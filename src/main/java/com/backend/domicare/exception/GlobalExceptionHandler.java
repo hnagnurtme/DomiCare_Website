@@ -19,6 +19,11 @@ import com.backend.domicare.dto.response.RestResponse;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(NotMatchPasswordException.class)
+    public ResponseEntity<RestResponse<Object>> handleNotMatchPasswordException(NotMatchPasswordException e) {
+        return buildResponse(ExceptionConstants.NOT_MATCH_PASSWORD, e.getMessage());
+    }
+
     @ExceptionHandler(BookingStatusException.class)
     public ResponseEntity<RestResponse<Object>> handleBookingStatusException(BookingStatusException e) {
         return buildResponse(ExceptionConstants.BOOKING_STATUS_INVALID, e.getMessage());

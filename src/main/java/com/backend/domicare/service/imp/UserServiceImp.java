@@ -18,13 +18,13 @@ import com.backend.domicare.dto.RoleDTO;
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.dto.request.UpdateRoleForUserRequest;
-import com.backend.domicare.dto.request.UpdateUserAvatarRequest;
 import com.backend.domicare.dto.request.UpdateUserRequest;
 import com.backend.domicare.exception.DeleteAdminException;
 import com.backend.domicare.exception.EmailAlreadyExistException;
-import com.backend.domicare.exception.NotFoundException;
+import com.backend.domicare.exception.NotFoundFileException;
 import com.backend.domicare.exception.NotFoundRoleException;
 import com.backend.domicare.exception.NotFoundUserException;
+import com.backend.domicare.exception.NotMatchPasswordException;
 import com.backend.domicare.mapper.UserMapper;
 import com.backend.domicare.model.Role;
 import com.backend.domicare.model.Token;
@@ -79,7 +79,7 @@ public class UserServiceImp implements UserService {
     public User findUserByEmail(String email) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            throw new NotFoundException("User not found for email: " + email);
+            throw new NotFoundUserException("User not found for email: " + email);
         }
         return user;
     }
@@ -90,7 +90,7 @@ public class UserServiceImp implements UserService {
         ResultPagingDTO resultPaginDTO = new ResultPagingDTO();
         ResultPagingDTO.Meta meta = new ResultPagingDTO.Meta();
 
-        meta.setPage(users.getNumber());
+        meta.setPage(users.getNumber() + 1);
         meta.setSize(users.getSize());
         meta.setTotal(users.getTotalElements());
         meta.setTotalPages(users.getTotalPages());
@@ -122,31 +122,14 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public UserDTO updateUserInfo(UserDTO user) {
+    public UserDTO updateConfirmedEmail(UserDTO user) {
         Long id = user.getId();
         User oldUser = userRepository.findUserById(id);
         if (oldUser == null) {
             throw new NotFoundUserException("User not found for id: " + id);
         }
-        oldUser.setName(user.getName());
-        oldUser.setEmail(user.getEmail());
-        oldUser.setPhone(user.getPhone());
-        oldUser.setAddress(user.getAddress());
         oldUser.setEmailConfirmed(user.isEmailConfirmed());
         oldUser.setEmailConfirmationToken(user.getEmailConfirmationToken());
-        oldUser.setAvatar(user.getAvatar());
-
-        Set<Role> roles = new HashSet<>();
-        if (user.getRoles() != null && !user.getRoles().isEmpty()) {
-            for (RoleDTO role : user.getRoles()) {
-                Role managedRole = roleService.getRoleByName(role.getName());
-                roles.add(managedRole);
-            }
-        } else {
-            Role defaultRole = roleService.getRoleByName(ProjectConstants.DEFAULT_ROLE);
-            roles.add(defaultRole);
-        }
-        oldUser.setRoles(roles);
         User userEntity = userRepository.save(oldUser);
         return UserMapper.INSTANCE.convertToUserDTO(userEntity);
     }
@@ -189,47 +172,12 @@ public class UserServiceImp implements UserService {
         userRepository.delete(user);
     }
 
-    @Override
-    public UserDTO updateUser(UpdateUserRequest userUpdate) {
-        UserDTO user = UserMapper.INSTANCE.convertToUserDTO(userUpdate);
-        User oldUser = userRepository.findUserById(user.getId());
-        if (oldUser == null) {
-            throw new NotFoundException("User not found for id: " + user.getId());
-        }
-
-        Set<Role> roles = new HashSet<>();
-        if (user.getRoles() != null && !user.getRoles().isEmpty()) {
-            for (RoleDTO role : user.getRoles()) {
-                Role managedRole = roleService.getRoleByName(role.getName());
-                roles.add(managedRole);
-            }
-        } else {
-            Role defaultRole = roleService.getRoleByName(ProjectConstants.DEFAULT_ROLE);
-            roles.add(defaultRole);
-        }
-        oldUser.setRoles(roles);
-
-        String password = oldUser.getPassword();
-        if (user.getPassword() != null) {
-            oldUser.setPassword(passwordEncoder.encode(user.getPassword()));
-        } else {
-            oldUser.setPassword(password);
-        }
-
-        oldUser.setName(user.getName());
-        oldUser.setEmail(user.getEmail());
-        oldUser.setPhone(user.getPhone());
-        oldUser.setAddress(user.getAddress());
-
-        User newUser = userRepository.save(oldUser);
-        return UserMapper.INSTANCE.convertToUserDTO(newUser);
-    }
 
     @Override
     public void resetPassword(String email, String password) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            throw new NotFoundException("User not found for email: " + email);
+            throw new NotFoundUserException("User not found for email: " + email);
         }
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
@@ -241,52 +189,51 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public UserDTO updateUserAvatar(UpdateUserAvatarRequest request) {
-        Long userId = request.getUserId();
-        Long imageId = request.getImageId();
-        
-        User user = userRepository.findUserById(userId);
-        if (user == null) {
-            throw new NotFoundUserException("User not found for id: " + userId);
-        }
+    public UserDTO updateUserInformation(UpdateUserRequest userRequest){
+        Long id = userRequest.getUserId();
 
-        FileDTO file = fileService.fetchFileById(imageId);
-
-        user.setAvatar(file.getUrl());
-
-        userRepository.save(user);
-        return UserMapper.INSTANCE.convertToUserDTO(user);
- 
-    }
-
-    @Override
-    public UserDTO UpdateUserInformation(UpdateUserRequest user){
-        Long id = user.getId();
         User oldUser = userRepository.findUserById(id);
         if (oldUser == null) {
             throw new NotFoundUserException("User not found for id: " + id);
         }
-        if (user.getPassword() != null) {
-            oldUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        if( userRequest.getName() != null){
+            oldUser.setName(userRequest.getName());
         }
-        if( user.getName() != null){
-            oldUser.setName(user.getName());
+        if( userRequest.getPhone() != null){
+            oldUser.setPhone(userRequest.getPhone());
         }
-        if( user.getEmail() != null){
-            oldUser.setEmail(user.getEmail());
+        if( userRequest.getAddress() != null){
+            oldUser.setAddress(userRequest.getAddress());
         }
-        if( user.getPhone() != null){
-            oldUser.setPhone(user.getPhone());
+        if( userRequest.getDateOfBirth() != null){
+            oldUser.setDateOfBirth(userRequest.getDateOfBirth());
         }
-        if( user.getAddress() != null){
-            oldUser.setAddress(user.getAddress());
+        if( userRequest.getGender() != null){
+            oldUser.setGender(userRequest.getGender());
         }
-        userRepository.save(oldUser);
-    
-        return UserMapper.INSTANCE.convertToUserDTO(oldUser);
+        if( userRequest.getNewPassword() != null){
+            if (userRequest.getOldPassword() == null) {
+                throw new NotMatchPasswordException("Old password is required to set new password");
+            }
+            if (passwordEncoder.matches(userRequest.getOldPassword(), oldUser.getPassword())) {
+                oldUser.setPassword(passwordEncoder.encode(userRequest.getNewPassword()));
+            } else {
+                throw new NotMatchPasswordException("Old password is incorrect");
+            }
+        }
+
+        if (userRequest.getImageId() != null) {
+            FileDTO fileDTO = fileService.fetchFileById(userRequest.getImageId());
+            if (fileDTO == null) {
+                throw new NotFoundFileException("File not found for id: " + userRequest.getImageId());
+            }
+            oldUser.setAvatar(fileDTO.getUrl());
+        }
+        return UserMapper.INSTANCE.convertToUserDTO(userRepository.save(oldUser));
     }
 
     @Override
+    @Transactional
     public UserDTO updateRoleForUser(UpdateRoleForUserRequest request){
         Long userId = request.getUserId();
         List<Long> roleIds = request.getRoleIds();
@@ -297,18 +244,16 @@ public class UserServiceImp implements UserService {
         if (roleIds == null || roleIds.isEmpty()) {
             throw new NotFoundRoleException("Role not found for id: " + roleIds);
         }
+        
+        Set<Role> roles = new HashSet<>();
         for (Long roleId : roleIds) {
             Role role = roleService.getRoleEntityById(roleId);
             if (role == null) {
                 throw new NotFoundRoleException("Role not found for id: " + roleId);
             }
-        }
-        
-        Set<Role> roles = new HashSet<>();
-        for (Long roleId : roleIds) {
-            Role role = roleService.getRoleEntityById(roleId);
             roles.add(role);
         }
+        
         user.setRoles(roles);
         userRepository.save(user);
         return UserMapper.INSTANCE.convertToUserDTO(user);

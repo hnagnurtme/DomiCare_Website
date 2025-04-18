@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.dto.request.UpdateRoleForUserRequest;
-import com.backend.domicare.dto.request.UpdateUserAvatarRequest;
 import com.backend.domicare.dto.request.UpdateUserRequest;
 import com.backend.domicare.model.User;
 import com.backend.domicare.service.UserService;
@@ -64,13 +63,7 @@ public class UserController {
 
     @PutMapping("/users")
     public ResponseEntity<UserDTO> updateUser(@RequestBody UpdateUserRequest user) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.userService.UpdateUserInformation(user));
-    }
-
-    @PutMapping("/users/avatar")
-    public ResponseEntity<?> updateUserAvatar(@RequestBody UpdateUserAvatarRequest avatar) {
-        UserDTO userDTO = this.userService.updateUserAvatar(avatar);
-        return ResponseEntity.status(HttpStatus.OK).body(userDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(this.userService.updateUserInformation(user));
     }
 
     @PutMapping("/users/roles")

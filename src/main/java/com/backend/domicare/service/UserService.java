@@ -6,7 +6,6 @@ import org.springframework.data.jpa.domain.Specification;
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.dto.request.UpdateRoleForUserRequest;
-import com.backend.domicare.dto.request.UpdateUserAvatarRequest;
 import com.backend.domicare.dto.request.UpdateUserRequest;
 import com.backend.domicare.model.Token;
 import com.backend.domicare.model.User;
@@ -17,30 +16,27 @@ public interface UserService {
     public User findUserByEmail(String email) ;
     
     public ResultPagingDTO getAllUsers(Specification<User> spec,Pageable pageable);
+
+    public UserDTO updateConfirmedEmail(UserDTO user);
+
     public UserDTO findUserByEmailConfirmToken(String token);
+
     public String createVerificationToken(String email);
 
-    public UserDTO updateUserInfo(UserDTO user);
     public boolean isEmailAlreadyExist(String email);
 
     public UserDTO getUserById(Long id);
 
     public void deleteUserById(Long id);
 
-    public UserDTO updateUser(UpdateUserRequest user);
-
     public void resetPassword(String email, String password);
 
     public Token findByRefreshTokenWithUser(String refreshToken);
 
-    public UserDTO updateUserAvatar(UpdateUserAvatarRequest request);
-
     public void deleteRefreshTokenByUserId(Long id);
 
-    public UserDTO UpdateUserInformation(UpdateUserRequest user);
+    public UserDTO updateUserInformation(UpdateUserRequest user);
 
     public UserDTO updateRoleForUser(UpdateRoleForUserRequest user);
-
-
 
 }

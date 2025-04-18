@@ -24,22 +24,23 @@ public interface UserMapper {
         }
 
         UserDTOBuilder userDTO = UserDTO.builder();
-
-        userDTO.address( user.getAddress() );
-        userDTO.avatar( user.getAvatar() );
-        userDTO.createAt( user.getCreateAt() );
-        userDTO.createBy( user.getCreateBy() );
-        userDTO.email( user.getEmail() );
-        userDTO.isEmailConfirmed( user.isEmailConfirmed() );
-        userDTO.emailConfirmationToken( user.getEmailConfirmationToken() );
         userDTO.id( user.getId() );
         userDTO.name( user.getName() );
         userDTO.password( user.getPassword() );
         userDTO.phone( user.getPhone() );
+        userDTO.address( user.getAddress() );
+        userDTO.avatar( user.getAvatar() );
+        userDTO.email( user.getEmail() );
+        userDTO.gender( user.getGender() );
+        userDTO.dateOfBirth( user.getDateOfBirth() );
+        userDTO.isEmailConfirmed( user.isEmailConfirmed() );
+        userDTO.emailConfirmationToken( user.getEmailConfirmationToken() );
         userDTO.googleId( user.getGoogleId() );
         userDTO.roles(RoleMapper.INSTANCE.convertToRoleDTOSet(user.getRoles()));
         userDTO.updateAt( user.getUpdateAt() );
         userDTO.updateBy( user.getUpdateBy() );
+        userDTO.createAt( user.getCreateAt() );
+        userDTO.createBy( user.getCreateBy() );
         return userDTO.build();
     }
 }

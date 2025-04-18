@@ -3,6 +3,8 @@ package com.backend.domicare.dto;
 import java.time.Instant;
 import java.util.Set;
 
+import com.backend.domicare.model.Gender;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,6 +25,8 @@ public class UserDTO {
     private String address;
     private String avatar;
     private String googleId;
+    private Gender gender;
+    private Instant dateOfBirth;
     private boolean isEmailConfirmed;
     private String emailConfirmationToken;
     private String createBy;

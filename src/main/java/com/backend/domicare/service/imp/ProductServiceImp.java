@@ -46,8 +46,13 @@ public class ProductServiceImp implements ProductService {
     public ProductDTO addProduct(AddProductRequest request) {
         // Extract product and category IDs from request
         Long categoryID = request.getCategoryId();
-        ProductDTO productDTO = request.getProduct();
-
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setName(request.getName());
+        productDTO.setDescription(request.getDescription());
+        productDTO.setPrice(request.getPrice());
+        productDTO.setDiscount(request.getDiscount());
+    
+        // Extract main image and landing image IDs from request
         Long mainImageId = request.getMainImageId();
         List<Long> landingImageIds = request.getLandingImageIds();
         

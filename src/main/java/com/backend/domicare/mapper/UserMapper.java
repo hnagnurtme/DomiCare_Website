@@ -1,5 +1,7 @@
 package com.backend.domicare.mapper;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
@@ -43,4 +45,6 @@ public interface UserMapper {
         userDTO.createBy( user.getCreateBy() );
         return userDTO.build();
     }
+
+    List<UserDTO> convertToUserDTOList(List<User> users);
 }

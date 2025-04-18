@@ -4,7 +4,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,24 +33,26 @@ public class UserController {
     public ResponseEntity<ResultPagingDTO> getUsers(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int size,
-            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String searchName,
+            @RequestParam(required = false, defaultValue="id") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sortDirection,
-            @Filter Specification<User> spec, Pageable pageable) {
+            @Filter Specification<User> spec , Pageable pageable) {
 
-        if (sortBy != null && !sortBy.isEmpty()) {
-        // Xử lý sắp xếp theo tham số sortBy và sortDirection
-        Sort sort = Sort.by(sortDirection.equalsIgnoreCase("desc") ? Sort.Order.desc(sortBy) : Sort.Order.asc(sortBy));
+        Sort sort = sortDirection.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
         pageable = PageRequest.of(page - 1, size, sort);
-    } else {
-        pageable = PageRequest.of(page - 1, size);
-    }
-        return ResponseEntity.status(HttpStatus.OK).body(this.userService.getAllUsers(spec, pageable));
+
+        if (searchName != null && !searchName.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + searchName.toLowerCase() + "%")
+            );
+        }
+        return ResponseEntity.ok(this.userService.getAllUsers(spec, pageable));
     }
 
     @GetMapping("/users/{id}")
     public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Long id) {
         UserDTO user = this.userService.getUserById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(user);
+        return ResponseEntity.ok(user);
     }
 
     @DeleteMapping("/users/{id}")
@@ -60,14 +61,13 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-
     @PutMapping("/users")
-    public ResponseEntity<UserDTO> updateUser(@RequestBody UpdateUserRequest user) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.userService.updateUserInformation(user));
+    public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UpdateUserRequest user) {
+        return ResponseEntity.ok(this.userService.updateUserInformation(user));
     }
 
     @PutMapping("/users/roles")
     public ResponseEntity<UserDTO> updateRoleForUser(@Valid @RequestBody UpdateRoleForUserRequest request) {
-        return ResponseEntity.status(HttpStatus.OK).body(this.userService.updateRoleForUser(request));
+        return ResponseEntity.ok(this.userService.updateRoleForUser(request));
     }
 }

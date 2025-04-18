@@ -15,11 +15,17 @@ import com.backend.domicare.model.User;
 @Repository
 public interface UsersRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
     public User findByEmail(String email);
+
     public void deleteUserById(Long id);
+
     public User findUserById(Long id);
+
     public User findByEmailAndPassword(String email, String password);
+    
     public boolean existsByEmail(String email);
+
     public Optional<User> findByEmailConfirmationToken(String emailConfirmationToken);
+
     public Optional<User> findByGoogleId(String googleId);
 
     @Query(value = "DELETE FROM users_roles WHERE user_id = :id", nativeQuery = true)

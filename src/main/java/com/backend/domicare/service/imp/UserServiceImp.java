@@ -87,17 +87,19 @@ public class UserServiceImp implements UserService {
     @Override
     public ResultPagingDTO getAllUsers(Specification<User> spec, Pageable pageable) {
         Page<User> users = this.userRepository.findAll(spec, pageable);
-        ResultPagingDTO resultPaginDTO = new ResultPagingDTO();
-        ResultPagingDTO.Meta meta = new ResultPagingDTO.Meta();
 
-        meta.setPage(users.getNumber() + 1);
+        List<UserDTO> userDTOs = UserMapper.INSTANCE.convertToUserDTOList(users.getContent());
+
+        ResultPagingDTO result = new ResultPagingDTO();
+        ResultPagingDTO.Meta meta = new ResultPagingDTO.Meta();
+        meta.setPage(users.getNumber()+ 1);
         meta.setSize(users.getSize());
         meta.setTotal(users.getTotalElements());
         meta.setTotalPages(users.getTotalPages());
+        result.setMeta(meta);
+        result.setData(userDTOs);
 
-        resultPaginDTO.setMeta(meta);
-        resultPaginDTO.setData(users.getContent());
-        return resultPaginDTO;
+        return result;
     }
 
     @Override

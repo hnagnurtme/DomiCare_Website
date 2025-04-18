@@ -16,7 +16,11 @@ public final class ProjectConstants {
 
 	public static final String DEFAULT_ROLE = "ROLE_USER";
 
-	public static final String DEFAULT_AVATAR = "https://res.cloudinary.com/drtizu6d3/image/upload/v1742485551/jw7da5qpbc2gip1qc2bo.jpg";
+	public static final String DEFAULT_AVATAR_FEMALE = "https://res.cloudinary.com/drtizu6d3/image/upload/v1742485551/jw7da5qpbc2gip1qc2bo.jpg";
+
+	public  static final String DEFAULT_AVATAR_MALE = "http://res.cloudinary.com/drtizu6d3/image/upload/v1744964184/erwv7vfksjxsjodegeww.jpg";
+
+	public  static final String DEFAULT_AVATAR_OTHER = "http://res.cloudinary.com/drtizu6d3/image/upload/v1744964274/lmy5tuyqvptbg4ylzara.jpg";
 
 	public static final String PENDING = "PENDING";
 
@@ -26,9 +30,5 @@ public final class ProjectConstants {
 
 	public static final String CANCELLED = "CANCELLED";
 
-	private ProjectConstants() {
-
-		throw new UnsupportedOperationException();
-	}
 
 }

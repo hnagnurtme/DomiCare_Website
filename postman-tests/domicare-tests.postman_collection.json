@@ -1,2998 +1,2368 @@
 {
+  "openapi": "3.0.1",
   "info": {
-    "_postman_id": "2e02e049-d510-4152-9e22-b692ebcf0848",
-    "name": "Domicare API",
+    "title": "Domicare API",
     "description": "API documentation for Domicare application",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "version": "1.0.0"
   },
-  "item": [
+  "servers": [
     {
-      "name": "User Controller",
-      "item": [
-        {
-          "name": "getUsers",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/users",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "users"
-              ],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "",
-                  "description": "",
-                  "disabled": true
-                },
-                {
-                  "key": "size",
-                  "value": "",
-                  "description": "",
-                  "disabled": true
-                },
-                {
-                  "key": "sortBy",
-                  "value": "",
-                  "description": "",
-                  "disabled": true
-                },
-                {
-                  "key": "sortDirection",
-                  "value": "",
-                  "description": "",
-                  "disabled": true
-                },
-                {
-                  "key": "spec",
-                  "value": "",
-                  "description": "",
-                  "disabled": false
-                },
-                {
-                  "key": "pageable",
-                  "value": "",
-                  "description": "",
-                  "disabled": false
-                }
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"getUsers successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "updateUser",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/users",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "users"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"id\": 0,\n  \"email\": \"string\",\n  \"name\": \"string\",\n  \"password\": \"string\",\n  \"address\": \"string\",\n  \"phone\": \"string\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"updateUser successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "updateRoleForUser",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/users/roles",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "users",
-                "roles"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"userId\": 0,\n  \"roleIds\": [\n    0\n  ]\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"updateRoleForUser successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "updateUserAvatar",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/users/avatar",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "users",
-                "avatar"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"imageId\": 0,\n  \"userId\": 0\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"updateUserAvatar successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "getUserById",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/users/{{id}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "users",
-                "{{id}}"
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"getUserById successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "deleteUserById",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/users/{{id}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "users",
-                "{{id}}"
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"deleteUserById successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Role Controller",
-      "item": [
-        {
-          "name": "getRoles",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/roles",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "roles"
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"getRoles successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "updateRole",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/roles",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "roles"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"id\": 0,\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"active\": false,\n  \"createBy\": \"string\",\n  \"updateBy\": \"string\",\n  \"createAt\": \"string\",\n  \"updateAt\": \"string\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"updateRole successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "createRole",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/roles",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "roles"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"id\": 0,\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"active\": false,\n  \"createBy\": \"string\",\n  \"updateBy\": \"string\",\n  \"createAt\": \"string\",\n  \"updateAt\": \"string\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"createRole successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "getRole",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/roles/{{id}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "roles",
-                "{{id}}"
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"getRole successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "deleteRole",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/roles/{{id}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "roles",
-                "{{id}}"
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"deleteRole successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Permission Controller",
-      "item": [
-        {
-          "name": "getPermissions",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/permissions",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "permissions"
-              ],
-              "query": [
-                {
-                  "key": "search",
-                  "value": "",
-                  "description": "",
-                  "disabled": true
-                },
-                {
-                  "key": "pageable",
-                  "value": "",
-                  "description": "",
-                  "disabled": false
-                }
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"getPermissions successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "updatePermission",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/permissions",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "permissions"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"id\": 0,\n  \"name\": \"string\",\n  \"apiPath\": \"string\",\n  \"method\": \"string\",\n  \"module\": \"string\",\n  \"createBy\": \"string\",\n  \"updateBy\": \"string\",\n  \"createAt\": \"string\",\n  \"updateAt\": \"string\",\n  \"roles\": [\n    \"string\"\n  ]\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"updatePermission successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "createPermission",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/permissions",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "permissions"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"id\": 0,\n  \"name\": \"string\",\n  \"apiPath\": \"string\",\n  \"method\": \"string\",\n  \"module\": \"string\",\n  \"createBy\": \"string\",\n  \"updateBy\": \"string\",\n  \"createAt\": \"string\",\n  \"updateAt\": \"string\",\n  \"roles\": [\n    \"string\"\n  ]\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"createPermission successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "getPermissionById",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/permissions/{{id}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "permissions",
-                "{{id}}"
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"getPermissionById successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "deletePermission",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/permissions/{{id}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "permissions",
-                "{{id}}"
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"deletePermission successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Product Controller",
-      "item": [
-        {
-          "name": "updateProduct",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/products",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "products"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"oldCategoryId\": 0,\n  \"oldProductId\": 0,\n  \"updateProduct\": {\n    \"id\": 0,\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"price\": 0,\n    \"image\": \"string\",\n    \"ratingStar\": 0,\n    \"discount\": 0,\n    \"priceAfterDiscount\": 0,\n    \"landingImages\": [\n      \"string\"\n    ],\n    \"categoryID\": 0,\n    \"reviewDTOs\": [\n      {\n        \"id\": 0,\n        \"rating\": 0,\n        \"comment\": \"string\",\n        \"createAt\": \"string\",\n        \"updateAt\": \"string\",\n        \"createBy\": \"string\",\n        \"updateBy\": \"string\",\n        \"userDTO\": {\n          \"id\": 0,\n          \"name\": \"string\",\n          \"email\": \"string\",\n          \"password\": \"string\",\n          \"phone\": \"string\",\n          \"address\": \"string\",\n          \"avatar\": \"string\",\n          \"googleId\": \"string\",\n          \"emailConfirmationToken\": \"string\",\n          \"createBy\": \"string\",\n          \"updateBy\": \"string\",\n          \"createAt\": \"string\",\n          \"updateAt\": \"string\",\n          \"roles\": [\n            {\n              \"id\": 0,\n              \"name\": \"string\",\n              \"description\": \"string\",\n              \"active\": false,\n              \"createBy\": \"string\",\n              \"updateBy\": \"string\",\n              \"createAt\": \"string\",\n              \"updateAt\": \"string\"\n            }\n          ],\n          \"emailConfirmed\": false\n        },\n        \"productId\": 0\n      }\n    ],\n    \"createBy\": \"string\",\n    \"updateBy\": \"string\",\n    \"createAt\": \"string\",\n    \"updateAt\": \"string\"\n  }\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"updateProduct successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "createProduct",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/products",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "products"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"categoryId\": 0,\n  \"product\": {\n    \"id\": 0,\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"price\": 0,\n    \"image\": \"string\",\n    \"ratingStar\": 0,\n    \"discount\": 0,\n    \"priceAfterDiscount\": 0,\n    \"landingImages\": [\n      \"string\"\n    ],\n    \"categoryID\": 0,\n    \"reviewDTOs\": [\n      {\n        \"id\": 0,\n        \"rating\": 0,\n        \"comment\": \"string\",\n        \"createAt\": \"string\",\n        \"updateAt\": \"string\",\n        \"createBy\": \"string\",\n        \"updateBy\": \"string\",\n        \"userDTO\": {\n          \"id\": 0,\n          \"name\": \"string\",\n          \"email\": \"string\",\n          \"password\": \"string\",\n          \"phone\": \"string\",\n          \"address\": \"string\",\n          \"avatar\": \"string\",\n          \"googleId\": \"string\",\n          \"emailConfirmationToken\": \"string\",\n          \"createBy\": \"string\",\n          \"updateBy\": \"string\",\n          \"createAt\": \"string\",\n          \"updateAt\": \"string\",\n          \"roles\": [\n            {\n              \"id\": 0,\n              \"name\": \"string\",\n              \"description\": \"string\",\n              \"active\": false,\n              \"createBy\": \"string\",\n              \"updateBy\": \"string\",\n              \"createAt\": \"string\",\n              \"updateAt\": \"string\"\n            }\n          ],\n          \"emailConfirmed\": false\n        },\n        \"productId\": 0\n      }\n    ],\n    \"createBy\": \"string\",\n    \"updateBy\": \"string\",\n    \"createAt\": \"string\",\n    \"updateAt\": \"string\"\n  },\n  \"mainImageId\": 0,\n  \"landingImageIds\": [\n    0\n  ]\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"createProduct successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "uploadProductImage",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/products/images",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "products",
-                "images"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"productId\": 0,\n  \"imageId\": 0,\n  \"isMainImage\": false\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"uploadProductImage successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "getAllProducts",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/public/products",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "public",
-                "products"
-              ],
-              "query": [
-                {
-                  "key": "categoryId",
-                  "value": "",
-                  "description": "",
-                  "disabled": true
-                },
-                {
-                  "key": "page",
-                  "value": "",
-                  "description": "",
-                  "disabled": true
-                },
-                {
-                  "key": "size",
-                  "value": "",
-                  "description": "",
-                  "disabled": true
-                },
-                {
-                  "key": "searchName",
-                  "value": "",
-                  "description": "",
-                  "disabled": true
-                },
-                {
-                  "key": "sortBy",
-                  "value": "",
-                  "description": "",
-                  "disabled": true
-                },
-                {
-                  "key": "sortDirection",
-                  "value": "",
-                  "description": "",
-                  "disabled": true
-                },
-                {
-                  "key": "spec",
-                  "value": "",
-                  "description": "",
-                  "disabled": false
-                },
-                {
-                  "key": "pageable",
-                  "value": "",
-                  "description": "",
-                  "disabled": false
-                }
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"getAllProducts successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "getProductById",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/public/products/{{id}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "public",
-                "products",
-                "{{id}}"
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"getProductById successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "deleteProduct",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/products/{{id}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "products",
-                "{{id}}"
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"deleteProduct successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Category Controller",
-      "item": [
-        {
-          "name": "updateCategory",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/categories",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "categories"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"categoryId\": 0,\n  \"name\": \"string\",\n  \"description\": \"string\",\n  \"imageId\": 0\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"updateCategory successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "createCategory",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/categories",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "categories"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"category\": {\n    \"id\": 0,\n    \"name\": \"string\",\n    \"description\": \"string\",\n    \"products\": [\n      {\n        \"id\": 0,\n        \"name\": \"string\",\n        \"description\": \"string\",\n        \"price\": 0,\n        \"image\": \"string\",\n        \"ratingStar\": 0,\n        \"discount\": 0,\n        \"priceAfterDiscount\": 0,\n        \"landingImages\": [\n          \"string\"\n        ],\n        \"categoryID\": 0,\n        \"reviewDTOs\": [\n          {\n            \"id\": 0,\n            \"rating\": 0,\n            \"comment\": \"string\",\n            \"createAt\": \"string\",\n            \"updateAt\": \"string\",\n            \"createBy\": \"string\",\n            \"updateBy\": \"string\",\n            \"userDTO\": {\n              \"id\": 0,\n              \"name\": \"string\",\n              \"email\": \"string\",\n              \"password\": \"string\",\n              \"phone\": \"string\",\n              \"address\": \"string\",\n              \"avatar\": \"string\",\n              \"googleId\": \"string\",\n              \"emailConfirmationToken\": \"string\",\n              \"createBy\": \"string\",\n              \"updateBy\": \"string\",\n              \"createAt\": \"string\",\n              \"updateAt\": \"string\",\n              \"roles\": [\n                {\n                  \"id\": 0,\n                  \"name\": \"string\",\n                  \"description\": \"string\",\n                  \"active\": false,\n                  \"createBy\": \"string\",\n                  \"updateBy\": \"string\",\n                  \"createAt\": \"string\",\n                  \"updateAt\": \"string\"\n                }\n              ],\n              \"emailConfirmed\": false\n            },\n            \"productId\": 0\n          }\n        ],\n        \"createBy\": \"string\",\n        \"updateBy\": \"string\",\n        \"createAt\": \"string\",\n        \"updateAt\": \"string\"\n      }\n    ],\n    \"image\": \"string\",\n    \"createBy\": \"string\",\n    \"updateBy\": \"string\",\n    \"createAt\": \"string\",\n    \"updateAt\": \"string\"\n  },\n  \"imageId\": 0\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"createCategory successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "getCategories",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/public/categories",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "public",
-                "categories"
-              ],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "",
-                  "description": "",
-                  "disabled": true
-                },
-                {
-                  "key": "size",
-                  "value": "",
-                  "description": "",
-                  "disabled": true
-                },
-                {
-                  "key": "sortBy",
-                  "value": "",
-                  "description": "",
-                  "disabled": true
-                },
-                {
-                  "key": "sortDirection",
-                  "value": "",
-                  "description": "",
-                  "disabled": true
-                },
-                {
-                  "key": "spec",
-                  "value": "",
-                  "description": "",
-                  "disabled": false
-                },
-                {
-                  "key": "pageable",
-                  "value": "",
-                  "description": "",
-                  "disabled": false
-                }
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"getCategories successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "getCategoryById",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/public/categories/{{id}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "public",
-                "categories",
-                "{{id}}"
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"getCategoryById successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "deleteCategory",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/categories/{{id}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "categories",
-                "{{id}}"
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"deleteCategory successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Booking Controller",
-      "item": [
-        {
-          "name": "updateBooking",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/bookings",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "bookings"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"bookingId\": 0,\n  \"address\": \"string\",\n  \"totalHours\": 0,\n  \"note\": \"string\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"updateBooking successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "createBooking",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/bookings",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "bookings"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"address\": \"string\",\n  \"totalHours\": 0,\n  \"note\": \"string\",\n  \"userId\": 0,\n  \"productIds\": [\n    0\n  ],\n  \"isPeriodic\": false\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"createBooking successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "updateBookingStatus",
-          "request": {
-            "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/bookings/status",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "bookings",
-                "status"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"bookingId\": 0,\n  \"status\": \"string\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"updateBookingStatus successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "getBookingById",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/bookings/{{id}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "bookings",
-                "{{id}}"
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"getBookingById successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "deleteBooking",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/bookings/{{id}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "bookings",
-                "{{id}}"
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"deleteBooking successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Auth Controller",
-      "item": [
-        {
-          "name": "resetPassword",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/reset-password",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "reset-password"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"id\": 0,\n  \"name\": \"string\",\n  \"email\": \"string\",\n  \"password\": \"string\",\n  \"phone\": \"string\",\n  \"address\": \"string\",\n  \"avatar\": \"string\",\n  \"googleId\": \"string\",\n  \"emailConfirmationToken\": \"string\",\n  \"createBy\": \"string\",\n  \"updateBy\": \"string\",\n  \"createAt\": \"string\",\n  \"updateAt\": \"string\",\n  \"roles\": [\n    {\n      \"id\": 0,\n      \"name\": \"string\",\n      \"description\": \"string\",\n      \"active\": false,\n      \"createBy\": \"string\",\n      \"updateBy\": \"string\",\n      \"createAt\": \"string\",\n      \"updateAt\": \"string\"\n    }\n  ],\n  \"emailConfirmed\": false\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"resetPassword successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "registerUser",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/register",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "register"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"email\": \"string\",\n  \"password\": \"string\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"registerUser successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "refreshToken",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/refresh-token",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "refresh-token"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"refreshToken\": \"string\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"refreshToken successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "login",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/login",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "login"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"email\": \"string\",\n  \"password\": \"string\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"login successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Review Controller",
-      "item": [
-        {
-          "name": "getAllReviews",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/reviews",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "reviews"
-              ],
-              "query": [
-                {
-                  "key": "page",
-                  "value": "",
-                  "description": "",
-                  "disabled": true
-                },
-                {
-                  "key": "size",
-                  "value": "",
-                  "description": "",
-                  "disabled": true
-                },
-                {
-                  "key": "sortBy",
-                  "value": "",
-                  "description": "",
-                  "disabled": true
-                },
-                {
-                  "key": "sortDirection",
-                  "value": "",
-                  "description": "",
-                  "disabled": true
-                },
-                {
-                  "key": "spec",
-                  "value": "",
-                  "description": "",
-                  "disabled": false
-                },
-                {
-                  "key": "pageable",
-                  "value": "",
-                  "description": "",
-                  "disabled": false
-                }
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"getAllReviews successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "createReview",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/reviews",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "reviews"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"productId\": 0,\n  \"rating\": 0,\n  \"comment\": \"string\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"createReview successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "File Controller",
-      "item": [
-        {
-          "name": "fetchFileByName",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/cloudinary/files",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "cloudinary",
-                "files"
-              ],
-              "query": [
-                {
-                  "key": "name",
-                  "value": "",
-                  "description": "",
-                  "disabled": false
-                }
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"fetchFileByName successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "uploadFile",
-          "request": {
-            "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
-            "url": {
-              "raw": "{{baseUrl}}/api/cloudinary/files",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "cloudinary",
-                "files"
-              ]
-            },
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"file\": \"string\"\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"uploadFile successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "fetchFileById",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/cloudinary/files/{{id}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "cloudinary",
-                "files",
-                "{{id}}"
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"fetchFileById successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "deleteFile",
-          "request": {
-            "method": "DELETE",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/cloudinary/files/{{id}}",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "cloudinary",
-                "files",
-                "{{id}}"
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"deleteFile successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "fetchAllFiles",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/cloudinary/files/all",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "api",
-                "cloudinary",
-                "files",
-                "all"
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"fetchAllFiles successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "View Controller",
-      "item": [
-        {
-          "name": "verifyEmail",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/verify-email",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "verify-email"
-              ],
-              "query": [
-                {
-                  "key": "token",
-                  "value": "",
-                  "description": "",
-                  "disabled": false
-                }
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"verifyEmail successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "forgotPassword",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/forgot-password",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "forgot-password"
-              ],
-              "query": [
-                {
-                  "key": "token",
-                  "value": "",
-                  "description": "",
-                  "disabled": false
-                }
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"forgotPassword successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Email Sending Controller",
-      "item": [
-        {
-          "name": "sendEmail",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/email/verify",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "email",
-                "verify"
-              ],
-              "query": [
-                {
-                  "key": "email",
-                  "value": "",
-                  "description": "",
-                  "disabled": false
-                }
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"sendEmail successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        },
-        {
-          "name": "sendResetPasswordEmail",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/email/reset-password",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "email",
-                "reset-password"
-              ],
-              "query": [
-                {
-                  "key": "email",
-                  "value": "",
-                  "description": "",
-                  "disabled": false
-                }
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"sendResetPasswordEmail successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "O Auth 2 Controller",
-      "item": [
-        {
-          "name": "exchangeAuthorizationCode",
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/auth/callback",
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "path": [
-                "auth",
-                "callback"
-              ],
-              "query": [
-                {
-                  "key": "code",
-                  "value": "",
-                  "description": "",
-                  "disabled": false
-                }
-              ]
-            },
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_token}}",
-                  "type": "string"
-                }
-              ]
-            }
-          },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"exchangeAuthorizationCode successful\", function () {",
-                  "              pm.response.to.have.status(200);",
-                  "              ",
-                  "              const responseData = pm.response.json();",
-                  "              pm.expect(responseData).to.be.an('object');",
-                  "              pm.expect(responseData).to.have.property('code');",
-                  "              ",
-                  "              // Store response data if needed",
-                  "              if (responseData.data) {",
-                  "                pm.environment.set('latest_response_data', JSON.stringify(responseData.data));",
-                  "              }",
-                  "            });"
-                ]
-              }
-            }
-          ]
-        }
-      ]
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
     }
   ],
-  "event": [],
-  "variable": []
+  "paths": {
+    "/users": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "getUsers",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          },
+          {
+            "name": "searchName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "id"
+            }
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "asc"
+            }
+          },
+          {
+            "name": "spec",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SpecificationUser"
+            }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultPagingDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "updateUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/roles": {
+      "put": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "updateRoleForUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateRoleForUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/roles": {
+      "get": {
+        "tags": [
+          "role-controller"
+        ],
+        "operationId": "getRoles",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "role-controller"
+        ],
+        "operationId": "updateRole",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "role-controller"
+        ],
+        "operationId": "createRole",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoleDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RoleDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/permissions": {
+      "get": {
+        "tags": [
+          "permission-controller"
+        ],
+        "operationId": "getPermissions",
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "permission-controller"
+        ],
+        "operationId": "updatePermission",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Permission"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Permission"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "permission-controller"
+        ],
+        "operationId": "createPermission",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Permission"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/Permission"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products": {
+      "put": {
+        "tags": [
+          "product-controller"
+        ],
+        "operationId": "updateProduct",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateProductRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "product-controller"
+        ],
+        "operationId": "createProduct",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddProductRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/products/images": {
+      "put": {
+        "tags": [
+          "product-controller"
+        ],
+        "operationId": "uploadProductImage",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddProductImageRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/categories": {
+      "put": {
+        "tags": [
+          "category-controller"
+        ],
+        "operationId": "updateCategory",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCategoryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "category-controller"
+        ],
+        "operationId": "createCategory",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCategoryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bookings": {
+      "put": {
+        "tags": [
+          "booking-controller"
+        ],
+        "operationId": "updateBooking",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBookingRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookingDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "booking-controller"
+        ],
+        "operationId": "createBooking",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BookingRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookingDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bookings/status": {
+      "put": {
+        "tags": [
+          "booking-controller"
+        ],
+        "operationId": "updateBookingStatus",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBookingStatusRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookingDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/reset-password": {
+      "post": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "resetPassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "registerUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RegisterRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/refresh-token": {
+      "post": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "refreshToken",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RefreshTokenRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/RefreshTokenRespone"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "auth-controller"
+        ],
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reviews": {
+      "get": {
+        "tags": [
+          "review-controller"
+        ],
+        "operationId": "getAllReviews",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "asc"
+            }
+          },
+          {
+            "name": "spec",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SpecificationReview"
+            }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "review-controller"
+        ],
+        "operationId": "createReview",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReviewRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReviewDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cloudinary/files": {
+      "get": {
+        "tags": [
+          "file-controller"
+        ],
+        "operationId": "fetchFileByName",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "file-controller"
+        ],
+        "operationId": "uploadFile",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/verify-email": {
+      "get": {
+        "tags": [
+          "view-controller"
+        ],
+        "operationId": "verifyEmail",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "getUserById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "user-controller"
+        ],
+        "operationId": "deleteUserById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/roles/{id}": {
+      "get": {
+        "tags": [
+          "role-controller"
+        ],
+        "operationId": "getRole",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "role-controller"
+        ],
+        "operationId": "deleteRole",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/permissions/{id}": {
+      "get": {
+        "tags": [
+          "permission-controller"
+        ],
+        "operationId": "getPermissionById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "permission-controller"
+        ],
+        "operationId": "deletePermission",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/forgot-password": {
+      "get": {
+        "tags": [
+          "view-controller"
+        ],
+        "operationId": "forgotPassword",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/email/verify": {
+      "get": {
+        "tags": [
+          "email-sending-controller"
+        ],
+        "operationId": "sendEmail",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/email/reset-password": {
+      "get": {
+        "tags": [
+          "email-sending-controller"
+        ],
+        "operationId": "sendResetPasswordEmail",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/callback": {
+      "get": {
+        "tags": [
+          "o-auth-2-controller"
+        ],
+        "operationId": "exchangeAuthorizationCode",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/public/products": {
+      "get": {
+        "tags": [
+          "product-controller"
+        ],
+        "operationId": "getAllProducts",
+        "parameters": [
+          {
+            "name": "categoryId",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64",
+              "default": 0
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          },
+          {
+            "name": "searchName",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "id"
+            }
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "asc"
+            }
+          },
+          {
+            "name": "spec",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SpecificationProduct"
+            }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/public/products/{id}": {
+      "get": {
+        "tags": [
+          "product-controller"
+        ],
+        "operationId": "getProductById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/public/categories": {
+      "get": {
+        "tags": [
+          "category-controller"
+        ],
+        "operationId": "getCategories",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 1
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 20
+            }
+          },
+          {
+            "name": "sortBy",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "id"
+            }
+          },
+          {
+            "name": "sortDirection",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "asc"
+            }
+          },
+          {
+            "name": "spec",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SpecificationCategory"
+            }
+          },
+          {
+            "name": "pageable",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Pageable"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResultPagingDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/public/categories/{id}": {
+      "get": {
+        "tags": [
+          "category-controller"
+        ],
+        "operationId": "getCategoryById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cloudinary/files/{id}": {
+      "get": {
+        "tags": [
+          "file-controller"
+        ],
+        "operationId": "fetchFileById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "file-controller"
+        ],
+        "operationId": "deleteFile",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/cloudinary/files/all": {
+      "get": {
+        "tags": [
+          "file-controller"
+        ],
+        "operationId": "fetchAllFiles",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/bookings/{id}": {
+      "get": {
+        "tags": [
+          "booking-controller"
+        ],
+        "operationId": "getBookingById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookingDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "booking-controller"
+        ],
+        "operationId": "deleteBooking",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/products/{id}": {
+      "delete": {
+        "tags": [
+          "product-controller"
+        ],
+        "operationId": "deleteProduct",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/categories/{id}": {
+      "delete": {
+        "tags": [
+          "category-controller"
+        ],
+        "operationId": "deleteCategory",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UpdateUserRequest": {
+        "required": [
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "oldPassword": {
+            "type": "string"
+          },
+          "newPassword": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "MALE",
+              "FEMALE",
+              "OTHER"
+            ]
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "imageId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "RoleDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "active": {
+            "type": "boolean"
+          },
+          "createBy": {
+            "type": "string"
+          },
+          "updateBy": {
+            "type": "string"
+          },
+          "createAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updateAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "UserDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string"
+          },
+          "address": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string"
+          },
+          "googleId": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "MALE",
+              "FEMALE",
+              "OTHER"
+            ]
+          },
+          "dateOfBirth": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "emailConfirmationToken": {
+            "type": "string"
+          },
+          "createBy": {
+            "type": "string"
+          },
+          "updateBy": {
+            "type": "string"
+          },
+          "createAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updateAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "roles": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RoleDTO"
+            }
+          },
+          "emailConfirmed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "UpdateRoleForUserRequest": {
+        "required": [
+          "roleIds",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "roleIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        }
+      },
+      "Permission": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "apiPath": {
+            "type": "string"
+          },
+          "method": {
+            "type": "string"
+          },
+          "module": {
+            "type": "string"
+          },
+          "createBy": {
+            "type": "string"
+          },
+          "updateBy": {
+            "type": "string"
+          },
+          "createAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updateAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ProductDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "image": {
+            "type": "string"
+          },
+          "ratingStar": {
+            "type": "number",
+            "format": "double"
+          },
+          "discount": {
+            "type": "number",
+            "format": "double"
+          },
+          "priceAfterDiscount": {
+            "type": "number",
+            "format": "double"
+          },
+          "landingImages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "categoryID": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "reviewDTOs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReviewDTO"
+            }
+          },
+          "createBy": {
+            "type": "string"
+          },
+          "updateBy": {
+            "type": "string"
+          },
+          "createAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updateAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ReviewDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "rating": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "comment": {
+            "type": "string"
+          },
+          "createAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updateAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "createBy": {
+            "type": "string"
+          },
+          "updateBy": {
+            "type": "string"
+          },
+          "userDTO": {
+            "$ref": "#/components/schemas/UserDTO"
+          },
+          "productId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "UpdateProductRequest": {
+        "required": [
+          "oldCategoryId",
+          "oldProductId",
+          "updateProduct"
+        ],
+        "type": "object",
+        "properties": {
+          "oldCategoryId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "oldProductId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "updateProduct": {
+            "$ref": "#/components/schemas/ProductDTO"
+          }
+        }
+      },
+      "AddProductImageRequest": {
+        "required": [
+          "imageId",
+          "productId"
+        ],
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "imageId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "isMainImage": {
+            "type": "boolean"
+          }
+        }
+      },
+      "UpdateCategoryRequest": {
+        "required": [
+          "categoryId"
+        ],
+        "type": "object",
+        "properties": {
+          "categoryId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "imageId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "UpdateBookingRequest": {
+        "required": [
+          "bookingId"
+        ],
+        "type": "object",
+        "properties": {
+          "bookingId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "address": {
+            "type": "string"
+          },
+          "totalHours": {
+            "type": "number",
+            "format": "double"
+          },
+          "note": {
+            "type": "string"
+          }
+        }
+      },
+      "BookingDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "address": {
+            "type": "string"
+          },
+          "bookingDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "totalHours": {
+            "type": "number",
+            "format": "double"
+          },
+          "totalPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "note": {
+            "type": "string"
+          },
+          "isPeriodic": {
+            "type": "boolean"
+          },
+          "bookingStatus": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "ACCEPTED",
+              "REJECTED",
+              "CANCELLED"
+            ]
+          },
+          "createBy": {
+            "type": "string"
+          },
+          "updateBy": {
+            "type": "string"
+          },
+          "createAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updateAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductDTO"
+            }
+          },
+          "userDTO": {
+            "$ref": "#/components/schemas/UserDTO"
+          }
+        }
+      },
+      "UpdateBookingStatusRequest": {
+        "required": [
+          "bookingId",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "bookingId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "RegisterRequest": {
+        "required": [
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "example": "string"
+          },
+          "password": {
+            "type": "string",
+            "example": "string"
+          }
+        }
+      },
+      "RegisterResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "avatar": {
+            "type": "string"
+          },
+          "roles": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "emailConfirmationToken": {
+            "type": "string"
+          },
+          "emailConfirmed": {
+            "type": "boolean"
+          }
+        }
+      },
+      "RefreshTokenRequest": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string"
+          }
+        }
+      },
+      "RefreshTokenRespone": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginRequest": {
+        "required": [
+          "email",
+          "password"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Email must be a valid email address"
+          },
+          "password": {
+            "type": "string",
+            "description": "Password must contain at least 8 characters, including uppercase, lowercase, and numbers"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "refreshToken": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserDTO"
+          }
+        }
+      },
+      "ReviewRequest": {
+        "required": [
+          "productId",
+          "rating"
+        ],
+        "type": "object",
+        "properties": {
+          "productId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "rating": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "comment": {
+            "type": "string"
+          }
+        }
+      },
+      "AddProductRequest": {
+        "required": [
+          "categoryId",
+          "description",
+          "mainImageId",
+          "name",
+          "price"
+        ],
+        "type": "object",
+        "properties": {
+          "categoryId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "mainImageId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "discount": {
+            "type": "number",
+            "format": "double"
+          },
+          "landingImageIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        }
+      },
+      "AddCategoryRequest": {
+        "required": [
+          "category",
+          "imageId"
+        ],
+        "type": "object",
+        "properties": {
+          "category": {
+            "$ref": "#/components/schemas/CategoryDTO"
+          },
+          "imageId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        }
+      },
+      "CategoryDTO": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductDTO"
+            }
+          },
+          "image": {
+            "type": "string"
+          },
+          "createBy": {
+            "type": "string"
+          },
+          "updateBy": {
+            "type": "string"
+          },
+          "createAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updateAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "BookingRequest": {
+        "required": [
+          "address",
+          "isPeriodic",
+          "productIds",
+          "totalHours",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string"
+          },
+          "totalHours": {
+            "type": "number",
+            "format": "double"
+          },
+          "note": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "productIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "isPeriodic": {
+            "type": "boolean"
+          }
+        }
+      },
+      "SpecificationUser": {
+        "type": "object"
+      },
+      "Pageable": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "minimum": 0,
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "minimum": 1,
+            "type": "integer",
+            "format": "int32"
+          },
+          "sort": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "Meta": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "size": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "totalPages": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "ResultPagingDTO": {
+        "type": "object",
+        "properties": {
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          },
+          "data": {
+            "type": "object"
+          }
+        }
+      },
+      "SpecificationReview": {
+        "type": "object"
+      },
+      "SpecificationProduct": {
+        "type": "object"
+      },
+      "SpecificationCategory": {
+        "type": "object"
+      }
+    }
+  }
 }

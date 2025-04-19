@@ -2,6 +2,7 @@ package com.backend.domicare.service;
 
 
 
+import com.backend.domicare.dto.PermissionDTO;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -9,12 +10,12 @@ import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.model.Permission;
 
 public interface PermissionService {
-    public boolean isPermissionExists(Permission permission);
-    public Permission createPermission(Permission permission);
-    public Permission getPermissionById(Long id);
+    public boolean isPermissionExists(PermissionDTO permission);
+    public PermissionDTO createPermission(PermissionDTO permission);
+    public PermissionDTO getPermissionById(Long id);
 
-    public Permission updatePermission(Permission permission);
-    public void deletePermission(Permission permission);
+    public PermissionDTO updatePermission(PermissionDTO permission);
+    public void deletePermission(Long id);
 
     public ResultPagingDTO getPermissions(Specification<Permission> spec,Pageable pageable);
 }

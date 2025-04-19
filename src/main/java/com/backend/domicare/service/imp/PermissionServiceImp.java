@@ -2,6 +2,8 @@ package com.backend.domicare.service.imp;
 
 import java.util.Optional;
 
+import com.backend.domicare.dto.PermissionDTO;
+import com.backend.domicare.mapper.PermissionMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -19,22 +21,24 @@ import lombok.RequiredArgsConstructor;
 public class PermissionServiceImp implements PermissionService {
     private final PermissionsRepository permissionsRepository;
     @Override
-    public boolean isPermissionExists(Permission permission) {
+    public boolean isPermissionExists(PermissionDTO permission) {
         return permissionsRepository.existsByModuleAndApiPathAndMethod(permission.getModule(), permission.getApiPath(), permission.getMethod()) 
             && !permissionsRepository.findById(permission.getId()).isPresent();
     }
     
 
     @Override
-    public Permission createPermission(Permission permission) {
-        return this.permissionsRepository.save(permission);
+    public PermissionDTO createPermission(PermissionDTO permission) {
+        Permission entity = PermissionMapper.INSTANCE.convertToPermission(permission);
+
+        return PermissionMapper.INSTANCE.convertToPermissionDTO(this.permissionsRepository.save(entity));
     }
 
     @Override
-    public Permission getPermissionById(Long id) {
+    public PermissionDTO getPermissionById(Long id) {
         Optional<Permission> permission = permissionsRepository.findById(id);
         if( permission.isPresent() ) {
-            return permission.get();
+            return PermissionMapper.INSTANCE.convertToPermissionDTO(permission.get());
         }
         throw new NotFoundException("Permission not found");
     }
@@ -56,11 +60,9 @@ public class PermissionServiceImp implements PermissionService {
     }
 
     @Override
-    public Permission updatePermission(Permission permission) {
-        Permission oldPermission = this.getPermissionById(permission.getId());
-        if( oldPermission == null ) {
-            throw new NotFoundException("Permission not found");
-        }
+    public PermissionDTO updatePermission(PermissionDTO permission) {
+        Permission oldPermission = this.permissionsRepository.findById(permission.getId()).orElseThrow(() -> new NotFoundException("Permission not found"));
+
         oldPermission.setName(permission.getName());
         oldPermission.setApiPath(permission.getApiPath());
         oldPermission.setMethod(permission.getMethod());
@@ -69,12 +71,12 @@ public class PermissionServiceImp implements PermissionService {
         oldPermission.setUpdateAt(permission.getUpdateAt());
 
         Permission updatedPermission = this.permissionsRepository.save(oldPermission);
-        return updatedPermission;
+        return PermissionMapper.INSTANCE.convertToPermissionDTO(updatedPermission);
     }
     
     @Override
-    public void deletePermission(Permission permission) {
-        Optional<Permission> permissionOptional = this.permissionsRepository.findById(permission.getId());
+    public void deletePermission(Long id) {
+        Optional<Permission> permissionOptional = this.permissionsRepository.findById(id);
         if (permissionOptional.isEmpty()) {
             throw new NotFoundException("Permission not found");
         }

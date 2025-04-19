@@ -1,5 +1,8 @@
 package com.backend.domicare.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,7 +18,6 @@ import com.backend.domicare.dto.FileDTO;
 import com.backend.domicare.dto.response.Message;
 import com.backend.domicare.service.FileService;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
@@ -26,9 +28,21 @@ public class FileController {
     private final FileService fileService;
 
     @PostMapping("/files")
-    public ResponseEntity<?> uploadFile(@Valid @RequestBody MultipartFile file) {
-        FileDTO fileDTO = fileService.uploadFile(file, file.getOriginalFilename(),false);
+    public ResponseEntity<?> uploadFile(@Valid @RequestParam("file") MultipartFile file) {
+        FileDTO fileDTO = fileService.uploadFile(file, file.getOriginalFilename(), false);
         return ResponseEntity.status(HttpStatus.CREATED).body(fileDTO);
+    }
+    
+    @PostMapping("/files/multiple")
+    public ResponseEntity<?> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+        List<FileDTO> uploadedFiles = new ArrayList<>();
+        
+        for (MultipartFile file : files) {
+            FileDTO fileDTO = fileService.uploadFile(file, file.getOriginalFilename(), false);
+            uploadedFiles.add(fileDTO);
+        }
+        
+        return ResponseEntity.status(HttpStatus.CREATED).body(uploadedFiles);
     }
     
     @GetMapping("/files/{id}")

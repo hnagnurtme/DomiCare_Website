@@ -33,6 +33,7 @@ import com.backend.domicare.repository.BookingsRepository;
 import com.backend.domicare.repository.ReviewsRepository;
 import com.backend.domicare.repository.TokensRepository;
 import com.backend.domicare.repository.UsersRepository;
+import com.backend.domicare.security.jwt.JwtTokenManager;
 import com.backend.domicare.service.FileService;
 import com.backend.domicare.service.RoleService;
 import com.backend.domicare.service.UserService;
@@ -192,11 +193,16 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserDTO updateUserInformation(UpdateUserRequest userRequest){
-        Long id = userRequest.getUserId();
+        Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
+        User oldUser = null;
+        if(currentUserLogin.isPresent()) {
+            oldUser = userRepository.findByEmail(currentUserLogin.get());
+        } else {
+            throw new NotFoundUserException("User not found");
+        }
 
-        User oldUser = userRepository.findUserById(id);
         if (oldUser == null) {
-            throw new NotFoundUserException("User not found for id: " + id);
+            throw new NotFoundUserException("User not found for ");
         }
         if( userRequest.getName() != null){
             oldUser.setName(userRequest.getName());

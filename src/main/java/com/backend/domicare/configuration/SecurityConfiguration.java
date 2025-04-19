@@ -97,6 +97,7 @@ public class SecurityConfiguration {
             .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
             .csrf(AbstractHttpConfigurer::disable)
             .oauth2ResourceServer(oauth2 -> oauth2.disable());
+
         
         return http.build();
     }

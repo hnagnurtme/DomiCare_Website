@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: domicare/backend
     ports:
       - "8080:8080"
     networks:

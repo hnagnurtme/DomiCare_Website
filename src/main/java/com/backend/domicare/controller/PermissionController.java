@@ -1,5 +1,6 @@
 package com.backend.domicare.controller;
 
+import com.backend.domicare.dto.PermissionDTO;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -25,7 +26,7 @@ public class PermissionController {
     private final PermissionService permissionService;
 
     @PostMapping("/permissions")
-    public ResponseEntity<Permission> createPermission(@Valid @RequestBody Permission permission) {
+    public ResponseEntity<PermissionDTO> createPermission(@Valid @RequestBody PermissionDTO permission) {
 
         if( this.permissionService.isPermissionExists(permission) ) {
             return ResponseEntity.badRequest().build();
@@ -34,7 +35,7 @@ public class PermissionController {
     }
 
     @PutMapping("/permissions")
-    public ResponseEntity<Permission> updatePermission(@Valid @RequestBody Permission permission) {
+    public ResponseEntity<PermissionDTO> updatePermission(@Valid @RequestBody PermissionDTO permission) {
 
         if( this.permissionService.getPermissionById(permission.getId()) == null) {
             return ResponseEntity.badRequest().build();
@@ -49,11 +50,7 @@ public class PermissionController {
 
     @DeleteMapping("/permissions/{id}")
     public ResponseEntity<Void> deletePermission( @PathVariable("id") Long id) {
-        Permission oldPermission = this.permissionService.getPermissionById(id);
-        if( oldPermission == null ) {
-            return ResponseEntity.badRequest().build();
-        }
-        this.permissionService.deletePermission(oldPermission);
+        this.permissionService.deletePermission(id);
         return ResponseEntity.noContent().build();
     }
 
@@ -76,7 +73,7 @@ public class PermissionController {
 
     @GetMapping("/permissions/{id}")   
     public ResponseEntity<?> getPermissionById( @PathVariable("id") Long id) {
-        Permission permission = this.permissionService.getPermissionById(id);
+        PermissionDTO permission = this.permissionService.getPermissionById(id);
         if( permission == null ) {
             return ResponseEntity.badRequest().build();
         }

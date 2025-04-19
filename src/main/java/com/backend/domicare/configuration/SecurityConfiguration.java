@@ -114,7 +114,7 @@ public class SecurityConfiguration {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
                 // User and admin access
-                .requestMatchers(ApiPaths.USER_PATHS).hasAnyRole(Roles.ADMIN, Roles.USER)
+                .requestMatchers(ApiPaths.USER_PATHS).permitAll()
                 
                 // Admin-only access
                 .requestMatchers(ApiPaths.ADMIN_PATHS).hasRole(Roles.ADMIN)
@@ -190,8 +190,11 @@ public class SecurityConfiguration {
             // Session management - stateless for REST API
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            );
+            )
+            // Enable CORS
+            .cors(Customizer.withDefaults());
 
         return http.build();
     }
 }
+

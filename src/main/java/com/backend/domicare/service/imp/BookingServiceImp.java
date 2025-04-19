@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import com.backend.domicare.dto.BookingDTO;
+import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.request.BookingRequest;
 import com.backend.domicare.dto.request.UpdateBookingRequest;
 import com.backend.domicare.dto.request.UpdateBookingStatusRequest;
@@ -26,6 +28,7 @@ import com.backend.domicare.model.Product;
 import com.backend.domicare.model.User;
 import com.backend.domicare.repository.BookingsRepository;
 import com.backend.domicare.repository.UsersRepository;
+import com.backend.domicare.security.jwt.JwtTokenManager;
 import com.backend.domicare.service.BookingService;
 import com.backend.domicare.service.ProductService;
 
@@ -41,51 +44,51 @@ public class BookingServiceImp implements BookingService {
     private final UsersRepository userRepository;
     private final ProductService productService;
 
-    @Override
-    @Transactional
-    public BookingDTO addBooking(BookingRequest request) {
-        if (request == null) {
-            throw new IllegalArgumentException("Booking request cannot be null");
-        }
+    // @Override
+    // @Transactional
+    // public BookingDTO addBooking(BookingRequest request) {
+    //     if (request == null) {
+    //         throw new IllegalArgumentException("Booking request cannot be null");
+    //     }
         
-        Long userId = request.getUserId();
-        if (userId == null) {
-            throw new IllegalArgumentException("User ID cannot be null");
-        }
+    //     Long userId = request.getUserId();
+    //     if (userId == null) {
+    //         throw new IllegalArgumentException("User ID cannot be null");
+    //     }
         
-        List<Long> productIds = request.getProductIds();
-        if (CollectionUtils.isEmpty(productIds)) {
-            throw new IllegalArgumentException("Product IDs cannot be empty");
-        }
+    //     List<Long> productIds = request.getProductIds();
+    //     if (CollectionUtils.isEmpty(productIds)) {
+    //         throw new IllegalArgumentException("Product IDs cannot be empty");
+    //     }
         
-        logger.info("Creating new booking for user ID: {}", userId);
-        Booking bookingEntity = BookingMapper.INSTANCE.convertToBooking(request);
+    //     logger.info("Creating new booking for user ID: {}", userId);
+    //     Booking bookingEntity = BookingMapper.INSTANCE.convertToBooking(request);
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundUserException("User not found with ID: " + userId));
+    //     User user = userRepository.findById(userId)
+    //             .orElseThrow(() -> new NotFoundUserException("User not found with ID: " + userId));
     
-        List<Product> products = productService.findAllByIdIn(productIds);
+    //     List<Product> products = productService.findAllByIdIn(productIds);
 
-        if (products.isEmpty()) {
-            throw new NotFoundProductException("No products found with provided IDs");
-        }
+    //     if (products.isEmpty()) {
+    //         throw new NotFoundProductException("No products found with provided IDs");
+    //     }
 
-        List<Double> finalPrices = products.stream()
-                .map(Product::getPriceAfterDiscount)
-                .toList();
+    //     List<Double> finalPrices = products.stream()
+    //             .map(Product::getPriceAfterDiscount)
+    //             .toList();
 
-        Double totalPrice = this.calculateTotalPrice(finalPrices, request.getTotalHours());
-        BookingStatus status = BookingStatus.PENDING;
-        bookingEntity.setBookingDate(Instant.now());
-        bookingEntity.setTotalPrice(totalPrice);
-        bookingEntity.setUser(user);
-        bookingEntity.setBookingStatus(status);
-        bookingEntity.setProducts(products);
+    //     Double totalPrice = this.calculateTotalPrice(finalPrices, request.getTotalHours());
+    //     BookingStatus status = BookingStatus.PENDING;
+    //     bookingEntity.setBookingDate(Instant.now());
+    //     bookingEntity.setTotalPrice(totalPrice);
+    //     bookingEntity.setUser(user);
+    //     bookingEntity.setBookingStatus(status);
+    //     bookingEntity.setProducts(products);
 
-        Booking savedBooking = bookingRepository.save(bookingEntity);
-        logger.info("Booking created successfully with ID: {}", savedBooking.getId());
-        return BookingMapper.INSTANCE.convertToBookingDTO(savedBooking);
-    }
+    //     Booking savedBooking = bookingRepository.save(bookingEntity);
+    //     logger.info("Booking created successfully with ID: {}", savedBooking.getId());
+    //     return BookingMapper.INSTANCE.convertToBookingDTO(savedBooking);
+    // }
 
     @Override
     @Transactional(readOnly = true)
@@ -112,7 +115,7 @@ public class BookingServiceImp implements BookingService {
                 .orElseThrow(() -> new NotFoundBookingException("Booking not found with ID: " + id));
 
         // Validate status
-        if (booking.getBookingStatus() == BookingStatus.ACCEPTED) {
+        if (booking.getBookingStatus() == BookingStatus.ACCEPTED || booking.getBookingStatus() == BookingStatus.CANCELLED) {
             logger.warn("Cannot delete booking with ID: {} due to status: {}", id, booking.getBookingStatus());
             throw new BookingStatusException("Cannot delete booking with status: " + booking.getBookingStatus());
         }
@@ -141,29 +144,8 @@ public class BookingServiceImp implements BookingService {
             throw new BookingStatusException("Cannot update booking with status: " + booking.getBookingStatus());
         }
         
-        // Update booking details
-        booking.setBookingDate(Instant.now());
-        if (request.getAddress() != null) {
-            booking.setAddress(request.getAddress());
-        }
-        if (request.getNote() != null) {
-            booking.setNote(request.getNote());
-        }
-        
         // Recalculate price if total hours changed
-        Double oldTotalHours = booking.getTotalHours();
-        if (request.getTotalHours() != null && !Objects.equals(oldTotalHours, request.getTotalHours())) {
-            booking.setTotalHours(request.getTotalHours());
-            
-            // Recalculate total price
-            List<Double> finalPrices = booking.getProducts().stream()
-                    .map(Product::getPriceAfterDiscount)
-                    .toList();
-            Double newTotalPrice = calculateTotalPrice(finalPrices, request.getTotalHours());
-            booking.setTotalPrice(newTotalPrice);
-            logger.info("Recalculated price for booking ID: {} from {} to {}", id, 
-                    (oldTotalHours * booking.getTotalPrice() / request.getTotalHours()), newTotalPrice);
-        }
+    
         
         // Save updated booking
         Booking updatedBooking = bookingRepository.save(booking);
@@ -194,21 +176,6 @@ public class BookingServiceImp implements BookingService {
         return bookings.stream()
                 .map(BookingMapper.INSTANCE::convertToBookingDTO)
                 .toList();
-    }
-
-    @Override
-    public Double calculateTotalPrice(List<Double> finalPrices, Double totalHours) {
-        if (CollectionUtils.isEmpty(finalPrices) || totalHours == null || totalHours <= 0) {
-            throw new IllegalArgumentException("Invalid price list or total hours");
-        }
-        
-        Double totalPrice = 0.0;
-        for (Double price : finalPrices) {
-            if (price != null) {
-                totalPrice += price;
-            }
-        }
-        return totalPrice * totalHours;
     }
 
     @Override
@@ -245,4 +212,27 @@ public class BookingServiceImp implements BookingService {
         logger.info("Booking status updated successfully for ID: {}", id);
         return BookingMapper.INSTANCE.convertToBookingDTO(updatedBooking);
     }
+
+    @Override
+    @Transactional
+    public BookingDTO addBooking(BookingRequest request) {
+        // Extract and validate request parameters
+        User user = new User();
+        String guestEmail = request.getGuestEmail();
+        if (guestEmail == null || guestEmail.isEmpty()) {
+            throw new IllegalArgumentException("Guest email cannot be null or empty");
+        }
+        else{
+            Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
+            if(currentUserLogin.isPresent()) {
+                user = userRepository.findByEmail(currentUserLogin.get());
+            } else {
+                throw new NotFoundUserException("Không tìm thấy người dùng");
+            }
+        }
+
+        return null;
+    }
+
+    
 }

@@ -39,8 +39,6 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String address;
-    private Instant bookingDate;
-    private Double totalHours;
     private Double totalPrice;
     private String note;
     private Boolean isPeriodic;
@@ -49,6 +47,8 @@ public class Booking {
     @Enumerated(EnumType.STRING)
     private BookingStatus bookingStatus;
 
+    private Instant startTime;
+    
     private String createBy;
     private String updateBy;
     private Instant createAt;

@@ -13,8 +13,5 @@ public interface  BookingService {
     public BookingDTO deleteBooking(Long id);
     public BookingDTO updateBooking(UpdateBookingRequest request);
     public List<BookingDTO> getAllBookingsByUserId(Long userId);
-    public Double calculateTotalPrice(List<Double> finalPrices, Double totalHours);
-
-
     public BookingDTO updateBookingStatus(UpdateBookingStatusRequest request);
 }

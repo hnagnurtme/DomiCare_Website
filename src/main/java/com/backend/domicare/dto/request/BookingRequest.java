@@ -1,5 +1,6 @@
 package com.backend.domicare.dto.request;
 
+import java.time.Instant;
 import java.util.List;
 
 import jakarta.validation.constraints.NotNull;
@@ -17,13 +18,15 @@ import lombok.Setter;
 public class BookingRequest {
     @NotNull(message = "Không được để trống địa chỉ")
     private String address;
-    @NotNull(message = "Không được để trống thời gian")
+    @NotNull(message = "Không được để trống tổng thời gian")
     private Double totalHours;
-    private String note;
-    @NotNull(message = "Không được để trống người dùng")
-    private Long userId;
     @NotNull(message = "Không được để trống sản phẩm")
     private List<Long> productIds;
     @NotNull(message = "Chọn định kì hoặc không")
     private Boolean isPeriodic;
+    private String note;
+    @NotNull(message = "Không được để trống thời gian bắt đầu")
+    private Instant startTime;
+    private String guestEmail;
+
 }

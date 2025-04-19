@@ -19,7 +19,6 @@ import lombok.Setter;
 public class BookingDTO {
     private Long id;
     private String address;
-    private Instant bookingDate;
     private Double totalHours;
     private Double totalPrice;
     private String note;
@@ -29,6 +28,7 @@ public class BookingDTO {
     private String updateBy;
     private Instant createAt;
     private Instant updateAt;
+    private Instant startTime;
     private List<ProductDTO> products;
     private UserDTO userDTO;
 }

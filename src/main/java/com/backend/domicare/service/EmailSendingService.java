@@ -11,9 +11,14 @@ public interface EmailSendingService {
     // Gửi email từ template bất đồng bộ
     @Async
     CompletableFuture<String> sendEmailFromTemplate(String to, String subject, String templateName, String templateType);
+
+
+    @Async
+    CompletableFuture<Void> sendPasswordToUser(String to, String fullName,String passWord);
     
     // Gửi email từ template đồng bộ
     String sendEmailFromTemplateSync(String to, String subject, String templateName);
+
     
     // Gửi email đặt lại mật khẩu từ template đồng bộ
     String sendEmailFromTemplateSyncForResetPassword(String to, String subject, String templateName);
@@ -22,6 +27,7 @@ public interface EmailSendingService {
     enum TemplateType {
         VERIFICATION, RESET_PASSWORD
     }
+
 
     
 }

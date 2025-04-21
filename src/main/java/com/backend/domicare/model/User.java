@@ -68,7 +68,9 @@ public class User {
     private String updateBy;
     private Instant createAt;
     private Instant updateAt;
-
+    @Builder.Default
+    @Column(nullable = false)
+    private boolean isActive = true;
     @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.MERGE})
     @JoinTable(
         name = "users_roles",

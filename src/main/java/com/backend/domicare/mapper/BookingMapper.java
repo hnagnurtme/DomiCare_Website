@@ -25,14 +25,26 @@ public interface  BookingMapper {
                 .updateBy(booking.getUpdateBy())
                 .address(booking.getAddress())
                 .note(booking.getNote())
+                .totalPrice(booking.getTotalPrice())
                 .startTime(booking.getStartTime())
                 .isPeriodic(booking.getIsPeriodic())
                 .startTime(booking.getStartTime())
-                .totalPrice(booking.getTotalPrice())
                 .bookingStatus(booking.getBookingStatus())
                 .userDTO(UserMapper.INSTANCE.convertToUserDTO(booking.getUser()))
                 .build();
     }
 
     Booking convertToBooking(BookingRequest bookingRequest);
+    default Booking convertToBookingByRequest(BookingRequest bookingRequest) {
+        if (bookingRequest == null) {
+            return null;
+        }
+        return Booking.builder()
+                .address(bookingRequest.getAddress())
+                .note(bookingRequest.getNote())
+                .isPeriodic(bookingRequest.getIsPeriodic())
+                .startTime(bookingRequest.getStartTime())
+                .note(bookingRequest.getNote())
+                .build();
+    }
 }

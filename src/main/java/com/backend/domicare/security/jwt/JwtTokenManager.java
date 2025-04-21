@@ -124,4 +124,8 @@ public class JwtTokenManager {
         }
         return token.getExpiration().isAfter(Instant.now());
     }
+
+    public String generateRandomPassword() {
+        return  UUID.randomUUID().toString();
+    }
 }

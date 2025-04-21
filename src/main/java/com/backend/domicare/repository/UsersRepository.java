@@ -33,4 +33,6 @@ public interface UsersRepository extends JpaRepository<User, Long>, JpaSpecifica
 
     @Query("SELECT t FROM Token t JOIN FETCH t.user WHERE t.refreshToken = :refreshToken")
     Optional<Token> findByRefreshTokenWithUser(@Param("refreshToken") String refreshToken);
+
+    
 }

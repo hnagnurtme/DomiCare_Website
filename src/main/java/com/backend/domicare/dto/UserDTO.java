@@ -26,6 +26,7 @@ public class UserDTO {
     private String avatar;
     private String googleId;
     private Gender gender;
+    private Boolean isActive;
     private Instant dateOfBirth;
     private boolean isEmailConfirmed;
     private String emailConfirmationToken;

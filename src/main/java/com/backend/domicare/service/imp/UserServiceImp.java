@@ -72,6 +72,14 @@ public class UserServiceImp implements UserService {
         }
         user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setEmailConfirmed(userDTO.isEmailConfirmed());
+        user.setEmailConfirmationToken(userDTO.getEmailConfirmationToken());
+        user.setAvatar(userDTO.getAvatar());
+        user.setPhone(userDTO.getPhone());
+        user.setAddress(userDTO.getAddress());
+        user.setDateOfBirth(userDTO.getDateOfBirth());
+        user.setGender(userDTO.getGender());
+        user.setName(userDTO.getName());
         userRepository.save(user);
         return UserMapper.INSTANCE.convertToUserDTO(user);
     }

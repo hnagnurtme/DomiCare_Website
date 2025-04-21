@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Email từ chối</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        padding: 20px;
+      }
+      .email-container {
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+        max-width: 600px;
+        margin: auto;
+      }
+      .logo {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+      .logo img {
+        max-width: 150px;
+        height: auto;
+      }
+      .header {
+        text-align: center;
+        color: #d32f2f;
+      }
+      .content {
+        margin-top: 20px;
+        line-height: 1.6;
+        color: #333;
+      }
+      .footer {
+        margin-top: 30px;
+        font-size: 13px;
+        color: #777;
+        text-align: center;
+      }
+      .btn {
+        display: inline-block;
+        background-color: #d32f2f;
+        color: #fff;
+        padding: 10px 20px;
+        text-decoration: none;
+        margin-top: 20px;
+        border-radius: 5px;
+      }
+      .logo {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .logo img {
+    width: 120px;
+    height: auto;
+  }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+        <img src="https://res.cloudinary.com/drtizu6d3/image/upload/v1742480126/qjddivskmhlgiknyrqzv.png"
+             alt="DomiCare Logo" class="logo" />
+        <h2>❌ Yêu cầu dịch vụ bị từ chối</h2>
+        <p>Xin chào <strong th:text="${nameUser}">Nguyễn Văn A</strong>,</p>
+        <p>
+            Chúng tôi rất tiếc phải thông báo rằng yêu cầu đăng ký dịch vụ
+            <strong th:text="${nameService}">Vệ sinh công nghiệp</strong> của bạn vào ngày
+            <strong th:text="${dateBooking}">11/04/2025</strong> đã bị
+            <span style="color: #d32f2f;"><strong>từ chối</strong></span>.
+        </p>
+        <p>
+            Lý do từ chối: <em th:text="${reason}">Hiện tại chúng tôi đang gặp sự cố.</em>
+        </p>
+        <p>
+            Chúng tôi thành thật xin lỗi vì sự bất tiện này. Nếu bạn cần hỗ trợ
+            hoặc muốn đăng ký lại dịch vụ, đừng ngần ngại liên hệ với chúng tôi.
+        </p>
+        <a href="http://localhost:4000" class="btn">Liên hệ lại với chúng tôi</a>
+        <p class="footer">
+            © 2025 DomiCare. Email này được gửi tự động – vui lòng không trả lời.
+        </p>
+    </div>
+</body>
+</html>

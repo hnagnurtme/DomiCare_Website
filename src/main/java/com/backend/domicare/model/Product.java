@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.backend.domicare.security.jwt.JwtTokenManager;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -36,7 +37,10 @@ public class Product {
     private Long id;
 
     private String name;
+    
+    @Column(columnDefinition = "TEXT")
     private String description;
+    
     private Double price;
     private Double discount;
     private String image;

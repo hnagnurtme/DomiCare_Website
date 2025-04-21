@@ -1,6 +1,4 @@
 package com.backend.domicare.dto;
-
-import com.backend.domicare.model.Role;
 import lombok.*;
 
 import java.time.Instant;

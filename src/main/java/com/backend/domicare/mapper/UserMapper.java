@@ -43,6 +43,7 @@ public interface UserMapper {
         userDTO.updateBy( user.getUpdateBy() );
         userDTO.createAt( user.getCreateAt() );
         userDTO.createBy( user.getCreateBy() );
+        userDTO.isActive( user.isActive() );
         return userDTO.build();
     }
 

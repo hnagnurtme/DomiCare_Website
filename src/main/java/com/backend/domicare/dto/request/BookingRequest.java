@@ -16,10 +16,12 @@ import lombok.Setter;
 @Builder
 @Getter
 public class BookingRequest {
+    private String name;
+
+    private String phone;
     @NotNull(message = "Không được để trống địa chỉ")
     private String address;
-    @NotNull(message = "Không được để trống tổng thời gian")
-    private Double totalHours;
+
     @NotNull(message = "Không được để trống sản phẩm")
     private List<Long> productIds;
     @NotNull(message = "Chọn định kì hoặc không")
@@ -27,6 +29,7 @@ public class BookingRequest {
     private String note;
     @NotNull(message = "Không được để trống thời gian bắt đầu")
     private Instant startTime;
+
     private String guestEmail;
 
 }

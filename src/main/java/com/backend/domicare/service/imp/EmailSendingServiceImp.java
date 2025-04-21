@@ -88,4 +88,17 @@ public class EmailSendingServiceImp implements EmailSendingService {
         this.sendEmailSync(to, subject, content, false, true);
         return encodedVerificationToken;
     }
+    @Override
+    @Async
+    public CompletableFuture<Void> sendPasswordToUser(String email,String fullName,String passWord){
+        Context context = new Context();
+        context.setVariable("email", email);
+        context.setVariable("password", passWord);
+        context.setVariable("fullName", fullName);
+        String templateName = "SendPasswordToUser";
+        String content = templateEngine.process(templateName, context);
+        String subject = "Cảm ơn bạn đã sử dụng dịch vụ của DomiCare";
+        this.sendEmailSync(email, subject, content, false, true);
+        return CompletableFuture.completedFuture(null);
+    }
 }

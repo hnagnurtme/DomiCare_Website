@@ -21,6 +21,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,15 +40,16 @@ public class Booking {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String address;
-    private Double totalPrice;
+    @Column(columnDefinition = "TEXT")
     private String note;
     private Boolean isPeriodic;
+    private Instant startTime;
 
+    private Double totalPrice;
    
     @Enumerated(EnumType.STRING)
     private BookingStatus bookingStatus;
 
-    private Instant startTime;
     
     private String createBy;
     private String updateBy;
@@ -60,6 +62,7 @@ public class Booking {
         joinColumns = @JoinColumn(name = "booking_id"),
         inverseJoinColumns = @JoinColumn(name = "product_id")
     )
+    
     private List<Product> products;
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -100,6 +100,7 @@ public class JwtTokenService {
         }
         user.setEmailConfirmed(false);
         user.setAvatar(ProjectConstants.DEFAULT_AVATAR_OTHER);
+        user.setIsActive(true);
 
         UserDTO userResponse = userService.saveUser(user);
         RegisterResponse registerResponse = UserMapper.INSTANCE.convertToRegisterResponse(userResponse);

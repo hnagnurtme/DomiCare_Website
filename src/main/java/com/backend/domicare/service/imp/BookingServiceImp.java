@@ -46,55 +46,6 @@ public class BookingServiceImp implements BookingService {
     private final UserService userService;
     private final EmailSendingService emailSendingService;
 
-    // @Override
-    // @Transactional
-    // public BookingDTO addBooking(BookingRequest request) {
-    // if (request == null) {
-    // throw new IllegalArgumentException("Booking request cannot be null");
-    // }
-
-    // Long userId = request.getUserId();
-    // if (userId == null) {
-    // throw new IllegalArgumentException("User ID cannot be null");
-    // }
-
-    // List<Long> productIds = request.getProductIds();
-    // if (CollectionUtils.isEmpty(productIds)) {
-    // throw new IllegalArgumentException("Product IDs cannot be empty");
-    // }
-
-    // logger.info("Creating new booking for user ID: {}", userId);
-    // Booking bookingEntity = BookingMapper.INSTANCE.convertToBooking(request);
-
-    // User user = userRepository.findById(userId)
-    // .orElseThrow(() -> new NotFoundUserException("User not found with ID: " +
-    // userId));
-
-    // List<Product> products = productService.findAllByIdIn(productIds);
-
-    // if (products.isEmpty()) {
-    // throw new NotFoundProductException("No products found with provided IDs");
-    // }
-
-    // List<Double> finalPrices = products.stream()
-    // .map(Product::getPriceAfterDiscount)
-    // .toList();
-
-    // Double totalPrice = this.calculateTotalPrice(finalPrices,
-    // request.getTotalHours());
-    // BookingStatus status = BookingStatus.PENDING;
-    // bookingEntity.setBookingDate(Instant.now());
-    // bookingEntity.setTotalPrice(totalPrice);
-    // bookingEntity.setUser(user);
-    // bookingEntity.setBookingStatus(status);
-    // bookingEntity.setProducts(products);
-
-    // Booking savedBooking = bookingRepository.save(bookingEntity);
-    // logger.info("Booking created successfully with ID: {}",
-    // savedBooking.getId());
-    // return BookingMapper.INSTANCE.convertToBookingDTO(savedBooking);
-    // }
-
     @Override
     @Transactional(readOnly = true)
     public BookingDTO fetchBookingById(Long id) {
@@ -207,13 +158,18 @@ public class BookingServiceImp implements BookingService {
                 .orElseThrow(() -> new NotFoundBookingException("Booking not found with ID: " + id));
 
         // Validate status transition
-        if (booking.getBookingStatus() == BookingStatus.CANCELLED) {
+        if (booking.getBookingStatus() != BookingStatus.PENDING) {
             logger.warn("Cannot update booking with ID: {} due to status: {}", id, booking.getBookingStatus());
             throw new BookingStatusException("Cannot update booking with status: " + booking.getBookingStatus());
         }
 
         booking.setBookingStatus(newStatus);
+        if(newStatus == BookingStatus.REJECTED) {
+            String formattedStartTime = booking.getStartTime().toString(); // Convert Instant to String
+            emailSendingService.sendRejectToUser(booking.getUser().getEmail(), booking.getProducts().get(0).getName(), formattedStartTime, "Hệ thống không thể đáp ứng yêu cầu của bạn", booking.getUser().getName());
+        }
         Booking updatedBooking = bookingRepository.save(booking);
+
         logger.info("Booking status updated successfully for ID: {}", id);
         return BookingMapper.INSTANCE.convertToBookingDTO(updatedBooking);
     }

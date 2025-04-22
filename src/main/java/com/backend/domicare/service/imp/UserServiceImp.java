@@ -80,6 +80,7 @@ public class UserServiceImp implements UserService {
         user.setDateOfBirth(userDTO.getDateOfBirth());
         user.setGender(userDTO.getGender());
         user.setName(userDTO.getName());
+        user.setActive(userDTO.getIsActive());
         userRepository.save(user);
         return UserMapper.INSTANCE.convertToUserDTO(user);
     }

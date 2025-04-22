@@ -15,6 +15,11 @@ public interface EmailSendingService {
 
     @Async
     CompletableFuture<Void> sendPasswordToUser(String to, String fullName,String passWord);
+
+
+
+    @Async
+    CompletableFuture<Void> sendRejectToUser(String to, String nameService,String dateBooking, String reason,String nameUser);
     
     // Gửi email từ template đồng bộ
     String sendEmailFromTemplateSync(String to, String subject, String templateName);

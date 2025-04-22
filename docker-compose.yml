@@ -5,7 +5,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: domicare/backend
+      # Add platform specification
+      platforms:
+        - linux/amd64
+        - linux/arm64
+    image: trunganh0106/domicare-web
     ports:
       - "8080:8080"
     networks:

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
   <head>
@@ -6,83 +5,97 @@
     <title>Email từ chối</title>
     <style>
       body {
-        font-family: Arial, sans-serif;
-        background-color: #f2f2f2;
-        padding: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #eaeaea; /* nền ngoài xám nhạt */
+        padding: 50px 15px;
       }
+
       .email-container {
         background-color: #ffffff;
-        padding: 30px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-        max-width: 600px;
+        max-width: 620px;
         margin: auto;
-      }
-      .logo {
+        padding: 35px 30px;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
         text-align: center;
+        border: 1px solid #ddd; /* viền nhẹ */
+      }
+
+      .logo {
         margin-bottom: 20px;
       }
+
       .logo img {
-        max-width: 150px;
+        width: 75px;
         height: auto;
+        display: inline-block;
       }
-      .header {
-        text-align: center;
+
+      h2 {
         color: #d32f2f;
+        font-size: 24px;
+        margin-top: 10px;
       }
+
       .content {
-        margin-top: 20px;
-        line-height: 1.6;
+        text-align: left;
+        margin-top: 25px;
+        line-height: 1.7;
         color: #333;
       }
-      .footer {
-        margin-top: 30px;
-        font-size: 13px;
-        color: #777;
+
+      .btn-container {
         text-align: center;
+        margin-top: 30px;
       }
+
       .btn {
         display: inline-block;
-        background-color: #d32f2f;
-        color: #fff;
-        padding: 10px 20px;
+        background-color: #4da6ff;
+        color: #ffffff;
+        padding: 12px 26px;
         text-decoration: none;
-        margin-top: 20px;
-        border-radius: 5px;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
       }
-      .logo {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  .logo img {
-    width: 120px;
-    height: auto;
-  }
+
+      .btn:hover {
+        background-color: #3399ff;
+      }
+
+      .footer {
+        margin-top: 40px;
+        font-size: 13px;
+        color: #999;
+        border-top: 1px solid #eee;
+        padding-top: 20px;
+      }
     </style>
   </head>
   <body>
-    <div class="container">
+    <div class="email-container">
+      <div class="logo">
         <img src="https://res.cloudinary.com/drtizu6d3/image/upload/v1742480126/qjddivskmhlgiknyrqzv.png"
-             alt="DomiCare Logo" class="logo" />
-        <h2>❌ Yêu cầu dịch vụ bị từ chối</h2>
-        <p>Xin chào <strong th:text="${nameUser}">Nguyễn Văn A</strong>,</p>
-        <p>
-            Chúng tôi rất tiếc phải thông báo rằng yêu cầu đăng ký dịch vụ
-            <strong th:text="${nameService}">Vệ sinh công nghiệp</strong> của bạn vào ngày
-            <strong th:text="${dateBooking}">11/04/2025</strong> đã bị
-            <span style="color: #d32f2f;"><strong>từ chối</strong></span>.
-        </p>
-        <p>
-            Lý do từ chối: <em th:text="${reason}">Hiện tại chúng tôi đang gặp sự cố.</em>
-        </p>
-        <p>
-            Chúng tôi thành thật xin lỗi vì sự bất tiện này. Nếu bạn cần hỗ trợ
-            hoặc muốn đăng ký lại dịch vụ, đừng ngần ngại liên hệ với chúng tôi.
-        </p>
+             alt="DomiCare Logo" />
+      </div>
+
+      <h2>❌ Yêu cầu dịch vụ bị từ chối</h2>
+
+      <div class="content">
+        <p>Xin chào <strong th:text="${nameUser}">Người dùng</strong>,</p>
+        <p>Chúng tôi rất tiếc phải thông báo rằng yêu cầu đăng ký dịch vụ <strong th:text="${nameService}">Tên dịch vụ</strong> của bạn vào ngày <strong th:text="${dateBooking}">dd/MM/yyyy</strong> đã bị <span style="color: #d32f2f;"><strong>từ chối</strong></span>.</p>
+        <p>Lý do từ chối: <em th:text="${reason}">Lý do chi tiết</em></p>
+        <p>Chúng tôi thành thật xin lỗi vì sự bất tiện này. Nếu bạn cần hỗ trợ hoặc muốn đăng ký lại dịch vụ, đừng ngần ngại liên hệ với chúng tôi.</p>
+      </div>
+
+      <div class="btn-container">
         <a href="http://localhost:4000" class="btn">Liên hệ lại với chúng tôi</a>
-        <p class="footer">
-            © 2025 DomiCare. Email này được gửi tự động – vui lòng không trả lời.
-        </p>
+      </div>
+
+      <p class="footer">
+        © 2025 DomiCare. Email này được gửi tự động – vui lòng không trả lời.
+      </p>
     </div>
-</body>
+  </body>
 </html>

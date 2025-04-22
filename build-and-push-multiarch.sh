@@ -3,7 +3,7 @@ set -e
 
 # Configuration
 DOCKER_REGISTRY="docker.io"  # Change to your registry (Docker Hub, ECR, etc.)
-IMAGE_NAME="trunganh0106/domicare-webiste"
+IMAGE_NAME="trunganh0106/domicare-web"
 IMAGE_TAG="latest"
 PLATFORMS="linux/amd64,linux/arm64"  # Common platforms - x86_64 and ARM64
 

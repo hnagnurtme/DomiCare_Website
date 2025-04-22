@@ -31,6 +31,7 @@ public interface  BookingMapper {
                 .startTime(booking.getStartTime())
                 .bookingStatus(booking.getBookingStatus())
                 .userDTO(UserMapper.INSTANCE.convertToUserDTO(booking.getUser()))
+                .products(ProductMapper.INSTANCE.convertToProductDTOs(booking.getProducts()))
                 .build();
     }
 

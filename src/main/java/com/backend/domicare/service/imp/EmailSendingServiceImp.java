@@ -8,6 +8,7 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -20,6 +21,10 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * EmailSendingServiceImp is a service class that handles sending emails using JavaMailSender.
+ * It supports sending basic emails and emails from templates using Thymeleaf.
+ */
 
 @Service
 @RequiredArgsConstructor
@@ -99,6 +104,21 @@ public class EmailSendingServiceImp implements EmailSendingService {
         String content = templateEngine.process(templateName, context);
         String subject = "Cảm ơn bạn đã sử dụng dịch vụ của DomiCare";
         this.sendEmailSync(email, subject, content, false, true);
+        return CompletableFuture.completedFuture(null);
+    }
+
+
+    @Async
+    public CompletableFuture<Void> sendRejectToUser(String to, String nameService,String dateBooking, String reason, String nameUser){
+        Context context = new Context();
+        context.setVariable("nameUser", nameUser);
+        context.setVariable("nameService", nameService);
+        context.setVariable("dateBooking", dateBooking);
+        context.setVariable("reason", reason);
+        String templateName = "SendRejectBooking";
+        String content = templateEngine.process(templateName, context);
+        String subject = "Yêu cầu dịch vụ của bạn đã bị từ chối";
+        this.sendEmailSync(to, subject, content, false, true);
         return CompletableFuture.completedFuture(null);
     }
 }

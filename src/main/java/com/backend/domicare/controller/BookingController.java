@@ -17,17 +17,18 @@ import com.backend.domicare.dto.request.UpdateBookingRequest;
 import com.backend.domicare.dto.request.UpdateBookingStatusRequest;
 import com.backend.domicare.service.BookingService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api")
+@SecurityRequirement(name = "bearerAuth")
 @RequiredArgsConstructor
 public class BookingController {
 
     private final BookingService bookingService;
 
-    // Add your endpoint methods here
     @PostMapping("/bookings")
     public ResponseEntity<BookingDTO> createBooking(@Valid @RequestBody BookingRequest bookingRequest) {
      

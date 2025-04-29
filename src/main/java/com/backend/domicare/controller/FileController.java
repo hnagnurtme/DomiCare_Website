@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,17 +20,18 @@ import com.backend.domicare.dto.FileDTO;
 import com.backend.domicare.dto.response.Message;
 import com.backend.domicare.service.FileService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:4000", "http://localhost:4001"})
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 @RequestMapping("/api/cloudinary")
 public class FileController {
     private final FileService fileService;
 
-    Logger  logger = Logger.getLogger(FileController.class.getName());
+    Logger logger = Logger.getLogger(FileController.class.getName());
 
     @PostMapping("/files")
     public ResponseEntity<?> uploadFile(@Valid @RequestBody MultipartFile file) {
@@ -42,19 +42,19 @@ public class FileController {
         FileDTO fileDTO = fileService.uploadFile(file, file.getOriginalFilename(), false);
         return ResponseEntity.status(HttpStatus.CREATED).body(fileDTO);
     }
-    
+
     @PostMapping("/files/multiple")
     public ResponseEntity<?> uploadMultipleFiles(@Valid @RequestBody MultipartFile[] files) {
         List<FileDTO> uploadedFiles = new ArrayList<>();
-        
+
         for (MultipartFile file : files) {
             FileDTO fileDTO = fileService.uploadFile(file, file.getOriginalFilename(), false);
             uploadedFiles.add(fileDTO);
         }
-        
+
         return ResponseEntity.status(HttpStatus.CREATED).body(uploadedFiles);
     }
-    
+
     @GetMapping("/files/{id}")
     public ResponseEntity<?> fetchFileById(@PathVariable Long id) {
         FileDTO fileDTO = fileService.fetchFileById(id);
@@ -78,5 +78,4 @@ public class FileController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT)
                 .body(new Message("File deleted successfully"));
     }
-
 }

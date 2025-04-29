@@ -19,11 +19,13 @@ import com.backend.domicare.model.Review;
 import com.backend.domicare.service.ReviewService;
 import com.turkraft.springfilter.boot.Filter;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
+@SecurityRequirement(name = "bearerAuth")
 @RequestMapping("/api")
 public class ReviewController {
     private final ReviewService reviewService;
@@ -36,25 +38,19 @@ public class ReviewController {
 
     @GetMapping("/reviews")
     public ResponseEntity<?> getAllReviews(
-        // @RequestParam(defaultValue = "1") int page,
-        // @RequestParam(defaultValue = "20") int size,
-        // @RequestParam(required = false) String sortBy,
-        // @RequestParam(required = false, defaultValue = "asc") String sortDirection,
-        // @Filter Specification<Review> spec, Pageable pageable ) {
-    
-        // Sort sort = sortDirection.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
-         @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(required = false) String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sortDirection,
             @Filter Specification<Review> spec, Pageable pageable) {
 
         if (sortBy != null && !sortBy.isEmpty()) {
-        Sort sort = Sort.by(sortDirection.equalsIgnoreCase("desc") ? Sort.Order.desc(sortBy) : Sort.Order.asc(sortBy));
-        pageable = PageRequest.of(page - 1, size, sort);
+            Sort sort = Sort
+                    .by(sortDirection.equalsIgnoreCase("desc") ? Sort.Order.desc(sortBy) : Sort.Order.asc(sortBy));
+            pageable = PageRequest.of(page - 1, size, sort);
         } else {
             pageable = PageRequest.of(page - 1, size);
         }
-            return ResponseEntity.status(HttpStatus.OK).body(this.reviewService.getAllReviews(spec, pageable));
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(this.reviewService.getAllReviews(spec, pageable));
+    }
 }

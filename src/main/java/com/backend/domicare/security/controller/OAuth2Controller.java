@@ -35,16 +35,10 @@ public class OAuth2Controller {
     private final ObjectMapper objectMapper;
 
     private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
+    private String clientId = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 
-    @Value("${spring.security.oauth2.client.registration.google.client-id}")
-    private String clientId;
-
-    @Value("${spring.security.oauth2.client.registration.google.client-secret}")
-    private String clientSecret;
-
-    @Value("${spring.security.oauth2.client.registration.google.redirect-uri}")
-    private String redirectUri;
-
+    private String clientSecret= "xxxxx";
+    private String redirectUri= "http://localhost:8080/auth/callback";
     @GetMapping("/auth/callback")
     public ResponseEntity<?> exchangeAuthorizationCode(@RequestParam("code") String authorizationCode) {
         // Tạo tham số request body dưới dạng x-www-form-urlencoded

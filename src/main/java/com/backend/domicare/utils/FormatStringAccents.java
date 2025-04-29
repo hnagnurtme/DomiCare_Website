@@ -2,13 +2,19 @@ package com.backend.domicare.utils;
 
 import java.text.Normalizer;
 
-
 public class FormatStringAccents {
-     public static String removeAccents(String input) {
-        if (input == null) {
-            return null;
+    public static String removeTones(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
         }
-        return Normalizer.normalize(input, Normalizer.Form.NFD)
-                         .replaceAll("[^\\p{ASCII}]", "");
+        // Chuẩn hóa và loại bỏ dấu
+        str = Normalizer.normalize(str, Normalizer.Form.NFD);
+        str = str.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+
+        // Thay thế ký tự đặc biệt: đ → d
+        str = str.replaceAll("đ", "d");
+        str = str.replaceAll("Đ", "D");
+
+        return str;
     }
 }

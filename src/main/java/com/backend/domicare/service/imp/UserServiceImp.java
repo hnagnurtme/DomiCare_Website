@@ -38,6 +38,7 @@ import com.backend.domicare.service.FileService;
 import com.backend.domicare.service.RoleService;
 import com.backend.domicare.service.UserService;
 import com.backend.domicare.service.UserValidationService;
+import com.backend.domicare.utils.FormatStringAccents;
 import com.backend.domicare.utils.ProjectConstants;
 
 import lombok.RequiredArgsConstructor;
@@ -81,6 +82,8 @@ public class UserServiceImp implements UserService {
         user.setGender(userDTO.getGender());
         user.setName(userDTO.getName());
         user.setActive(userDTO.getIsActive());
+        user.setDeleted(false);
+        user.setNameUnsigned(FormatStringAccents.removeTones(user.getName()));
         userRepository.save(user);
         return UserMapper.INSTANCE.convertToUserDTO(user);
     }

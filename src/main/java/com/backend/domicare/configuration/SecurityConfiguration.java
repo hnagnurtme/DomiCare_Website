@@ -173,30 +173,19 @@ public class SecurityConfiguration {
             
             // Configure exception handling
             .exceptionHandling(exception -> exception
-                .authenticationEntryPoint((request, response, authException) -> {
-                    logger.warn("Unauthorized access attempt: {}", authException.getMessage());
-                    
-                    response.setStatus(HttpStatus.UNAUTHORIZED.value());
-                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                    
-                    Message errorMessage = new Message("Unauthorized access: " + authException.getMessage());
-                    String jsonResponse = objectMapper.writeValueAsString(errorMessage);
-                    
-                    response.getWriter().write(jsonResponse);
-                    response.getWriter().flush();
-                })
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
             )
             
             // Session management - stateless for REST API
             .sessionManagement(session ->
                 session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
+            // cors
+
             // Enable CORS
             .cors(Customizer.withDefaults());
 
         return http.build();
     }
-
-    //set timeout to improve performance
 }
 

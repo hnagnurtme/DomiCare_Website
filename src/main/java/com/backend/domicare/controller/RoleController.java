@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backend.domicare.dto.RoleDTO;
 import com.backend.domicare.service.RoleService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 @Transactional
+@SecurityRequirement(name = "bearerAuth")
 public class RoleController {
     private final RoleService roleService;
 
@@ -39,7 +41,7 @@ public class RoleController {
         this.roleService.deleteRoleById(id);
         return ResponseEntity.noContent().build();
     }
-    
+
     @GetMapping("/roles")
     public ResponseEntity<?> getRoles() {
         return ResponseEntity.ok(this.roleService.getRoles());

@@ -18,14 +18,12 @@ public class CorsConfiguration {
                 
 
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:4000", "http://localhost:4001")
+                        .allowedOrigins("http://localhost:4000" ,"https://domicare-frontend.vercel.app","https://domicare-frontend-git-release-duyaivys-projects.vercel.app/")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
-                        logger.info("CORS configuration applied for allowed origins: http://localhost:4000, http://localhost:4001");
+                        logger.info("CORS configuration applied for allowed origins: http://localhost:4000, https://domicare-frontend.vercel.app, https://domicare-frontend-git-release-duyaivys-projects.vercel.app/");
             }
-
-           
         };
     }
 }

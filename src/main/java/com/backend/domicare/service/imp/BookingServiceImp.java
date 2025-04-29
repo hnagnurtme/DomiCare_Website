@@ -193,7 +193,7 @@ public class BookingServiceImp implements BookingService {
                     user = existingUser;
                 }
             } else {
-                // Không tồn tại user cũ → Tạo mới ở đây luôn
+
                 String randomPassword = jwtTokenManager.generateRandomPassword();
                 UserDTO userDTO = new UserDTO();
                 userDTO.setEmail(guestEmail);
@@ -238,6 +238,5 @@ public class BookingServiceImp implements BookingService {
         Booking bookingEntity = bookingRepository.save(booking);
         logger.info("Booking created successfully with ID: {}", booking.getId());
         return BookingMapper.INSTANCE.convertToBookingDTO(bookingEntity);
-
     }
 }

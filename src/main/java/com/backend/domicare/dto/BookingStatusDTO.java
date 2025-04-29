@@ -12,6 +12,5 @@ public enum BookingStatusDTO {
     ACCEPTED("ACCEPTED"),
     REJECTED("REJECTED"),
     CANCELLED("CANCELLED");
-
     private final String status;
 }

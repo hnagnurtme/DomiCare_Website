@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.annotations.Where;
+
 import com.backend.domicare.security.jwt.JwtTokenManager;
 
 import jakarta.persistence.Column;
@@ -18,6 +20,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.persistence.criteria.CriteriaBuilder.In;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -31,12 +34,16 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "PRODUCTS")
+@Where(clause = "is_deleted = false")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
+
+    @Column(name = "name_unsigned")
+    private String nameUnsigned;
     
     @Column(columnDefinition = "TEXT")
     private String description;
@@ -44,7 +51,7 @@ public class Product {
     private Double price;
     private Double discount;
     private String image;
-
+    private boolean isDeleted;
     private Double overalRating;
 
     private List<String> landingImages;
@@ -61,6 +68,7 @@ public class Product {
     private String updateBy;
     private Instant createAt;
     private Instant updateAt;
+    
 
     @PrePersist
     public void prePersist() {

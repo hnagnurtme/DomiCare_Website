@@ -2,6 +2,7 @@ package com.backend.domicare.repository;
 
 import java.util.Optional;
 
+import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -34,5 +35,14 @@ public interface UsersRepository extends JpaRepository<User, Long>, JpaSpecifica
     @Query("SELECT t FROM Token t JOIN FETCH t.user WHERE t.refreshToken = :refreshToken")
     Optional<Token> findByRefreshTokenWithUser(@Param("refreshToken") String refreshToken);
 
+    @Query("SELECT COUNT(u) FROM User u JOIN u.roles r WHERE r.name = :roleName")
+    Long countUsersByRoleName(@Param("roleName") String roleName);
+
+    // Soft delete user by id
+    @Query("UPDATE User u SET u.isDeleted = true WHERE u.id = :id")
+    void softDeleteById(@Param("id") Long id);
+
+    
+    
     
 }

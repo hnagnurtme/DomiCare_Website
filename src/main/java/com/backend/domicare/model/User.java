@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import org.hibernate.annotations.Where;
+
 import com.backend.domicare.security.jwt.JwtTokenManager;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -36,6 +38,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Where(clause = "is_deleted = false")
 @Table(name = "USERS")
 public class User {
     @Id
@@ -45,11 +48,16 @@ public class User {
     @Column(name = "full_name")
     private String name;
 
+    @Column(name = "name_unsigned")
+    private String nameUnsigned;
+
     @Column(unique = true)
     private String email;
     private String password;
     private String phone;
     private String address;
+
+    private boolean isDeleted;
 
     private boolean isEmailConfirmed;
     @Column(name = "email_confirmation_token" , unique = true)

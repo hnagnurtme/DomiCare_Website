@@ -19,38 +19,43 @@ import com.backend.domicare.dto.request.UpdateRoleForUserRequest;
 import com.backend.domicare.dto.request.UpdateUserRequest;
 import com.backend.domicare.model.User;
 import com.backend.domicare.service.UserService;
+import com.backend.domicare.utils.FormatStringAccents;
 import com.turkraft.springfilter.boot.Filter;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class UserController {
     private final UserService userService;
-    
+
     @GetMapping("/users")
     public ResponseEntity<ResultPagingDTO> getUsers(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(required = false) String searchName,
-            @RequestParam(required = false, defaultValue="id") String sortBy,
+            @RequestParam(required = false, defaultValue = "id") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sortDirection,
-            @Filter Specification<User> spec , Pageable pageable) {
+            @Filter Specification<User> spec, Pageable pageable) {
 
         Sort sort = sortDirection.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
         pageable = PageRequest.of(page - 1, size, sort);
 
         if (searchName != null && !searchName.isEmpty()) {
-            spec = spec.and((root, query, criteriaBuilder) ->
-                criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + searchName.toLowerCase() + "%")
-            );
+
+            String cleanSearchName = FormatStringAccents.removeTones(searchName.toLowerCase());
+
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder
+                    .like(criteriaBuilder.lower(root.get("nameUnsigned")), "%" + cleanSearchName + "%"));
         }
         return ResponseEntity.ok(this.userService.getAllUsers(spec, pageable));
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Long  id) {
+    public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Long id) {
         UserDTO user = this.userService.getUserById(id);
         return ResponseEntity.ok(user);
     }

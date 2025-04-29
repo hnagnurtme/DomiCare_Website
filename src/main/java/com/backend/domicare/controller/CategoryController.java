@@ -23,62 +23,64 @@ import com.backend.domicare.dto.request.UpdateCategoryRequest;
 import com.backend.domicare.dto.response.Message;
 import com.backend.domicare.model.Category;
 import com.backend.domicare.service.CategoryService;
+import com.backend.domicare.utils.FormatStringAccents;
 import com.turkraft.springfilter.boot.Filter;
 
-import jakarta.transaction.Transactional;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api")
-@Transactional
+@SecurityRequirement(name = "bearerAuth")
 @RequiredArgsConstructor
 public class CategoryController {
-    private  final CategoryService categoryService;
+    private final CategoryService categoryService;
 
-    //Add category
     @PostMapping("/categories")
-    public ResponseEntity<?> createCategory (@Valid @RequestBody AddCategoryRequest categoryDTO) {
+    public ResponseEntity<?> createCategory(@Valid @RequestBody AddCategoryRequest categoryDTO) {
         CategoryDTO category = categoryService.addCategory(categoryDTO);
-        return  ResponseEntity.status(HttpStatus.CREATED).body(category);
+        return ResponseEntity.status(HttpStatus.CREATED).body(category);
     }
 
-    //Update category
     @PutMapping("/categories")
-    public ResponseEntity<?> updateCategory (@Valid @RequestBody UpdateCategoryRequest categoryDTO) {
-        return  ResponseEntity.status(HttpStatus.OK).body(this.categoryService.updateCategory(categoryDTO));
+    public ResponseEntity<?> updateCategory(@Valid @RequestBody UpdateCategoryRequest categoryDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(this.categoryService.updateCategory(categoryDTO));
     }
 
-    //Delete category
     @DeleteMapping("/categories/{id}")
-    public ResponseEntity<?> deleteCategory (@PathVariable Long id) {
+    public ResponseEntity<?> deleteCategory(@PathVariable Long id) {
         categoryService.deleteCategory(id);
-        return  ResponseEntity.status(HttpStatus.NO_CONTENT).body(new Message("Category deleted successfully"));
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new Message("Category deleted successfully"));
     }
 
-    //Get category by id
     @GetMapping("/public/categories/{id}")
-    public ResponseEntity<?> getCategoryById (@PathVariable Long id) {
+    public ResponseEntity<?> getCategoryById(@PathVariable Long id) {
         CategoryDTO category = categoryService.fetchCategoryById(id);
-        return  ResponseEntity.status(HttpStatus.OK).body(category);
+        return ResponseEntity.status(HttpStatus.OK).body(category);
     }
 
-    //
     @GetMapping("/public/categories")
     public ResponseEntity<ResultPagingDTO> getCategories(
-        @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int size,
-            @RequestParam(required = false, defaultValue= "id") String sortBy,
+            @RequestParam(required = false) String searchName,
+            @RequestParam(required = false, defaultValue = "id") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sortDirection,
             @Filter Specification<Category> spec, Pageable pageable) {
 
-        if (sortBy != null && !sortBy.isEmpty()) {
-        // Xử lý sắp xếp theo tham số sortBy và sortDirection
-        Sort sort = Sort.by(sortDirection.equalsIgnoreCase("desc") ? Sort.Order.desc(sortBy) : Sort.Order.asc(sortBy));
+        Sort sort = sortDirection.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+
         pageable = PageRequest.of(page - 1, size, sort);
-    } else {
-        pageable = PageRequest.of(page - 1, size);
-    }
+
+        if (searchName != null && !searchName.isEmpty()) {
+
+            String cleanSearchName = FormatStringAccents.removeTones(searchName.toLowerCase());
+
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder
+                    .like(criteriaBuilder.lower(root.get("nameUnsigned")), "%" + cleanSearchName + "%"));
+        }
+
         return ResponseEntity.status(HttpStatus.OK).body(this.categoryService.getAllCategories(spec, pageable));
     }
 }

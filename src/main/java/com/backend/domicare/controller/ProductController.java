@@ -26,11 +26,13 @@ import com.backend.domicare.service.ProductService;
 import com.backend.domicare.utils.FormatStringAccents;
 import com.turkraft.springfilter.boot.Filter;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 @RequestMapping("/api")
 public class ProductController {
     private final ProductService productService;
@@ -38,7 +40,6 @@ public class ProductController {
     // Add product
     @PostMapping("/products")
     public ResponseEntity<?> createProduct(@Valid @RequestBody AddProductRequest addProductRequest) {
-
         ProductDTO product = productService.addProduct(addProductRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(product);
     }
@@ -49,21 +50,18 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new Message("Product deleted successfully"));
     }
 
-    // Fetch product by id
     @GetMapping("/public/products/{id}")
     public ResponseEntity<?> getProductById(@PathVariable Long id) {
         ProductDTO product = productService.fetchProductById(id);
         return ResponseEntity.status(HttpStatus.OK).body(product);
     }
 
-    // Update product
     @PutMapping("/products")
     public ResponseEntity<?> updateProduct(@Valid @RequestBody UpdateProductRequest productDTO) {
 
         ProductDTO updatedProduct = productService.updateProduct(productDTO);
         return ResponseEntity.status(HttpStatus.OK).body(updatedProduct);
     }
-
 
     @PutMapping("/products/images")
     public ResponseEntity<?> uploadProductImage(@RequestBody AddProductImageRequest addProductRequest) {
@@ -77,31 +75,25 @@ public class ProductController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(required = false) String searchName,
-            @RequestParam(required = false, defaultValue= "id") String sortBy,
+            @RequestParam(required = false, defaultValue = "id") String sortBy,
             @RequestParam(required = false, defaultValue = "asc") String sortDirection,
             @Filter Specification<Product> spec, Pageable pageable) {
-            
 
-        // Set the page and size for pagination
-        // Set the sorting direction
         Sort sort = sortDirection.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
-        // Create a new PageRequest with the page, size, and sort
+
         pageable = PageRequest.of(page - 1, size, sort);
 
         if (searchName != null && !searchName.isEmpty()) {
-        // Loại bỏ dấu và chuyển thành chữ thường
-        String cleanSearchName = FormatStringAccents.removeAccents(searchName.toLowerCase());
 
-        // Sử dụng Specification để tìm kiếm sản phẩm theo tên (không phân biệt dấu và chữ hoa chữ thường)
-        spec = spec.and((root, query, criteriaBuilder) ->
-            criteriaBuilder.like(criteriaBuilder.lower(root.get("name")), "%" + cleanSearchName + "%")
-        );
+            String cleanSearchName = FormatStringAccents.removeTones(searchName.toLowerCase());
+
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder
+                    .like(criteriaBuilder.lower(root.get("nameUnsigned")), "%" + cleanSearchName + "%"));
         }
-        // Set the category ID in the specification if provided
+
         if (categoryId != null && categoryId > 0) {
-            spec = spec.and((root, query, criteriaBuilder) ->
-                criteriaBuilder.equal(root.get("category").get("id"), categoryId)
-            );
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("category").get("id"),
+                    categoryId));
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProducts(spec, pageable));

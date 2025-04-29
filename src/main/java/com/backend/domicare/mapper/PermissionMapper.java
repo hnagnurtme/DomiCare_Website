@@ -2,10 +2,7 @@ package com.backend.domicare.mapper;
 
 import com.backend.domicare.dto.PermissionDTO;
 import com.backend.domicare.model.Permission;
-import com.backend.domicare.model.Role;
 import org.mapstruct.factory.Mappers;
-
-import java.util.Collections;
 import java.util.List;
 
 public interface PermissionMapper {

@@ -17,18 +17,21 @@ import org.springframework.data.domain.Pageable;
 import com.backend.domicare.model.Permission;
 import com.backend.domicare.service.PermissionService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "bearerAuth")
 public class PermissionController {
     private final PermissionService permissionService;
 
     @PostMapping("/permissions")
     public ResponseEntity<PermissionDTO> createPermission(@Valid @RequestBody PermissionDTO permission) {
 
-        if( this.permissionService.isPermissionExists(permission) ) {
+        if (this.permissionService.isPermissionExists(permission)) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(this.permissionService.createPermission(permission));
@@ -37,23 +40,21 @@ public class PermissionController {
     @PutMapping("/permissions")
     public ResponseEntity<PermissionDTO> updatePermission(@Valid @RequestBody PermissionDTO permission) {
 
-        if( this.permissionService.getPermissionById(permission.getId()) == null) {
+        if (this.permissionService.getPermissionById(permission.getId()) == null) {
             return ResponseEntity.badRequest().build();
         }
 
-        if( this.permissionService.isPermissionExists(permission) ) {
+        if (this.permissionService.isPermissionExists(permission)) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(this.permissionService.updatePermission(permission));
     }
 
-
     @DeleteMapping("/permissions/{id}")
-    public ResponseEntity<Void> deletePermission( @PathVariable("id") Long id) {
+    public ResponseEntity<Void> deletePermission(@PathVariable("id") Long id) {
         this.permissionService.deletePermission(id);
         return ResponseEntity.noContent().build();
     }
-
 
     @GetMapping("/permissions")
     public ResponseEntity<?> getPermissions(
@@ -70,11 +71,10 @@ public class PermissionController {
         return ResponseEntity.ok(this.permissionService.getPermissions(spec, pageable));
     }
 
-
-    @GetMapping("/permissions/{id}")   
-    public ResponseEntity<?> getPermissionById( @PathVariable("id") Long id) {
+    @GetMapping("/permissions/{id}")
+    public ResponseEntity<?> getPermissionById(@PathVariable("id") Long id) {
         PermissionDTO permission = this.permissionService.getPermissionById(id);
-        if( permission == null ) {
+        if (permission == null) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(permission);

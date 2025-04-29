@@ -3,6 +3,8 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
+import org.hibernate.annotations.Where;
+
 import com.backend.domicare.security.jwt.JwtTokenManager;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -29,6 +31,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Where(clause = "is_deleted = false")
 @Table(name = "CATEGORIES")
 public class Category {
     @Id
@@ -36,9 +39,14 @@ public class Category {
     private Long id;
 
     private String name;
+
+    @Column(name = "name_unsigned")
+    private String nameUnsigned;
+
     @Column(columnDefinition = "TEXT")
     private String description;
     private String image;
+    private boolean isDeleted;
 
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.EAGER ,orphanRemoval = true)
     @JsonIgnore

@@ -1,6 +1,7 @@
 package com.backend.domicare.dto.request;
 
-import com.backend.domicare.dto.ProductDTO;
+import java.util.List;
+
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,16 @@ public class UpdateProductRequest {
     @NotNull(message = "Không được để trống id sản phẩm cũ")
     private Long oldProductId;
 
-    @NotNull(message = "Không được để trống sản phẩm mới")
-    private ProductDTO updateProduct;
+    @NotNull(message = "Không được để trống danh mục")
+    private Long categoryId;
+
+    private String name;
+    private String description;
+    private double price; 
+    private Long mainImageId;
+
+    private Double discount;
+    
+    private List<Long> landingImageIds;
+
 }

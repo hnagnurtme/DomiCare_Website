@@ -1,7 +1,10 @@
 package com.backend.domicare.exception;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.HashSet;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +21,24 @@ import com.backend.domicare.dto.response.RestResponse;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+    private static final Set<ExceptionConstants> UNPROCESSABLE_ENTITY_EXCEPTIONS = new HashSet<>(Arrays.asList(
+        ExceptionConstants.INVALID_EMAIL,
+        ExceptionConstants.NOT_FOUND_EMAIL,
+        ExceptionConstants.EMAIL_ALREADY_EXISTS,
+        ExceptionConstants.BAD_CREDENTIALS,
+        ExceptionConstants.INVALID_AUTHENTICATED,
+        ExceptionConstants.PRODUCT_NAME_ALREADY_EXISTS,
+        ExceptionConstants.NOT_FOUND_PRODUCT_ID,
+        ExceptionConstants.CATEGORY_NOT_FOUND,
+        ExceptionConstants.CATEGORY_ALREADY_EXISTS,
+        ExceptionConstants.PRODUCT_NOT_IN_CATEGORY,
+        ExceptionConstants.ROLE_ALREADY_EXISTS,
+        ExceptionConstants.NOT_FOUND_ROLE,
+        ExceptionConstants.ALREADY_REVIEWED,
+        ExceptionConstants.URL_ALREADY_EXISTS,
+        ExceptionConstants.NOT_FOUND_FILE,
+        ExceptionConstants.BOOKING_NOT_FOUND
+    ));
 
     @ExceptionHandler(NotMatchPasswordException.class)
     public ResponseEntity<RestResponse<Object>> handleNotMatchPasswordException(NotMatchPasswordException e) {
@@ -121,7 +142,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<RestResponse<Object>> handleInvalidEmailOrPassword(InvalidEmailOrPassword e) {
         return buildResponse(ExceptionConstants.INVALID_EMAIL, e.getMessage());
     }
-
+    
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<RestResponse<Object>> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         BindingResult result = e.getBindingResult();
@@ -133,7 +154,7 @@ public class GlobalExceptionHandler {
         response.setError("Validation Error");
         response.setMessage(errors.size() > 1 ? errors.toString() : errors.get(0));
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
     }
 
     @ExceptionHandler(Exception.class)
@@ -147,31 +168,23 @@ public class GlobalExceptionHandler {
                              .body(new Message("File quá lớn!"));
     }
 
+    /**
+     * Builds a standardized response for exception handling
+     *
+     * @param error   The exception constant defining the error type
+     * @param message The error message to be returned
+     * @return A ResponseEntity with appropriate status and body
+     */
     private ResponseEntity<RestResponse<Object>> buildResponse(ExceptionConstants error, String message) {
         RestResponse<Object> response = new RestResponse<>();
         response.setStatus(error.getCode());
         response.setError(error.getMessageName());
         response.setMessage(message);
-        if(
-            error == ExceptionConstants.INVALID_EMAIL ||
-            error == ExceptionConstants.NOT_FOUND_EMAIL ||
-            error == ExceptionConstants.EMAIL_ALREADY_EXISTS ||
-            error == ExceptionConstants.BAD_CREDENTIALS ||
-            error == ExceptionConstants.INVALID_AUTHENTICATED ||
-            error == ExceptionConstants.PRODUCT_NAME_ALREADY_EXISTS ||
-            error == ExceptionConstants.NOT_FOUND_PRODUCT_ID ||
-            error == ExceptionConstants.CATEGORY_NOT_FOUND ||
-            error == ExceptionConstants.CATEGORY_ALREADY_EXISTS ||
-            error == ExceptionConstants.PRODUCT_NOT_IN_CATEGORY ||
-            error == ExceptionConstants.ROLE_ALREADY_EXISTS ||
-            error == ExceptionConstants.NOT_FOUND_ROLE ||
-            error == ExceptionConstants.ALREADY_REVIEWED ||
-            error == ExceptionConstants.URL_ALREADY_EXISTS ||
-            error == ExceptionConstants.NOT_FOUND_FILE ||
-            error == ExceptionConstants.BOOKING_NOT_FOUND
-        )
-        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(response);
-        else
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+        
+        HttpStatus httpStatus = UNPROCESSABLE_ENTITY_EXCEPTIONS.contains(error) 
+                ? HttpStatus.UNPROCESSABLE_ENTITY 
+                : HttpStatus.BAD_REQUEST;
+        
+        return ResponseEntity.status(httpStatus).body(response);
     }
 }

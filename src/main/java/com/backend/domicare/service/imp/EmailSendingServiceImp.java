@@ -120,4 +120,19 @@ public class EmailSendingServiceImp implements EmailSendingService {
         this.sendEmailSync(to, subject, content, false, true);
         return CompletableFuture.completedFuture(null);
     }
+
+    @Async
+    public CompletableFuture<Void> sendAcceptedToUser(String to, String nameService,String dateBooking, String reason, String nameUser){
+        Context context = new Context();
+        context.setVariable("nameUser", nameUser);
+        context.setVariable("nameService", nameService);
+        context.setVariable("dateBooking", dateBooking);
+        context.setVariable("reason", reason);
+        String templateName = "SendAcceptedBooking";
+        String content = templateEngine.process(templateName, context);
+        String subject = "Yêu cầu dịch vụ của bạn đã được chấp nhận";
+        this.sendEmailSync(to, subject, content, false, true);
+        return CompletableFuture.completedFuture(null);
+    }
 }
+

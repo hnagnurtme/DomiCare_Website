@@ -33,7 +33,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "PRODUCTS")
-@Where(clause = "is_deleted = false")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

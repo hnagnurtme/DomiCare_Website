@@ -8,6 +8,7 @@ import org.mapstruct.factory.Mappers;
 
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.UserDTO.UserDTOBuilder;
+import com.backend.domicare.dto.request.AddUserByAdminRequest;
 import com.backend.domicare.dto.request.UpdateUserRequest;
 import com.backend.domicare.model.User;
 import com.backend.domicare.security.dto.RegisterResponse;
@@ -47,5 +48,20 @@ public interface UserMapper {
         return userDTO.build();
     }
 
+    default UserDTO convertToUserDTOByAddUserRequest(AddUserByAdminRequest userRequest) {
+        if ( userRequest == null ) {
+            return null;
+        }
+
+        UserDTOBuilder userDTO = UserDTO.builder();
+        userDTO.name( userRequest.getName() );
+        userDTO.password( userRequest.getPassword() );
+        userDTO.phone( userRequest.getPhone() );
+        userDTO.address( userRequest.getAddress() );
+        userDTO.email( userRequest.getEmail() );
+
+        return userDTO.build();
+        
+    }
     List<UserDTO> convertToUserDTOList(List<User> users);
 }

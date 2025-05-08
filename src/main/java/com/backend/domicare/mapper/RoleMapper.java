@@ -14,7 +14,21 @@ import com.backend.domicare.model.Role;
 public interface RoleMapper {
     RoleMapper INSTANCE = Mappers.getMapper(RoleMapper.class);
     Role convertToRole(RoleDTO roleDTO);
-    RoleDTO convertToRoleDTO(Role role);
+    default RoleDTO convertToRoleDTO(Role role){
+        if ( role == null ) {
+            return null;
+        }
+        return RoleDTO.builder()
+                .id(role.getId())
+                .name(role.getName())
+                .description(role.getDescription())
+                .active(role.isActive())
+                .createAt(role.getCreateAt())
+                .createBy(role.getCreateBy())
+                .updateAt(role.getUpdateAt())
+                .updateBy(role.getUpdateBy())
+                .build();
+    }
     Set<RoleDTO> convertToRoleDTOSet(Set<Role> roles);
     Set<Role> convertToRoleSet(Set<RoleDTO> roleDTOs);
     List<RoleDTO> convertToRoleDTOList(List<Role> roles);

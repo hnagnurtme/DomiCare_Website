@@ -31,17 +31,20 @@ public class OAuth2Controller {
     private static final String GOOGLE_USERINFO_URL = "https://www.googleapis.com/oauth2/v3/userinfo";
 
     private final RestTemplate restTemplate;
-
     private final ObjectMapper objectMapper;
-
     private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
-    private String clientId = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+    
+    @Value("${oauth2.google.client-id}")
+    private String clientId;
 
-    private String clientSecret= "xxxxx";
-    private String redirectUri= "http://localhost:8080/auth/callback";
+    @Value("${oauth2.google.client-secret}")
+    private String clientSecret;
+    
+    @Value("${oauth2.google.redirect-uri}")
+    private String redirectUri;
+    
     @GetMapping("/auth/callback")
     public ResponseEntity<?> exchangeAuthorizationCode(@RequestParam("code") String authorizationCode) {
-        // Tạo tham số request body dưới dạng x-www-form-urlencoded
         MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
         body.add("code", authorizationCode);
         body.add("client_id", clientId);
@@ -74,13 +77,11 @@ public class OAuth2Controller {
                 ResponseEntity<String> userInfoResponse = restTemplate.exchange(GOOGLE_USERINFO_URL, HttpMethod.GET, userInfoEntity, String.class);
                 JsonNode userInfo = objectMapper.readTree(userInfoResponse.getBody());
     
-                // Lấy thông tin người dùng (kiểm tra sự tồn tại của trường)
-                String email = userInfo.has("email") ? userInfo.get("email").asText() : "Email not available";
-                String name = userInfo.has("name") ? userInfo.get("name").asText() : "Name not available";
-                String picture = userInfo.has("picture") ? userInfo.get("picture").asText() : "Picture not available";
-                String locale = userInfo.has("locale") ? userInfo.get("locale").asText() : "Locale not available";
-                String sub = userInfo.has("sub") ? userInfo.get("sub").asText() : "Sub not available";
-    
+                String email = userInfo.has("email") ? userInfo.get("email").asText() : null;
+                String name = userInfo.has("name") ? userInfo.get("name").asText() : null;
+                String picture = userInfo.has("picture") ? userInfo.get("picture").asText() : null;
+                String locale = userInfo.has("locale") ? userInfo.get("locale").asText() : null;
+                String sub = userInfo.has("sub") ? userInfo.get("sub").asText() : null;
                 // Tạo LoginResponse và trả về kết quả
                 LoginResponse loginResponse = customOAuth2SuccessHandler.handleOAuth2(email, name, picture, locale, sub);
                 return ResponseEntity.status(HttpStatus.OK).body(loginResponse);

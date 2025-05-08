@@ -3,9 +3,6 @@ package com.backend.domicare.model;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
-
-import org.hibernate.annotations.Where;
-
 import com.backend.domicare.security.jwt.JwtTokenManager;
 
 import jakarta.persistence.Column;

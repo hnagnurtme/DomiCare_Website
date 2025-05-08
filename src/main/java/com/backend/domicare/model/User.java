@@ -38,7 +38,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Where(clause = "is_deleted = false")
 @Table(name = "USERS")
 public class User {
     @Id

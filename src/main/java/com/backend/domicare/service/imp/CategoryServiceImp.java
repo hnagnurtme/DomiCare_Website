@@ -1,6 +1,7 @@
 package com.backend.domicare.service.imp;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -40,16 +41,17 @@ public class CategoryServiceImp implements CategoryService {
     private final ProductsRepository productRepository;
     private final FilesRepository fileRepository;
 
-    // Fetch category by ID
     @Override
     public CategoryDTO fetchCategoryById(Long categoryId) {
         logger.info("Fetching category with ID: {}", categoryId);
-        // Retrieve category, throw exception if not found
-        Category category = categoryRepository.findById(categoryId)
+        
+        // Sử dụng Optional API để xử lý trường hợp không tìm thấy
+        Category category = Optional.ofNullable(categoryRepository.findByIdAndNotDeleted(categoryId))
             .orElseThrow(() -> {
                 logger.error("Category not found with ID: {}", categoryId);
                 return new CategoryNotFoundException("Category not found with ID: " + categoryId);
             });
+            
         logger.info("Category fetched successfully with ID: {}", categoryId);
         return CategoryMapper.INSTANCE.convertToCategoryDTO(category);
     }
@@ -58,27 +60,54 @@ public class CategoryServiceImp implements CategoryService {
     @Override
     public CategoryDTO addCategory(AddCategoryRequest request) {
         logger.info("Adding new category with name: {}", request.getName());
-        Long imageId = request.getImageId();
+        
+        // Validate category name doesn't already exist (case insensitive)
+        String categoryName = request.getName().trim();
+        validateCategoryNameIsUnique(categoryName);
+        
+        // Create category entity and set base properties
         Category categoryEntity = CategoryMapper.INSTANCE.convertToCategory(request);
-        // Check if category already exists
-        if (categoryRepository.existsByName(categoryEntity.getName())) {
-            logger.error("Category already exists with name: {}", categoryEntity.getName());
-            throw new CategoryAlreadyExists("Category already exists with name: " + categoryEntity.getName());
-        }
-        // If image ID is provided, set it in the category entity
-        if (imageId != null) {
-            File image = this.fileRepository.findById(imageId)
-                .orElseThrow(() -> {
-                    logger.error("Image not found with ID: {}", imageId);
-                    return new NotFoundFileException("Image not found with ID: " + imageId);
-                });
-            categoryEntity.setImage(image.getUrl());
-        }
         categoryEntity.setDeleted(false);
-        categoryEntity.setNameUnsigned(FormatStringAccents.removeTones(request.getName()));
-        categoryRepository.save(categoryEntity);
-        logger.info("Category added successfully with name: {}", categoryEntity.getName());
-        return CategoryMapper.INSTANCE.convertToCategoryDTO(categoryEntity);
+        categoryEntity.setNameUnsigned(FormatStringAccents.removeTones(categoryName));
+        
+        // Set image if provided
+        if (request.getImageId() != null) {
+            setImageForCategory(categoryEntity, request.getImageId());
+        }
+        
+        // Save and return result
+        Category savedCategory = categoryRepository.save(categoryEntity);
+        logger.info("Category added successfully with ID: {}", savedCategory.getId());
+        return CategoryMapper.INSTANCE.convertToCategoryDTO(savedCategory);
+    }
+    
+    /**
+     * Helper method to validate that a category name is unique
+     * 
+     * @param categoryName the name to validate
+     * @throws CategoryAlreadyExists if a category with the same name already exists
+     */
+    private void validateCategoryNameIsUnique(String categoryName) {
+        if (categoryRepository.existsByName(categoryName)) {
+            logger.error("Category already exists with name: {}", categoryName);
+            throw new CategoryAlreadyExists("Category already exists with name: " + categoryName);
+        }
+    }
+    
+    /**
+     * Sets an image for a category entity based on the image ID
+     * 
+     * @param category the category entity to update
+     * @param imageId the ID of the image to set
+     * @throws NotFoundFileException if the image is not found
+     */
+    private void setImageForCategory(Category category, Long imageId) {
+        File image = fileRepository.findById(imageId)
+            .orElseThrow(() -> {
+                logger.error("Image not found with ID: {}", imageId);
+                return new NotFoundFileException("Image not found with ID: " + imageId);
+            });
+        category.setImage(image.getUrl());
     }
 
     // Delete category and its associated products
@@ -86,6 +115,7 @@ public class CategoryServiceImp implements CategoryService {
     @Override
     public void deleteCategory(Long id) {
         logger.info("Deleting category with ID: {}", id);
+        
         // Check if category exists
         Category category = categoryRepository.findById(id)
             .orElseThrow(() -> {
@@ -93,18 +123,30 @@ public class CategoryServiceImp implements CategoryService {
                 return new CategoryNotFoundException("Category not found with ID: " + id);
             });
 
-        // If category has products, delete them in batch
-        if (!category.getProducts().isEmpty()) {
-            logger.info("Deleting products associated with category ID: {}", id);
-            List<Long> productIds = category.getProducts().stream()
-                .map(product -> product.getId())
-                .collect(Collectors.toList());
-            productRepository.softDeleteByCategoryIds(productIds);
-        }
+        // Delete associated products first
+        deleteAssociatedProducts(category);
 
         // Delete the category
         categoryRepository.softDeleteById(id);
         logger.info("Category deleted successfully with ID: {}", id);
+    }
+    
+    /**
+     * Delete all products associated with a category
+     * 
+     * @param category the category containing products to delete
+     */
+    private void deleteAssociatedProducts(Category category) {
+        if (category.getProducts() != null && !category.getProducts().isEmpty()) {
+            logger.info("Deleting {} products associated with category ID: {}", 
+                        category.getProducts().size(), category.getId());
+            
+            List<Long> productIds = category.getProducts().stream()
+                .map(product -> product.getId())
+                .collect(Collectors.toList());
+                
+            productRepository.softDeleteByCategoryIds(productIds);
+        }
     }
 
     // Update category information
@@ -112,7 +154,6 @@ public class CategoryServiceImp implements CategoryService {
     public CategoryDTO updateCategory(UpdateCategoryRequest request) {
         Long id = request.getCategoryId();
         logger.info("Updating category with ID: {}", id);
-        Long imageId = request.getImageId();
 
         // Find existing category
         Category existingCategory = categoryRepository.findById(id)
@@ -120,64 +161,112 @@ public class CategoryServiceImp implements CategoryService {
                 logger.error("Category not found with ID: {}", id);
                 return new CategoryNotFoundException("Category not found with ID: " + id);
             });
-        if (imageId != null) {
-            File image = this.fileRepository.findById(imageId)
-                .orElseThrow(() -> {
-                    logger.error("Image not found with ID: {}", imageId);
-                    return new NotFoundFileException("Image not found with ID: " + imageId);
-                });
-            existingCategory.setImage(image.getUrl());
+        
+        // Handle image update if provided
+        if (request.getImageId() != null) {
+            setImageForCategory(existingCategory, request.getImageId());
         }
-        // Check if category name already exists
-        if (categoryRepository.existsByNameAndIdNot(request.getName(), id)) {
-            logger.error("Category already exists with name: {}", request.getName());
-            throw new CategoryAlreadyExists("Category already exists with name: " + request.getName());
+        
+        // Update name if provided, checking uniqueness
+        String newName = request.getName();
+        if (newName != null && !newName.equals(existingCategory.getName())) {
+            updateCategoryName(existingCategory, newName.trim(), id);
         }
-        // Update fields with values from DTO
-        if (request.getName() != null) {
-            existingCategory.setName(request.getName());
-        }
+        
+        // Update description if provided
         if (request.getDescription() != null) {
-            existingCategory.setDescription(request.getDescription());
+            existingCategory.setDescription(request.getDescription().trim());
         }
 
         // Save updated category
-        categoryRepository.save(existingCategory);
+        Category updatedCategory = categoryRepository.save(existingCategory);
         logger.info("Category updated successfully with ID: {}", id);
-        return CategoryMapper.INSTANCE.convertToCategoryDTO(existingCategory);
+        return CategoryMapper.INSTANCE.convertToCategoryDTO(updatedCategory);
+    }
+    
+    /**
+     * Update a category's name and nameUnsigned while checking for uniqueness
+     * 
+     * @param category the category to update
+     * @param newName the new name value
+     * @param categoryId the ID of the category being updated
+     * @throws CategoryAlreadyExists if another category has the same name
+     */
+    private void updateCategoryName(Category category, String newName, Long categoryId) {
+        // Validate the new name is unique
+        if (categoryRepository.existsByNameAndIdNot(newName, categoryId)) {
+            logger.error("Category already exists with name: {}", newName);
+            throw new CategoryAlreadyExists("Category already exists with name: " + newName);
+        }
+        
+        // Update name and its unsigned version
+        category.setName(newName);
+        category.setNameUnsigned(FormatStringAccents.removeTones(newName));
     }
 
     // Get all categories with pagination
     @Override
     public ResultPagingDTO getAllCategories(Specification<Category> spec, Pageable pageable) {
         logger.info("Fetching all categories with pagination");
+        
         // Fetch categories with specification and pagination
-        Page<Category> categories = categoryRepository.findAll(spec, pageable);
+        Page<Category> categoriesPage = categoryRepository.findAll(spec, pageable);
 
-        // Throw exception if no categories are found
-        if (categories.isEmpty()) {
-            logger.error("No categories found");
-            throw new CategoryNotFoundException("No categories found");
+        // Log empty results but don't throw exception - empty result is valid
+        if (categoriesPage.isEmpty()) {
+            logger.info("No categories found for the given criteria");
+            return createEmptyPagingResult(pageable);
         }
 
         // Map entities to DTOs
-        List<CategoryDTO> categoryDTOs = categories.getContent().stream()
+        List<CategoryDTO> categoryDTOs = categoriesPage.getContent().stream()
                 .map(CategoryMapper.INSTANCE::convertToCategoryDTO)
                 .collect(Collectors.toList());
 
-        // Set pagination metadata
+        logger.info("Categories fetched successfully with total: {}", categoriesPage.getTotalElements());
+        // Return results with metadata
+        return createPagingResult(categoryDTOs, categoriesPage, pageable);
+    }
+    
+    /**
+     * Create a paging result with the given data and metadata
+     * 
+     * @param data the list of DTOs to include in the result
+     * @param page the Page object containing metadata
+     * @param pageable the Pageable object used in the query
+     * @return a ResultPagingDTO with data and metadata
+     */
+    private ResultPagingDTO createPagingResult(List<?> data, Page<?> page, Pageable pageable) {
         ResultPagingDTO.Meta meta = new ResultPagingDTO.Meta();
-        meta.setPage(pageable.getPageNumber() + 1);
+        meta.setPage(pageable.getPageNumber() + 1); // Convert 0-based to 1-based for client
         meta.setSize(pageable.getPageSize());
-        meta.setTotal(categories.getTotalElements());
-        meta.setTotalPages(categories.getTotalPages());
+        meta.setTotal(page.getTotalElements());
+        meta.setTotalPages(page.getTotalPages());
 
         ResultPagingDTO resultPagingDTO = new ResultPagingDTO();
         resultPagingDTO.setMeta(meta);
-        resultPagingDTO.setData(categoryDTOs);
+        resultPagingDTO.setData(data);
+        
+        return resultPagingDTO;
+    }
+    
+    /**
+     * Create an empty paging result with just metadata
+     * 
+     * @param pageable the Pageable object used in the query
+     * @return a ResultPagingDTO with empty data and metadata
+     */
+    private ResultPagingDTO createEmptyPagingResult(Pageable pageable) {
+        ResultPagingDTO.Meta meta = new ResultPagingDTO.Meta();
+        meta.setPage(pageable.getPageNumber() + 1);
+        meta.setSize(pageable.getPageSize());
+        meta.setTotal(0);
+        meta.setTotalPages(0);
 
-        logger.info("Categories fetched successfully with total: {}", categories.getTotalElements());
-        // Return results with metadata
+        ResultPagingDTO resultPagingDTO = new ResultPagingDTO();
+        resultPagingDTO.setMeta(meta);
+        resultPagingDTO.setData(List.of());
+        
         return resultPagingDTO;
     }
 }

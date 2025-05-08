@@ -69,32 +69,24 @@ public interface  ProductMapper {
         if (updateProductRequest == null) {
             return null;
         }
+    
+        Double discount = updateProductRequest.getDiscount();
+        Double price = updateProductRequest.getPrice();
+        Double priceAfterDiscount = price;
+    
+        if (discount != null) {
+            priceAfterDiscount = price - (price * discount / 100);
+        }
+    
         return ProductDTO.builder()
                 .description(updateProductRequest.getDescription())
-                .id(updateProductRequest.getCategoryId())
+                .id(updateProductRequest.getOldProductId())
                 .name(updateProductRequest.getName())
-                .price(updateProductRequest.getPrice())
-                .discount(updateProductRequest.getDiscount())
-                .priceAfterDiscount(updateProductRequest.getPrice() - (updateProductRequest.getPrice() * updateProductRequest.getDiscount() / 100))
+                .price(price)
+                .discount(discount)
+                .priceAfterDiscount(priceAfterDiscount)
                 .categoryID(updateProductRequest.getCategoryId())
                 .build();
     }
+    
 }
-// @NotNull(message = "Không được để trống danh mục cũ")
-// private Long oldCategoryId;
-
-// @NotNull(message = "Không được để trống id sản phẩm cũ")
-// private Long oldProductId;
-
-// @NotNull(message = "Không được để trống danh mục")
-// private Long categoryId;
-// @NotNull(message = "Không được để trống tên sản phẩm")
-// private String name;
-// @NotNull(message = "Không được để trống mô tả")
-// private String description;
-// @NotNull(message = "Không được để trống giá")
-// private double price;
-// @NotNull(message = "Không được để trống ảnh")
-// private Long mainImageId;
-// private Double discount;
-// private List<Long> landingImageIds;

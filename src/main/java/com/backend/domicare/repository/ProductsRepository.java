@@ -23,14 +23,11 @@ public interface ProductsRepository extends JpaRepository<Product, Long> , JpaSp
     boolean existsByName(String name);
     boolean existsByNameAndCategoryId(String name, Long categoryId);
 
-
-    //Soft delete product by id
     @Modifying
     @Query("UPDATE Product p SET p.isDeleted = true WHERE p.id = :id")
     void softDeleteById(Long id);
 
 
-    //Soft delete product by category ids
     @Modifying
     @Query("UPDATE Product p SET p.isDeleted = true WHERE p.category.id IN :ids")
     void softDeleteByCategoryIds(List<Long> ids);
@@ -39,4 +36,8 @@ public interface ProductsRepository extends JpaRepository<Product, Long> , JpaSp
     @Query(value = "SELECT * FROM product WHERE CONVERT(name USING utf8) COLLATE utf8_general_ci LIKE CONCAT('%', :keyword, '%')", nativeQuery = true)
     List<Product> searchAccentInsensitive(@Param("keyword") String keyword);
 
+
+    //Find by id and not deleted
+    @Query("SELECT p FROM Product p WHERE p.id = :id AND p.isDeleted = false")
+    Product findByIdAndNotDeleted(@Param("id") Long id);
 }

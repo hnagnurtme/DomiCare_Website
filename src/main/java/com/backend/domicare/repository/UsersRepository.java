@@ -38,11 +38,14 @@ public interface UsersRepository extends JpaRepository<User, Long>, JpaSpecifica
     @Query("SELECT COUNT(u) FROM User u JOIN u.roles r WHERE r.name = :roleName")
     Long countUsersByRoleName(@Param("roleName") String roleName);
 
-    // Soft delete user by id
     @Query("UPDATE User u SET u.isDeleted = true WHERE u.id = :id")
     void softDeleteById(@Param("id") Long id);
 
-    
-    
+
+    //findByIdAndNotDeleted
+    @Query("SELECT u FROM User u WHERE u.id = :id AND u.isDeleted = false")
+    Optional<User> findByIdAndNotDeleted(@Param("id") Long id);
+
+
     
 }

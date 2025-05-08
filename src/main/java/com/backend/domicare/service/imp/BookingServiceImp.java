@@ -118,7 +118,6 @@ public class BookingServiceImp implements BookingService {
 
         logger.debug("Fetching all bookings for user ID: {}", userId);
 
-        // Check if user exists
         if (!userRepository.existsById(userId)) {
             throw new NotFoundUserException("User not found with ID: " + userId);
         }

@@ -36,8 +36,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api")
 public class ProductController {
     private final ProductService productService;
-
-    // Add product
+    
     @PostMapping("/products")
     public ResponseEntity<?> createProduct(@Valid @RequestBody AddProductRequest addProductRequest) {
         ProductDTO product = productService.addProduct(addProductRequest);
@@ -95,6 +94,7 @@ public class ProductController {
             spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("category").get("id"),
                     categoryId));
         }
+        spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("isDeleted"), false));
 
         return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProducts(spec, pageable));
     }

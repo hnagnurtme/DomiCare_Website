@@ -14,10 +14,11 @@ public interface CategoriesRepository extends JpaRepository<Category, Long> , Jp
     boolean existsByName(String name);
     boolean existsByNameAndIdNot(String name, Long id);
 
-    //Soft delete category by id
     @Modifying
     @Query("UPDATE Category c SET c.isDeleted = true WHERE c.id = :id")
     void softDeleteById(Long id);
 
-
+    //find by id and not deleted
+    @Query("SELECT c FROM Category c WHERE c.id = :id AND c.isDeleted = false")
+    Category findByIdAndNotDeleted(Long id);
 }

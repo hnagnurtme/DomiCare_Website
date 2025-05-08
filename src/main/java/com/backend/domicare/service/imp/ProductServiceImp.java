@@ -16,7 +16,6 @@ import com.backend.domicare.dto.request.AddProductRequest;
 import com.backend.domicare.dto.request.UpdateProductRequest;
 import com.backend.domicare.dto.response.ProductResponse;
 import com.backend.domicare.exception.CategoryNotFoundException;
-import com.backend.domicare.exception.NotFoundException;
 import com.backend.domicare.exception.NotFoundFileException;
 import com.backend.domicare.exception.NotFoundProductException;
 import com.backend.domicare.exception.ProductNameAlreadyExists;
@@ -59,11 +58,11 @@ public class ProductServiceImp implements ProductService {
         Long mainImageId = request.getMainImageId();
         List<Long> landingImageIds = request.getLandingImageIds();
 
-        Category category = categoryRepository.findById(categoryID)
-                .orElseThrow(() -> {
-                    logger.error("Category not found with ID: {}", categoryID);
-                    return new CategoryNotFoundException("Category not found with ID: " + categoryID);
-                });
+        Category category = categoryRepository.findByIdAndNotDeleted(categoryID);
+        if (category == null) {
+            logger.error("Category not found with ID: {}", categoryID);
+            throw new CategoryNotFoundException("Category not found");
+        }
 
         if (productRepository.existsByNameAndCategoryId(productDTO.getName(), categoryID)) {
             logger.error("Product with the same name already exists in category ID: {}", categoryID);
@@ -210,15 +209,10 @@ public class ProductServiceImp implements ProductService {
     public void deleteProduct(Long id) {
         logger.info("Deleting product with ID: {}", id);
 
-        Product product = productRepository.findById(id)
-            .orElseThrow(() -> {
-                logger.error("Product not found with ID: {}", id);
-                return new NotFoundException("Product not found");
-            });
-
-        if (product.isDeleted()) {
-            logger.warn("Product with ID: {} is already deleted", id);
-            throw new NotFoundException("Product is already deleted");
+        Product product = productRepository.findByIdAndNotDeleted(id);
+        if (product == null) {
+            logger.error("Product not found with ID: {}", id);
+            throw new NotFoundProductException("Product not found");
         }
 
         product.setDeleted(true);
@@ -231,11 +225,11 @@ public class ProductServiceImp implements ProductService {
     public ProductDTO fetchProductById(Long id) {
         logger.info("Fetching product with ID: {}", id);
 
-        Product product = productRepository.findById(id)
-            .orElseThrow(() -> {
-                logger.error("Product not found with ID: {}", id);
-                return new NotFoundProductException("Product not found");
-            });
+        Product product = productRepository.findByIdAndNotDeleted(id);
+        if (product == null) {
+            logger.error("Product not found with ID: {}", id);
+            throw new NotFoundProductException("Product not found");
+        }
 
         logger.info("Product fetched successfully with ID: {}", id);
         return ProductMapper.INSTANCE.convertToProductDTO(product);

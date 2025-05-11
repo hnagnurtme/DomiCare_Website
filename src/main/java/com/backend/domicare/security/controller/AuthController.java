@@ -2,6 +2,7 @@ package com.backend.domicare.security.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -50,6 +51,11 @@ public class AuthController {
         String email = userDTO.getEmail();
         String password = userDTO.getPassword();
         userService.resetPassword(email, password);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+    @GetMapping("/out")
+    public ResponseEntity<Void> logout() {
+        authService.logout();
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 }

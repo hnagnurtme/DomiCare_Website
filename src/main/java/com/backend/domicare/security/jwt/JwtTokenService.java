@@ -22,6 +22,7 @@ import com.backend.domicare.exception.UnconfirmEmailException;
 import com.backend.domicare.mapper.UserMapper;
 import com.backend.domicare.model.Token;
 import com.backend.domicare.model.User;
+import com.backend.domicare.repository.TokensRepository;
 import com.backend.domicare.security.dto.LoginRequest;
 import com.backend.domicare.security.dto.LoginResponse;
 import com.backend.domicare.security.dto.RefreshTokenRespone;
@@ -42,6 +43,8 @@ import lombok.RequiredArgsConstructor;
  * email verification, and user registration.
  */
 public class JwtTokenService {
+
+    private final TokensRepository tokensRepository;
     private final JwtTokenManager jwtTokenManager;
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
@@ -174,15 +177,14 @@ public class JwtTokenService {
         return email;
     }
 
-    public void logout(String accessToken){
-        String email = this.getEmailFromAccessToken(accessToken);
-        if (email == null) {
-            throw new NotFoundUserException("Không tìm thấy người dùng");
-        }
+    public void logout(){
+        String email = JwtTokenManager.getCurrentUserLogin().orElseThrow(() -> new NotFoundUserException("Không tìm thấy người dùng"));
         User user = userService.findUserByEmail(email);
         if (user == null) {
             throw new NotFoundUserException("Không tìm thấy người dùng");
         }
-        userService.deleteRefreshTokenByUserId(user.getId());
+        this.tokensRepository.deleteByUserId(user.getId());
+        
+        SecurityContextHolder.clearContext();
     }
 }

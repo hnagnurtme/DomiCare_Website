@@ -17,11 +17,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-
-import com.backend.domicare.dto.response.Message;
 import com.backend.domicare.security.jwt.JwtAuthenticationEntryPoint;
-import com.backend.domicare.security.utils.CustomLogoutHandler;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.RequiredArgsConstructor;
 
@@ -35,9 +31,7 @@ public class SecurityConfiguration {
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfiguration.class);
 
     // Dependencies
-    private final CustomLogoutHandler customLogoutHandler;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final ObjectMapper objectMapper;
 
     /**
      * API endpoint path constants
@@ -157,25 +151,6 @@ public class SecurityConfiguration {
                 .jwt(Customizer.withDefaults())
             )
             
-            
-            // Configure logout
-            .logout(logout -> logout
-                .logoutUrl("/logout")
-                .addLogoutHandler(customLogoutHandler)
-                .logoutSuccessHandler((request, response, authentication) -> {
-                    logger.info("User logged out successfully: {}", 
-                        authentication != null ? authentication.getName() : "anonymous");
-                    
-                    response.setStatus(HttpStatus.OK.value());
-                    response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                    
-                    Message message = new Message("Logout successful");
-                    String jsonResponse = objectMapper.writeValueAsString(message);
-                    
-                    response.getWriter().write(jsonResponse);
-                    response.getWriter().flush();
-                })
-            )
             
             // Configure exception handling
             .exceptionHandling(exception -> exception

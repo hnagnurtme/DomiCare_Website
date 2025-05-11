@@ -180,18 +180,13 @@ public class ProductServiceImp implements ProductService {
                 });
             productEntity.setImage(mainImage.getUrl());
         }
-
-        List<Long> landingImageIds = request.getLandingImageIds();
+        List<String> landingImageIds = request.getLandingImageUrls();
         if (landingImageIds != null) {
-            List<String> landingImages = new ArrayList<>();
-            for (Long imageId : landingImageIds) {
-                File landingImage = fileRepository.findById(imageId)
-                    .orElseThrow(() -> {
-                        logger.error("Landing image not found with ID: {}", imageId);
-                        return new NotFoundFileException("Landing image not found");
-                    });
-                landingImages.add(landingImage.getUrl());
-            }
+            List<String> landingImages = fileRepository.findByUrls(landingImageIds)
+                .stream()
+                .map(File::getUrl)
+                .toList();
+            
             productEntity.setLandingImages(landingImages);
         }
 

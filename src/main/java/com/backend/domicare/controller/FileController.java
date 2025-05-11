@@ -39,7 +39,7 @@ public class FileController {
         logger.info("File size: " + file.getSize());
         logger.info("File content type: " + file.getContentType());
         logger.info("File name: " + file.getName());
-        FileDTO fileDTO = fileService.uploadFile(file, file.getOriginalFilename(), false);
+        FileDTO fileDTO = fileService.uploadFile(file, file.getOriginalFilename());
         return ResponseEntity.status(HttpStatus.CREATED).body(fileDTO);
     }
 
@@ -48,7 +48,7 @@ public class FileController {
         List<FileDTO> uploadedFiles = new ArrayList<>();
 
         for (MultipartFile file : files) {
-            FileDTO fileDTO = fileService.uploadFile(file, file.getOriginalFilename(), false);
+            FileDTO fileDTO = fileService.uploadFile(file, file.getOriginalFilename());
             uploadedFiles.add(fileDTO);
         }
 

@@ -90,15 +90,15 @@ public class Product {
     }
 
     public Double calculateRatingStar() {
-        if (reviews == null || reviews.isEmpty()) {
-            return 0.0;
-        }
-        float totalRating = 0;
-        for (Review review : reviews) {
-            totalRating += review.getRating();
-        }
-        double calculatedRating = (double) (totalRating / reviews.size());
-        return calculatedRating;
+    if (reviews == null || reviews.isEmpty()) {
+        return 0.0;
+    }
+    float totalRating = 0;
+    for (Review review : reviews) {
+        totalRating += review.getRating();
+    }
+    double calculatedRating = (double) totalRating / reviews.size();
+    return Math.round(calculatedRating * 100.0) / 100.0;
     }
 
     public Double getPriceAfterDiscount() {

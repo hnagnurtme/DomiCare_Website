@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.backend.domicare.dto.FileDTO;
-import com.backend.domicare.exception.NotFoundException;
+import com.backend.domicare.dto.response.ImageResponse;
 import com.backend.domicare.exception.NotFoundFileException;
 import com.backend.domicare.mapper.FileMapper;
 import com.backend.domicare.model.File;
@@ -30,28 +30,31 @@ public class FileServiceImp implements FileService {
     private final Cloudinary cloudinary;
     @Override
     @Transactional
-    public FileDTO uploadFile(MultipartFile file,String uniqueName, boolean isDuplicate) {
-        // Kiểm tra xem file đã tồn tại trong cơ sở dữ liệu chưa
-        boolean fileExists = filesRepository.existsByName(uniqueName);
-        if (fileExists ) {
-            if (isDuplicate) {
-                // Nếu cho phép trùng tên, xóa file cũ
-                File existingFile = filesRepository.findByName(uniqueName);
-                if (existingFile != null) {
-                    filesRepository.delete(existingFile);
-                }
-            } else {
-                // Nếu không cho phép trùng tên, ném ngoại lệ
-                throw new RuntimeException("File with the same name already exists");
-            }
-        }
+    public FileDTO uploadFile(MultipartFile file, String uniqueName) {
         try {
-        Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
+            // Upload file first to get URL
+            @SuppressWarnings("unchecked")
+            Map<String, Object> uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.emptyMap());
             String url = (String) uploadResult.get("url");
             String type = (String) uploadResult.get("resource_type");
             String size = String.valueOf(file.getSize());
+            
             if (url == null || type == null || size == null) {
                 throw new RuntimeException("Failed to upload file");
+            }
+            
+            // Kiểm tra xem URL của file đã tồn tại trong cơ sở dữ liệu chưa
+            boolean urlExists = filesRepository.existsByUrl(url);
+            if (urlExists) {
+                // Không cho phép trùng URL, xóa file vừa upload và ném ngoại lệ
+                try {
+                    String publicId = extractPublicIdFromUrl(url);
+                    cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
+                    logger.info("Deleted duplicate file from Cloudinary with URL: {}", url);
+                } catch (IOException e) {
+                    logger.error("Error deleting duplicate file from Cloudinary: {}", e.getMessage(), e);
+                }
+                throw new RuntimeException("File with the same URL already exists");
             }
             File uploadedFile = new File();
             uploadedFile.setUrl(url);
@@ -61,7 +64,6 @@ public class FileServiceImp implements FileService {
             filesRepository.save(uploadedFile);
             return FileMapper.INSTANCE.convertToFileDTO(uploadedFile);
         } catch (IOException e) {
-            // Sử dụng logging thay vì in ra console
             logger.error("Error uploading file: {}", e.getMessage(), e);
             throw new RuntimeException("Error uploading file", e);
         }
@@ -121,7 +123,7 @@ public class FileServiceImp implements FileService {
     public FileDTO fetchFileByName(String name) {
         File file = filesRepository.findByName(name);
         if (file == null) {
-            throw new NotFoundException("File not found with name: " + name);
+            throw new NotFoundFileException("File not found with name: " + name);
         }
         return FileMapper.INSTANCE.convertToFileDTO(file);
 
@@ -131,6 +133,24 @@ public class FileServiceImp implements FileService {
     public List<FileDTO> fetchAllFiles() {
         List<File> files = filesRepository.findAll();
         return FileMapper.INSTANCE.convertToFileDTOs(files);
+    }
+
+    @Override
+    public ImageResponse findByUrl(String url) {
+        File file = filesRepository.findByUrl(url);
+        if (file == null) {
+            throw new NotFoundFileException("File not found with url: " + url);
+        }
+        return FileMapper.INSTANCE.convertToImageResponse(file);
+    }
+
+    @Override
+    public List<ImageResponse> findByUrls(List<String> urls) {
+        List<File> files = filesRepository.findByUrls(urls);
+        if (files.isEmpty()) {
+            throw new NotFoundFileException("Files not found with urls: " + urls);
+        }
+        return FileMapper.INSTANCE.convertToImageResponses(files);
     }
     
 }

@@ -96,7 +96,7 @@ public class BookingServiceImp implements BookingService {
                 .orElseThrow(() -> new NotFoundBookingException("Booking not found with ID: " + id));
 
         // Validate status
-        if (booking.getBookingStatus() == BookingStatus.ACCEPTED) {
+        if (booking.getBookingStatus() != BookingStatus.PENDING) {
             logger.warn("Cannot update booking with ID: {} due to status: {}", id, booking.getBookingStatus());
             throw new BookingStatusException("Cannot update booking with status: " + booking.getBookingStatus());
         }
@@ -156,17 +156,50 @@ public class BookingServiceImp implements BookingService {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundBookingException("Booking not found with ID: " + id));
 
-        // Validate status transition
-        if (booking.getBookingStatus() != BookingStatus.PENDING) {
-            logger.warn("Cannot update booking with ID: {} due to status: {}", id, booking.getBookingStatus());
-            throw new BookingStatusException("Cannot update booking with status: " + booking.getBookingStatus());
+        if( booking.getBookingStatus() == BookingStatus.PENDING) {
+            switch (newStatus) {
+                case ACCEPTED:
+                    booking.setBookingStatus(BookingStatus.ACCEPTED);
+                    this.emailSendingService.sendAcceptedToUser(
+                        booking.getUser().getEmail(),
+                        booking.getProducts().get(0).getName(),
+                        booking.getCreateAt().toString(),
+                        booking.getUser().getName()
+                    );
+                    break;
+                case REJECTED:
+                    booking.setBookingStatus(BookingStatus.REJECTED);
+                    this.emailSendingService.sendRejectToUser(
+                        booking.getUser().getEmail(),
+                        booking.getProducts().get(0).getName(),
+                        booking.getCreateAt().toString(),
+                        booking.getUser().getName()
+                    );
+                    break;
+                default:
+                    throw new BookingStatusException("Cannot update booking to status: " + newStatus);
+            }
         }
+        else{
+            if(booking.getBookingStatus() == BookingStatus.ACCEPTED){
+                switch (newStatus) {
+                    case FAILED:
+                        booking.setBookingStatus(BookingStatus.FAILED);
+                        break;
+                    
+                    case SUCCESS:
+                        booking.setBookingStatus(BookingStatus.SUCCESS);
+                        break;
+                    default:
+                        throw new BookingStatusException("Cannot update booking to status: " + newStatus);
+                }
+            }
+            else{
+                throw new BookingStatusException("Cannot update booking to status: " + newStatus);
+            }
 
-        booking.setBookingStatus(newStatus);
-        if(newStatus == BookingStatus.REJECTED) {
-            String formattedStartTime = booking.getStartTime().toString(); // Convert Instant to String
-            emailSendingService.sendRejectToUser(booking.getUser().getEmail(), booking.getProducts().get(0).getName(), formattedStartTime, "Hệ thống không thể đáp ứng yêu cầu của bạn", booking.getUser().getName());
         }
+    
         Booking updatedBooking = bookingRepository.save(booking);
 
         logger.info("Booking status updated successfully for ID: {}", id);

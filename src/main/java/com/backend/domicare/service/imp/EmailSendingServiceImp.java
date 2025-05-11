@@ -108,12 +108,12 @@ public class EmailSendingServiceImp implements EmailSendingService {
 
 
     @Async
-    public CompletableFuture<Void> sendRejectToUser(String to, String nameService,String dateBooking, String reason, String nameUser){
+    public CompletableFuture<Void> sendRejectToUser(String to, String nameService,String dateBooking, String nameUser){
         Context context = new Context();
         context.setVariable("nameUser", nameUser);
         context.setVariable("nameService", nameService);
         context.setVariable("dateBooking", dateBooking);
-        context.setVariable("reason", reason);
+        context.setVariable("reason", " Hệ thống đang găp sự cố");
         String templateName = "SendRejectBooking";
         String content = templateEngine.process(templateName, context);
         String subject = "Yêu cầu dịch vụ của bạn đã bị từ chối";
@@ -122,12 +122,11 @@ public class EmailSendingServiceImp implements EmailSendingService {
     }
 
     @Async
-    public CompletableFuture<Void> sendAcceptedToUser(String to, String nameService,String dateBooking, String reason, String nameUser){
+    public CompletableFuture<Void> sendAcceptedToUser(String to, String nameService,String dateBooking ,String nameUser){
         Context context = new Context();
         context.setVariable("nameUser", nameUser);
         context.setVariable("nameService", nameService);
         context.setVariable("dateBooking", dateBooking);
-        context.setVariable("reason", reason);
         String templateName = "SendAcceptedBooking";
         String content = templateEngine.process(templateName, context);
         String subject = "Yêu cầu dịch vụ của bạn đã được chấp nhận";

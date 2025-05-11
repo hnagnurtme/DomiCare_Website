@@ -234,7 +234,7 @@ public class UserServiceImp implements UserService {
             tokenRepository.deleteAll(user.getRefreshTokens());
         }
         
-        userRepository.delete(user);
+        userRepository.softDeleteById(id);
         logger.info("User deleted successfully with ID: {} (removed {} bookings, {} reviews, {} tokens)", 
                 id, bookingsCount, reviewsCount, tokensCount);
     }

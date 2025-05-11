@@ -19,7 +19,10 @@ public interface EmailSendingService {
 
 
     @Async
-    CompletableFuture<Void> sendRejectToUser(String to, String nameService,String dateBooking, String reason,String nameUser);
+    CompletableFuture<Void> sendRejectToUser(String to, String nameService,String dateBooking,String nameUser);
+    
+    @Async
+    CompletableFuture<Void> sendAcceptedToUser(String to, String nameService,String dateBooking,String nameUser);
     
     // Gửi email từ template đồng bộ
     String sendEmailFromTemplateSync(String to, String subject, String templateName);

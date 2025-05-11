@@ -45,10 +45,12 @@ public class SecurityConfiguration {
     private static class ApiPaths {
         // Documentation paths
         public static final String[] DOCS_PATHS = {"/v3/api-docs/**", "/swagger-ui/**"};
+
+        public static final String[] EMAIL_PATHS = {"/email/**"};
         
         // Authentication paths
         public static final String[] AUTH_PATHS = {"/login", "/register", "/refresh-token",
-                                                  "/verify-email", "/oauth2", "/logout",
+                                                  "/verify-email", "/oauth/**", "/logout",
                                                   "/forgot-password", "/reset-password"};
         
         // Public API paths
@@ -63,6 +65,7 @@ public class SecurityConfiguration {
         public static final String[] CATEGORY_ADMIN_PATHS = {"/api/categories/**"};
         public static final String[] REVIEW_USER_PATHS = {"/api/reviews/**"};
         public static final String[] FILE_PATHS = {"/api/cloudinary/files/**"};
+        public static final String[] BOOKING_PATH = {"/api/bookings/**" ,"/api/bookings"};
     }
 
     /**
@@ -81,7 +84,8 @@ public class SecurityConfiguration {
         return Arrays.stream(new String[][] {
             ApiPaths.DOCS_PATHS,
             ApiPaths.AUTH_PATHS,
-            ApiPaths.PUBLIC_API_PATHS
+            ApiPaths.PUBLIC_API_PATHS,
+            ApiPaths.EMAIL_PATHS,
         }).flatMap(Arrays::stream).toList();
     }
 
@@ -136,12 +140,14 @@ public class SecurityConfiguration {
                 
                 // File access - any authenticated user
                 .requestMatchers(ApiPaths.FILE_PATHS).authenticated()
+
+                .requestMatchers(HttpMethod.POST, ApiPaths.BOOKING_PATH).permitAll()
                 
                 // Booking status - public access
                 .requestMatchers(HttpMethod.GET, "/api/booking-status/**").permitAll()
                 
                 // Default fallback - allow access if not specified above
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
             )
             // Disable form login
             .formLogin(AbstractHttpConfigurer::disable)

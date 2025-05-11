@@ -2,9 +2,9 @@ package com.backend.domicare.repository;
 
 import java.util.Optional;
 
-import org.hibernate.annotations.Where;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -38,14 +38,11 @@ public interface UsersRepository extends JpaRepository<User, Long>, JpaSpecifica
     @Query("SELECT COUNT(u) FROM User u JOIN u.roles r WHERE r.name = :roleName")
     Long countUsersByRoleName(@Param("roleName") String roleName);
 
+   @Modifying
     @Query("UPDATE User u SET u.isDeleted = true WHERE u.id = :id")
     void softDeleteById(@Param("id") Long id);
 
-
-    //findByIdAndNotDeleted
     @Query("SELECT u FROM User u WHERE u.id = :id AND u.isDeleted = false")
     Optional<User> findByIdAndNotDeleted(@Param("id") Long id);
 
-
-    
 }

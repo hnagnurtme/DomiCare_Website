@@ -1,119 +1,105 @@
-
 <!DOCTYPE html>
-<html lang="vi">
+<html xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
-    <title>Email xác nhận dịch vụ</title>
+    <title>Email xác nhận tiếp nhận</title>
     <style>
       body {
-        font-family: Arial, sans-serif;
-        background-color: #f2f2f2;
-        padding: 20px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #eaeaea;
+        padding: 50px 15px;
       }
+
       .email-container {
         background-color: #ffffff;
-        padding: 30px;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-        max-width: 600px;
+        max-width: 620px;
         margin: auto;
-      }
-      .logo {
+        padding: 35px 30px;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
         text-align: center;
+        border: 1px solid #ddd;
+      }
+
+      .logo {
         margin-bottom: 20px;
       }
+
       .logo img {
-        max-width: 200px;
+        width: 75px;
         height: auto;
+        display: inline-block;
       }
-      .header {
-        text-align: center;
-        color: #02CF96;
-      } 
+
+      h2 {
+        color: #2e7d32;
+        font-size: 24px;
+        margin-top: 10px;
+      }
+
       .content {
-        margin-top: 20px;
-        line-height: 1.6;
+        text-align: left;
+        margin-top: 25px;
+        line-height: 1.7;
         color: #333;
       }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
+
+      .btn-container {
+        text-align: center;
+        margin-top: 30px;
       }
-      table, th, td {
-        border: 1px solid #ccc;
+
+      .btn-container {
+        text-align: center;
+        margin-top: 30px;
       }
-      th, td {
-        padding: 10px;
-        text-align: left;
-      }
-      th {
-        background-color: #f5f5f5;
-      }
+
       .btn {
         display: inline-block;
-        background-color: #02CF96;
-        color: #fff;
-        padding: 10px 20px;
+        background-color: #4da6ff;
+        color: #ffffff;
+        padding: 12px 26px;
         text-decoration: none;
-        margin-top: 20px;
-        border-radius: 5px;
+        border-radius: 8px;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn:hover {
+        background-color: #3399ff;
       }
       .footer {
-        margin-top: 30px;
+        margin-top: 40px;
         font-size: 13px;
-        color: #777;
-        text-align: center;
+        color: #999;
+        border-top: 1px solid #eee;
+        padding-top: 20px;
       }
     </style>
   </head>
   <body>
     <div class="email-container">
       <div class="logo">
-        <img src="file:///C:/Users/ADMIN/Downloads/Logo%20domicare%20(3).svg" alt="Logo công ty" />
+        <img src="https://res.cloudinary.com/drtizu6d3/image/upload/v1742480126/qjddivskmhlgiknyrqzv.png"
+             alt="DomiCare Logo" />
       </div>
-      <h2 class="header">✅ Xác nhận đăng ký dịch vụ thành công</h2>
+
+      <h2>✅ Dịch vụ đã được tiếp nhận</h2>
+
       <div class="content">
-        <p>Xin chào <strong>Nguyễn Văn A</strong>,</p>
-        <p>
-          Chúng tôi xin thông báo rằng yêu cầu đăng ký dịch vụ
-          <strong>Vệ sinh công nghiệp</strong> của bạn vào ngày
-          <strong>11/04/2025</strong> đã được
-          <span style="color: #02CF96"><strong>chấp nhận</strong></span>.
-        </p>
-        <p>Dưới đây là thông tin hóa đơn dịch vụ của bạn:</p>
-        <table>
-          <thead>
-            <tr>
-              <th>Tên dịch vụ</th>
-              <th>Đơn giá</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Vệ sinh công nghiệp</td>
-              <td>1.500.000 VNĐ</td>
-            </tr>
-            <tr>
-              <td>Khử khuẩn nhà xưởng</td>
-              <td>800.000 VNĐ</td>
-            </tr>
-            <tr>
-              <th style="text-align: right">Tổng cộng</th>
-              <th>2.300.000 VNĐ</th>
-            </tr>
-          </tbody>
-        </table>
-        <p>
-          Cảm ơn bạn đã tin tưởng và lựa chọn dịch vụ của chúng tôi. Nếu bạn có
-          bất kỳ thắc mắc nào, vui lòng liên hệ với đội ngũ chăm sóc khách hàng.
-        </p>
-        <a href="https://dichvuvsabc.vn/lien-he" class="btn">Liên hệ hỗ trợ</a>
+        <p>Xin chào <strong th:text="${nameUser}">Người dùng</strong>,</p>
+        <p>Chúng tôi xin xác nhận rằng yêu cầu đăng ký dịch vụ <strong th:text="${nameService}">Tên dịch vụ</strong> của bạn vào ngày <strong th:text="${dateBooking}">dd/MM/yyyy</strong> đã được <span style="color: #2e7d32;"><strong>tiếp nhận thành công</strong></span>.</p>
+        <p>Một nhân viên của chúng tôi sẽ sớm liên hệ với bạn để xác nhận chi tiết và hỗ trợ thêm.</p>
+        <p>Xin cảm ơn bạn đã tin tưởng sử dụng DomiCare.</p>
       </div>
-      <div class="footer">
-        © 2025 Công ty Domicare.<br />
-        Email này được gửi tự động – vui lòng không trả lời.
+
+      <div class="btn-container">
+        <a href="https://domicare-frontend.vercel.app" class="btn">Truy cập DomiCare</a>
       </div>
+
+      <p class="footer">
+        © 2025 DomiCare. Email này được gửi tự động – vui lòng không trả lời.
+      </p>
     </div>
   </body>
 </html>

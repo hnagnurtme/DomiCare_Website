@@ -70,6 +70,7 @@ public class UserController {
             spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder
                     .like(root.join("roles").get("name"), "%" + searchRoleName + "%"));
         }
+        spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("isDeleted"), false));
 
         
         return ResponseEntity.ok(this.userService.getAllUsers(spec, pageable));

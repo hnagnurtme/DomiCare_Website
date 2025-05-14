@@ -55,8 +55,8 @@ public class ProductServiceImp implements ProductService {
         productDTO.setPrice(request.getPrice());
         productDTO.setDiscount(request.getDiscount());
 
-        Long mainImageId = request.getMainImageId();
-        List<Long> landingImageIds = request.getLandingImageIds();
+        String mainImageId = request.getMainImageUrl();
+        List<String> landingImageIds = request.getLandingImageUrls();
 
         Category category = categoryRepository.findByIdAndNotDeleted(categoryID);
         if (category == null) {
@@ -70,22 +70,22 @@ public class ProductServiceImp implements ProductService {
         }
 
         if (mainImageId != null) {
-            File mainImage = fileRepository.findById(mainImageId)
-                .orElseThrow(() -> {
-                    logger.error("Main image not found with ID: {}", mainImageId);
-                    return new NotFoundFileException("Main image not found");
-                });
+            File mainImage = fileRepository.findByUrl(mainImageId);
+            if( mainImage == null) {
+                logger.error("Main image not found with ID: {}", mainImageId);
+                throw new NotFoundFileException("Main image not found");
+            }
             productDTO.setImage(mainImage.getUrl());
         }
 
         if (landingImageIds != null) {
             List<String> landingImages = new ArrayList<>();
-            for (Long imageId : landingImageIds) {
-                File landingImage = fileRepository.findById(imageId)
-                    .orElseThrow(() -> {
-                        logger.error("Landing image not found with ID: {}", imageId);
-                        return new NotFoundFileException("Landing image not found");
-                    });
+            for (String imageId : landingImageIds) {
+                File landingImage = fileRepository.findByUrl(imageId);
+                if (landingImage == null) {
+                    logger.error("Landing image not found with ID: {}", imageId);
+                    throw new NotFoundFileException("Landing image not found");
+                }
                 landingImages.add(landingImage.getUrl());
             }
             productDTO.setLandingImages(landingImages);
@@ -171,13 +171,13 @@ public class ProductServiceImp implements ProductService {
             productEntity.setDiscount(productDTO.getDiscount());
         }
 
-        Long mainImageId = request.getMainImageId();
+        String mainImageId = request.getMainImageUrl();
         if (mainImageId != null) {
-            File mainImage = fileRepository.findById(mainImageId)
-                .orElseThrow(() -> {
-                    logger.error("Main image not found with ID: {}", mainImageId);
-                    return new NotFoundFileException("Main image not found");
-                });
+            File mainImage = fileRepository.findByUrl(mainImageId);
+            if( mainImage == null) {
+                logger.error("Main image not found with ID: {}", mainImageId);
+                throw new NotFoundFileException("Main image not found");
+            }
             productEntity.setImage(mainImage.getUrl());
         }
         List<String> landingImageIds = request.getLandingImageUrls();

@@ -44,7 +44,7 @@ public class SecurityConfiguration {
         
         // Authentication paths
         public static final String[] AUTH_PATHS = {"/login", "/register", "/refresh-token",
-                                                  "/verify-email", "/oauth/**", "/logout",
+                                                  "/verify-email", "/auth/**", "/logout",
                                                   "/forgot-password", "/reset-password"};
         
         // Public API paths

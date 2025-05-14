@@ -27,7 +27,7 @@ public class UpdateProductRequest {
     private String name;
     private String description;
     private double price; 
-    private Long mainImageId;
+    private String mainImageUrl;
 
     private Double discount;
     

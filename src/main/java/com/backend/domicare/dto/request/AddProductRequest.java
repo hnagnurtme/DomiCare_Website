@@ -22,7 +22,7 @@ public class AddProductRequest {
     @NotNull(message = "Không được để trống giá")
     private double price;
     @NotNull(message = "Không được để trống ảnh")
-    private Long mainImageId;
+    private String mainImageUrl;
     private Double discount;
-    private List<Long> landingImageIds;
+    private List<String> landingImageUrls;
 }

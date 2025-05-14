@@ -22,6 +22,6 @@ public class AddCategoryRequest {
     private String description;
     
     @NotNull(message = "ID ảnh không được để trống")
-    @Schema(description = "ID of the image to be used for the category", example = "1", required = true)
-    private Long imageId;
+    @Schema(description = "ID of the image to be used for the category", example = "http://huhu", required = true)
+    private String imageId;
 }

@@ -39,10 +39,10 @@ public class Product {
 
     @Column(name = "name_unsigned")
     private String nameUnsigned;
-    
+
     @Column(columnDefinition = "TEXT")
     private String description;
-    
+
     private Double price;
     private Double discount;
     private String image;
@@ -55,20 +55,18 @@ public class Product {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-
     @OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
     private List<Review> reviews;
-    
+
     private String createBy;
     private String updateBy;
     private Instant createAt;
     private Instant updateAt;
-    
 
     @PrePersist
     public void prePersist() {
         Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
-        if(currentUserLogin.isPresent()) {
+        if (currentUserLogin.isPresent()) {
             this.createBy = currentUserLogin.get();
         } else {
             this.createBy = "system";
@@ -82,7 +80,7 @@ public class Product {
     public void preUpdate() {
         this.updateAt = Instant.now();
         Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
-        if(currentUserLogin.isPresent()) {
+        if (currentUserLogin.isPresent()) {
             this.updateBy = currentUserLogin.get();
         } else {
             this.updateBy = "system";
@@ -90,15 +88,15 @@ public class Product {
     }
 
     public Double calculateRatingStar() {
-    if (reviews == null || reviews.isEmpty()) {
-        return 0.0;
-    }
-    float totalRating = 0;
-    for (Review review : reviews) {
-        totalRating += review.getRating();
-    }
-    double calculatedRating = (double) totalRating / reviews.size();
-    return Math.round(calculatedRating * 100.0) / 100.0;
+        if (reviews == null || reviews.isEmpty()) {
+            return 0.0;
+        }
+        float totalRating = 0;
+        for (Review review : reviews) {
+            totalRating += review.getRating();
+        }
+        double calculatedRating = (double) totalRating / reviews.size();
+        return Math.round(calculatedRating * 100.0) / 100.0;
     }
 
     public Double getPriceAfterDiscount() {

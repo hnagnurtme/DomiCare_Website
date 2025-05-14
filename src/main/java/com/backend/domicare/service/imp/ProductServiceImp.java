@@ -55,8 +55,8 @@ public class ProductServiceImp implements ProductService {
         productDTO.setPrice(request.getPrice());
         productDTO.setDiscount(request.getDiscount());
 
-        String mainImageId = request.getMainImageUrl();
-        List<String> landingImageIds = request.getLandingImageUrls();
+        String mainImageId = request.getMainImageId();
+        List<String> landingImageIds = request.getLandingImageIds();
 
         Category category = categoryRepository.findByIdAndNotDeleted(categoryID);
         if (category == null) {
@@ -171,7 +171,7 @@ public class ProductServiceImp implements ProductService {
             productEntity.setDiscount(productDTO.getDiscount());
         }
 
-        String mainImageId = request.getMainImageUrl();
+        String mainImageId = request.getMainImageId();
         if (mainImageId != null) {
             File mainImage = fileRepository.findByUrl(mainImageId);
             if( mainImage == null) {
@@ -180,7 +180,7 @@ public class ProductServiceImp implements ProductService {
             }
             productEntity.setImage(mainImage.getUrl());
         }
-        List<String> landingImageIds = request.getLandingImageUrls();
+        List<String> landingImageIds = request.getLandingImageIds();
         if (landingImageIds != null) {
             List<String> landingImages = fileRepository.findByUrls(landingImageIds)
                 .stream()
@@ -255,7 +255,7 @@ public class ProductServiceImp implements ProductService {
         logger.info("Adding image to product with ID: {}", addProductImageRequest.getProductId());
 
         Long productId = addProductImageRequest.getProductId();
-        Long imageId = addProductImageRequest.getImageId();
+        String imageId = addProductImageRequest.getImageId();
         Boolean isMainImage = addProductImageRequest.getIsMainImage();
 
         Product product = productRepository.findById(productId)
@@ -264,11 +264,11 @@ public class ProductServiceImp implements ProductService {
                 return new NotFoundProductException("Product not found");
             });
 
-        File image = fileRepository.findById(imageId)
-            .orElseThrow(() -> {
-                logger.error("Image not found with ID: {}", imageId);
-                return new NotFoundFileException("Image not found");
-            });
+        File image = fileRepository.findByUrl(imageId);
+        if (image == null) {
+            logger.error("Image not found with ID: {}", imageId);
+            throw new NotFoundFileException("Image not found");
+        }
 
         if (isMainImage) {
             product.setImage(image.getUrl());

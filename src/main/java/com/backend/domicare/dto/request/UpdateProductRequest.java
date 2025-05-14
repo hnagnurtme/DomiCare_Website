@@ -27,10 +27,10 @@ public class UpdateProductRequest {
     private String name;
     private String description;
     private double price; 
-    private String mainImageUrl;
+    private String mainImageId;
 
     private Double discount;
     
-    private List<String> landingImageUrls;
+    private List<String> landingImageIds;
 
 }

@@ -101,12 +101,12 @@ public class CategoryServiceImp implements CategoryService {
      * @param imageId the ID of the image to set
      * @throws NotFoundFileException if the image is not found
      */
-    private void setImageForCategory(Category category, Long imageId) {
-        File image = fileRepository.findById(imageId)
-            .orElseThrow(() -> {
-                logger.error("Image not found with ID: {}", imageId);
-                return new NotFoundFileException("Image not found with ID: " + imageId);
-            });
+    private void setImageForCategory(Category category, String imageId) {
+        File image = fileRepository.findByUrl(imageId);
+        if( image == null) {
+            logger.error("Image not found with ID: {}", imageId);
+            throw new NotFoundFileException("Image not found with ID: " + imageId);
+        }
         category.setImage(image.getUrl());
     }
 

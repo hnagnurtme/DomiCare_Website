@@ -16,6 +16,6 @@ public class AddProductImageRequest {
     @NotNull(message = "Không được để trống sản phẩm")
     private Long productId;
     @NotNull(message = "Không được để trống ảnh")
-    private Long imageId;
+    private String imageId;
     private Boolean isMainImage;
 }

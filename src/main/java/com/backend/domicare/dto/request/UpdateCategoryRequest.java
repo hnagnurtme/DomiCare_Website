@@ -31,6 +31,6 @@ public class UpdateCategoryRequest {
     @Schema(description = "New description for the category", example = "Các sản phẩm khô và đóng gói", required = false)
     private String description;
     
-    @Schema(description = "ID of the new image for the category", example = "1", required = false)
-    private Long imageId;
+    @Schema(description = "ID of the new image for the category", example = "http://huhu", required = false)
+    private String imageId;
 }

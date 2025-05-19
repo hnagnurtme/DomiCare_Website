@@ -316,17 +316,7 @@ application-prod.properties
 .env.production
 ```
 
-## 🖥️ Demo
 
-### Screenshots
-- **Trang chủ**: [Screenshot URL]
-- **Trang đăng nhập**: [Screenshot URL]
-- **Trang đặt dịch vụ**: [Screenshot URL]
-- **Bảng điều khiển admin**: [Screenshot URL]
-
-### Demo Online
-- **Website**: [https://domicare.example.com](https://domicare.example.com)
-- **Admin Portal**: [https://admin.domicare.example.com](https://admin.domicare.example.com)
 
 ## 👥 Đóng góp
 

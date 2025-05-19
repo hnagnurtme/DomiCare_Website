@@ -1,9 +1,9 @@
 package com.backend.domicare.service.imp;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,6 @@ import com.backend.domicare.service.UserService;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
 @Transactional
 public class BookingServiceImp implements BookingService {
     private static final Logger logger = LoggerFactory.getLogger(BookingServiceImp.class);
@@ -45,6 +44,21 @@ public class BookingServiceImp implements BookingService {
     private final JwtTokenManager jwtTokenManager;
     private final UserService userService;
     private final EmailSendingService emailSendingService;
+    
+    public BookingServiceImp(
+            BookingsRepository bookingRepository,
+            UsersRepository userRepository,
+            ProductService productService,
+            @org.springframework.context.annotation.Lazy JwtTokenManager jwtTokenManager,
+            UserService userService,
+            EmailSendingService emailSendingService) {
+        this.bookingRepository = bookingRepository;
+        this.userRepository = userRepository;
+        this.productService = productService;
+        this.jwtTokenManager = jwtTokenManager;
+        this.userService = userService;
+        this.emailSendingService = emailSendingService;
+    }
 
     @Override
     @Transactional(readOnly = true)
@@ -199,8 +213,34 @@ public class BookingServiceImp implements BookingService {
             }
 
         }
+        String emailSale = JwtTokenManager.getCurrentUserLogin()
+                .orElseThrow(() -> new NotFoundUserException("User not found"));
+        User user = userRepository.findByEmail(emailSale);
+        if (user == null) {
+            throw new NotFoundUserException("User not found with email: " + emailSale);
+        }
+        
+        List<Booking> bookings = user.getBookings();
+        if (bookings == null) {
+            bookings = new ArrayList<>();
+            bookings.add(booking);
+        }
+        else {
+            bookings.add(booking);
+        }
+        user.setBookings(bookings);
+        userRepository.save(user);
+       
+        booking.setUpdateBy(user.getEmail());
+        
+        System.out.println("user: " + user);
+        
+
+
+        
     
         Booking updatedBooking = bookingRepository.save(booking);
+        
 
         logger.info("Booking status updated successfully for ID: {}", id);
         return BookingMapper.INSTANCE.convertToBookingDTO(updatedBooking);
@@ -252,6 +292,7 @@ public class BookingServiceImp implements BookingService {
         }
         Booking booking = BookingMapper.INSTANCE.convertToBooking(request);
         booking.setUser(user);
+        booking.setCreateBy(user.getEmail());
 
         List<Long> productIds = request.getProductIds();
         if (productIds == null || productIds.isEmpty()) {
@@ -271,4 +312,91 @@ public class BookingServiceImp implements BookingService {
         logger.info("Booking created successfully with ID: {}", booking.getId());
         return BookingMapper.INSTANCE.convertToBookingDTO(bookingEntity);
     }
+
+
+    public Double countSucessPercent(Long userId){
+        if (userId == null) {
+            throw new IllegalArgumentException("User ID cannot be null");
+        }
+
+        logger.debug("Fetching all bookings for user ID: {}", userId);
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundUserException("User not found with ID: " + userId));
+
+        String email = user.getEmail();
+        List<Booking> bookings = bookingRepository.findByUpdateByAndStatus(email, BookingStatus.SUCCESS);
+        if (bookings.isEmpty()) {
+            logger.debug("No bookings found for user ID: {}", userId);
+            return 0.0;
+        }
+        int successCount = 0;
+        for (Booking booking : bookings) {
+            if (booking.getBookingStatus() == BookingStatus.SUCCESS) {
+                successCount++;
+            }
+        }
+        return (double) successCount / bookings.size() * 100;
+    }
+
+    public Long countTotalSuccessBookingsByUser(Long userId){
+        if (userId == null) {
+            throw new IllegalArgumentException("User ID cannot be null");
+        }
+
+        logger.debug("Fetching all bookings for user ID: {}", userId);
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundUserException("User not found with ID: " + userId));
+
+        String email = user.getEmail();
+        List<Booking> bookings = bookingRepository.findByCreateByAndStatus(email, BookingStatus.SUCCESS);
+        if (bookings.isEmpty()) {
+            logger.debug("No bookings found for user ID: {}", userId);
+            return 0L;
+        }
+        return (long) bookings.size();
+    }
+
+    @Override
+    public Long countTotalFailedBookingsByUser(Long userId){
+        if (userId == null) {
+            throw new IllegalArgumentException("User ID cannot be null");
+        }
+
+        logger.debug("Fetching all bookings for user ID: {}", userId);
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundUserException("User not found with ID: " + userId));
+
+        String email = user.getEmail();
+        List<Booking> bookings = bookingRepository.findByCreateByAndStatus(email, BookingStatus.FAILED);
+        if (bookings.isEmpty()) {
+            logger.debug("No bookings found for user ID: {}", userId);
+            return 0L;
+        }
+        return (long) bookings.size();
+    }
+
+     public Long countTotalBookingsBySale(Long userId){
+        if (userId == null) {
+            throw new IllegalArgumentException("User ID cannot be null");
+        }
+
+        logger.debug("Fetching all bookings for user ID: {}", userId);
+
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundUserException("User not found with ID: " + userId));
+
+        String email = user.getEmail();
+        List<BookingStatus> statusList = List.of(BookingStatus.ACCEPTED, BookingStatus.REJECTED,
+                BookingStatus.SUCCESS, BookingStatus.FAILED);
+        List<Booking> bookings = bookingRepository.findByUpdateByAndStatusIn(email, statusList);
+        if (bookings.isEmpty()) {
+            logger.debug("No bookings found for user ID: {}", userId);
+            return 0L;
+        }
+        return (long) bookings.size();
+     }
+
 }

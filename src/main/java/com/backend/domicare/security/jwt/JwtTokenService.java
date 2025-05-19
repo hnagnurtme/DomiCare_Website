@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -42,6 +43,7 @@ import lombok.RequiredArgsConstructor;
  * JwtTokenService is a service class that handles JWT token generation, user authentication,
  * email verification, and user registration.
  */
+@Lazy
 public class JwtTokenService {
 
     private final TokensRepository tokensRepository;

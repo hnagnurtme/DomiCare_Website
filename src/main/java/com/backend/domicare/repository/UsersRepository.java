@@ -45,4 +45,12 @@ public interface UsersRepository extends JpaRepository<User, Long>, JpaSpecifica
     @Query("SELECT u FROM User u WHERE u.id = :id AND u.isDeleted = false")
     Optional<User> findByIdAndNotDeleted(@Param("id") Long id);
 
+    // Find all users by id join Booking anf BookingStatus and createBy
+    @Query("SELECT u FROM User u JOIN u.bookings b WHERE u.id = :id AND b.bookingStatus = :status AND b.createBy = :createBy")
+    Optional<User> findByIdAndBookingStatus(@Param("id") Long id, @Param("status") String status , @Param("createBy") String createBy);
+
+    // Find all users by id join Booking anf BookingStatus and updateBy
+    @Query("SELECT u FROM User u JOIN u.bookings b WHERE u.id = :id AND b.bookingStatus = :status AND b.updateBy = :updateBy")
+    Optional<User> findByIdAndBookingStatusUpdateBy(@Param("id") Long id, @Param("status") String status , @Param("updateBy") String updateBy);
+
 }

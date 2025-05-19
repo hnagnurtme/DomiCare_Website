@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.hibernate.annotations.Where;
-
 import com.backend.domicare.security.jwt.JwtTokenManager;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

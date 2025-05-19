@@ -14,4 +14,9 @@ public interface  BookingService {
     public BookingDTO updateBooking(UpdateBookingRequest request);
     public List<BookingDTO> getAllBookingsByUserId(Long userId);
     public BookingDTO updateBookingStatus(UpdateBookingStatusRequest request);
+    public Double countSucessPercent(Long userId);
+
+    public Long countTotalSuccessBookingsByUser(Long userId);
+    public Long countTotalFailedBookingsByUser(Long userId);
+    public Long countTotalBookingsBySale(Long userId);
 }

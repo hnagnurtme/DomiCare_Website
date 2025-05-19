@@ -29,14 +29,11 @@ import com.backend.domicare.model.User;
 import com.backend.domicare.repository.TokensRepository;
 import com.backend.domicare.service.UserService;
 
-import lombok.RequiredArgsConstructor;
-
 /**
  * Manages JWT token generation, validation and extraction
  * Handles both access tokens and refresh tokens
  */
 @Component
-@RequiredArgsConstructor
 public class JwtTokenManager {
     private static final Logger logger = LoggerFactory.getLogger(JwtTokenManager.class);
     
@@ -44,6 +41,17 @@ public class JwtTokenManager {
     private final JwtEncoder jwtEncoder;
     private final UserService userService;
     private final TokensRepository tokensRepository;
+    
+    public JwtTokenManager(
+            JwtProperties jwtProperties,
+            JwtEncoder jwtEncoder,
+            @org.springframework.context.annotation.Lazy UserService userService,
+            TokensRepository tokensRepository) {
+        this.jwtProperties = jwtProperties;
+        this.jwtEncoder = jwtEncoder;
+        this.userService = userService;
+        this.tokensRepository = tokensRepository;
+    }
     public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS256;
     
     private static final long REFRESH_TOKEN_DURATION_SECONDS = 604800; // 7 days

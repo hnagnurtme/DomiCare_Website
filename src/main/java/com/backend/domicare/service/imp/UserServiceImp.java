@@ -20,6 +20,7 @@ import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.dto.request.AddUserByAdminRequest;
 import com.backend.domicare.dto.request.UpdateRoleForUserRequest;
 import com.backend.domicare.dto.request.UpdateUserRequest;
+import com.backend.domicare.dto.response.UserPagingResponse;
 import com.backend.domicare.exception.DeleteAdminException;
 import com.backend.domicare.exception.EmailAlreadyExistException;
 import com.backend.domicare.exception.NotFoundFileException;
@@ -35,6 +36,7 @@ import com.backend.domicare.repository.ReviewsRepository;
 import com.backend.domicare.repository.TokensRepository;
 import com.backend.domicare.repository.UsersRepository;
 import com.backend.domicare.security.jwt.JwtTokenManager;
+import com.backend.domicare.service.BookingService;
 import com.backend.domicare.service.FileService;
 import com.backend.domicare.service.RoleService;
 import com.backend.domicare.service.UserService;
@@ -42,11 +44,9 @@ import com.backend.domicare.service.UserValidationService;
 import com.backend.domicare.utils.FormatStringAccents;
 import com.backend.domicare.utils.ProjectConstants;
 
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-@RequiredArgsConstructor
 @Service
 public class UserServiceImp implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImp.class);
@@ -59,7 +59,29 @@ public class UserServiceImp implements UserService {
     private final BookingsRepository bookingRepository;
     private final ReviewsRepository reviewRepository;
     private final TokensRepository tokenRepository;
+    private final BookingService bookingService;
     
+    public UserServiceImp(
+            UsersRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            UserValidationService userValidationService,
+            RoleService roleService,
+            FileService fileService,
+            BookingsRepository bookingRepository,
+            ReviewsRepository reviewRepository,
+            TokensRepository tokenRepository,
+            @org.springframework.context.annotation.Lazy BookingService bookingService) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.userValidationService = userValidationService;
+        this.roleService = roleService;
+        this.fileService = fileService;
+        this.bookingRepository = bookingRepository;
+        this.reviewRepository = reviewRepository;
+        this.tokenRepository = tokenRepository;
+        this.bookingService = bookingService;
+    }
+
     @Override
     public UserDTO saveUser(UserDTO userDTO) {
         logger.info("Creating new user with email: {}", userDTO.getEmail());
@@ -112,11 +134,27 @@ public class UserServiceImp implements UserService {
 
     @Override
     public ResultPagingDTO getAllUsers(Specification<User> spec, Pageable pageable) {
-        logger.debug("Fetching users with pagination [page: {}, size: {}]", 
+        logger.debug("Fetching users with pagination [page: {}, size: {}]",
                 pageable.getPageNumber(), pageable.getPageSize());
-        
+
         Page<User> users = this.userRepository.findAll(spec, pageable);
-        List<UserDTO> userDTOs = UserMapper.INSTANCE.convertToUserDTOList(users.getContent());
+
+        List<UserPagingResponse> userDTOs = UserMapper.INSTANCE.convertToUserPagingResponseList(users.getContent());
+        for (UserPagingResponse userDTO : userDTOs) {
+
+            Long user_totalSuccessBookings = bookingService.countTotalSuccessBookingsByUser(userDTO.getId());
+            Long user_totalFailedBookings = bookingService.countTotalFailedBookingsByUser(userDTO.getId());
+
+            Long sale_totalBookings = bookingService.countTotalBookingsBySale(userDTO.getId());
+            Double sale_successPercent = bookingService.countSucessPercent(userDTO.getId());
+            userDTO.setUser_totalSuccessBookings(user_totalSuccessBookings);
+            userDTO.setUser_totalFailedBookings(user_totalFailedBookings);
+            userDTO.setSale_totalBookings(sale_totalBookings);
+            userDTO.setSale_successPercent(sale_successPercent);
+            logger.debug("User ID: {}, Total Success Bookings: {}, Total Failed Bookings: {}",
+                    userDTO.getId(), user_totalSuccessBookings, user_totalFailedBookings);
+        
+        }
 
         ResultPagingDTO result = new ResultPagingDTO();
         ResultPagingDTO.Meta meta = new ResultPagingDTO.Meta();
@@ -162,20 +200,20 @@ public class UserServiceImp implements UserService {
     public UserDTO updateConfirmedEmail(UserDTO user) {
         Long id = user.getId();
         logger.debug("Updating email confirmation status for user ID: {}", id);
-        
+
         User oldUser = userRepository.findUserById(id);
         if (oldUser == null) {
             logger.warn("Failed to update email confirmation - user not found with ID: {}", id);
             throw new NotFoundUserException("User not found for id: " + id);
         }
-        
+
         oldUser.setEmailConfirmed(user.isEmailConfirmed());
         oldUser.setEmailConfirmationToken(user.getEmailConfirmationToken());
-        
+
         User userEntity = userRepository.save(oldUser);
-        logger.info("Email confirmation status updated for user ID: {}, confirmed: {}", 
+        logger.info("Email confirmation status updated for user ID: {}, confirmed: {}",
                 userEntity.getId(), userEntity.isEmailConfirmed());
-                
+
         return UserMapper.INSTANCE.convertToUserDTO(userEntity);
     }
 
@@ -215,30 +253,29 @@ public class UserServiceImp implements UserService {
 
         // Delete related entities
         int bookingsCount = 0, reviewsCount = 0, tokensCount = 0;
-        
+
         if (!CollectionUtils.isEmpty(user.getBookings())) {
             bookingsCount = user.getBookings().size();
             logger.debug("Deleting {} bookings for user ID: {}", bookingsCount, id);
             bookingRepository.deleteAll(user.getBookings());
         }
-        
+
         if (!CollectionUtils.isEmpty(user.getReviews())) {
             reviewsCount = user.getReviews().size();
             logger.debug("Deleting {} reviews for user ID: {}", reviewsCount, id);
             reviewRepository.deleteAll(user.getReviews());
         }
-        
+
         if (!CollectionUtils.isEmpty(user.getRefreshTokens())) {
             tokensCount = user.getRefreshTokens().size();
             logger.debug("Deleting {} refresh tokens for user ID: {}", tokensCount, id);
             tokenRepository.deleteAll(user.getRefreshTokens());
         }
-        
+
         userRepository.softDeleteById(id);
-        logger.info("User deleted successfully with ID: {} (removed {} bookings, {} reviews, {} tokens)", 
+        logger.info("User deleted successfully with ID: {} (removed {} bookings, {} reviews, {} tokens)",
                 id, bookingsCount, reviewsCount, tokensCount);
     }
-
 
     @Override
     public void resetPassword(String email, String password) {
@@ -259,12 +296,12 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public UserDTO updateUserInformation(UpdateUserRequest userRequest){
+    public UserDTO updateUserInformation(UpdateUserRequest userRequest) {
         logger.info("Updating user information");
-        
+
         Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
         User oldUser = null;
-        if(currentUserLogin.isPresent()) {
+        if (currentUserLogin.isPresent()) {
             String email = currentUserLogin.get();
             logger.debug("Fetching user with email: {}", email);
             oldUser = userRepository.findByEmail(email);
@@ -277,49 +314,49 @@ public class UserServiceImp implements UserService {
             logger.warn("Update failed - user not found with current login");
             throw new NotFoundUserException("User not found for current login");
         }
-        
+
         Long userId = oldUser.getId();
         logger.debug("Updating information for user ID: {}", userId);
-        
+
         boolean hasChanges = false;
-        
-        if(userRequest.getName() != null && !userRequest.getName().equals(oldUser.getName())){
+
+        if (userRequest.getName() != null && !userRequest.getName().equals(oldUser.getName())) {
             oldUser.setName(userRequest.getName());
             oldUser.setNameUnsigned(FormatStringAccents.removeTones(userRequest.getName()));
             logger.debug("Updated name for user ID: {}", userId);
             hasChanges = true;
         }
-        
-        if(userRequest.getPhone() != null && !userRequest.getPhone().equals(oldUser.getPhone())){
+
+        if (userRequest.getPhone() != null && !userRequest.getPhone().equals(oldUser.getPhone())) {
             oldUser.setPhone(userRequest.getPhone());
             logger.debug("Updated phone for user ID: {}", userId);
             hasChanges = true;
         }
-        
-        if(userRequest.getAddress() != null && !userRequest.getAddress().equals(oldUser.getAddress())){
+
+        if (userRequest.getAddress() != null && !userRequest.getAddress().equals(oldUser.getAddress())) {
             oldUser.setAddress(userRequest.getAddress());
             logger.debug("Updated address for user ID: {}", userId);
             hasChanges = true;
         }
-        
-        if(userRequest.getDateOfBirth() != null && !userRequest.getDateOfBirth().equals(oldUser.getDateOfBirth())){
+
+        if (userRequest.getDateOfBirth() != null && !userRequest.getDateOfBirth().equals(oldUser.getDateOfBirth())) {
             oldUser.setDateOfBirth(userRequest.getDateOfBirth());
             logger.debug("Updated date of birth for user ID: {}", userId);
             hasChanges = true;
         }
-        
-        if(userRequest.getGender() != null && !userRequest.getGender().equals(oldUser.getGender())){
+
+        if (userRequest.getGender() != null && !userRequest.getGender().equals(oldUser.getGender())) {
             oldUser.setGender(userRequest.getGender());
             logger.debug("Updated gender for user ID: {}", userId);
             hasChanges = true;
         }
-        
-        if(userRequest.getNewPassword() != null){
+
+        if (userRequest.getNewPassword() != null) {
             if (userRequest.getOldPassword() == null) {
                 logger.warn("Password update failed - old password not provided for user ID: {}", userId);
                 throw new NotMatchPasswordException("Old password is required to set new password");
             }
-            
+
             if (passwordEncoder.matches(userRequest.getOldPassword(), oldUser.getPassword())) {
                 oldUser.setPassword(passwordEncoder.encode(userRequest.getNewPassword()));
                 logger.debug("Updated password for user ID: {}", userId);
@@ -340,7 +377,7 @@ public class UserServiceImp implements UserService {
             logger.debug("Updated avatar for user ID: {} with file ID: {}", userId, userRequest.getImageId());
             hasChanges = true;
         }
-        
+
         User savedUser = userRepository.save(oldUser);
         logger.info("User information {} for user ID: {}", hasChanges ? "updated" : "unchanged", userId);
         return UserMapper.INSTANCE.convertToUserDTO(savedUser);
@@ -348,23 +385,23 @@ public class UserServiceImp implements UserService {
 
     @Override
     @Transactional
-    public UserDTO updateRoleForUser(UpdateRoleForUserRequest request){
+    public UserDTO updateRoleForUser(UpdateRoleForUserRequest request) {
         Long userId = request.getUserId();
         List<Long> roleIds = request.getRoleIds();
-        
+
         logger.info("Updating roles for user ID: {}", userId);
-        
+
         User user = userRepository.findUserById(userId);
         if (user == null) {
             logger.warn("Role update failed - user not found with ID: {}", userId);
             throw new NotFoundUserException("User not found for id: " + userId);
         }
-        
+
         if (roleIds == null || roleIds.isEmpty()) {
             logger.warn("Role update failed - no roles provided for user ID: {}", userId);
             throw new NotFoundRoleException("Role IDs cannot be empty");
         }
-        
+
         Set<Role> roles = new HashSet<>();
         for (Long roleId : roleIds) {
             Role role = roleService.getRoleEntityById(roleId);
@@ -375,7 +412,7 @@ public class UserServiceImp implements UserService {
             roles.add(role);
             logger.debug("Adding role '{}' to user ID: {}", role.getName(), userId);
         }
-        
+
         // Store original roles for logging
         Set<String> originalRoleNames = user.getRoles().stream()
                 .map(Role::getName)
@@ -383,13 +420,13 @@ public class UserServiceImp implements UserService {
         Set<String> newRoleNames = roles.stream()
                 .map(Role::getName)
                 .collect(java.util.stream.Collectors.toSet());
-        
+
         user.setRoles(roles);
         User updatedUser = userRepository.save(user);
-        
-        logger.info("Roles updated for user ID: {}, changed from {} to {}", 
+
+        logger.info("Roles updated for user ID: {}, changed from {} to {}",
                 userId, originalRoleNames, newRoleNames);
-                
+
         return UserMapper.INSTANCE.convertToUserDTO(updatedUser);
     }
 
@@ -397,19 +434,19 @@ public class UserServiceImp implements UserService {
     @Transactional
     public void deleteRefreshTokenByUserId(Long id) {
         logger.debug("Attempting to delete refresh tokens for user ID: {}", id);
-        
+
         if (id == null) {
             logger.warn("Token deletion failed - user ID is null");
             throw new IllegalArgumentException("User ID cannot be null");
         }
-        
+
         // Check if user exists before attempting to delete tokens
         boolean userExists = userRepository.existsById(id);
         if (!userExists) {
             logger.warn("Token deletion failed - user not found with ID: {}", id);
             throw new NotFoundUserException("User not found for id: " + id);
         }
-        
+
         // Use the single query method instead of loading and then deleting tokens
         try {
             List<Token> tokens = tokenRepository.findByUserId(id);
@@ -427,30 +464,31 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public UserDTO addUserByAdmin(AddUserByAdminRequest user){
+    public UserDTO addUserByAdmin(AddUserByAdminRequest user) {
         logger.info("Adding new user by admin with email: {}", user.getEmail());
-        
+
         UserDTO userDTO = UserMapper.INSTANCE.convertToUserDTOByAddUserRequest(user);
 
         userDTO.setEmailConfirmationToken(null);
         userDTO.setEmailConfirmed(true);
         userDTO.setIsActive(true);
-        
+
         Set<RoleDTO> roles = new HashSet<>();
         RoleDTO role = this.roleService.getRoleById(user.getRoleId());
         if (role == null) {
             logger.warn("User creation by admin failed - role not found with ID: {}", user.getRoleId());
             throw new NotFoundRoleException("Role not found for id: " + user.getRoleId());
         }
-        
+
         roles.add(role);
         userDTO.setRoles(roles);
         logger.debug("Assigning role '{}' to new user", role.getName());
 
         UserDTO createdUser = saveUser(userDTO);
         logger.info("User created successfully by admin with ID: {}", createdUser.getId());
-        
+
         return createdUser;
     }
+
 
 }

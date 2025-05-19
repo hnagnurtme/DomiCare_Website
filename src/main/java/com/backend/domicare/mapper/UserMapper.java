@@ -10,6 +10,7 @@ import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.UserDTO.UserDTOBuilder;
 import com.backend.domicare.dto.request.AddUserByAdminRequest;
 import com.backend.domicare.dto.request.UpdateUserRequest;
+import com.backend.domicare.dto.response.UserPagingResponse;
 import com.backend.domicare.model.User;
 import com.backend.domicare.security.dto.RegisterResponse;
 
@@ -47,6 +48,36 @@ public interface UserMapper {
         userDTO.isActive( user.isActive() );
         return userDTO.build();
     }
+
+
+    default  UserPagingResponse convertToUserPagingResponse(User user) {
+        if ( user == null ) {
+            return null;
+        }
+
+        UserPagingResponse.UserPagingResponseBuilder userDTO = UserPagingResponse.builder();
+        userDTO.id( user.getId() );
+        userDTO.name( user.getName() );
+        userDTO.password( user.getPassword() );
+        userDTO.phone( user.getPhone() );
+        userDTO.address( user.getAddress() );
+        userDTO.avatar( user.getAvatar() );
+        userDTO.email( user.getEmail() );
+        userDTO.gender( user.getGender() );
+        userDTO.dateOfBirth( user.getDateOfBirth() );
+        userDTO.isEmailConfirmed( user.isEmailConfirmed() );
+        userDTO.emailConfirmationToken( user.getEmailConfirmationToken() );
+        userDTO.googleId( user.getGoogleId() );
+        userDTO.roles(RoleMapper.INSTANCE.convertToRoleDTOSet(user.getRoles()));
+        userDTO.updateAt( user.getUpdateAt() );
+        userDTO.updateBy( user.getUpdateBy() );
+        userDTO.createAt( user.getCreateAt() );
+        userDTO.createBy( user.getCreateBy() );
+        userDTO.isActive( user.isActive() );
+        return userDTO.build();
+    }
+
+    List<UserPagingResponse> convertToUserPagingResponseList(List<User> users);
 
     default UserDTO convertToUserDTOByAddUserRequest(AddUserByAdminRequest userRequest) {
         if ( userRequest == null ) {

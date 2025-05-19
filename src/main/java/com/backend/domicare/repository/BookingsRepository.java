@@ -1,5 +1,6 @@
 package com.backend.domicare.repository;
 
+import java.time.Instant;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,4 +35,16 @@ public interface BookingsRepository extends JpaRepository<Booking, Long> {
     @Query("SELECT COUNT(b) FROM Booking b WHERE b.bookingStatus = :status")
     Long countBookingsByStatus(@Param("status") BookingStatus status);
 
+
+    // Find all bookings by updateby(email) and status
+    @Query("SELECT b FROM Booking b WHERE b.updateBy = :updateBy AND b.bookingStatus = :status")
+    List<Booking> findByUpdateByAndStatus(@Param("updateBy") String updateBy, @Param("status") BookingStatus status);
+
+    // Find all bookings by creatAt and status
+    @Query("SELECT b FROM Booking b WHERE b.createBy = :createBy AND b.bookingStatus = :status")
+    List<Booking> findByCreateByAndStatus(@Param("createBy") String createBy, @Param("status") BookingStatus status);
+
+    // Find all bookings by updateBy and status in range
+    @Query("SELECT b FROM Booking b WHERE b.updateBy = :updateBy AND b.bookingStatus IN :status")
+    List<Booking> findByUpdateByAndStatusIn(@Param("updateBy") String updateBy, @Param("status") List<BookingStatus> status);
 }

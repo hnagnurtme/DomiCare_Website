@@ -67,7 +67,7 @@ public class Product {
     @PrePersist
     public void prePersist() {
         Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
-        if (currentUserLogin.isPresent()) {
+        if (currentUserLogin.isPresent() && !currentUserLogin.get().equals("anonymousUser")) {
             this.createBy = currentUserLogin.get();
         } else {
             this.createBy = "system";
@@ -82,7 +82,7 @@ public class Product {
     public void preUpdate() {
         this.updateAt = Instant.now();
         Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
-        if (currentUserLogin.isPresent()) {
+        if (currentUserLogin.isPresent() && !currentUserLogin.get().equals("anonymousUser")) {
             this.updateBy = currentUserLogin.get();
         } else {
             this.updateBy = "system";

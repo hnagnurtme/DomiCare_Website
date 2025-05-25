@@ -106,7 +106,7 @@ public class User {
     @PrePersist
     public void prePersist() {
         Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
-        if(currentUserLogin.isPresent() && !currentUserLogin.get().equals("anonymous")) {
+        if(currentUserLogin.isPresent() && !currentUserLogin.get().equals("anonymousUser")) {
             this.createBy = currentUserLogin.get();
         } else {
             this.createBy = "system";
@@ -122,7 +122,7 @@ public class User {
     @PreUpdate
     public void preUpdate() {
         Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
-        if(currentUserLogin.isPresent()) {
+        if(currentUserLogin.isPresent() && !currentUserLogin.get().equals("anonymousUser")) {
             this.updateBy = currentUserLogin.get();
         } else {
             this.updateBy = "system";

@@ -60,7 +60,7 @@ public class Role {
     @PrePersist
     public void prePersist() {
         Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
-        if(currentUserLogin.isPresent()) {
+        if(currentUserLogin.isPresent() && !currentUserLogin.get().equals("anonymousUser")) {
             this.createBy = currentUserLogin.get();
         }
         else{
@@ -72,7 +72,7 @@ public class Role {
     public void preUpdate() {
         this.updateAt = Instant.now();
         Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
-        if(currentUserLogin.isPresent()) {
+        if(currentUserLogin.isPresent() && !currentUserLogin.get().equals("anonymousUser")) {
             this.updateBy= currentUserLogin.get();
         }
         else{

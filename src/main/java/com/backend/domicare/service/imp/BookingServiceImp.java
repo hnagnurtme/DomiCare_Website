@@ -31,8 +31,6 @@ import com.backend.domicare.service.EmailSendingService;
 import com.backend.domicare.service.ProductService;
 import com.backend.domicare.service.UserService;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
 @Transactional
 public class BookingServiceImp implements BookingService {
@@ -44,7 +42,7 @@ public class BookingServiceImp implements BookingService {
     private final JwtTokenManager jwtTokenManager;
     private final UserService userService;
     private final EmailSendingService emailSendingService;
-    
+
     public BookingServiceImp(
             BookingsRepository bookingRepository,
             UsersRepository userRepository,
@@ -83,8 +81,6 @@ public class BookingServiceImp implements BookingService {
         logger.info("Attempting to delete booking with ID: {}", id);
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundBookingException("Booking not found with ID: " + id));
-
-        // Validate status
         if (booking.getBookingStatus() == BookingStatus.ACCEPTED
                 || booking.getBookingStatus() == BookingStatus.CANCELLED) {
             logger.warn("Cannot delete booking with ID: {} due to status: {}", id, booking.getBookingStatus());
@@ -109,15 +105,10 @@ public class BookingServiceImp implements BookingService {
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundBookingException("Booking not found with ID: " + id));
 
-        // Validate status
         if (booking.getBookingStatus() != BookingStatus.PENDING) {
             logger.warn("Cannot update booking with ID: {} due to status: {}", id, booking.getBookingStatus());
             throw new BookingStatusException("Cannot update booking with status: " + booking.getBookingStatus());
         }
-
-        // Recalculate price if total hours changed
-
-        // Save updated booking
         Booking updatedBooking = bookingRepository.save(booking);
         logger.info("Booking updated successfully with ID: {}", id);
         return BookingMapper.INSTANCE.convertToBookingDTO(updatedBooking);
@@ -159,7 +150,28 @@ public class BookingServiceImp implements BookingService {
 
         logger.info("Updating booking status for ID: {} to {}", id, statusStr);
 
-        // Validate status string format
+
+        String emailSale = JwtTokenManager.getCurrentUserLogin()
+                .orElseThrow(() -> new NotFoundUserException("User not found"));
+        User saleuser = userRepository.findByEmail(emailSale);
+        if (saleuser == null) {
+            throw new NotFoundUserException("User not found with email: " + emailSale);
+        }
+        
+        // Initialize metrics fields if they are null
+        if (saleuser.getSale_totalBookings() == null) {
+            saleuser.setSale_totalBookings(0L);
+        }
+        if (saleuser.getUser_totalSuccessBookings() == null) {
+            saleuser.setUser_totalSuccessBookings(0L);
+        }
+        if (saleuser.getUser_totalFailedBookings() == null) {
+            saleuser.setUser_totalFailedBookings(0L);
+        }
+        if (saleuser.getSale_successPercent() == null) {
+            saleuser.setSale_successPercent(0.0);
+        }
+
         BookingStatus newStatus;
         try {
             newStatus = BookingStatus.valueOf(statusStr.toUpperCase());
@@ -167,80 +179,93 @@ public class BookingServiceImp implements BookingService {
             throw new IllegalArgumentException("Invalid booking status: " + statusStr);
         }
 
-        Booking booking = bookingRepository.findById(id)
+        Booking booking = bookingRepository.findByIdWithUserAndProducts(id)
                 .orElseThrow(() -> new NotFoundBookingException("Booking not found with ID: " + id));
 
-        if( booking.getBookingStatus() == BookingStatus.PENDING) {
+        User customer = booking.getUser();
+        if (customer == null) {
+            throw new NotFoundUserException("Customer not found for booking ID: " + id);
+        }
+        
+        // Initialize customer metrics fields if they are null
+        if (customer.getUser_totalSuccessBookings() == null) {
+            customer.setUser_totalSuccessBookings(0L);
+        }
+        if (customer.getUser_totalFailedBookings() == null) {
+            customer.setUser_totalFailedBookings(0L);
+        }
+        
+        if (booking.getBookingStatus() == BookingStatus.PENDING) {
             switch (newStatus) {
                 case ACCEPTED:
                     booking.setBookingStatus(BookingStatus.ACCEPTED);
                     this.emailSendingService.sendAcceptedToUser(
-                        booking.getUser().getEmail(),
-                        booking.getProducts().get(0).getName(),
-                        booking.getCreateAt().toString(),
-                        booking.getUser().getName()
-                    );
+                            booking.getUser().getEmail(),
+                            booking.getProducts().get(0).getName(),
+                            booking.getCreateAt().toString(),
+                            booking.getUser().getName());
+                    booking.setSaleUser(saleuser);
+                    saleuser.setSale_totalBookings(saleuser.getSale_totalBookings() + 1);
+                    // Don't increment success booking counter yet, as the booking is only accepted, not completed
                     break;
                 case REJECTED:
                     booking.setBookingStatus(BookingStatus.REJECTED);
                     this.emailSendingService.sendRejectToUser(
-                        booking.getUser().getEmail(),
-                        booking.getProducts().get(0).getName(),
-                        booking.getCreateAt().toString(),
-                        booking.getUser().getName()
-                    );
+                            booking.getUser().getEmail(),
+                            booking.getProducts().get(0).getName(),
+                            booking.getCreateAt().toString(),
+                            booking.getUser().getName());
+                    booking.setSaleUser(saleuser);
+                    // No need to update metrics for rejected bookings as they never reached the accepted state
                     break;
                 default:
                     throw new BookingStatusException("Cannot update booking to status: " + newStatus);
             }
-        }
-        else{
-            if(booking.getBookingStatus() == BookingStatus.ACCEPTED){
+        } else {
+            if (booking.getBookingStatus() == BookingStatus.ACCEPTED) {
                 switch (newStatus) {
                     case FAILED:
                         booking.setBookingStatus(BookingStatus.FAILED);
+                        // Increment failed bookings counter for customer
+                        customer.setUser_totalFailedBookings(customer.getUser_totalFailedBookings() + 1);
+                        
+                        // Calculate success percentage - avoid division by zero
+                        calculateSuccessPercentage(saleuser);
                         break;
-                    
+
                     case SUCCESS:
                         booking.setBookingStatus(BookingStatus.SUCCESS);
+                        // Increment success bookings counter for both sale user and customer
+                        saleuser.setUser_totalSuccessBookings(saleuser.getUser_totalSuccessBookings() + 1);
+                        customer.setUser_totalSuccessBookings(customer.getUser_totalSuccessBookings() + 1);
+                        
+                        // Calculate success percentage - avoid division by zero
+                        calculateSuccessPercentage(saleuser);
                         break;
                     default:
                         throw new BookingStatusException("Cannot update booking to status: " + newStatus);
                 }
-            }
-            else{
+            } else {
                 throw new BookingStatusException("Cannot update booking to status: " + newStatus);
             }
 
         }
-        String emailSale = JwtTokenManager.getCurrentUserLogin()
-                .orElseThrow(() -> new NotFoundUserException("User not found"));
-        User user = userRepository.findByEmail(emailSale);
-        if (user == null) {
-            throw new NotFoundUserException("User not found with email: " + emailSale);
-        }
         
-        List<Booking> bookings = user.getBookings();
+
+        List<Booking> bookings = saleuser.getBookings();
         if (bookings == null) {
             bookings = new ArrayList<>();
             bookings.add(booking);
-        }
-        else {
+        } else {
             bookings.add(booking);
         }
-        user.setBookings(bookings);
-        userRepository.save(user);
-       
-        booking.setUpdateBy(user.getEmail());
-        
-        System.out.println("user: " + user);
-        
+        saleuser.setBookings(bookings);
+        userRepository.save(saleuser);
+
+        booking.setUpdateBy(saleuser.getEmail());
 
 
-        
-    
         Booking updatedBooking = bookingRepository.save(booking);
-        
 
         logger.info("Booking status updated successfully for ID: {}", id);
         return BookingMapper.INSTANCE.convertToBookingDTO(updatedBooking);
@@ -261,7 +286,7 @@ public class BookingServiceImp implements BookingService {
                 if (existingUser.isActive()) {
                     throw new AlreadyRegisterUserException("Email đã được đăng ký");
                 } else {
-                    
+
                     user = existingUser;
                 }
             } else {
@@ -298,7 +323,7 @@ public class BookingServiceImp implements BookingService {
         if (productIds == null || productIds.isEmpty()) {
             throw new IllegalArgumentException("Product IDs cannot be null or empty");
         }
-        // Set products
+
         List<Product> products = productService.findAllByIdIn(productIds);
         booking.setProducts(products);
         Double totalPrice = 0.0;
@@ -309,94 +334,25 @@ public class BookingServiceImp implements BookingService {
         booking.setBookingStatus(BookingStatus.PENDING);
 
         Booking bookingEntity = bookingRepository.save(booking);
-        logger.info("Booking created successfully with ID: {}", booking.getId());
+        logger.info("Booking created successfully with ID: {}", bookingEntity.getId());
+
+        logger.info("User with email: {} has been associated with booking ID: {}", user.getEmail(),
+                bookingEntity.getId());
         return BookingMapper.INSTANCE.convertToBookingDTO(bookingEntity);
     }
-
-
-    public Double countSucessPercent(Long userId){
-        if (userId == null) {
-            throw new IllegalArgumentException("User ID cannot be null");
+    
+   
+    private void calculateSuccessPercentage(User saleUser) {
+        if (saleUser.getSale_totalBookings() == null || saleUser.getSale_totalBookings() == 0) {
+            saleUser.setSale_successPercent(0.0);
+            return;
+        }
+        
+        if (saleUser.getUser_totalSuccessBookings() == null) {
+            saleUser.setUser_totalSuccessBookings(0L);
         }
 
-        logger.debug("Fetching all bookings for user ID: {}", userId);
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundUserException("User not found with ID: " + userId));
-
-        String email = user.getEmail();
-        List<Booking> bookings = bookingRepository.findByUpdateByAndStatus(email, BookingStatus.SUCCESS);
-        if (bookings.isEmpty()) {
-            logger.debug("No bookings found for user ID: {}", userId);
-            return 0.0;
-        }
-        int successCount = 0;
-        for (Booking booking : bookings) {
-            if (booking.getBookingStatus() == BookingStatus.SUCCESS) {
-                successCount++;
-            }
-        }
-        return (double) successCount / bookings.size() * 100;
+        Double successPercentage = (double) saleUser.getUser_totalSuccessBookings() / saleUser.getSale_totalBookings() * 100;
+        saleUser.setSale_successPercent(successPercentage);
     }
-
-    public Long countTotalSuccessBookingsByUser(Long userId){
-        if (userId == null) {
-            throw new IllegalArgumentException("User ID cannot be null");
-        }
-
-        logger.debug("Fetching all bookings for user ID: {}", userId);
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundUserException("User not found with ID: " + userId));
-
-        String email = user.getEmail();
-        List<Booking> bookings = bookingRepository.findByCreateByAndStatus(email, BookingStatus.SUCCESS);
-        if (bookings.isEmpty()) {
-            logger.debug("No bookings found for user ID: {}", userId);
-            return 0L;
-        }
-        return (long) bookings.size();
-    }
-
-    @Override
-    public Long countTotalFailedBookingsByUser(Long userId){
-        if (userId == null) {
-            throw new IllegalArgumentException("User ID cannot be null");
-        }
-
-        logger.debug("Fetching all bookings for user ID: {}", userId);
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundUserException("User not found with ID: " + userId));
-
-        String email = user.getEmail();
-        List<Booking> bookings = bookingRepository.findByCreateByAndStatus(email, BookingStatus.FAILED);
-        if (bookings.isEmpty()) {
-            logger.debug("No bookings found for user ID: {}", userId);
-            return 0L;
-        }
-        return (long) bookings.size();
-    }
-
-     public Long countTotalBookingsBySale(Long userId){
-        if (userId == null) {
-            throw new IllegalArgumentException("User ID cannot be null");
-        }
-
-        logger.debug("Fetching all bookings for user ID: {}", userId);
-
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundUserException("User not found with ID: " + userId));
-
-        String email = user.getEmail();
-        List<BookingStatus> statusList = List.of(BookingStatus.ACCEPTED, BookingStatus.REJECTED,
-                BookingStatus.SUCCESS, BookingStatus.FAILED);
-        List<Booking> bookings = bookingRepository.findByUpdateByAndStatusIn(email, statusList);
-        if (bookings.isEmpty()) {
-            logger.debug("No bookings found for user ID: {}", userId);
-            return 0L;
-        }
-        return (long) bookings.size();
-     }
-
 }

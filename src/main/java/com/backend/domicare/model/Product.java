@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import com.backend.domicare.security.jwt.JwtTokenManager;
+import com.backend.domicare.utils.FormatStringAccents;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -72,6 +73,7 @@ public class Product {
             this.createBy = "system";
         }
         this.createAt = Instant.now();
+        this.nameUnsigned = FormatStringAccents.removeTones(this.name);
 
         this.overalRating = 0.0;
     }
@@ -85,6 +87,7 @@ public class Product {
         } else {
             this.updateBy = "system";
         }
+        this.nameUnsigned = FormatStringAccents.removeTones(this.name);
     }
 
     public Double calculateRatingStar() {

@@ -26,12 +26,11 @@ public interface  BookingMapper {
                 .address(booking.getAddress())
                 .note(booking.getNote())
                 .totalPrice(booking.getTotalPrice())
-                .startTime(booking.getStartTime())
                 .isPeriodic(booking.getIsPeriodic())
                 .startTime(booking.getStartTime())
                 .bookingStatus(booking.getBookingStatus())
-                .userDTO(UserMapper.INSTANCE.convertToUserDTO(booking.getUser()))
-                .products(ProductMapper.INSTANCE.convertToProductDTOs(booking.getProducts()))
+                .userDTO(booking.getUser() != null ? UserMapper.INSTANCE.convertToUserDTO(booking.getUser()) : null)
+                .products(booking.getProducts() != null ? ProductMapper.INSTANCE.convertToProductDTOs(booking.getProducts()) : null)
                 .build();
     }
 

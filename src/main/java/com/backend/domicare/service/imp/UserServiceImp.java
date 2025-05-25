@@ -140,21 +140,7 @@ public class UserServiceImp implements UserService {
         Page<User> users = this.userRepository.findAll(spec, pageable);
 
         List<UserPagingResponse> userDTOs = UserMapper.INSTANCE.convertToUserPagingResponseList(users.getContent());
-        for (UserPagingResponse userDTO : userDTOs) {
-
-            Long user_totalSuccessBookings = bookingService.countTotalSuccessBookingsByUser(userDTO.getId());
-            Long user_totalFailedBookings = bookingService.countTotalFailedBookingsByUser(userDTO.getId());
-
-            Long sale_totalBookings = bookingService.countTotalBookingsBySale(userDTO.getId());
-            Double sale_successPercent = bookingService.countSucessPercent(userDTO.getId());
-            userDTO.setUser_totalSuccessBookings(user_totalSuccessBookings);
-            userDTO.setUser_totalFailedBookings(user_totalFailedBookings);
-            userDTO.setSale_totalBookings(sale_totalBookings);
-            userDTO.setSale_successPercent(sale_successPercent);
-            logger.debug("User ID: {}, Total Success Bookings: {}, Total Failed Bookings: {}",
-                    userDTO.getId(), user_totalSuccessBookings, user_totalFailedBookings);
-        
-        }
+    
 
         ResultPagingDTO result = new ResultPagingDTO();
         ResultPagingDTO.Meta meta = new ResultPagingDTO.Meta();
@@ -251,7 +237,6 @@ public class UserServiceImp implements UserService {
             throw new DeleteAdminException("Cannot delete an ADMIN account");
         }
 
-        // Delete related entities
         int bookingsCount = 0, reviewsCount = 0, tokensCount = 0;
 
         if (!CollectionUtils.isEmpty(user.getBookings())) {
@@ -413,7 +398,6 @@ public class UserServiceImp implements UserService {
             logger.debug("Adding role '{}' to user ID: {}", role.getName(), userId);
         }
 
-        // Store original roles for logging
         Set<String> originalRoleNames = user.getRoles().stream()
                 .map(Role::getName)
                 .collect(java.util.stream.Collectors.toSet());
@@ -440,14 +424,11 @@ public class UserServiceImp implements UserService {
             throw new IllegalArgumentException("User ID cannot be null");
         }
 
-        // Check if user exists before attempting to delete tokens
         boolean userExists = userRepository.existsById(id);
         if (!userExists) {
             logger.warn("Token deletion failed - user not found with ID: {}", id);
             throw new NotFoundUserException("User not found for id: " + id);
         }
-
-        // Use the single query method instead of loading and then deleting tokens
         try {
             List<Token> tokens = tokenRepository.findByUserId(id);
             if (tokens != null && !tokens.isEmpty()) {

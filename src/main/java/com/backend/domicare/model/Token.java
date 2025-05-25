@@ -59,7 +59,6 @@ public class Token {
         }
         
         if (this.expiration == null) {
-            // Default expiration: 1 day from creation
             this.expiration = Instant.now().plusSeconds(86400);
         }
     }
@@ -68,12 +67,7 @@ public class Token {
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
     private User user;
-   
-    /**
-     * Check if the token has expired
-     * 
-     * @return true if the token expiration time is before current time
-     */
+
     public boolean isExpired() {
         return expiration.isBefore(Instant.now());
     }

@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.backend.domicare.security.jwt.JwtTokenManager;
+import com.backend.domicare.utils.FormatStringAccents;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -73,6 +74,12 @@ public class User {
     private String updateBy;
     private Instant createAt;
     private Instant updateAt;
+
+    private Long user_totalSuccessBookings;
+    private Long user_totalFailedBookings;
+    private Long sale_totalBookings;
+    private Double sale_successPercent;
+
     @Builder.Default
     @Column(nullable = false)
     private boolean isActive = true;
@@ -99,23 +106,29 @@ public class User {
     @PrePersist
     public void prePersist() {
         Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
-        if(currentUserLogin.isPresent()) {
+        if(currentUserLogin.isPresent() && !currentUserLogin.get().equals("anonymous")) {
             this.createBy = currentUserLogin.get();
         } else {
             this.createBy = "system";
         }
         this.createAt = Instant.now();
+        this.nameUnsigned = FormatStringAccents.removeTones(name);
+        user_totalFailedBookings = 0L;
+        user_totalSuccessBookings = 0L;
+        sale_totalBookings = 0L;
+        sale_successPercent = 0.0;
     }
 
     @PreUpdate
     public void preUpdate() {
-        this.updateAt = Instant.now();
         Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
         if(currentUserLogin.isPresent()) {
             this.updateBy = currentUserLogin.get();
         } else {
             this.updateBy = "system";
         }
+        this.nameUnsigned = FormatStringAccents.removeTones(this.name);
+        this.updateAt = Instant.now();
     }
 
 }

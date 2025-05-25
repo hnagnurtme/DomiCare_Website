@@ -66,10 +66,16 @@ public class Booking {
     
     private List<Product> products;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     @JsonIgnore
     private User user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "sale_user_id", nullable = true)
+    @JsonIgnore
+    private User saleUser;
+
+
     @PrePersist
     public void prePersist() {
         Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();

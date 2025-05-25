@@ -2,6 +2,7 @@ package com.backend.domicare.repository;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,36 +16,23 @@ import com.backend.domicare.model.BookingStatus;
 @Repository
 public interface BookingsRepository extends JpaRepository<Booking, Long> {
     
-    /**
-     * Find all bookings by user ID
-     * @param userId the ID of the user
-     * @return list of bookings for the specified user
-     */
     @Query("SELECT b FROM Booking b WHERE b.user.id = :userId")
     List<Booking> findByUserId(@Param("userId") Long userId);
 
-    // Delte booking Ids 
     @Query("DELETE FROM Booking b WHERE b.id IN :ids")
     void softDeleteByIds(@Param("ids") List<Long> ids);
 
-    /**
-     * Count bookings by status
-     * @param status the booking status to count
-     * @return count of bookings with the specified status
-     */
+    @Query("select b from Booking b join fetch b.user join fetch b.products where b.id = :id")
+    Optional<Booking> findByIdWithUserAndProducts(@Param("id") Long id);
+
     @Query("SELECT COUNT(b) FROM Booking b WHERE b.bookingStatus = :status")
     Long countBookingsByStatus(@Param("status") BookingStatus status);
-
-
-    // Find all bookings by updateby(email) and status
     @Query("SELECT b FROM Booking b WHERE b.updateBy = :updateBy AND b.bookingStatus = :status")
     List<Booking> findByUpdateByAndStatus(@Param("updateBy") String updateBy, @Param("status") BookingStatus status);
 
-    // Find all bookings by creatAt and status
     @Query("SELECT b FROM Booking b WHERE b.createBy = :createBy AND b.bookingStatus = :status")
     List<Booking> findByCreateByAndStatus(@Param("createBy") String createBy, @Param("status") BookingStatus status);
 
-    // Find all bookings by updateBy and status in range
     @Query("SELECT b FROM Booking b WHERE b.updateBy = :updateBy AND b.bookingStatus IN :status")
     List<Booking> findByUpdateByAndStatusIn(@Param("updateBy") String updateBy, @Param("status") List<BookingStatus> status);
 }

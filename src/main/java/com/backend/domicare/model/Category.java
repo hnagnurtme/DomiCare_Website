@@ -3,6 +3,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import com.backend.domicare.security.jwt.JwtTokenManager;
+import com.backend.domicare.utils.FormatStringAccents;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -62,16 +63,18 @@ public class Category {
             this.createBy = "system";
         }
         this.createAt = Instant.now();
+        this.nameUnsigned = FormatStringAccents.removeTones(this.name);
     }
 
     @PreUpdate
     public void preUpdate() {
-        this.updateAt = Instant.now();
         Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
         if(currentUserLogin.isPresent()) {
             this.updateBy = currentUserLogin.get();
         } else {
             this.updateBy = "system";
         }
+        this.nameUnsigned = FormatStringAccents.removeTones(this.name);
+        this.updateAt = Instant.now();
     }
 }

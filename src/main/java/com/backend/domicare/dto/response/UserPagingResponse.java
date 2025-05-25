@@ -38,7 +38,6 @@ public class UserPagingResponse {
     private Set< RoleDTO >roles;
     private Long user_totalSuccessBookings;
     private Long user_totalFailedBookings;
-
     private Long sale_totalBookings;
     private Double sale_successPercent;
 }

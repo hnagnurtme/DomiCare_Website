@@ -10,6 +10,7 @@ import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.UserDTO.UserDTOBuilder;
 import com.backend.domicare.dto.request.AddUserByAdminRequest;
 import com.backend.domicare.dto.request.UpdateUserRequest;
+import com.backend.domicare.dto.response.SalePagingResponse;
 import com.backend.domicare.dto.response.UserPagingResponse;
 import com.backend.domicare.model.User;
 import com.backend.domicare.security.dto.RegisterResponse;
@@ -65,15 +66,15 @@ public interface UserMapper {
         userDTO.email( user.getEmail() );
         userDTO.gender( user.getGender() );
         userDTO.dateOfBirth( user.getDateOfBirth() );
-        userDTO.isEmailConfirmed( user.isEmailConfirmed() );
-        userDTO.emailConfirmationToken( user.getEmailConfirmationToken() );
-        userDTO.googleId( user.getGoogleId() );
-        userDTO.roles(RoleMapper.INSTANCE.convertToRoleDTOSet(user.getRoles()));
         userDTO.updateAt( user.getUpdateAt() );
         userDTO.updateBy( user.getUpdateBy() );
         userDTO.createAt( user.getCreateAt() );
         userDTO.createBy( user.getCreateBy() );
         userDTO.isActive( user.isActive() );
+        userDTO.user_totalSuccessBookings( user.getUser_totalSuccessBookings() );
+        userDTO.user_totalFailedBookings( user.getUser_totalFailedBookings() );
+        userDTO.sale_successPercent( user.getSale_successPercent() );
+        userDTO.sale_totalBookings( user.getSale_totalBookings() );
         return userDTO.build();
     }
 
@@ -95,4 +96,33 @@ public interface UserMapper {
         
     }
     List<UserDTO> convertToUserDTOList(List<User> users);
+
+
+    default SalePagingResponse convertToSalePagingResponse(User user) {
+        if ( user == null ) {
+            return null;
+        }
+
+        SalePagingResponse.SalePagingResponseBuilder userDTO = SalePagingResponse.builder();
+        userDTO.id( user.getId() );
+        userDTO.name( user.getName() );
+        userDTO.password( user.getPassword() );
+        userDTO.phone( user.getPhone() );
+        userDTO.address( user.getAddress() );
+        userDTO.avatar( user.getAvatar() );
+        userDTO.email( user.getEmail() );
+        userDTO.gender( user.getGender() );
+        userDTO.dateOfBirth( user.getDateOfBirth() );
+        userDTO.updateAt( user.getUpdateAt() );
+        userDTO.updateBy( user.getUpdateBy() );
+        userDTO.createAt( user.getCreateAt() );
+        userDTO.createBy( user.getCreateBy() );
+        userDTO.isActive( user.isActive() );
+        userDTO.sale_successPercent(user.getSale_successPercent());
+        userDTO.sale_totalBookings( user.getSale_totalBookings() );
+        
+        return userDTO.build();
+    }
+
+    List<SalePagingResponse> convertToSalePagingResponseList(List<User> users);
 }

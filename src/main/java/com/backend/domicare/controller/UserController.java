@@ -43,8 +43,8 @@ public class UserController {
     @GetMapping("/users")
     @Operation(summary = "Get all users with optional filtering", description = "Returns paginated list of users with optional filtering by name or role")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Users retrieved successfully"),
-        @ApiResponse(responseCode = "403", description = "Unauthorized access")
+            @ApiResponse(responseCode = "200", description = "Users retrieved successfully"),
+            @ApiResponse(responseCode = "403", description = "Unauthorized access")
     })
     public ResponseEntity<ResultPagingDTO> getUsers(
             @RequestParam(defaultValue = "1") int page,
@@ -70,18 +70,16 @@ public class UserController {
             spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder
                     .like(root.join("roles").get("name"), "%" + searchRoleName + "%"));
         }
-        spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("isDeleted"), false));
 
-        
         return ResponseEntity.ok(this.userService.getAllUsers(spec, pageable));
     }
 
     @GetMapping("/users/{id}")
     @Operation(summary = "Get user by ID", description = "Returns user details by ID")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "User details retrieved successfully"),
-        @ApiResponse(responseCode = "404", description = "User not found"),
-        @ApiResponse(responseCode = "403", description = "Unauthorized access")
+            @ApiResponse(responseCode = "200", description = "User details retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "403", description = "Unauthorized access")
     })
     public ResponseEntity<UserDTO> getUserById(@PathVariable("id") Long id) {
         UserDTO user = this.userService.getUserById(id);
@@ -91,9 +89,9 @@ public class UserController {
     @DeleteMapping("/users/{id}")
     @Operation(summary = "Delete user by ID", description = "Removes a user from the system")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "204", description = "User deleted successfully"),
-        @ApiResponse(responseCode = "404", description = "User not found"),
-        @ApiResponse(responseCode = "403", description = "Unauthorized access")
+            @ApiResponse(responseCode = "204", description = "User deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "403", description = "Unauthorized access")
     })
     public ResponseEntity<Void> deleteUserById(@PathVariable("id") Long id) {
         this.userService.deleteUserById(id);
@@ -103,10 +101,10 @@ public class UserController {
     @PutMapping("/users")
     @Operation(summary = "Update user information", description = "Updates the specified user information")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "User updated successfully"),
-        @ApiResponse(responseCode = "400", description = "Invalid input"),
-        @ApiResponse(responseCode = "403", description = "Unauthorized access"),
-        @ApiResponse(responseCode = "404", description = "User not found")
+            @ApiResponse(responseCode = "200", description = "User updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "403", description = "Unauthorized access"),
+            @ApiResponse(responseCode = "404", description = "User not found")
     })
     public ResponseEntity<UserDTO> updateUser(@Valid @RequestBody UpdateUserRequest user) {
         return ResponseEntity.ok(this.userService.updateUserInformation(user));
@@ -115,10 +113,10 @@ public class UserController {
     @PutMapping("/users/roles")
     @Operation(summary = "Update user roles", description = "Updates the roles assigned to a user")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "User roles updated successfully"),
-        @ApiResponse(responseCode = "400", description = "Invalid input"),
-        @ApiResponse(responseCode = "403", description = "Unauthorized access"),
-        @ApiResponse(responseCode = "404", description = "User or role not found")
+            @ApiResponse(responseCode = "200", description = "User roles updated successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "403", description = "Unauthorized access"),
+            @ApiResponse(responseCode = "404", description = "User or role not found")
     })
     public ResponseEntity<UserDTO> updateRoleForUser(@Valid @RequestBody UpdateRoleForUserRequest request) {
         return ResponseEntity.ok(this.userService.updateRoleForUser(request));
@@ -127,12 +125,65 @@ public class UserController {
     @PostMapping("/users")
     @Operation(summary = "Create new user", description = "Creates a new user account by administrator")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "201", description = "User created successfully"),
-        @ApiResponse(responseCode = "400", description = "Invalid input"),
-        @ApiResponse(responseCode = "403", description = "Unauthorized access"),
-        @ApiResponse(responseCode = "409", description = "User already exists")
+            @ApiResponse(responseCode = "201", description = "User created successfully"),
+            @ApiResponse(responseCode = "400", description = "Invalid input"),
+            @ApiResponse(responseCode = "403", description = "Unauthorized access"),
+            @ApiResponse(responseCode = "409", description = "User already exists")
     })
     public ResponseEntity<UserDTO> createUserByAdmin(@Valid @RequestBody AddUserByAdminRequest user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.addUserByAdmin(user));
+    }
+
+    @GetMapping("/users/customers")
+    @Operation(summary = "Get all users with optional filtering", description = "Returns paginated list of users with optional filtering by name or role")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Users retrieved successfully"),
+            @ApiResponse(responseCode = "403", description = "Unauthorized access")
+    })
+    public ResponseEntity<ResultPagingDTO> getCustomers(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String searchName,
+            @RequestParam(required = false, defaultValue = "") String searchRoleName,
+            @RequestParam(required = false, defaultValue = "id") String sortBy,
+            @RequestParam(required = false, defaultValue = "desc") String sortDirection,
+            @Filter Specification<User> spec, Pageable pageable) {
+
+        Sort sort = sortDirection.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        pageable = PageRequest.of(page - 1, size, sort);
+
+        if (searchName != null && !searchName.isEmpty()) {
+            String cleanSearchName = FormatStringAccents.removeTones(searchName.toLowerCase());
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder
+                    .like(criteriaBuilder.lower(root.get("nameUnsigned")), "%" + cleanSearchName + "%"));
+        }
+
+        return ResponseEntity.ok(this.userService.getAllCustomer(spec, pageable));
+    }
+
+    @GetMapping("/users/sales")
+    @Operation(summary = "Get all users with optional filtering", description = "Returns paginated list of users with optional filtering by name or role")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Users retrieved successfully"),
+            @ApiResponse(responseCode = "403", description = "Unauthorized access")
+    })
+    public ResponseEntity<ResultPagingDTO> getSales(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String searchName,
+            @RequestParam(required = false, defaultValue = "id") String sortBy,
+            @RequestParam(required = false, defaultValue = "desc") String sortDirection,
+            @Filter Specification<User> spec, Pageable pageable) {
+
+        Sort sort = sortDirection.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        pageable = PageRequest.of(page - 1, size, sort);
+
+        if (searchName != null && !searchName.isEmpty()) {
+            String cleanSearchName = FormatStringAccents.removeTones(searchName.toLowerCase());
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder
+                    .like(criteriaBuilder.lower(root.get("nameUnsigned")), "%" + cleanSearchName + "%"));
+        }
+
+        return ResponseEntity.ok(this.userService.getAllSale(spec, pageable));
     }
 }

@@ -77,7 +77,9 @@ public class User {
 
     private Long user_totalSuccessBookings;
     private Long user_totalFailedBookings;
+    @Column(name = "sale_total_bookings")
     private Long sale_totalBookings;
+    @Column(name = "sale_success_percent")
     private Double sale_successPercent;
 
     @Builder.Default

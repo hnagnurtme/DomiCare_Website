@@ -4,19 +4,17 @@ import java.time.Instant;
 
 import com.backend.domicare.model.Gender;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserPagingResponse {
+public class SalePagingResponse {
     private Long id;
     private String name;
     private String email;
@@ -32,8 +30,7 @@ public class UserPagingResponse {
     private String updateBy;
     private Instant createAt;
     private Instant updateAt;
-    private Long user_totalSuccessBookings;
-    private Long user_totalFailedBookings;
     private Long sale_totalBookings;
     private Double sale_successPercent;
+    
 }

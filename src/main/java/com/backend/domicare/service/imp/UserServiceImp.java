@@ -20,6 +20,7 @@ import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.dto.request.AddUserByAdminRequest;
 import com.backend.domicare.dto.request.UpdateRoleForUserRequest;
 import com.backend.domicare.dto.request.UpdateUserRequest;
+import com.backend.domicare.dto.response.SalePagingResponse;
 import com.backend.domicare.dto.response.UserPagingResponse;
 import com.backend.domicare.exception.DeleteAdminException;
 import com.backend.domicare.exception.EmailAlreadyExistException;
@@ -36,7 +37,7 @@ import com.backend.domicare.repository.ReviewsRepository;
 import com.backend.domicare.repository.TokensRepository;
 import com.backend.domicare.repository.UsersRepository;
 import com.backend.domicare.security.jwt.JwtTokenManager;
-import com.backend.domicare.service.BookingService;
+
 import com.backend.domicare.service.FileService;
 import com.backend.domicare.service.RoleService;
 import com.backend.domicare.service.UserService;
@@ -44,9 +45,14 @@ import com.backend.domicare.service.UserValidationService;
 import com.backend.domicare.utils.FormatStringAccents;
 import com.backend.domicare.utils.ProjectConstants;
 
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import lombok.RequiredArgsConstructor;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springdoc.core.converters.models.Sort;
+@RequiredArgsConstructor
 @Service
 public class UserServiceImp implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImp.class);
@@ -59,28 +65,7 @@ public class UserServiceImp implements UserService {
     private final BookingsRepository bookingRepository;
     private final ReviewsRepository reviewRepository;
     private final TokensRepository tokenRepository;
-    private final BookingService bookingService;
     
-    public UserServiceImp(
-            UsersRepository userRepository,
-            PasswordEncoder passwordEncoder,
-            UserValidationService userValidationService,
-            RoleService roleService,
-            FileService fileService,
-            BookingsRepository bookingRepository,
-            ReviewsRepository reviewRepository,
-            TokensRepository tokenRepository,
-            @org.springframework.context.annotation.Lazy BookingService bookingService) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.userValidationService = userValidationService;
-        this.roleService = roleService;
-        this.fileService = fileService;
-        this.bookingRepository = bookingRepository;
-        this.reviewRepository = reviewRepository;
-        this.tokenRepository = tokenRepository;
-        this.bookingService = bookingService;
-    }
 
     @Override
     public UserDTO saveUser(UserDTO userDTO) {
@@ -136,6 +121,7 @@ public class UserServiceImp implements UserService {
     public ResultPagingDTO getAllUsers(Specification<User> spec, Pageable pageable) {
         logger.debug("Fetching users with pagination [page: {}, size: {}]",
                 pageable.getPageNumber(), pageable.getPageSize());
+        spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("isDeleted"), false));
 
         Page<User> users = this.userRepository.findAll(spec, pageable);
 
@@ -152,6 +138,59 @@ public class UserServiceImp implements UserService {
         result.setData(userDTOs);
 
         logger.debug("Found {} users out of {} total", userDTOs.size(), users.getTotalElements());
+        return result;
+    }
+
+    @Override
+    public ResultPagingDTO getAllCustomer(Specification<User> spec, Pageable pageable) {
+        logger.debug("Fetching customers with pagination [page: {}, size: {}]",
+                pageable.getPageNumber(), pageable.getPageSize());
+
+        spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder
+                    .like(root.join("roles").get("name"), "%" + ProjectConstants.ROLE_USER + "%"));
+        spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("isDeleted"), false));
+
+
+        Page<User> users = this.userRepository.findAll(spec, pageable);
+
+        List<UserPagingResponse> userDTOs = UserMapper.INSTANCE.convertToUserPagingResponseList(users.getContent());
+
+        ResultPagingDTO result = new ResultPagingDTO();
+        ResultPagingDTO.Meta meta = new ResultPagingDTO.Meta();
+        meta.setPage(users.getNumber() + 1);
+        meta.setSize(users.getSize());
+        meta.setTotal(users.getTotalElements());
+        meta.setTotalPages(users.getTotalPages());
+        result.setMeta(meta);
+        result.setData(userDTOs);
+
+        logger.debug("Found {} customers out of {} total", userDTOs.size(), users.getTotalElements());
+        return result;
+    }
+
+    @Override
+    public ResultPagingDTO getAllSale(Specification<User> spec, Pageable pageable) {
+        logger.debug("Fetching sales with pagination [page: {}, size: {}]",
+                pageable.getPageNumber(), pageable.getPageSize());
+        spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder
+                    .like(root.join("roles").get("name"), "%" + ProjectConstants.ROLE_SALE + "%"));
+        spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("isDeleted"), false));
+        
+        Page<User> users = this.userRepository.findAll(spec, pageable);
+        
+
+        List<SalePagingResponse> userDTOs = UserMapper.INSTANCE.convertToSalePagingResponseList(users.getContent());
+
+        ResultPagingDTO result = new ResultPagingDTO();
+        ResultPagingDTO.Meta meta = new ResultPagingDTO.Meta();
+        meta.setPage(users.getNumber() + 1);
+        meta.setSize(users.getSize());
+        meta.setTotal(users.getTotalElements());
+        meta.setTotalPages(users.getTotalPages());
+        result.setMeta(meta);
+        result.setData(userDTOs);
+
+        logger.debug("Found {} sales out of {} total", userDTOs.size(), users.getTotalElements());
         return result;
     }
 

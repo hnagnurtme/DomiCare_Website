@@ -159,17 +159,17 @@ public class BookingServiceImp implements BookingService {
         }
         
         // Initialize metrics fields if they are null
-        if (saleuser.getSale_totalBookings() == null) {
-            saleuser.setSale_totalBookings(0L);
+        if (saleuser.getSaleTotalBookings() == null) {
+            saleuser.setSaleTotalBookings(0L);
         }
-        if (saleuser.getUser_totalSuccessBookings() == null) {
-            saleuser.setUser_totalSuccessBookings(0L);
+        if (saleuser.getUserTotalSuccessBookings() == null) {
+            saleuser.setUserTotalSuccessBookings(0L);
         }
-        if (saleuser.getUser_totalFailedBookings() == null) {
-            saleuser.setUser_totalFailedBookings(0L);
+        if (saleuser.getUserTotalFailedBookings() == null) {
+            saleuser.setUserTotalFailedBookings(0L);
         }
-        if (saleuser.getSale_successPercent() == null) {
-            saleuser.setSale_successPercent(0.0);
+        if (saleuser.getSaleSuccessPercent() == null) {
+            saleuser.setSaleSuccessPercent(0.0);
         }
 
         BookingStatus newStatus;
@@ -188,13 +188,13 @@ public class BookingServiceImp implements BookingService {
         }
         
         // Initialize customer metrics fields if they are null
-        if (customer.getUser_totalSuccessBookings() == null) {
-            customer.setUser_totalSuccessBookings(0L);
+        if (customer.getUserTotalSuccessBookings() == null) {
+            customer.setUserTotalSuccessBookings(0L);
         }
-        if (customer.getUser_totalFailedBookings() == null) {
-            customer.setUser_totalFailedBookings(0L);
+        if (customer.getUserTotalFailedBookings() == null) {
+            customer.setUserTotalFailedBookings(0L);
         }
-        
+
         if (booking.getBookingStatus() == BookingStatus.PENDING) {
             switch (newStatus) {
                 case ACCEPTED:
@@ -205,7 +205,7 @@ public class BookingServiceImp implements BookingService {
                             booking.getCreateAt().toString(),
                             booking.getUser().getName());
                     booking.setSaleUser(saleuser);
-                    saleuser.setSale_totalBookings(saleuser.getSale_totalBookings() + 1);
+                    saleuser.setSaleTotalBookings(saleuser.getSaleTotalBookings() + 1);
                     // Don't increment success booking counter yet, as the booking is only accepted, not completed
                     break;
                 case REJECTED:
@@ -227,8 +227,8 @@ public class BookingServiceImp implements BookingService {
                     case FAILED:
                         booking.setBookingStatus(BookingStatus.FAILED);
                         // Increment failed bookings counter for customer
-                        customer.setUser_totalFailedBookings(customer.getUser_totalFailedBookings() + 1);
-                        
+                        customer.setUserTotalFailedBookings(customer.getUserTotalFailedBookings() + 1);
+
                         // Calculate success percentage - avoid division by zero
                         calculateSuccessPercentage(saleuser);
                         break;
@@ -236,8 +236,8 @@ public class BookingServiceImp implements BookingService {
                     case SUCCESS:
                         booking.setBookingStatus(BookingStatus.SUCCESS);
                         // Increment success bookings counter for both sale user and customer
-                        saleuser.setUser_totalSuccessBookings(saleuser.getUser_totalSuccessBookings() + 1);
-                        customer.setUser_totalSuccessBookings(customer.getUser_totalSuccessBookings() + 1);
+                        saleuser.setUserTotalSuccessBookings(saleuser.getUserTotalSuccessBookings() + 1);
+                        customer.setUserTotalSuccessBookings(customer.getUserTotalSuccessBookings() + 1);
                         
                         // Calculate success percentage - avoid division by zero
                         calculateSuccessPercentage(saleuser);
@@ -343,16 +343,16 @@ public class BookingServiceImp implements BookingService {
     
    
     private void calculateSuccessPercentage(User saleUser) {
-        if (saleUser.getSale_totalBookings() == null || saleUser.getSale_totalBookings() == 0) {
-            saleUser.setSale_successPercent(0.0);
+        if (saleUser.getSaleTotalBookings() == null || saleUser.getSaleTotalBookings() == 0) {
+            saleUser.setSaleSuccessPercent(0.0);
             return;
         }
-        
-        if (saleUser.getUser_totalSuccessBookings() == null) {
-            saleUser.setUser_totalSuccessBookings(0L);
+
+        if (saleUser.getUserTotalSuccessBookings() == null) {
+            saleUser.setUserTotalSuccessBookings(0L);
         }
 
-        Double successPercentage = (double) saleUser.getUser_totalSuccessBookings() / saleUser.getSale_totalBookings() * 100;
-        saleUser.setSale_successPercent(successPercentage);
+        Double successPercentage = (double) saleUser.getUserTotalSuccessBookings() / saleUser.getSaleTotalBookings() * 100;
+        saleUser.setSaleSuccessPercent(successPercentage);
     }
 }

@@ -32,8 +32,8 @@ public class UserPagingResponse {
     private String updateBy;
     private Instant createAt;
     private Instant updateAt;
-    private Long user_totalSuccessBookings;
-    private Long user_totalFailedBookings;
-    private Long sale_totalBookings;
-    private Double sale_successPercent;
+    private Long userTotalSuccessBookings;
+    private Long userTotalFailedBookings;
+    private Long saleTotalBookings;
+    private Double saleSuccessPercent;
 }

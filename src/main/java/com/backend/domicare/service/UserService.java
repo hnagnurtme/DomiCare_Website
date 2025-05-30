@@ -42,8 +42,4 @@ public interface UserService {
 
     public UserDTO addUserByAdmin(AddUserByAdminRequest user);
 
-    public ResultPagingDTO getAllCustomer(Specification<User> spec, Pageable pageable);
-
-    public ResultPagingDTO getAllSale(Specification<User> spec, Pageable pageable);
-
 } 

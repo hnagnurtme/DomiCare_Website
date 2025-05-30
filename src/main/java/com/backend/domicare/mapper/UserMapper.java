@@ -71,10 +71,10 @@ public interface UserMapper {
         userDTO.createAt( user.getCreateAt() );
         userDTO.createBy( user.getCreateBy() );
         userDTO.isActive( user.isActive() );
-        userDTO.user_totalSuccessBookings( user.getUser_totalSuccessBookings() );
-        userDTO.user_totalFailedBookings( user.getUser_totalFailedBookings() );
-        userDTO.sale_successPercent( user.getSale_successPercent() );
-        userDTO.sale_totalBookings( user.getSale_totalBookings() );
+        userDTO.userTotalSuccessBookings( user.getUserTotalSuccessBookings() );
+        userDTO.userTotalFailedBookings( user.getUserTotalFailedBookings() );
+        userDTO.saleSuccessPercent( user.getSaleSuccessPercent() );
+        userDTO.saleTotalBookings( user.getSaleTotalBookings() );
         return userDTO.build();
     }
 
@@ -118,8 +118,8 @@ public interface UserMapper {
         userDTO.createAt( user.getCreateAt() );
         userDTO.createBy( user.getCreateBy() );
         userDTO.isActive( user.isActive() );
-        userDTO.sale_successPercent(user.getSale_successPercent());
-        userDTO.sale_totalBookings( user.getSale_totalBookings() );
+        userDTO.sale_successPercent(user.getSaleSuccessPercent());
+        userDTO.sale_totalBookings( user.getSaleTotalBookings() );
         
         return userDTO.build();
     }

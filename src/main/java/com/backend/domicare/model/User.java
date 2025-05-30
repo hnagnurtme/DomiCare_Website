@@ -75,12 +75,12 @@ public class User {
     private Instant createAt;
     private Instant updateAt;
 
-    private Long user_totalSuccessBookings;
-    private Long user_totalFailedBookings;
+    private Long userTotalSuccessBookings;
+    private Long userTotalFailedBookings;
     @Column(name = "sale_total_bookings")
-    private Long sale_totalBookings;
+    private Long saleTotalBookings;
     @Column(name = "sale_success_percent")
-    private Double sale_successPercent;
+    private Double saleSuccessPercent;
 
     @Builder.Default
     @Column(nullable = false)
@@ -115,10 +115,10 @@ public class User {
         }
         this.createAt = Instant.now();
         this.nameUnsigned = FormatStringAccents.removeTones(name);
-        user_totalFailedBookings = 0L;
-        user_totalSuccessBookings = 0L;
-        sale_totalBookings = 0L;
-        sale_successPercent = 0.0;
+        userTotalFailedBookings = 0L;
+        userTotalSuccessBookings = 0L;
+        saleTotalBookings = 0L;
+        saleSuccessPercent = 0.0;
     }
 
     @PreUpdate

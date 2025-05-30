@@ -142,59 +142,6 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public ResultPagingDTO getAllCustomer(Specification<User> spec, Pageable pageable) {
-        logger.debug("Fetching customers with pagination [page: {}, size: {}]",
-                pageable.getPageNumber(), pageable.getPageSize());
-
-        spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder
-                    .like(root.join("roles").get("name"), "%" + ProjectConstants.ROLE_USER + "%"));
-        spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("isDeleted"), false));
-
-
-        Page<User> users = this.userRepository.findAll(spec, pageable);
-
-        List<UserPagingResponse> userDTOs = UserMapper.INSTANCE.convertToUserPagingResponseList(users.getContent());
-
-        ResultPagingDTO result = new ResultPagingDTO();
-        ResultPagingDTO.Meta meta = new ResultPagingDTO.Meta();
-        meta.setPage(users.getNumber() + 1);
-        meta.setSize(users.getSize());
-        meta.setTotal(users.getTotalElements());
-        meta.setTotalPages(users.getTotalPages());
-        result.setMeta(meta);
-        result.setData(userDTOs);
-
-        logger.debug("Found {} customers out of {} total", userDTOs.size(), users.getTotalElements());
-        return result;
-    }
-
-    @Override
-    public ResultPagingDTO getAllSale(Specification<User> spec, Pageable pageable) {
-        logger.debug("Fetching sales with pagination [page: {}, size: {}]",
-                pageable.getPageNumber(), pageable.getPageSize());
-        spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder
-                    .like(root.join("roles").get("name"), "%" + ProjectConstants.ROLE_SALE + "%"));
-        spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("isDeleted"), false));
-        
-        Page<User> users = this.userRepository.findAll(spec, pageable);
-        
-
-        List<SalePagingResponse> userDTOs = UserMapper.INSTANCE.convertToSalePagingResponseList(users.getContent());
-
-        ResultPagingDTO result = new ResultPagingDTO();
-        ResultPagingDTO.Meta meta = new ResultPagingDTO.Meta();
-        meta.setPage(users.getNumber() + 1);
-        meta.setSize(users.getSize());
-        meta.setTotal(users.getTotalElements());
-        meta.setTotalPages(users.getTotalPages());
-        result.setMeta(meta);
-        result.setData(userDTOs);
-
-        logger.debug("Found {} sales out of {} total", userDTOs.size(), users.getTotalElements());
-        return result;
-    }
-
-    @Override
     public UserDTO findUserByEmailConfirmToken(String token) {
         logger.debug("Finding user by email confirmation token");
         Optional<User> user = userRepository.findByEmailConfirmationToken(token);

@@ -31,17 +31,15 @@ public class BookingController {
 
     @PostMapping("/bookings")
     public ResponseEntity<BookingDTO> createBooking(@Valid @RequestBody BookingRequest bookingRequest) {
-     
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(bookingService.addBooking(bookingRequest));
     }
 
     @GetMapping("/bookings/{id}")
     public ResponseEntity<BookingDTO> getBookingById(@PathVariable Long id) {
-        BookingDTO booking = bookingService.fetchBookingById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(booking);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(bookingService.fetchBookingById(id));
     }
-    
 
     @DeleteMapping("/bookings/{id}")
     public ResponseEntity<Void> deleteBooking(@PathVariable Long id) {
@@ -50,17 +48,15 @@ public class BookingController {
     }
 
     @PutMapping("/bookings")
-    public ResponseEntity<BookingDTO> updateBooking(
-        @Valid @RequestBody UpdateBookingRequest bookingRequest) {
-        BookingDTO updatedBooking = bookingService.updateBooking(bookingRequest);
-        return ResponseEntity.status(HttpStatus.OK).body(updatedBooking);
+    public ResponseEntity<BookingDTO> updateBooking(@Valid @RequestBody UpdateBookingRequest bookingRequest) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(bookingService.updateBooking(bookingRequest));
     }
-
 
     @PutMapping("/bookings/status")
     public ResponseEntity<BookingDTO> updateBookingStatus(
-        @RequestBody UpdateBookingStatusRequest bookingRequest) {
-        BookingDTO updatedBooking = bookingService.updateBookingStatus(bookingRequest);
-        return ResponseEntity.status(HttpStatus.OK).body(updatedBooking);
+            @RequestBody UpdateBookingStatusRequest bookingRequest) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(bookingService.updateBookingStatus(bookingRequest));
     }
 }

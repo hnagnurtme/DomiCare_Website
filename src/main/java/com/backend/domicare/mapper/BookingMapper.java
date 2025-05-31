@@ -5,6 +5,7 @@ import org.mapstruct.factory.Mappers;
 
 import com.backend.domicare.dto.BookingDTO;
 import com.backend.domicare.dto.request.BookingRequest;
+import com.backend.domicare.dto.response.MiniBookingResponse;
 import com.backend.domicare.model.Booking;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
@@ -47,4 +48,27 @@ public interface  BookingMapper {
                 .note(bookingRequest.getNote())
                 .build();
     }
+
+    default MiniBookingResponse convertToMiniBookingResponse(Booking booking) {
+        if (booking == null) {
+            return null;
+        }
+        return MiniBookingResponse.builder()
+                .id(booking.getId())
+                .address(booking.getAddress())
+                .totalPrice(booking.getTotalPrice())
+                .note(booking.getNote())
+                .startTime(booking.getStartTime())
+                .products(booking.getProducts() != null ? ProductMapper.INSTANCE.convertToProductMinis(booking.getProducts()) : null)
+                .userDTO(booking.getUser() != null ? UserMapper.INSTANCE.convertToUserMini(booking.getUser()) : null)
+                .isPeriodic(booking.getIsPeriodic())
+                .bookingStatus(booking.getBookingStatus())
+                .createBy(booking.getCreateBy())
+                .updateBy(booking.getUpdateBy())
+                .createAt(booking.getCreateAt())
+                .updateAt(booking.getUpdateAt())
+                .build();
+    }
+
+
 }

@@ -6,16 +6,20 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.backend.domicare.controller.BookingSocketController;
 import com.backend.domicare.dto.BookingDTO;
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.request.BookingRequest;
 import com.backend.domicare.dto.request.UpdateBookingRequest;
 import com.backend.domicare.dto.request.UpdateBookingStatusRequest;
+import com.backend.domicare.dto.response.MiniBookingResponse;
 import com.backend.domicare.exception.AlreadyRegisterUserException;
 import com.backend.domicare.exception.BookingStatusException;
 import com.backend.domicare.exception.NotFoundBookingException;
@@ -32,6 +36,10 @@ import com.backend.domicare.service.BookingService;
 import com.backend.domicare.service.EmailSendingService;
 import com.backend.domicare.service.ProductService;
 import com.backend.domicare.service.UserService;
+import com.backend.domicare.dto.paging.ResultPagingDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 @Service
 @Transactional
@@ -44,11 +52,13 @@ public class BookingServiceImp implements BookingService {
     private final JwtTokenManager jwtTokenManager;
     private final UserService userService;
     private final EmailSendingService emailSendingService;
+    private final BookingSocketController bookingSocketController;
 
     public BookingServiceImp(
             BookingsRepository bookingRepository,
             UsersRepository userRepository,
             ProductService productService,
+            BookingSocketController bookingSocketController,
             @org.springframework.context.annotation.Lazy JwtTokenManager jwtTokenManager,
             UserService userService,
             EmailSendingService emailSendingService) {
@@ -57,6 +67,7 @@ public class BookingServiceImp implements BookingService {
         this.productService = productService;
         this.jwtTokenManager = jwtTokenManager;
         this.userService = userService;
+        this.bookingSocketController = bookingSocketController;
         this.emailSendingService = emailSendingService;
     }
 
@@ -152,14 +163,13 @@ public class BookingServiceImp implements BookingService {
 
         logger.info("Updating booking status for ID: {} to {}", id, statusStr);
 
-
         String emailSale = JwtTokenManager.getCurrentUserLogin()
                 .orElseThrow(() -> new NotFoundUserException("User not found"));
         User saleuser = userRepository.findByEmail(emailSale);
         if (saleuser == null) {
             throw new NotFoundUserException("User not found with email: " + emailSale);
         }
-       
+
         if (saleuser.getSaleTotalBookings() == null) {
             saleuser.setSaleTotalBookings(0L);
         }
@@ -187,7 +197,7 @@ public class BookingServiceImp implements BookingService {
         if (customer == null) {
             throw new NotFoundUserException("Customer not found for booking ID: " + id);
         }
-        
+
         if (customer.getUserTotalSuccessBookings() == null) {
             customer.setUserTotalSuccessBookings(0L);
         }
@@ -242,7 +252,6 @@ public class BookingServiceImp implements BookingService {
             }
 
         }
-        
 
         List<Booking> bookings = saleuser.getBookings();
         if (bookings == null) {
@@ -328,10 +337,11 @@ public class BookingServiceImp implements BookingService {
 
         logger.info("User with email: {} has been associated with booking ID: {}", user.getEmail(),
                 bookingEntity.getId());
+        bookingSocketController.sendNewBooking(BookingMapper.INSTANCE.convertToBookingDTO(bookingEntity));
+        logger.info("New booking notification sent for booking ID: {}", bookingEntity.getId());
         return BookingMapper.INSTANCE.convertToBookingDTO(bookingEntity);
     }
-    
-   
+
     private void calculateSuccessPercentage(User saleUser) {
         if (saleUser.getSaleTotalBookings() == null || saleUser.getSaleTotalBookings() == 0) {
             saleUser.setSaleSuccessPercent(0.0);
@@ -342,7 +352,8 @@ public class BookingServiceImp implements BookingService {
             saleUser.setUserTotalSuccessBookings(0L);
         }
 
-        Double successPercentage = (double) saleUser.getUserTotalSuccessBookings() / saleUser.getSaleTotalBookings() * 100;
+        Double successPercentage = (double) saleUser.getUserTotalSuccessBookings() / saleUser.getSaleTotalBookings()
+                * 100;
         saleUser.setSaleSuccessPercent(successPercentage);
     }
 
@@ -352,7 +363,7 @@ public class BookingServiceImp implements BookingService {
         logger.debug("Total success bookings: {}", totalSuccessBookings);
         return totalSuccessBookings;
     }
-    
+
     @Override
     public Long getTotalBooking(LocalDate startDate, LocalDate endDate) {
         if (startDate == null || endDate == null) {
@@ -362,13 +373,15 @@ public class BookingServiceImp implements BookingService {
             throw new IllegalArgumentException("Start date cannot be after end date");
         }
         Instant startDateStr = startDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
-        Instant endDateStr = endDate.plusDays(1).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant(); // include entire day
+        Instant endDateStr = endDate.plusDays(1).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant(); // include
+                                                                                                             // entire
+                                                                                                             // day
         logger.debug("Calculating total revenue from {} to {}", startDateStr, endDateStr);
         Long totalRevenue = bookingRepository.countTotalSuccessBooking(BookingStatus.SUCCESS, startDateStr, endDateStr);
         if (totalRevenue == null) {
             totalRevenue = 0L;
         }
-        
+
         logger.debug("Total revenue from {} to {}: {}", startDate, endDate, totalRevenue);
         return totalRevenue;
     }
@@ -382,20 +395,46 @@ public class BookingServiceImp implements BookingService {
             throw new IllegalArgumentException("Start date cannot be after end date");
         }
         Instant startDateStr = startDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
-        Instant endDateStr = endDate.plusDays(1).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant(); // include entire day
+        Instant endDateStr = endDate.plusDays(1).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant(); // include
+                                                                                                             // entire
+                                                                                                             // day
         logger.debug("Calculating total revenue from {} to {}", startDateStr, endDateStr);
         Long totalRevenue = bookingRepository.countTotalRevenue(BookingStatus.SUCCESS, startDateStr, endDateStr);
         if (totalRevenue == null) {
             totalRevenue = 0L;
         }
-        
+
         logger.debug("Total revenue from {} to {}: {}", startDate, endDate, totalRevenue);
         return totalRevenue;
     }
+
     @Override
     public Long countTotalRevenue() {
         Long totalRevenue = bookingRepository.countTotalRevenue(BookingStatus.SUCCESS, Instant.EPOCH, Instant.now());
         logger.debug("Total revenue: {}", totalRevenue);
         return totalRevenue;
+    }
+
+    @Override
+    public ResultPagingDTO getAllBooking(Specification<Booking> spec, Pageable pageable) {
+        Page<Booking> bookings = bookingRepository.findAll(spec, pageable);
+        ResultPagingDTO resultPagingDTO = new ResultPagingDTO();
+        ResultPagingDTO.Meta meta = new ResultPagingDTO.Meta();
+
+        meta.setPage(bookings.getNumber() + 1);
+        meta.setSize(bookings.getSize());
+        meta.setTotal(bookings.getTotalElements());
+        meta.setTotalPages(bookings.getTotalPages());
+
+        resultPagingDTO.setMeta(meta);
+
+
+        List<MiniBookingResponse> bookingDTOs = bookings.getContent().stream()
+                .map(BookingMapper.INSTANCE::convertToMiniBookingResponse)
+                .collect(Collectors.toList());
+
+        resultPagingDTO.setData(bookingDTOs); 
+
+        return resultPagingDTO;
     }
 }

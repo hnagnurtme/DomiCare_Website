@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -14,7 +15,7 @@ import com.backend.domicare.model.BookingStatus;
 
 
 @Repository
-public interface BookingsRepository extends JpaRepository<Booking, Long> {
+public interface BookingsRepository extends JpaRepository<Booking, Long> , JpaSpecificationExecutor<Booking> {
     
     @Query("SELECT b FROM Booking b WHERE b.user.id = :userId")
     List<Booking> findByUserId(@Param("userId") Long userId);

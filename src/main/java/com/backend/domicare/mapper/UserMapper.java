@@ -11,6 +11,7 @@ import com.backend.domicare.dto.UserDTO.UserDTOBuilder;
 import com.backend.domicare.dto.request.AddUserByAdminRequest;
 import com.backend.domicare.dto.request.UpdateUserRequest;
 import com.backend.domicare.dto.response.SalePagingResponse;
+import com.backend.domicare.dto.response.UserMini;
 import com.backend.domicare.dto.response.UserPagingResponse;
 import com.backend.domicare.model.User;
 import com.backend.domicare.security.dto.RegisterResponse;
@@ -125,4 +126,20 @@ public interface UserMapper {
     }
 
     List<SalePagingResponse> convertToSalePagingResponseList(List<User> users);
+
+    default UserMini convertToUserMini(User user) {
+        if ( user == null ) {
+            return null;
+        }
+
+        UserMini.UserMiniBuilder userMini = UserMini.builder();
+        userMini.id( user.getId() );
+        userMini.name( user.getName() );
+        userMini.email( user.getEmail() );
+        userMini.phone( user.getPhone() );
+        userMini.avatar( user.getAvatar() );
+        userMini.gender( user.getGender() );
+        userMini.address( user.getAddress() );
+        return userMini.build();
+    }
 }

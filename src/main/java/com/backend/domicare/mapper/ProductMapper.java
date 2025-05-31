@@ -8,6 +8,7 @@ import org.mapstruct.factory.Mappers;
 
 import com.backend.domicare.dto.ProductDTO;
 import com.backend.domicare.dto.request.UpdateProductRequest;
+import com.backend.domicare.dto.response.ProductMini;
 import com.backend.domicare.dto.response.ProductResponse;
 import com.backend.domicare.model.Product;
 
@@ -88,5 +89,21 @@ public interface  ProductMapper {
                 .categoryID(updateProductRequest.getCategoryId())
                 .build();
     }
-    
+    default ProductMini convertToProductMini(Product product) {
+        if (product == null) {
+            return null;
+        }
+        return ProductMini.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .description(product.getDescription())
+                .price(product.getPrice())
+                .image(product.getImage())
+                .ratingStar(product.getOveralRating())
+                .discount(product.getDiscount())
+                .priceAfterDiscount(product.getPrice() - (product.getPrice() * product.getDiscount() / 100))
+                .categoryMini(CategoryMapper.INSTANCE.convertToCategoryMini(product.getCategory()))
+                .build();
+    }
+    List<ProductMini> convertToProductMinis(List<Product> products);
 }

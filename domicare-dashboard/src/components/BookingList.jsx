@@ -1,131 +1,102 @@
 import React, { useEffect, useState } from 'react';
+import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
-import { Stomp } from '@stomp/stompjs';
+import axios from 'axios';
 
 const BookingList = () => {
   const [bookings, setBookings] = useState([]);
-  const [stompClient, setStompClient] = useState(null);
-  const [wsStatus, setWsStatus] = useState({ connected: false, message: 'Disconnected' });
-
-  const formatBookingData = (booking) => {
-    if (booking.user && !booking.userDTO) {
-      return {
-        ...booking,
-        userDTO: booking.user
-      };
-    }
-    return booking;
-  };
-
-  const connectWebSocket = () => {
-    console.log('🔌 Connecting to WebSocket...');
-    setWsStatus({ connected: false, message: 'Connecting...' });
-
-    const socket = new SockJS('http://localhost:8080/ws');
-    const client = Stomp.over(socket);
-
-    client.debug = (str) => console.log('STOMP:', str);
-
-    let messageCount = 0;
-
-    client.connect({}, () => {
-      console.log('✅ WebSocket connected');
-      setWsStatus({ connected: true, message: 'Connected' });
-      setStompClient(client);
-
-      client.subscribe('/topic/bookings/new', (message) => {
-        messageCount++;
-        const newBooking = JSON.parse(message.body);
-        const formatted = formatBookingData(newBooking);
-
-        console.log(`📨 Message #${messageCount}:`, formatted);
-
-        setBookings(prev => {
-          const ids = prev.map(b => b.id);
-          if (ids.includes(formatted.id)) {
-            console.log(`⚠️ Booking ID=${formatted.id} already exists. Skipping.`);
-            return prev;
-          }
-          const updated = [formatted, ...prev];
-          console.log('✅ Updated bookings:', updated.map(b => b.id));
-          return updated;
-        });
-      });
-    }, (error) => {
-      console.error('❌ WebSocket error:', error);
-      setWsStatus({ connected: false, message: 'Error: ' + error });
-      setTimeout(connectWebSocket, 5000);
-    });
-  };
+  const [tokenInput, setTokenInput] = useState('');
+  const [token, setToken] = useState(localStorage.getItem('accessToken') || '');
 
   useEffect(() => {
-    connectWebSocket();
-    return () => {
-      if (stompClient && stompClient.connected) {
-        stompClient.disconnect();
-        console.log('🔌 WebSocket disconnected');
-        setWsStatus({ connected: false, message: 'Disconnected' });
-      }
-    };
-  }, []);
+    if (!token) return;
 
-  useEffect(() => {
-    fetch('http://localhost:8080/api/bookings')
-      .then(res => res.json())
-      .then(result => {
-        const list = result.data?.data || [];
-        const formatted = list.map(formatBookingData);
-        setBookings(formatted);
+    // Save token to localStorage for future use
+    localStorage.setItem('accessToken', token);
+
+    // Fetch initial data with Authorization header
+    axios.get('http://localhost:8080/api/bookings', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(response => {
+        const data = response.data?.data?.data || [];
+        setBookings(data);
       })
-      .catch(err => {
-        console.error('❌ API fetch error:', err);
-      });
-  }, []);
+      .catch(error => console.error('Lỗi khi tải danh sách bookings:', error));
+
+    // Setup STOMP client
+    const stompClient = new Client({
+      webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
+      debug: (str) => console.log('[STOMP] ' + str),
+      reconnectDelay: 5000,
+      onConnect: () => {
+        console.log('✅ WebSocket connected');
+
+        stompClient.subscribe('/topic/bookings/new', (message) => {
+          const newBooking = JSON.parse(message.body);
+          setBookings(prev => {
+            const exists = prev.find(b => b.id === newBooking.id);
+            if (exists) return prev;
+            return [newBooking, ...prev];
+          });
+        });
+
+        stompClient.subscribe('/topic/bookings/delete', (message) => {
+          const deletedId = JSON.parse(message.body);
+          setBookings(prev => prev.filter(b => b.id !== deletedId));
+        });
+
+        stompClient.subscribe('/topic/bookings/update', (message) => {
+          const updatedBooking = JSON.parse(message.body);
+          setBookings(prev => prev.map(b => b.id === updatedBooking.id ? updatedBooking : b));
+        });
+      },
+    });
+
+    stompClient.activate();
+
+    return () => {
+      stompClient.deactivate();
+    };
+  }, [token]);
+
+  if (!Array.isArray(bookings)) {
+    return <div>❌ Dữ liệu bookings không hợp lệ</div>;
+  }
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2>DomiCare Booking Dashboard 🧼</h2>
-      <div style={{ marginBottom: '15px' }}>
-        <span style={{
-          display: 'inline-block',
-          width: '10px',
-          height: '10px',
-          borderRadius: '50%',
-          backgroundColor: wsStatus.connected ? 'green' : 'red',
-          marginRight: '8px'
-        }}></span>
-        <span>WebSocket: {wsStatus.message}</span>
-        {!wsStatus.connected && (
-          <button onClick={connectWebSocket} style={{
-            marginLeft: '10px',
-            padding: '5px 10px',
-            backgroundColor: '#4CAF50',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer'
-          }}>
-            Retry Connection
-          </button>
-        )}
-      </div>
+    <div>
+      <h2>📋 Danh sách đặt dịch vụ</h2>
 
-      <ul style={{ listStyleType: 'none', padding: 0 }}>
-        {bookings.map((booking) => (
-          <li key={booking.id} style={{
-            padding: '10px',
-            margin: '5px 0',
-            backgroundColor: '#f9f9f9',
-            borderRadius: '4px',
-            border: '1px solid #eee'
-          }}>
-            <div><strong>ID:</strong> {booking.id}</div>
-            <div><strong>🧑 Khách hàng:</strong> {booking.userDTO?.name || 'N/A'}</div>
-            <div><strong>💵 Tổng tiền:</strong> {booking.totalPrice?.toLocaleString() || 'N/A'} đ</div>
-            <div><strong>📌 Trạng thái:</strong> {booking.bookingStatus}</div>
-          </li>
-        ))}
-      </ul>
+      {!token && (
+        <div>
+          <label htmlFor="token-input"><strong>🔐 Nhập Access Token:</strong></label><br />
+          <input
+            type="text"
+            id="token-input"
+            value={tokenInput}
+            onChange={(e) => setTokenInput(e.target.value)}
+            style={{ width: '300px', margin: '10px 0' }}
+          />
+          <button onClick={() => setToken(tokenInput)}>Lưu Token</button>
+        </div>
+      )}
+
+      {bookings.map((booking) => (
+        <div key={booking.id} style={{ border: '1px solid #ccc', padding: '10px', margin: '10px' }}>
+          <div><strong>ID:</strong> {booking.id}</div>
+          <div><strong>🧑 Khách hàng:</strong> {booking.userDTO?.name || 'N/A'}</div>
+          <div><strong>💵 Tổng tiền:</strong> {booking.totalPrice?.toLocaleString() || 'N/A'} đ</div>
+          <div><strong>📌 Trạng thái:</strong> {booking.bookingStatus}</div>
+          <div><strong>📅 Ngày tạo:</strong> {new Date(booking.createAt).toLocaleString()}</div>
+          <div><strong>📍 Địa chỉ:</strong> {booking.address || 'N/A'}</div>
+          <div><strong>📞 Số điện thoại:</strong> {booking.userDTO?.phone || 'N/A'}</div>
+          <div><strong>📝 Ghi chú:</strong> {booking.note || 'N/A'}</div>
+          <div><strong>🧼 Dịch vụ:</strong> {booking.products?.[0]?.name || 'N/A'}</div>
+        </div>
+      ))}
     </div>
   );
 };

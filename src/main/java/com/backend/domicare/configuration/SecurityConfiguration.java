@@ -81,7 +81,6 @@ public class SecurityConfiguration {
             ApiPaths.AUTH_PATHS,
             ApiPaths.PUBLIC_API_PATHS,
             ApiPaths.EMAIL_PATHS,
-            ApiPaths.BOOKING_PATH,
             ApiPaths.WEBSOCKET_PATHS,
         }).flatMap(Arrays::stream).toList();
     }

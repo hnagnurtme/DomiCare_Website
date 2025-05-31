@@ -102,6 +102,8 @@ public class BookingServiceImp implements BookingService {
         booking.setBookingStatus(BookingStatus.CANCELLED);
         Booking savedBooking = bookingRepository.save(booking);
         logger.info("Booking with ID: {} has been marked as CANCELLED", id);
+        messagingTemplate.convertAndSend("/topic/bookings/delete", BookingMapper.INSTANCE.convertToBookingDTO(savedBooking));
+        logger.info("Booking deletion notification sent for booking ID: {}", id);
         return BookingMapper.INSTANCE.convertToBookingDTO(savedBooking);
     }
 
@@ -124,7 +126,10 @@ public class BookingServiceImp implements BookingService {
         }
         Booking updatedBooking = bookingRepository.save(booking);
         logger.info("Booking updated successfully with ID: {}", id);
-        return BookingMapper.INSTANCE.convertToBookingDTO(updatedBooking);
+        BookingDTO updatedBookingDTO = BookingMapper.INSTANCE.convertToBookingDTO(updatedBooking);
+        messagingTemplate.convertAndSend("/topic/bookings/update", updatedBookingDTO);
+        logger.info("Booking update notification sent for booking ID: {}", id);
+        return updatedBookingDTO;
     }
 
     @Override
@@ -265,6 +270,8 @@ public class BookingServiceImp implements BookingService {
 
         booking.setUpdateBy(saleuser.getEmail());
         Booking updatedBooking = bookingRepository.save(booking);
+        BookingDTO updated = BookingMapper.INSTANCE.convertToBookingDTO(updatedBooking);
+        messagingTemplate.convertAndSend("/topic/bookings/update", updated);
 
         logger.info("Booking status updated successfully for ID: {}", id);
         return BookingMapper.INSTANCE.convertToBookingDTO(updatedBooking);

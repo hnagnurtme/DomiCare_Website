@@ -15,11 +15,6 @@ public interface TokensRepository extends JpaRepository<Token, Long> {
         public Token findByRefreshToken(String refreshToken);
         public List<Token> findByUserId(Long userId);
         
-        /**
-         * Delete all tokens for a specific user
-         * 
-         * @param userId The user ID
-         */
         @Modifying
         @Query("DELETE FROM Token t WHERE t.user.id = :userId")
         public void deleteByUserId(Long userId);

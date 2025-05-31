@@ -27,6 +27,8 @@ import com.turkraft.springfilter.boot.Filter;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -50,7 +52,38 @@ public class UserController {
         @Parameter(name = "sortBy", description = "Sort field (camelCase field in User)", example = "userTotalSuccessBookings")
         @Parameter(name = "sortDirection", description = "Sort direction", example = "desc")
         @ApiResponses(value = {
-                        @ApiResponse(responseCode = "200", description = "Users retrieved successfully"),
+                        @ApiResponse(responseCode = "200", description = "Users retrieved successfully", content = @Content(mediaType = "application/json", examples = @ExampleObject(name = "SuccessResponse", value = """
+                                        {
+                                          "status": 200,
+                                          "error": null,
+                                          "message": "Success",
+                                          "data": {
+                                            "meta": {
+                                              "page": 1,
+                                              "size": 1,
+                                              "total": 1,
+                                              "totalPages": 1
+                                            },
+                                            "data": [
+                                              {
+                                                "id": 1,
+                                                "name": "Nguyễn Trung Ánh",
+                                                "email": "anhnon0106@gmail.com",
+                                                "phone": "0768406235",
+                                                "address": "Âu Cơ - Hoà Khánh Bắc - Đà Nẵng",
+                                                "avatar": "https://...",
+                                                "gender": "MALE",
+                                                "isActive": true,
+                                                "dateOfBirth": "2005-06-14T17:00:00Z",
+                                                "userTotalSuccessBookings": 0,
+                                                "userTotalFailedBookings": 0,
+                                                "saleTotalBookings": 0,
+                                                "saleSuccessPercent": 0
+                                              }
+                                            ]
+                                          }
+                                        }
+                                        """))),
                         @ApiResponse(responseCode = "403", description = "Unauthorized access")
         })
         public ResponseEntity<ResultPagingDTO> getUsers(

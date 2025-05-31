@@ -1,5 +1,7 @@
 package com.backend.domicare.service.imp;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +14,7 @@ import com.backend.domicare.dto.ReviewDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.dto.request.ReviewRequest;
 import com.backend.domicare.exception.AlreadyReviewProduct;
+import com.backend.domicare.exception.InvalidDateException;
 import com.backend.domicare.exception.NotFoundProductException;
 import com.backend.domicare.exception.NotFoundUserException;
 import com.backend.domicare.mapper.ReviewMapper;
@@ -54,31 +57,31 @@ public class ReviewServiceImp implements ReviewService {
         } else {
             throw new NotFoundUserException("User not found");
         }
-        // Check if the product and user exist (you may need to implement these checks)
+       
         Product product = productsRepository.findById(productId)
                 .orElseThrow(() -> new NotFoundProductException("Product not found with ID: " + productId));
 
         User user = usersRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundProductException("User not found with ID: " + userId));
-
-        // Check if the product and user exist (you may need to implement these checks)
+        
+        
         boolean reviewExists = reviewsRepository.existsByProductIdAndUserId(productId, userId);
         if (reviewExists) {
             throw new AlreadyReviewProduct("Review already exists for this product and user");
         }
-        // Convert DTO to entity
+        
         Review reviewEntity = ReviewMapper.INSTANCE.convertToReview(review);
-        // Set the product and user in the review entity
+        
         reviewEntity.setProduct(product);
         reviewEntity.setUser(user);
-        // Save the review entity
+        
         List<Review> reviews = product.getReviews();
         reviews.add(reviewEntity);
         product.setReviews(reviews);
         product.setOveralRating(product.calculateRatingStar());
-        // Save the product entity to update the relationship
+        
         productsRepository.save(product);
-
+        
         return ReviewMapper.INSTANCE.convertToReviewDTO(reviewsRepository.save(reviewEntity));
     }
 
@@ -97,5 +100,22 @@ public class ReviewServiceImp implements ReviewService {
         resultPagingDTO.setData(reviews.getContent());
 
         return resultPagingDTO;
+    }
+    
+    @Override
+    public Long countAllReviews() {
+        return reviewsRepository.count();
+    }
+
+    public Long countTotalReviews(LocalDate startDate, LocalDate endDate){
+        if (startDate == null || endDate == null) {
+            throw new InvalidDateException("Start date and end date cannot be null");
+        }
+        if (startDate.isAfter(endDate)) {
+            throw new InvalidDateException("Start date cannot be after end date");
+        }
+        Instant startDateStr = startDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
+        Instant endDateStr = endDate.plusDays(1).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
+        return reviewsRepository.countTotalReviews(startDateStr, endDateStr);
     }
 }

@@ -1,5 +1,7 @@
 package com.backend.domicare.service.imp;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -157,8 +159,7 @@ public class BookingServiceImp implements BookingService {
         if (saleuser == null) {
             throw new NotFoundUserException("User not found with email: " + emailSale);
         }
-        
-        // Initialize metrics fields if they are null
+       
         if (saleuser.getSaleTotalBookings() == null) {
             saleuser.setSaleTotalBookings(0L);
         }
@@ -187,7 +188,6 @@ public class BookingServiceImp implements BookingService {
             throw new NotFoundUserException("Customer not found for booking ID: " + id);
         }
         
-        // Initialize customer metrics fields if they are null
         if (customer.getUserTotalSuccessBookings() == null) {
             customer.setUserTotalSuccessBookings(0L);
         }
@@ -206,7 +206,6 @@ public class BookingServiceImp implements BookingService {
                             booking.getUser().getName());
                     booking.setSaleUser(saleuser);
                     saleuser.setSaleTotalBookings(saleuser.getSaleTotalBookings() + 1);
-                    // Don't increment success booking counter yet, as the booking is only accepted, not completed
                     break;
                 case REJECTED:
                     booking.setBookingStatus(BookingStatus.REJECTED);
@@ -216,7 +215,6 @@ public class BookingServiceImp implements BookingService {
                             booking.getCreateAt().toString(),
                             booking.getUser().getName());
                     booking.setSaleUser(saleuser);
-                    // No need to update metrics for rejected bookings as they never reached the accepted state
                     break;
                 default:
                     throw new BookingStatusException("Cannot update booking to status: " + newStatus);
@@ -226,20 +224,14 @@ public class BookingServiceImp implements BookingService {
                 switch (newStatus) {
                     case FAILED:
                         booking.setBookingStatus(BookingStatus.FAILED);
-                        // Increment failed bookings counter for customer
                         customer.setUserTotalFailedBookings(customer.getUserTotalFailedBookings() + 1);
-
-                        // Calculate success percentage - avoid division by zero
                         calculateSuccessPercentage(saleuser);
                         break;
 
                     case SUCCESS:
                         booking.setBookingStatus(BookingStatus.SUCCESS);
-                        // Increment success bookings counter for both sale user and customer
                         saleuser.setUserTotalSuccessBookings(saleuser.getUserTotalSuccessBookings() + 1);
                         customer.setUserTotalSuccessBookings(customer.getUserTotalSuccessBookings() + 1);
-                        
-                        // Calculate success percentage - avoid division by zero
                         calculateSuccessPercentage(saleuser);
                         break;
                     default:
@@ -263,8 +255,6 @@ public class BookingServiceImp implements BookingService {
         userRepository.save(saleuser);
 
         booking.setUpdateBy(saleuser.getEmail());
-
-
         Booking updatedBooking = bookingRepository.save(booking);
 
         logger.info("Booking status updated successfully for ID: {}", id);
@@ -354,5 +344,58 @@ public class BookingServiceImp implements BookingService {
 
         Double successPercentage = (double) saleUser.getUserTotalSuccessBookings() / saleUser.getSaleTotalBookings() * 100;
         saleUser.setSaleSuccessPercent(successPercentage);
+    }
+
+    @Override
+    public Long countTotalSuccessBooking() {
+        Long totalSuccessBookings = bookingRepository.countBookingsByStatus(BookingStatus.SUCCESS);
+        logger.debug("Total success bookings: {}", totalSuccessBookings);
+        return totalSuccessBookings;
+    }
+    
+    @Override
+    public Long getTotalBooking(LocalDate startDate, LocalDate endDate) {
+        if (startDate == null || endDate == null) {
+            throw new IllegalArgumentException("Start date and end date cannot be null");
+        }
+        if (startDate.isAfter(endDate)) {
+            throw new IllegalArgumentException("Start date cannot be after end date");
+        }
+        Instant startDateStr = startDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
+        Instant endDateStr = endDate.plusDays(1).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant(); // include entire day
+        logger.debug("Calculating total revenue from {} to {}", startDateStr, endDateStr);
+        Long totalRevenue = bookingRepository.countTotalSuccessBooking(BookingStatus.SUCCESS, startDateStr, endDateStr);
+        if (totalRevenue == null) {
+            totalRevenue = 0L;
+        }
+        
+        logger.debug("Total revenue from {} to {}: {}", startDate, endDate, totalRevenue);
+        return totalRevenue;
+    }
+
+    @Override
+    public Long getTotalRevenue(LocalDate startDate, LocalDate endDate) {
+        if (startDate == null || endDate == null) {
+            throw new IllegalArgumentException("Start date and end date cannot be null");
+        }
+        if (startDate.isAfter(endDate)) {
+            throw new IllegalArgumentException("Start date cannot be after end date");
+        }
+        Instant startDateStr = startDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
+        Instant endDateStr = endDate.plusDays(1).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant(); // include entire day
+        logger.debug("Calculating total revenue from {} to {}", startDateStr, endDateStr);
+        Long totalRevenue = bookingRepository.countTotalRevenue(BookingStatus.SUCCESS, startDateStr, endDateStr);
+        if (totalRevenue == null) {
+            totalRevenue = 0L;
+        }
+        
+        logger.debug("Total revenue from {} to {}: {}", startDate, endDate, totalRevenue);
+        return totalRevenue;
+    }
+    @Override
+    public Long countTotalRevenue() {
+        Long totalRevenue = bookingRepository.countTotalRevenue(BookingStatus.SUCCESS, Instant.EPOCH, Instant.now());
+        logger.debug("Total revenue: {}", totalRevenue);
+        return totalRevenue;
     }
 }

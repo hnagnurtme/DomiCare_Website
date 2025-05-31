@@ -35,4 +35,14 @@ public interface BookingsRepository extends JpaRepository<Booking, Long> {
 
     @Query("SELECT b FROM Booking b WHERE b.updateBy = :updateBy AND b.bookingStatus IN :status")
     List<Booking> findByUpdateByAndStatusIn(@Param("updateBy") String updateBy, @Param("status") List<BookingStatus> status);
+
+    // count total success booking in startdate and enddate
+    @Query("SELECT COUNT(b) FROM Booking b WHERE b.bookingStatus = :status AND b.createAt BETWEEN :startDate AND :endDate")
+    Long countTotalSuccessBooking(@Param("status") BookingStatus status, @Param("startDate") Instant startDate, @Param("endDate") Instant endDate);
+    // Example : Select b from Booking b where b.createAt between '2023-01-01' and '2023-12-31'
+
+    //count total revenue in startdate and enddate // 
+    @Query("SELECT SUM(b.totalPrice) FROM Booking b WHERE b.bookingStatus = :status AND b.createAt BETWEEN :startDate AND :endDate")
+    Long countTotalRevenue(@Param("status") BookingStatus status, @Param("startDate") Instant startDate, @Param("endDate") Instant endDate);
+    // Example : Select SUM(b.totalPrice) from Booking b where b.createAt between '2023-01-01' and '2023-12-31'
 }

@@ -1,5 +1,7 @@
 package com.backend.domicare.repository;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,22 +14,22 @@ import org.springframework.stereotype.Repository;
 import com.backend.domicare.model.Token;
 import com.backend.domicare.model.User;
 
-
 @Repository
 public interface UsersRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
-    public User findByEmail(String email);
 
-    public void deleteUserById(Long id);
+    User findByEmail(String email);
 
-    public User findUserById(Long id);
+    void deleteUserById(Long id);
 
-    public User findByEmailAndPassword(String email, String password);
+    User findUserById(Long id);
+
+    User findByEmailAndPassword(String email, String password);
     
-    public boolean existsByEmail(String email);
+    boolean existsByEmail(String email);
 
-    public Optional<User> findByEmailConfirmationToken(String emailConfirmationToken);
+    Optional<User> findByEmailConfirmationToken(String emailConfirmationToken);
 
-    public Optional<User> findByGoogleId(String googleId);
+    Optional<User> findByGoogleId(String googleId);
 
     @Query(value = "DELETE FROM users_roles WHERE user_id = :id", nativeQuery = true)
     void deleteAllRolesByUserID(@Param("id") Long id);
@@ -38,19 +40,30 @@ public interface UsersRepository extends JpaRepository<User, Long>, JpaSpecifica
     @Query("SELECT COUNT(u) FROM User u JOIN u.roles r WHERE r.name = :roleName")
     Long countUsersByRoleName(@Param("roleName") String roleName);
 
-   @Modifying
+    @Modifying
     @Query("UPDATE User u SET u.isDeleted = true WHERE u.id = :id")
     void softDeleteById(@Param("id") Long id);
 
     @Query("SELECT u FROM User u WHERE u.id = :id AND u.isDeleted = false")
     Optional<User> findByIdAndNotDeleted(@Param("id") Long id);
 
-    // Find all users by id join Booking anf BookingStatus and createBy
-    @Query("SELECT u FROM User u JOIN u.bookings b WHERE u.id = :id AND b.bookingStatus = :status AND b.createBy = :createBy")
-    Optional<User> findByIdAndBookingStatus(@Param("id") Long id, @Param("status") String status , @Param("createBy") String createBy);
+    @Query("SELECT COUNT(u) FROM User u JOIN u.roles r " +
+           "WHERE r.name = :roleName AND u.isDeleted = false")
+    Long countAllUsers(@Param("roleName") String roleName);
 
-    // Find all users by id join Booking anf BookingStatus and updateBy
-    @Query("SELECT u FROM User u JOIN u.bookings b WHERE u.id = :id AND b.bookingStatus = :status AND b.updateBy = :updateBy")
-    Optional<User> findByIdAndBookingStatusUpdateBy(@Param("id") Long id, @Param("status") String status , @Param("updateBy") String updateBy);
+    @Query("SELECT COUNT(u) FROM User u JOIN u.roles r " +
+           "WHERE r.name = :roleName AND u.isDeleted = false AND u.isActive = true")
+    Long countAllActiveUsers(@Param("roleName") String roleName);
 
+    
+    @Query("SELECT COUNT(u) FROM User u JOIN u.roles r " +
+           "WHERE r.name = :roleName AND u.isDeleted = false AND u.createAt >= CURRENT_DATE")
+    Long countAllNewUsers(@Param("roleName") String roleName);
+   
+    //count all users created between startDate and endDate
+    @Query("SELECT COUNT(u) FROM User u JOIN u.roles r " +
+           "WHERE r.name = :roleName AND u.isDeleted = false AND u.createAt BETWEEN :startDate AND :endDate")
+    Long countAllUsersBetween(@Param("roleName") String roleName, 
+                              @Param("startDate") Instant startDate, 
+                              @Param("endDate") Instant endDate);
 }

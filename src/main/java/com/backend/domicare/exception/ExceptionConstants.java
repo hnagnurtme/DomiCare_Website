@@ -55,7 +55,9 @@ public enum ExceptionConstants {
 
 	BOOKING_STATUS_INVALID(132, "BOOKING_STATUS_INVALID"),
 	
-	NOT_MATCH_PASSWORD(133, "NOT_MATCH_PASSWORD"),;
+	NOT_MATCH_PASSWORD(133, "NOT_MATCH_PASSWORD"),
+	
+	INVALID_DATE(134, "INVALID_DATE"),;
 
 	private final int code;
 	private final String messageName;

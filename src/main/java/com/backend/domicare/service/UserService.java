@@ -1,5 +1,7 @@
 package com.backend.domicare.service;
 
+import java.time.LocalDate;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -41,5 +43,8 @@ public interface UserService {
     public UserDTO updateRoleForUser(UpdateRoleForUserRequest user);
 
     public UserDTO addUserByAdmin(AddUserByAdminRequest user);
+
+    public Long countNewUserBetween(LocalDate startDate, LocalDate endDate);
+
 
 } 

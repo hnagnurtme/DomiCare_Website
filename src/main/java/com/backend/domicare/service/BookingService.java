@@ -1,5 +1,6 @@
 package com.backend.domicare.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.backend.domicare.dto.BookingDTO;
@@ -14,4 +15,9 @@ public interface  BookingService {
     public BookingDTO updateBooking(UpdateBookingRequest request);
     public List<BookingDTO> getAllBookingsByUserId(Long userId);
     public BookingDTO updateBookingStatus(UpdateBookingStatusRequest request);
+    public Long countTotalSuccessBooking();
+    public Long getTotalBooking(LocalDate startDate, LocalDate endDate);
+    public Long countTotalRevenue();
+    public Long getTotalRevenue(LocalDate startDate, LocalDate endDate);
+    
 }

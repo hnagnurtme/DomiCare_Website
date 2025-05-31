@@ -37,12 +37,18 @@ public class GlobalExceptionHandler {
         ExceptionConstants.ALREADY_REVIEWED,
         ExceptionConstants.URL_ALREADY_EXISTS,
         ExceptionConstants.NOT_FOUND_FILE,
-        ExceptionConstants.BOOKING_NOT_FOUND
+        ExceptionConstants.BOOKING_NOT_FOUND ,
+        ExceptionConstants.INVALID_DATE
     ));
 
     @ExceptionHandler(NotMatchPasswordException.class)
     public ResponseEntity<RestResponse<Object>> handleNotMatchPasswordException(NotMatchPasswordException e) {
         return buildResponse(ExceptionConstants.NOT_MATCH_PASSWORD, e.getMessage());
+    }
+
+    @ExceptionHandler(InvalidDateException.class)
+    public ResponseEntity<RestResponse<Object>> handleInvalidDateException(InvalidDateException e) {
+        return buildResponse(ExceptionConstants.INVALID_DATE, e.getMessage());
     }
 
     @ExceptionHandler(BookingStatusException.class)

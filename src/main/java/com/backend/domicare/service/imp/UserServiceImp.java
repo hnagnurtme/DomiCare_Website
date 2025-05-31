@@ -1,5 +1,7 @@
 package com.backend.domicare.service.imp;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -20,7 +22,6 @@ import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.dto.request.AddUserByAdminRequest;
 import com.backend.domicare.dto.request.UpdateRoleForUserRequest;
 import com.backend.domicare.dto.request.UpdateUserRequest;
-import com.backend.domicare.dto.response.SalePagingResponse;
 import com.backend.domicare.dto.response.UserPagingResponse;
 import com.backend.domicare.exception.DeleteAdminException;
 import com.backend.domicare.exception.EmailAlreadyExistException;
@@ -44,14 +45,10 @@ import com.backend.domicare.service.UserService;
 import com.backend.domicare.service.UserValidationService;
 import com.backend.domicare.utils.FormatStringAccents;
 import com.backend.domicare.utils.ProjectConstants;
-
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import lombok.RequiredArgsConstructor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springdoc.core.converters.models.Sort;
 @RequiredArgsConstructor
 @Service
 public class UserServiceImp implements UserService {
@@ -457,5 +454,22 @@ public class UserServiceImp implements UserService {
         return createdUser;
     }
 
+    
+    @Override
+    public Long countNewUserBetween(LocalDate startDate, LocalDate endDate) {
+        String roleName = ProjectConstants.ROLE_USER;
+        logger.debug("Counting new users between {} and {} with role: {}", startDate, endDate, roleName);
+        if (startDate == null || endDate == null) {
+            throw new IllegalArgumentException("Start date and end date cannot be null");
+        }
+        if (startDate.isAfter(endDate)) {
+            throw new IllegalArgumentException("Start date cannot be after end date");
+        }
+        Instant startDateStr = startDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
+        Instant endDateStr = endDate.plusDays(1).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
+        Long newUsers = userRepository.countAllUsersBetween(roleName, startDateStr, endDateStr);
+        logger.info("Total new users between {} and {} with role '{}': {}", startDate, endDate, roleName, newUsers);
+        return newUsers;
+    }
 
 }

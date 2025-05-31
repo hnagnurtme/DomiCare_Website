@@ -22,7 +22,6 @@ import com.backend.domicare.dto.request.BookingRequest;
 import com.backend.domicare.dto.request.UpdateBookingRequest;
 import com.backend.domicare.dto.request.UpdateBookingStatusRequest;
 import com.backend.domicare.model.Booking;
-import com.backend.domicare.model.Category;
 import com.backend.domicare.service.BookingService;
 import com.backend.domicare.utils.FormatStringAccents;
 import com.turkraft.springfilter.boot.Filter;

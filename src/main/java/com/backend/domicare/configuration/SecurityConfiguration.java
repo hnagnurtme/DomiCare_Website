@@ -9,8 +9,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -50,6 +48,9 @@ public class SecurityConfiguration {
         // Public API paths
         public static final String[] PUBLIC_API_PATHS = {"/files", "/api/public/**",};
         
+        // WebSocket paths
+        public static final String[] WEBSOCKET_PATHS = {"/ws/**", "/topic/**", "/app/**"};
+        
         // User and admin API paths
         public static final String[] USER_PATHS = {"/users/**", "/permissions/**"};
         public static final String[] ADMIN_PATHS = {"/email/**"};
@@ -80,6 +81,8 @@ public class SecurityConfiguration {
             ApiPaths.AUTH_PATHS,
             ApiPaths.PUBLIC_API_PATHS,
             ApiPaths.EMAIL_PATHS,
+            ApiPaths.BOOKING_PATH,
+            ApiPaths.WEBSOCKET_PATHS,
         }).flatMap(Arrays::stream).toList();
     }
 

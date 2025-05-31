@@ -12,8 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.backend.domicare.controller.BookingSocketController;
 import com.backend.domicare.dto.BookingDTO;
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.request.BookingRequest;
@@ -37,9 +35,12 @@ import com.backend.domicare.service.EmailSendingService;
 import com.backend.domicare.service.ProductService;
 import com.backend.domicare.service.UserService;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
 @Service
 @Transactional
@@ -52,13 +53,13 @@ public class BookingServiceImp implements BookingService {
     private final JwtTokenManager jwtTokenManager;
     private final UserService userService;
     private final EmailSendingService emailSendingService;
-    private final BookingSocketController bookingSocketController;
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     public BookingServiceImp(
             BookingsRepository bookingRepository,
             UsersRepository userRepository,
             ProductService productService,
-            BookingSocketController bookingSocketController,
             @org.springframework.context.annotation.Lazy JwtTokenManager jwtTokenManager,
             UserService userService,
             EmailSendingService emailSendingService) {
@@ -67,7 +68,6 @@ public class BookingServiceImp implements BookingService {
         this.productService = productService;
         this.jwtTokenManager = jwtTokenManager;
         this.userService = userService;
-        this.bookingSocketController = bookingSocketController;
         this.emailSendingService = emailSendingService;
     }
 
@@ -337,7 +337,9 @@ public class BookingServiceImp implements BookingService {
 
         logger.info("User with email: {} has been associated with booking ID: {}", user.getEmail(),
                 bookingEntity.getId());
-        bookingSocketController.sendNewBooking(BookingMapper.INSTANCE.convertToBookingDTO(bookingEntity));
+        BookingDTO bookingDTO = BookingMapper.INSTANCE.convertToBookingDTO(bookingEntity);
+        messagingTemplate.convertAndSend("/topic/bookings/new", bookingDTO);
+
         logger.info("New booking notification sent for booking ID: {}", bookingEntity.getId());
         return BookingMapper.INSTANCE.convertToBookingDTO(bookingEntity);
     }

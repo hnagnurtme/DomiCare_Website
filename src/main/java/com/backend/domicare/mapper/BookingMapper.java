@@ -45,7 +45,6 @@ public interface  BookingMapper {
                 .note(bookingRequest.getNote())
                 .isPeriodic(bookingRequest.getIsPeriodic())
                 .startTime(bookingRequest.getStartTime())
-                .note(bookingRequest.getNote())
                 .build();
     }
 

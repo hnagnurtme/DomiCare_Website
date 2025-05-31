@@ -2,7 +2,7 @@ let stompClient = null;
 let bookingList = [];
 
 function connectSocket() {
-    const socket = new SockJS('/ws');
+    const socket = new SockJS('http://localhost:8080/ws');
     stompClient = Stomp.over(socket);
 
     stompClient.connect({}, () => {
@@ -18,7 +18,7 @@ function connectSocket() {
 }
 
 function loadInitialBookings() {
-    fetch('/api/bookings')
+    fetch('http://localhost:8080/api/bookings')
         .then(res => res.json())
         .then(data => {
             bookingList = data;
@@ -40,7 +40,5 @@ window.onload = () => {
     loadInitialBookings();
     connectSocket();
 };
-</script>
 
 <ul id="booking-list"></ul>
-};

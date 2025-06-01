@@ -43,23 +43,23 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public CategoryDTO fetchCategoryById(Long categoryId) {
-        logger.info("Fetching category with ID: {}", categoryId);
+        logger.info("[Category] Fetching category with ID: {}", categoryId);
         
         // Sử dụng Optional API để xử lý trường hợp không tìm thấy
         Category category = Optional.ofNullable(categoryRepository.findByIdAndNotDeleted(categoryId))
             .orElseThrow(() -> {
-                logger.error("Category not found with ID: {}", categoryId);
+                logger.error("[Category] Category not found with ID: {}", categoryId);
                 return new CategoryNotFoundException("Category not found with ID: " + categoryId);
             });
             
-        logger.info("Category fetched successfully with ID: {}", categoryId);
+        logger.info("[Category] Category fetched successfully with ID: {}", categoryId);
         return CategoryMapper.INSTANCE.convertToCategoryDTO(category);
     }
 
     // Add a new category
     @Override
     public CategoryDTO addCategory(AddCategoryRequest request) {
-        logger.info("Adding new category with name: {}", request.getName());
+        logger.info("[Category] Adding new category with name: {}", request.getName());
         
         // Validate category name doesn't already exist (case insensitive)
         String categoryName = request.getName().trim();
@@ -77,7 +77,7 @@ public class CategoryServiceImp implements CategoryService {
         
         // Save and return result
         Category savedCategory = categoryRepository.save(categoryEntity);
-        logger.info("Category added successfully with ID: {}", savedCategory.getId());
+        logger.info("[Category] Category added successfully with ID: {}", savedCategory.getId());
         return CategoryMapper.INSTANCE.convertToCategoryDTO(savedCategory);
     }
     
@@ -89,7 +89,7 @@ public class CategoryServiceImp implements CategoryService {
      */
     private void validateCategoryNameIsUnique(String categoryName) {
         if (categoryRepository.existsByName(categoryName)) {
-            logger.error("Category already exists with name: {}", categoryName);
+            logger.error("[Category] Category already exists with name: {}", categoryName);
             throw new CategoryAlreadyExists("Category already exists with name: " + categoryName);
         }
     }
@@ -104,7 +104,7 @@ public class CategoryServiceImp implements CategoryService {
     private void setImageForCategory(Category category, String imageId) {
         File image = fileRepository.findByUrl(imageId);
         if( image == null) {
-            logger.error("Image not found with ID: {}", imageId);
+            logger.error("[Category] Image not found with ID: {}", imageId);
             throw new NotFoundFileException("Image not found with ID: " + imageId);
         }
         category.setImage(image.getUrl());
@@ -114,12 +114,12 @@ public class CategoryServiceImp implements CategoryService {
     @Transactional
     @Override
     public void deleteCategory(Long id) {
-        logger.info("Deleting category with ID: {}", id);
+        logger.info("[Category] Deleting category with ID: {}", id);
         
         // Check if category exists
         Category category = categoryRepository.findById(id)
             .orElseThrow(() -> {
-                logger.error("Category not found with ID: {}", id);
+                logger.error("[Category] Category not found with ID: {}", id);
                 return new CategoryNotFoundException("Category not found with ID: " + id);
             });
 
@@ -128,7 +128,7 @@ public class CategoryServiceImp implements CategoryService {
 
         // Delete the category
         categoryRepository.softDeleteById(id);
-        logger.info("Category deleted successfully with ID: {}", id);
+        logger.info("[Category] Category deleted successfully with ID: {}", id);
     }
     
     /**
@@ -138,7 +138,7 @@ public class CategoryServiceImp implements CategoryService {
      */
     private void deleteAssociatedProducts(Category category) {
         if (category.getProducts() != null && !category.getProducts().isEmpty()) {
-            logger.info("Deleting {} products associated with category ID: {}", 
+            logger.info("[Category] Deleting {} products associated with category ID: {}", 
                         category.getProducts().size(), category.getId());
             
             List<Long> productIds = category.getProducts().stream()
@@ -153,12 +153,12 @@ public class CategoryServiceImp implements CategoryService {
     @Override
     public CategoryDTO updateCategory(UpdateCategoryRequest request) {
         Long id = request.getCategoryId();
-        logger.info("Updating category with ID: {}", id);
+        logger.info("[Category] Updating category with ID: {}", id);
 
         // Find existing category
         Category existingCategory = categoryRepository.findById(id)
             .orElseThrow(() -> {
-                logger.error("Category not found with ID: {}", id);
+                logger.error("[Category] Category not found with ID: {}", id);
                 return new CategoryNotFoundException("Category not found with ID: " + id);
             });
         
@@ -180,7 +180,7 @@ public class CategoryServiceImp implements CategoryService {
 
         // Save updated category
         Category updatedCategory = categoryRepository.save(existingCategory);
-        logger.info("Category updated successfully with ID: {}", id);
+        logger.info("[Category] Category updated successfully with ID: {}", id);
         return CategoryMapper.INSTANCE.convertToCategoryDTO(updatedCategory);
     }
     
@@ -195,7 +195,7 @@ public class CategoryServiceImp implements CategoryService {
     private void updateCategoryName(Category category, String newName, Long categoryId) {
         // Validate the new name is unique
         if (categoryRepository.existsByNameAndIdNot(newName, categoryId)) {
-            logger.error("Category already exists with name: {}", newName);
+            logger.error("[Category] Category already exists with name: {}", newName);
             throw new CategoryAlreadyExists("Category already exists with name: " + newName);
         }
         
@@ -207,14 +207,14 @@ public class CategoryServiceImp implements CategoryService {
     // Get all categories with pagination
     @Override
     public ResultPagingDTO getAllCategories(Specification<Category> spec, Pageable pageable) {
-        logger.info("Fetching all categories with pagination");
+        logger.info("[Category] Fetching all categories with pagination");
         
         // Fetch categories with specification and pagination
         Page<Category> categoriesPage = categoryRepository.findAll(spec, pageable);
 
         // Log empty results but don't throw exception - empty result is valid
         if (categoriesPage.isEmpty()) {
-            logger.info("No categories found for the given criteria");
+            logger.info("[Category] No categories found for the given criteria");
             return createEmptyPagingResult(pageable);
         }
 
@@ -223,7 +223,7 @@ public class CategoryServiceImp implements CategoryService {
                 .map(CategoryMapper.INSTANCE::convertToCategoryDTO)
                 .collect(Collectors.toList());
 
-        logger.info("Categories fetched successfully with total: {}", categoriesPage.getTotalElements());
+        logger.info("[Category] Categories fetched successfully with total: {}", categoriesPage.getTotalElements());
         // Return results with metadata
         return createPagingResult(categoryDTOs, categoriesPage, pageable);
     }

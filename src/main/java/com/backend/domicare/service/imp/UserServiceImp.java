@@ -66,10 +66,10 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserDTO saveUser(UserDTO userDTO) {
-        logger.info("Creating new user with email: {}", userDTO.getEmail());
+        logger.info("[User] Creating new user with email: {}", userDTO.getEmail());
         User user = UserMapper.INSTANCE.convertToUser(userDTO);
         if (userValidationService.isEmailAlreadyExist(user.getEmail())) {
-            logger.warn("Email already exists: {}", user.getEmail());
+            logger.warn("[User] Email already exists: {}", user.getEmail());
             throw new EmailAlreadyExistException("Email already exists: " + user.getEmail());
         }
         Set<Role> roles = new HashSet<>();
@@ -78,11 +78,11 @@ public class UserServiceImp implements UserService {
                 Role managedRole = roleService.getRoleByName(role.getName());
                 roles.add(managedRole);
             }
-            logger.debug("Assigned custom roles to user");
+            logger.debug("[User] Assigned custom roles to user");
         } else {
             Role defaultRole = roleService.getRoleByName(ProjectConstants.DEFAULT_ROLE);
             roles.add(defaultRole);
-            logger.debug("Assigned default role to user");
+            logger.debug("[User] Assigned default role to user");
         }
         user.setRoles(roles);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -98,25 +98,25 @@ public class UserServiceImp implements UserService {
         user.setDeleted(false);
         user.setNameUnsigned(FormatStringAccents.removeTones(user.getName()));
         User createdUser = userRepository.save(user);
-        logger.info("User created successfully with ID: {}", createdUser.getId());
+        logger.info("[User] User created successfully with ID: {}", createdUser.getId());
         return UserMapper.INSTANCE.convertToUserDTO(createdUser);
     }
 
     @Override
     public User findUserByEmail(String email) {
-        logger.debug("Finding user by email: {}", email);
+        logger.debug("[User] Finding user by email: {}", email);
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            logger.warn("User not found for email: {}", email);
+            logger.warn("[User] User not found for email: {}", email);
             throw new NotFoundUserException("User not found for email: " + email);
         }
-        logger.debug("User found with ID: {}", user.getId());
+        logger.debug("[User] User found with ID: {}", user.getId());
         return user;
     }
 
     @Override
     public ResultPagingDTO getAllUsers(Specification<User> spec, Pageable pageable) {
-        logger.debug("Fetching users with pagination [page: {}, size: {}]",
+        logger.debug("[User] Fetching users with pagination [page: {}, size: {}]",
                 pageable.getPageNumber(), pageable.getPageSize());
         spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("isDeleted"), false));
 
@@ -134,45 +134,45 @@ public class UserServiceImp implements UserService {
         result.setMeta(meta);
         result.setData(userDTOs);
 
-        logger.debug("Found {} users out of {} total", userDTOs.size(), users.getTotalElements());
+        logger.debug("[User] Found {} users out of {} total", userDTOs.size(), users.getTotalElements());
         return result;
     }
 
     @Override
     public UserDTO findUserByEmailConfirmToken(String token) {
-        logger.debug("Finding user by email confirmation token");
+        logger.debug("[User] Finding user by email confirmation token");
         Optional<User> user = userRepository.findByEmailConfirmationToken(token);
         if (user.isPresent()) {
-            logger.debug("User found with ID: {}", user.get().getId());
+            logger.debug("[User] User found with ID: {}", user.get().getId());
             return UserMapper.INSTANCE.convertToUserDTO(user.get());
         }
-        logger.warn("No user found with the provided token");
+        logger.warn("[User] No user found with the provided token");
         throw new NotFoundUserException("User not found for token: " + token);
     }
 
     @Override
     public String createVerificationToken(String email) {
-        logger.debug("Creating verification token for email: {}", email);
+        logger.debug("[User] Creating verification token for email: {}", email);
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            logger.warn("Failed to create verification token - user not found for email: {}", email);
+            logger.warn("[User] Failed to create verification token - user not found for email: {}", email);
             throw new NotFoundUserException("User not found for email: " + email);
         }
         String token = java.util.UUID.randomUUID().toString();
         user.setEmailConfirmationToken(token);
         userRepository.save(user);
-        logger.debug("Verification token created successfully for user ID: {}", user.getId());
+        logger.debug("[User] Verification token created successfully for user ID: {}", user.getId());
         return token;
     }
 
     @Override
     public UserDTO updateConfirmedEmail(UserDTO user) {
         Long id = user.getId();
-        logger.debug("Updating email confirmation status for user ID: {}", id);
+        logger.debug("[User] Updating email confirmation status for user ID: {}", id);
 
         User oldUser = userRepository.findUserById(id);
         if (oldUser == null) {
-            logger.warn("Failed to update email confirmation - user not found with ID: {}", id);
+            logger.warn("[User] Failed to update email confirmation - user not found with ID: {}", id);
             throw new NotFoundUserException("User not found for id: " + id);
         }
 
@@ -180,7 +180,7 @@ public class UserServiceImp implements UserService {
         oldUser.setEmailConfirmationToken(user.getEmailConfirmationToken());
 
         User userEntity = userRepository.save(oldUser);
-        logger.info("Email confirmation status updated for user ID: {}, confirmed: {}",
+        logger.info("[User] Email confirmation status updated for user ID: {}, confirmed: {}",
                 userEntity.getId(), userEntity.isEmailConfirmed());
 
         return UserMapper.INSTANCE.convertToUserDTO(userEntity);
@@ -193,30 +193,30 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserDTO getUserById(Long id) {
-        logger.debug("Fetching user by ID: {}", id);
+        logger.debug("[User] Fetching user by ID: {}", id);
         User user = userRepository.findUserById(id);
         if (user == null) {
-            logger.warn("User not found with ID: {}", id);
+            logger.warn("[User] User not found with ID: {}", id);
             throw new NotFoundUserException("User not found for id: " + id);
         }
-        logger.debug("User found with ID: {}", id);
+        logger.debug("[User] User found with ID: {}", id);
         return UserMapper.INSTANCE.convertToUserDTO(user);
     }
 
     @Override
     @Transactional
     public void deleteUserById(Long id) {
-        logger.info("Attempting to delete user with ID: {}", id);
+        logger.info("[User] Attempting to delete user with ID: {}", id);
         User user = userRepository.findById(id)
                 .orElseThrow(() -> {
-                    logger.warn("Delete failed - user not found with ID: {}", id);
+                    logger.warn("[User] Delete failed - user not found with ID: {}", id);
                     return new NotFoundUserException("User not found for id: " + id);
                 });
 
         boolean isAdmin = user.getRoles().stream()
                 .anyMatch(role -> ProjectConstants.ROLE_ADMIN.equals(role.getName()));
         if (isAdmin) {
-            logger.warn("Cannot delete admin user with ID: {}", id);
+            logger.warn("[User] Cannot delete admin user with ID: {}", id);
             throw new DeleteAdminException("Cannot delete an ADMIN account");
         }
 
@@ -224,38 +224,38 @@ public class UserServiceImp implements UserService {
 
         if (!CollectionUtils.isEmpty(user.getBookings())) {
             bookingsCount = user.getBookings().size();
-            logger.debug("Deleting {} bookings for user ID: {}", bookingsCount, id);
+            logger.debug("[User] Deleting {} bookings for user ID: {}", bookingsCount, id);
             bookingRepository.deleteAll(user.getBookings());
         }
 
         if (!CollectionUtils.isEmpty(user.getReviews())) {
             reviewsCount = user.getReviews().size();
-            logger.debug("Deleting {} reviews for user ID: {}", reviewsCount, id);
+            logger.debug("[User] Deleting {} reviews for user ID: {}", reviewsCount, id);
             reviewRepository.deleteAll(user.getReviews());
         }
 
         if (!CollectionUtils.isEmpty(user.getRefreshTokens())) {
             tokensCount = user.getRefreshTokens().size();
-            logger.debug("Deleting {} refresh tokens for user ID: {}", tokensCount, id);
+            logger.debug("[User] Deleting {} refresh tokens for user ID: {}", tokensCount, id);
             tokenRepository.deleteAll(user.getRefreshTokens());
         }
 
         userRepository.softDeleteById(id);
-        logger.info("User deleted successfully with ID: {} (removed {} bookings, {} reviews, {} tokens)",
+        logger.info("[User] User deleted successfully with ID: {} (removed {} bookings, {} reviews, {} tokens)",
                 id, bookingsCount, reviewsCount, tokensCount);
     }
 
     @Override
     public void resetPassword(String email, String password) {
-        logger.info("Attempting to reset password for user with email: {}", email);
+        logger.info("[User] Attempting to reset password for user with email: {}", email);
         User user = userRepository.findByEmail(email);
         if (user == null) {
-            logger.warn("Password reset failed - user not found with email: {}", email);
+            logger.warn("[User] Password reset failed - user not found with email: {}", email);
             throw new NotFoundUserException("User not found for email: " + email);
         }
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
-        logger.info("Password reset successfully for user ID: {}", user.getId());
+        logger.info("[User] Password reset successfully for user ID: {}", user.getId());
     }
 
     @Override
@@ -265,72 +265,72 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserDTO updateUserInformation(UpdateUserRequest userRequest) {
-        logger.info("Updating user information");
+        logger.info("[User] Updating user information");
 
         Optional<String> currentUserLogin = JwtTokenManager.getCurrentUserLogin();
         User oldUser = null;
         if (currentUserLogin.isPresent()) {
             String email = currentUserLogin.get();
-            logger.debug("Fetching user with email: {}", email);
+            logger.debug("[User] Fetching user with email: {}", email);
             oldUser = userRepository.findByEmail(email);
         } else {
-            logger.warn("Update failed - no authenticated user found");
+            logger.warn("[User] Update failed - no authenticated user found");
             throw new NotFoundUserException("No authenticated user found");
         }
 
         if (oldUser == null) {
-            logger.warn("Update failed - user not found with current login");
+            logger.warn("[User] Update failed - user not found with current login");
             throw new NotFoundUserException("User not found for current login");
         }
 
         Long userId = oldUser.getId();
-        logger.debug("Updating information for user ID: {}", userId);
+        logger.debug("[User] Updating information for user ID: {}", userId);
 
         boolean hasChanges = false;
 
         if (userRequest.getName() != null && !userRequest.getName().equals(oldUser.getName())) {
             oldUser.setName(userRequest.getName());
             oldUser.setNameUnsigned(FormatStringAccents.removeTones(userRequest.getName()));
-            logger.debug("Updated name for user ID: {}", userId);
+            logger.debug("[User] Updated name for user ID: {}", userId);
             hasChanges = true;
         }
 
         if (userRequest.getPhone() != null && !userRequest.getPhone().equals(oldUser.getPhone())) {
             oldUser.setPhone(userRequest.getPhone());
-            logger.debug("Updated phone for user ID: {}", userId);
+            logger.debug("[User] Updated phone for user ID: {}", userId);
             hasChanges = true;
         }
 
         if (userRequest.getAddress() != null && !userRequest.getAddress().equals(oldUser.getAddress())) {
             oldUser.setAddress(userRequest.getAddress());
-            logger.debug("Updated address for user ID: {}", userId);
+            logger.debug("[User] Updated address for user ID: {}", userId);
             hasChanges = true;
         }
 
         if (userRequest.getDateOfBirth() != null && !userRequest.getDateOfBirth().equals(oldUser.getDateOfBirth())) {
             oldUser.setDateOfBirth(userRequest.getDateOfBirth());
-            logger.debug("Updated date of birth for user ID: {}", userId);
+            logger.debug("[User] Updated date of birth for user ID: {}", userId);
             hasChanges = true;
         }
 
         if (userRequest.getGender() != null && !userRequest.getGender().equals(oldUser.getGender())) {
             oldUser.setGender(userRequest.getGender());
-            logger.debug("Updated gender for user ID: {}", userId);
+            logger.debug("[User] Updated gender for user ID: {}", userId);
             hasChanges = true;
         }
 
         if (userRequest.getNewPassword() != null) {
             if (userRequest.getOldPassword() == null) {
-                logger.warn("Password update failed - old password not provided for user ID: {}", userId);
+                logger.warn("[User] Password update failed - old password not provided for user ID: {}", userId);
                 throw new NotMatchPasswordException("Old password is required to set new password");
             }
 
             if (passwordEncoder.matches(userRequest.getOldPassword(), oldUser.getPassword())) {
                 oldUser.setPassword(passwordEncoder.encode(userRequest.getNewPassword()));
-                logger.debug("Updated password for user ID: {}", userId);
+                logger.debug("[User] Updated password for user ID: {}", userId);
                 hasChanges = true;
             } else {
-                logger.warn("Password update failed - incorrect old password for user ID: {}", userId);
+                logger.warn("[User] Password update failed - incorrect old password for user ID: {}", userId);
                 throw new NotMatchPasswordException("Old password is incorrect");
             }
         }
@@ -338,16 +338,16 @@ public class UserServiceImp implements UserService {
         if (userRequest.getImageId() != null) {
             FileDTO fileDTO = fileService.fetchFileById(userRequest.getImageId());
             if (fileDTO == null) {
-                logger.warn("Avatar update failed - file not found with ID: {}", userRequest.getImageId());
+                logger.warn("[User] Avatar update failed - file not found with ID: {}", userRequest.getImageId());
                 throw new NotFoundFileException("File not found for id: " + userRequest.getImageId());
             }
             oldUser.setAvatar(fileDTO.getUrl());
-            logger.debug("Updated avatar for user ID: {} with file ID: {}", userId, userRequest.getImageId());
+            logger.debug("[User] Updated avatar for user ID: {} with file ID: {}", userId, userRequest.getImageId());
             hasChanges = true;
         }
 
         User savedUser = userRepository.save(oldUser);
-        logger.info("User information {} for user ID: {}", hasChanges ? "updated" : "unchanged", userId);
+        logger.info("[User] User information {} for user ID: {}", hasChanges ? "updated" : "unchanged", userId);
         return UserMapper.INSTANCE.convertToUserDTO(savedUser);
     }
 
@@ -357,16 +357,16 @@ public class UserServiceImp implements UserService {
         Long userId = request.getUserId();
         List<Long> roleIds = request.getRoleIds();
 
-        logger.info("Updating roles for user ID: {}", userId);
+        logger.info("[User] Updating roles for user ID: {}", userId);
 
         User user = userRepository.findUserById(userId);
         if (user == null) {
-            logger.warn("Role update failed - user not found with ID: {}", userId);
+            logger.warn("[User] Role update failed - user not found with ID: {}", userId);
             throw new NotFoundUserException("User not found for id: " + userId);
         }
 
         if (roleIds == null || roleIds.isEmpty()) {
-            logger.warn("Role update failed - no roles provided for user ID: {}", userId);
+            logger.warn("[User] Role update failed - no roles provided for user ID: {}", userId);
             throw new NotFoundRoleException("Role IDs cannot be empty");
         }
 
@@ -374,11 +374,11 @@ public class UserServiceImp implements UserService {
         for (Long roleId : roleIds) {
             Role role = roleService.getRoleEntityById(roleId);
             if (role == null) {
-                logger.warn("Role update failed - role not found with ID: {}", roleId);
+                logger.warn("[User] Role update failed - role not found with ID: {}", roleId);
                 throw new NotFoundRoleException("Role not found for id: " + roleId);
             }
             roles.add(role);
-            logger.debug("Adding role '{}' to user ID: {}", role.getName(), userId);
+            logger.debug("[User] Adding role '{}' to user ID: {}", role.getName(), userId);
         }
 
         Set<String> originalRoleNames = user.getRoles().stream()
@@ -391,7 +391,7 @@ public class UserServiceImp implements UserService {
         user.setRoles(roles);
         User updatedUser = userRepository.save(user);
 
-        logger.info("Roles updated for user ID: {}, changed from {} to {}",
+        logger.info("[User] Roles updated for user ID: {}, changed from {} to {}",
                 userId, originalRoleNames, newRoleNames);
 
         return UserMapper.INSTANCE.convertToUserDTO(updatedUser);
@@ -400,36 +400,36 @@ public class UserServiceImp implements UserService {
     @Override
     @Transactional
     public void deleteRefreshTokenByUserId(Long id) {
-        logger.debug("Attempting to delete refresh tokens for user ID: {}", id);
+        logger.debug("[User] Attempting to delete refresh tokens for user ID: {}", id);
 
         if (id == null) {
-            logger.warn("Token deletion failed - user ID is null");
+            logger.warn("[User] Token deletion failed - user ID is null");
             throw new IllegalArgumentException("User ID cannot be null");
         }
 
         boolean userExists = userRepository.existsById(id);
         if (!userExists) {
-            logger.warn("Token deletion failed - user not found with ID: {}", id);
+            logger.warn("[User] Token deletion failed - user not found with ID: {}", id);
             throw new NotFoundUserException("User not found for id: " + id);
         }
         try {
             List<Token> tokens = tokenRepository.findByUserId(id);
             if (tokens != null && !tokens.isEmpty()) {
                 tokenRepository.deleteAll(tokens);
-                logger.debug("Deleted {} refresh tokens for user ID: {}", tokens.size(), id);
+                logger.debug("[User] Deleted {} refresh tokens for user ID: {}", tokens.size(), id);
             } else {
-                logger.debug("No refresh tokens found for user ID: {}", id);
+                logger.debug("[User] No refresh tokens found for user ID: {}", id);
             }
-            logger.info("Successfully deleted all refresh tokens for user ID: {}", id);
+            logger.info("[User] Successfully deleted all refresh tokens for user ID: {}", id);
         } catch (Exception e) {
-            logger.error("Error deleting refresh tokens for user ID: {}", id, e);
+            logger.error("[User] Error deleting refresh tokens for user ID: {}", id, e);
             throw new RuntimeException("Failed to delete refresh tokens", e);
         }
     }
 
     @Override
     public UserDTO addUserByAdmin(AddUserByAdminRequest user) {
-        logger.info("Adding new user by admin with email: {}", user.getEmail());
+        logger.info("[User] Adding new user by admin with email: {}", user.getEmail());
 
         UserDTO userDTO = UserMapper.INSTANCE.convertToUserDTOByAddUserRequest(user);
 
@@ -440,16 +440,16 @@ public class UserServiceImp implements UserService {
         Set<RoleDTO> roles = new HashSet<>();
         RoleDTO role = this.roleService.getRoleById(user.getRoleId());
         if (role == null) {
-            logger.warn("User creation by admin failed - role not found with ID: {}", user.getRoleId());
+            logger.warn("[User] User creation by admin failed - role not found with ID: {}", user.getRoleId());
             throw new NotFoundRoleException("Role not found for id: " + user.getRoleId());
         }
 
         roles.add(role);
         userDTO.setRoles(roles);
-        logger.debug("Assigning role '{}' to new user", role.getName());
+        logger.debug("[User] Assigning role '{}' to new user", role.getName());
 
         UserDTO createdUser = saveUser(userDTO);
-        logger.info("User created successfully by admin with ID: {}", createdUser.getId());
+        logger.info("[User] User created successfully by admin with ID: {}", createdUser.getId());
 
         return createdUser;
     }
@@ -458,7 +458,7 @@ public class UserServiceImp implements UserService {
     @Override
     public Long countNewUserBetween(LocalDate startDate, LocalDate endDate) {
         String roleName = ProjectConstants.ROLE_USER;
-        logger.debug("Counting new users between {} and {} with role: {}", startDate, endDate, roleName);
+        logger.debug("[User] Counting new users between {} and {} with role: {}", startDate, endDate, roleName);
         if (startDate == null || endDate == null) {
             throw new IllegalArgumentException("Start date and end date cannot be null");
         }
@@ -468,7 +468,7 @@ public class UserServiceImp implements UserService {
         Instant startDateStr = startDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
         Instant endDateStr = endDate.plusDays(1).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
         Long newUsers = userRepository.countAllUsersBetween(roleName, startDateStr, endDateStr);
-        logger.info("Total new users between {} and {} with role '{}': {}", startDate, endDate, roleName, newUsers);
+        logger.info("[User] Total new users between {} and {} with role '{}': {}", startDate, endDate, roleName, newUsers);
         return newUsers;
     }
 

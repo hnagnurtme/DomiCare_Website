@@ -114,11 +114,9 @@ public class CategoryController {
             @Parameter(description = "Additional filter specification") @Filter Specification<Category> spec, 
             Pageable pageable) {
 
-        // Validate pagination parameters
         if (page < 1) page = 1;
-        if (size < 1 || size > 100) size = 20; // Set reasonable limits for page size
-        
-        // Create sort object
+        if (size < 1 || size > 100) size = 20; 
+
         Sort sort = Sort.by(sortBy);
         if (sortDirection.equalsIgnoreCase("desc")) {
             sort = sort.descending();
@@ -128,14 +126,14 @@ public class CategoryController {
 
         pageable = PageRequest.of(page - 1, size, sort);
 
-        // Apply search filter
+
         if (searchName != null && !searchName.trim().isEmpty()) {
             String cleanSearchName = FormatStringAccents.removeTones(searchName.toLowerCase().trim());
             spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder
                     .like(criteriaBuilder.lower(root.get("nameUnsigned")), "%" + cleanSearchName + "%"));
         }
         
-        // Only show non-deleted categories
+
         spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder
                 .equal(root.get("isDeleted"), false));
 

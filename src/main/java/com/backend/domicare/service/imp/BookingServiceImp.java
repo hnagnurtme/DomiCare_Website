@@ -37,6 +37,7 @@ import com.backend.domicare.service.UserService;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -60,7 +61,7 @@ public class BookingServiceImp implements BookingService {
             BookingsRepository bookingRepository,
             UsersRepository userRepository,
             ProductService productService,
-            @org.springframework.context.annotation.Lazy JwtTokenManager jwtTokenManager,
+            @Lazy JwtTokenManager jwtTokenManager,
             UserService userService,
             EmailSendingService emailSendingService) {
         this.bookingRepository = bookingRepository;
@@ -78,7 +79,7 @@ public class BookingServiceImp implements BookingService {
             throw new IllegalArgumentException("Booking ID cannot be null");
         }
 
-        logger.debug("Fetching booking with ID: {}", id);
+        logger.debug("[Booking] Fetching booking with ID: {}", id);
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundBookingException("Booking not found with ID: " + id));
         return BookingMapper.INSTANCE.convertToBookingDTO(booking);
@@ -91,19 +92,19 @@ public class BookingServiceImp implements BookingService {
             throw new IllegalArgumentException("Booking ID cannot be null");
         }
 
-        logger.info("Attempting to delete booking with ID: {}", id);
+        logger.info("[Booking] Attempting to delete booking with ID: {}", id);
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundBookingException("Booking not found with ID: " + id));
         if (booking.getBookingStatus() == BookingStatus.ACCEPTED
                 || booking.getBookingStatus() == BookingStatus.CANCELLED) {
-            logger.warn("Cannot delete booking with ID: {} due to status: {}", id, booking.getBookingStatus());
+            logger.warn("[Booking] Cannot delete booking with ID: {} due to status: {}", id, booking.getBookingStatus());
             throw new BookingStatusException("Cannot delete booking with status: " + booking.getBookingStatus());
         }
         booking.setBookingStatus(BookingStatus.CANCELLED);
         Booking savedBooking = bookingRepository.save(booking);
-        logger.info("Booking with ID: {} has been marked as CANCELLED", id);
+        logger.info("[Booking] Booking with ID: {} has been marked as CANCELLED", id);
         messagingTemplate.convertAndSend("/topic/bookings/delete", BookingMapper.INSTANCE.convertToBookingDTO(savedBooking));
-        logger.info("Booking deletion notification sent for booking ID: {}", id);
+        logger.info("[Booking] Booking deletion notification sent for booking ID: {}", id);
         return BookingMapper.INSTANCE.convertToBookingDTO(savedBooking);
     }
 
@@ -115,20 +116,20 @@ public class BookingServiceImp implements BookingService {
         }
 
         Long id = request.getBookingId();
-        logger.info("Updating booking with ID: {}", id);
+        logger.info("[Booking] Updating booking with ID: {}", id);
 
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundBookingException("Booking not found with ID: " + id));
 
         if (booking.getBookingStatus() != BookingStatus.PENDING) {
-            logger.warn("Cannot update booking with ID: {} due to status: {}", id, booking.getBookingStatus());
+            logger.warn("[Booking] Cannot update booking with ID: {} due to status: {}", id, booking.getBookingStatus());
             throw new BookingStatusException("Cannot update booking with status: " + booking.getBookingStatus());
         }
         Booking updatedBooking = bookingRepository.save(booking);
-        logger.info("Booking updated successfully with ID: {}", id);
+        logger.info("[Booking] Booking updated successfully with ID: {}", id);
         BookingDTO updatedBookingDTO = BookingMapper.INSTANCE.convertToBookingDTO(updatedBooking);
         messagingTemplate.convertAndSend("/topic/bookings/update", updatedBookingDTO);
-        logger.info("Booking update notification sent for booking ID: {}", id);
+        logger.info("[Booking] Booking update notification sent for booking ID: {}", id);
         return updatedBookingDTO;
     }
 
@@ -139,7 +140,7 @@ public class BookingServiceImp implements BookingService {
             throw new IllegalArgumentException("User ID cannot be null");
         }
 
-        logger.debug("Fetching all bookings for user ID: {}", userId);
+        logger.debug("[Booking] Fetching all bookings for user ID: {}", userId);
 
         if (!userRepository.existsById(userId)) {
             throw new NotFoundUserException("User not found with ID: " + userId);
@@ -147,7 +148,7 @@ public class BookingServiceImp implements BookingService {
 
         List<Booking> bookings = bookingRepository.findByUserId(userId);
         if (bookings.isEmpty()) {
-            logger.debug("No bookings found for user ID: {}", userId);
+            logger.debug("[Booking] No bookings found for user ID: {}", userId);
             return Collections.emptyList();
         }
 
@@ -166,7 +167,7 @@ public class BookingServiceImp implements BookingService {
         Long id = request.getBookingId();
         String statusStr = request.getStatus();
 
-        logger.info("Updating booking status for ID: {} to {}", id, statusStr);
+        logger.info("[Booking] Updating booking status for ID: {} to {}", id, statusStr);
 
         String emailSale = JwtTokenManager.getCurrentUserLogin()
                 .orElseThrow(() -> new NotFoundUserException("User not found"));
@@ -219,6 +220,7 @@ public class BookingServiceImp implements BookingService {
                             booking.getProducts().get(0).getName(),
                             booking.getCreateAt().toString(),
                             booking.getUser().getName());
+
                     booking.setSaleUser(saleuser);
                     saleuser.setSaleTotalBookings(saleuser.getSaleTotalBookings() + 1);
                     break;
@@ -273,7 +275,7 @@ public class BookingServiceImp implements BookingService {
         BookingDTO updated = BookingMapper.INSTANCE.convertToBookingDTO(updatedBooking);
         messagingTemplate.convertAndSend("/topic/bookings/update", updated);
 
-        logger.info("Booking status updated successfully for ID: {}", id);
+        logger.info("[Booking] Booking status updated successfully for ID: {}", id);
         return BookingMapper.INSTANCE.convertToBookingDTO(updatedBooking);
     }
 
@@ -340,14 +342,14 @@ public class BookingServiceImp implements BookingService {
         booking.setBookingStatus(BookingStatus.PENDING);
 
         Booking bookingEntity = bookingRepository.save(booking);
-        logger.info("Booking created successfully with ID: {}", bookingEntity.getId());
+        logger.info("[Booking] Booking created successfully with ID: {}", bookingEntity.getId());
 
-        logger.info("User with email: {} has been associated with booking ID: {}", user.getEmail(),
+        logger.info("[Booking] User with email: {} has been associated with booking ID: {}", user.getEmail(),
                 bookingEntity.getId());
         BookingDTO bookingDTO = BookingMapper.INSTANCE.convertToBookingDTO(bookingEntity);
         messagingTemplate.convertAndSend("/topic/bookings/new", bookingDTO);
 
-        logger.info("New booking notification sent for booking ID: {}", bookingEntity.getId());
+        logger.info("[Booking] New booking notification sent for booking ID: {}", bookingEntity.getId());
         return BookingMapper.INSTANCE.convertToBookingDTO(bookingEntity);
     }
 
@@ -369,7 +371,7 @@ public class BookingServiceImp implements BookingService {
     @Override
     public Long countTotalSuccessBooking() {
         Long totalSuccessBookings = bookingRepository.countBookingsByStatus(BookingStatus.SUCCESS);
-        logger.debug("Total success bookings: {}", totalSuccessBookings);
+        logger.debug("[Booking] Total success bookings: {}", totalSuccessBookings);
         return totalSuccessBookings;
     }
 
@@ -385,13 +387,13 @@ public class BookingServiceImp implements BookingService {
         Instant endDateStr = endDate.plusDays(1).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant(); // include
                                                                                                              // entire
                                                                                                              // day
-        logger.debug("Calculating total revenue from {} to {}", startDateStr, endDateStr);
+        logger.debug("[Booking] Calculating total revenue from {} to {}", startDateStr, endDateStr);
         Long totalRevenue = bookingRepository.countTotalSuccessBooking(BookingStatus.SUCCESS, startDateStr, endDateStr);
         if (totalRevenue == null) {
             totalRevenue = 0L;
         }
 
-        logger.debug("Total revenue from {} to {}: {}", startDate, endDate, totalRevenue);
+        logger.debug("[Booking] Total revenue from {} to {}: {}", startDate, endDate, totalRevenue);
         return totalRevenue;
     }
 
@@ -407,20 +409,20 @@ public class BookingServiceImp implements BookingService {
         Instant endDateStr = endDate.plusDays(1).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant(); // include
                                                                                                              // entire
                                                                                                              // day
-        logger.debug("Calculating total revenue from {} to {}", startDateStr, endDateStr);
+        logger.debug("[Booking] Calculating total revenue from {} to {}", startDateStr, endDateStr);
         Long totalRevenue = bookingRepository.countTotalRevenue(BookingStatus.SUCCESS, startDateStr, endDateStr);
         if (totalRevenue == null) {
             totalRevenue = 0L;
         }
 
-        logger.debug("Total revenue from {} to {}: {}", startDate, endDate, totalRevenue);
+        logger.debug("[Booking] Total revenue from {} to {}: {}", startDate, endDate, totalRevenue);
         return totalRevenue;
     }
 
     @Override
     public Long countTotalRevenue() {
         Long totalRevenue = bookingRepository.countTotalRevenue(BookingStatus.SUCCESS, Instant.EPOCH, Instant.now());
-        logger.debug("Total revenue: {}", totalRevenue);
+        logger.debug("[Booking] Total revenue: {}", totalRevenue);
         return totalRevenue;
     }
 

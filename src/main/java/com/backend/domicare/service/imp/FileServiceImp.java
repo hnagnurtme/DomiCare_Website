@@ -50,9 +50,9 @@ public class FileServiceImp implements FileService {
                 try {
                     String publicId = extractPublicIdFromUrl(url);
                     cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
-                    logger.info("Deleted duplicate file from Cloudinary with URL: {}", url);
+                    logger.info("[File] Deleted duplicate file from Cloudinary with URL: {}", url);
                 } catch (IOException e) {
-                    logger.error("Error deleting duplicate file from Cloudinary: {}", e.getMessage(), e);
+                    logger.error("[File] Error deleting duplicate file from Cloudinary: {}", e.getMessage(), e);
                 }
                 throw new RuntimeException("File with the same URL already exists");
             }
@@ -64,7 +64,7 @@ public class FileServiceImp implements FileService {
             filesRepository.save(uploadedFile);
             return FileMapper.INSTANCE.convertToFileDTO(uploadedFile);
         } catch (IOException e) {
-            logger.error("Error uploading file: {}", e.getMessage(), e);
+            logger.error("[File] Error uploading file: {}", e.getMessage(), e);
             throw new RuntimeException("Error uploading file", e);
         }
     }
@@ -89,15 +89,15 @@ public class FileServiceImp implements FileService {
         try {
             // Xóa file trên Cloudinary
             cloudinary.uploader().destroy(publicId, ObjectUtils.emptyMap());
-            logger.info("File with public_id {} has been deleted from Cloudinary", publicId);
+            logger.info("[File] File with public_id {} has been deleted from Cloudinary", publicId);
 
             // Xóa file khỏi cơ sở dữ liệu
             filesRepository.delete(file);
-            logger.info("File with id {} has been deleted from database", id);
+            logger.info("[File] File with id {} has been deleted from database", id);
 
         } catch (IOException e) {
             // Log lỗi nếu có vấn đề trong việc xóa file
-            logger.error("Error deleting file from Cloudinary: {}", e.getMessage(), e);
+            logger.error("[File] Error deleting file from Cloudinary: {}", e.getMessage(), e);
             throw new RuntimeException("Error deleting file", e);
         }
     }

@@ -63,7 +63,7 @@ public class JwtTokenManager {
 
         User user = userService.findUserByEmail(email);
         if (user == null) {
-            logger.error("Failed to create access token: User not found with email {}", email);
+            logger.error("[JWT] Failed to create access token: User not found with email {}", email);
             throw new NotFoundException(email + " không tồn tại");
         }
 
@@ -71,7 +71,7 @@ public class JwtTokenManager {
         Set<String> roleNames;
         
         if (roles == null || roles.isEmpty()) {
-            logger.info("User {} has no roles assigned, using default ROLE_USER", email);
+            logger.info("[JWT] User {} has no roles assigned, using default ROLE_USER", email);
             roleNames = Set.of("ROLE_USER");
         } else {
             roleNames = roles.stream()
@@ -89,7 +89,7 @@ public class JwtTokenManager {
 
         JwsHeader header = JwsHeader.with(JWT_ALGORITHM).build();
         
-        logger.debug("Creating access token for user {}", email);
+        logger.debug("[JWT] Creating access token for user {}", email);
         return this.jwtEncoder.encode(JwtEncoderParameters.from(header, claims)).getTokenValue();
     }
 
@@ -121,14 +121,14 @@ public class JwtTokenManager {
         
         User user = userService.findUserByEmail(email);
         if (user == null) {
-            logger.error("Failed to create refresh token: User not found with email {}", email);
+            logger.error("[JWT] Failed to create refresh token: User not found with email {}", email);
             throw new NotFoundException(email + " không tồn tại");
         }
         
         List<Token> existingTokens = tokensRepository.findByUserId(user.getId());
         if (existingTokens != null && !existingTokens.isEmpty()) {
             tokensRepository.deleteAll(existingTokens);
-            logger.debug("Deleted existing refresh tokens for user {}", email);
+            logger.debug("[JWT] Deleted existing refresh tokens for user {}", email);
         }
         
         String refreshToken = UUID.randomUUID().toString();
@@ -141,7 +141,7 @@ public class JwtTokenManager {
             .build();
 
         tokensRepository.save(token);
-        logger.debug("Created refresh token for user {}", email);
+        logger.debug("[JWT] Created refresh token for user {}", email);
         
         return refreshToken;
     }
@@ -149,27 +149,27 @@ public class JwtTokenManager {
 
     public void deleteRefreshToken(String refreshToken) {
         if (!StringUtils.hasText(refreshToken)) {
-            logger.warn("Attempted to delete null or empty refresh token");
+            logger.warn("[JWT] Attempted to delete null or empty refresh token");
             return;
         }
         
         try {
             User user = getUserFromRefreshToken(refreshToken);
             userService.deleteRefreshTokenByUserId(user.getId());
-            logger.debug("Deleted refresh token for user ID {}", user.getId());
+            logger.debug("[JWT] Deleted refresh token for user ID {}", user.getId());
         } catch (NotFoundException e) {
-            logger.warn("Attempted to delete non-existent refresh token");
+            logger.warn("[JWT] Attempted to delete non-existent refresh token");
         }
     }
 
     public User getUserFromRefreshToken(String refreshToken) {
         if (!StringUtils.hasText(refreshToken)) {
-            throw new IllegalArgumentException("Refresh token cannot be empty");
+            throw new IllegalArgumentException("[JWT] Refresh token cannot be empty");
         }
         
         Token token = tokensRepository.findByRefreshToken(refreshToken);
         if (token == null) {
-            logger.warn("No token found for refresh token {}", refreshToken);
+            logger.warn("[JWT] No token found for refresh token {}", refreshToken);
             throw new NotFoundException("Token không tồn tại");
         }
         return token.getUser();
@@ -177,20 +177,20 @@ public class JwtTokenManager {
 
     public boolean isRefreshTokenValid(String refreshToken) {
         if (!StringUtils.hasText(refreshToken)) {
-            logger.warn("Attempted to validate null or empty refresh token");
+            logger.warn("[JWT] Attempted to validate null or empty refresh token");
             return false;
         }
         
         Token token = tokensRepository.findByRefreshToken(refreshToken);
         if (token == null) {
-            logger.warn("Token validation failed: Token not found");
+            logger.warn("[JWT] Token validation failed: Token not found");
             return false;
         }
         
         boolean valid = token.getExpiration().isAfter(Instant.now());
         
         if (!valid) {
-            logger.warn("Refresh token has expired for user ID {}", token.getUser().getId());
+            logger.warn("[JWT] Refresh token has expired for user ID {}", token.getUser().getId());
             tokensRepository.delete(token);
         }
         

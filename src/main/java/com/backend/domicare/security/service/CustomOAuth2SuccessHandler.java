@@ -20,17 +20,6 @@ public class CustomOAuth2SuccessHandler {
     private final UserService userService;
     private final JwtTokenManager jwtTokenManager;
     
-    /**
-     * Xử lý khi người dùng đăng nhập thành công qua OAuth2
-     * 
-     * @param email Email của người dùng
-     * @param name Tên của người dùng
-     * @param picture URL hình ảnh của người dùng
-     * @param locale Địa chỉ/ngôn ngữ của người dùng
-     * @param subId ID từ Google
-     * @return LoginResponse chứa thông tin người dùng và JWT tokens
-     * @throws IllegalArgumentException nếu email không hợp lệ
-     */
     public LoginResponse handleOAuth2(String email, String name, String picture, String locale, String subId) {
         if (!StringUtils.hasText(email)) {
             throw new IllegalArgumentException("Email is required for OAuth2 authentication");
@@ -46,21 +35,18 @@ public class CustomOAuth2SuccessHandler {
             isNewUser = true;
         }
         
-        // Cập nhật thông tin người dùng
         updateUserInformation(user, email, name, picture, locale, subId);
-        
-        // Lưu hoặc cập nhật người dùng
+
         if (isNewUser) {
             this.userService.saveUser(UserMapper.INSTANCE.convertToUserDTO(user));
         } else {
             this.userRepository.save(user);
         }
 
-        // Tạo JWT token cho người dùng
         String accessToken = jwtTokenManager.createAccessToken(email);
         String refreshToken = jwtTokenManager.createRefreshToken(email);
 
-        // Tạo LoginResponse chứa thông tin người dùng và token
+
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setAccessToken(accessToken);
         loginResponse.setRefreshToken(refreshToken);
@@ -69,9 +55,6 @@ public class CustomOAuth2SuccessHandler {
         return loginResponse;
     }
     
-    /**
-     * Cập nhật thông tin người dùng từ dữ liệu OAuth2
-     */
     private void updateUserInformation(User user, String email, String name, String picture, String locale, String subId) {
         user.setGoogleId(subId);
         user.setEmailConfirmed(true);

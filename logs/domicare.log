@@ -1,0 +1,479 @@
+2025-06-01 08:51:00.899 [main] INFO  c.b.domicare.DomicareApplication - Starting DomicareApplication using Java 17.0.15 with PID 77220 (/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes started by anhnon in /Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND)
+2025-06-01 08:51:00.900 [main] DEBUG c.b.domicare.DomicareApplication - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-01 08:51:00.900 [main] INFO  c.b.domicare.DomicareApplication - The following 1 profile is active: "prod"
+2025-06-01 08:51:01.506 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-01 08:51:01.547 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 37 ms. Found 9 JPA repository interfaces.
+2025-06-01 08:51:01.935 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-01 08:51:01.941 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-01 08:51:01.941 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-01 08:51:01.966 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-01 08:51:01.966 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1048 ms
+2025-06-01 08:51:02.134 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-01 08:51:02.155 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-01 08:51:02.169 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-01 08:51:02.265 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-01 08:51:02.278 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-01 08:51:05.454 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@27234b7c
+2025-06-01 08:51:05.455 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-01 08:51:05.626 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.8
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-01 08:51:06.102 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-01 08:51:08.275 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01 08:51:08.469 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-01 08:51:09.068 [main] INFO  c.b.d.c.WebSocketConfiguration - Configuring message broker with topic prefix: /topic
+2025-06-01 08:51:09.131 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsService
+2025-06-01 08:51:09.311 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring public endpoint security chain
+2025-06-01 08:51:09.325 [main] INFO  c.b.d.c.WebSocketConfiguration - Registering STOMP endpoints at /ws
+2025-06-01 08:51:09.374 [main] INFO  c.b.d.c.CorsConfiguration - CORS configuration applied for allowed origins
+2025-06-01 08:51:09.544 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-06-01 08:51:09.594 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring main security filter chain
+2025-06-01 08:51:09.931 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-01 08:51:09.931 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@51252d61]]
+2025-06-01 08:51:09.931 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-01 08:51:09.936 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-06-01 08:51:09.946 [main] INFO  c.b.domicare.DomicareApplication - Started DomicareApplication in 9.22 seconds (process running for 9.479)
+2025-06-01 08:51:10.124 [RMI TCP Connection(2)-127.0.0.1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-01 08:51:10.124 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-01 08:51:10.125 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-06-01 08:51:33.395 [http-nio-8080-exec-3] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Updating booking status for ID: 30 to ACCEPTED
+2025-06-01 08:51:33.436 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - select u1_0.id,u1_0.address,u1_0.avatar,u1_0.create_at,u1_0.create_by,u1_0.date_of_birth,u1_0.email,u1_0.email_confirmation_token,u1_0.gender,u1_0.google_id,u1_0.is_active,u1_0.is_deleted,u1_0.is_email_confirmed,u1_0.full_name,u1_0.name_unsigned,u1_0.password,u1_0.phone,u1_0.sale_success_percent,u1_0.sale_total_bookings,u1_0.update_at,u1_0.update_by,u1_0.user_total_failed_bookings,u1_0.user_total_success_bookings from users u1_0 where u1_0.email=?
+2025-06-01 08:51:33.485 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_1.id,r1_1.active,r1_1.create_at,r1_1.create_by,r1_1.description,r1_1.name,r1_1.update_at,r1_1.update_by,p1_0.role_id,p1_1.id,p1_1.api_path,p1_1.create_at,p1_1.create_by,p1_1.method,p1_1.module,p1_1.name,p1_1.update_at,p1_1.update_by from users_roles r1_0 join roles r1_1 on r1_1.id=r1_0.role_id left join permissions_roles p1_0 on r1_1.id=p1_0.role_id left join permissions p1_1 on p1_1.id=p1_0.permission_id where r1_0.user_id=?
+2025-06-01 08:51:33.534 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - select b1_0.id,b1_0.address,b1_0.booking_status,b1_0.create_at,b1_0.create_by,b1_0.is_periodic,b1_0.note,p1_0.booking_id,p1_1.id,p1_1.category_id,p1_1.create_at,p1_1.create_by,p1_1.description,p1_1.discount,p1_1.image,p1_1.is_deleted,p1_1.landing_images,p1_1.name,p1_1.name_unsigned,p1_1.overal_rating,p1_1.price,p1_1.update_at,p1_1.update_by,b1_0.sale_user_id,b1_0.start_time,b1_0.total_price,b1_0.update_at,b1_0.update_by,b1_0.user_id,u1_0.id,u1_0.address,u1_0.avatar,u1_0.create_at,u1_0.create_by,u1_0.date_of_birth,u1_0.email,u1_0.email_confirmation_token,u1_0.gender,u1_0.google_id,u1_0.is_active,u1_0.is_deleted,u1_0.is_email_confirmed,u1_0.full_name,u1_0.name_unsigned,u1_0.password,u1_0.phone,u1_0.sale_success_percent,u1_0.sale_total_bookings,u1_0.update_at,u1_0.update_by,u1_0.user_total_failed_bookings,u1_0.user_total_success_bookings from bookings b1_0 join users u1_0 on u1_0.id=b1_0.user_id join booking_products p1_0 on b1_0.id=p1_0.booking_id join products p1_1 on p1_1.id=p1_0.product_id where b1_0.id=?
+2025-06-01 08:51:33.576 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - select r1_0.user_id,r1_1.id,r1_1.active,r1_1.create_at,r1_1.create_by,r1_1.description,r1_1.name,r1_1.update_at,r1_1.update_by,p1_0.role_id,p1_1.id,p1_1.api_path,p1_1.create_at,p1_1.create_by,p1_1.method,p1_1.module,p1_1.name,p1_1.update_at,p1_1.update_by from users_roles r1_0 join roles r1_1 on r1_1.id=r1_0.role_id left join permissions_roles p1_0 on r1_1.id=p1_0.role_id left join permissions p1_1 on p1_1.id=p1_0.permission_id where r1_0.user_id=?
+2025-06-01 08:51:33.609 [http-nio-8080-exec-3] DEBUG org.hibernate.SQL - select r1_0.product_id,r1_0.id,r1_0.comment,r1_0.create_at,r1_0.create_by,r1_0.rating,r1_0.update_at,r1_0.update_by,r1_0.user_id from reviews r1_0 where r1_0.product_id=?
+2025-06-01 08:52:09.926 [MessageBroker-1] INFO  o.s.w.s.c.WebSocketMessageBrokerStats - WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 1, active threads = 1, queued tasks = 0, completed tasks = 0]
+2025-06-01 08:53:27.475 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-01 08:53:27.483 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-01 08:53:27.485 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-01 08:53:27.486 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@51252d61]]
+2025-06-01 08:53:27.486 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-01 08:53:27.496 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01 08:53:27.499 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-06-01 08:53:27.997 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-06-01 08:53:41.584 [main] INFO  c.b.domicare.DomicareApplication - Starting DomicareApplication using Java 17.0.15 with PID 80251 (/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes started by anhnon in /Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND)
+2025-06-01 08:53:41.585 [main] DEBUG c.b.domicare.DomicareApplication - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-01 08:53:41.585 [main] INFO  c.b.domicare.DomicareApplication - The following 1 profile is active: "prod"
+2025-06-01 08:53:42.174 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-01 08:53:42.218 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 39 ms. Found 9 JPA repository interfaces.
+2025-06-01 08:53:42.713 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-01 08:53:42.722 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-01 08:53:42.723 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-01 08:53:42.748 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-01 08:53:42.748 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1145 ms
+2025-06-01 08:53:42.976 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-01 08:53:43.013 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-01 08:53:43.040 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-01 08:53:43.182 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-01 08:53:43.201 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-01 08:53:43.731 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2b4ba2d9
+2025-06-01 08:53:43.731 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-01 08:53:43.896 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.8
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-01 08:53:44.437 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-01 08:53:46.668 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01 08:53:46.885 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-01 08:53:47.483 [main] INFO  c.b.d.c.WebSocketConfiguration - Configuring message broker with topic prefix: /topic
+2025-06-01 08:53:47.549 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsService
+2025-06-01 08:53:47.735 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring public endpoint security chain
+2025-06-01 08:53:47.750 [main] INFO  c.b.d.c.WebSocketConfiguration - Registering STOMP endpoints at /ws
+2025-06-01 08:53:47.804 [main] INFO  c.b.d.c.CorsConfiguration - CORS configuration applied for allowed origins
+2025-06-01 08:53:47.973 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-06-01 08:53:48.028 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring main security filter chain
+2025-06-01 08:53:48.371 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-01 08:53:48.372 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@1ca5b7c7]]
+2025-06-01 08:53:48.372 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-01 08:53:48.377 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-06-01 08:53:48.387 [main] INFO  c.b.domicare.DomicareApplication - Started DomicareApplication in 6.981 seconds (process running for 7.216)
+2025-06-01 08:53:50.858 [RMI TCP Connection(2)-127.0.0.1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-01 08:53:50.858 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-01 08:53:50.859 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-06-01 08:53:57.760 [http-nio-8080-exec-2] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Updating booking status for ID: 30 to ACCEPTED
+2025-06-01 08:54:25.042 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-01 08:54:25.047 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-01 08:54:25.048 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-01 08:54:25.048 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@1ca5b7c7]]
+2025-06-01 08:54:25.048 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-01 08:54:25.056 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01 08:54:25.059 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-06-01 08:54:25.514 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-06-01 08:54:26.968 [main] INFO  c.b.domicare.DomicareApplication - Starting DomicareApplication using Java 17.0.15 with PID 81299 (/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes started by anhnon in /Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND)
+2025-06-01 08:54:26.971 [main] DEBUG c.b.domicare.DomicareApplication - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-01 08:54:26.971 [main] INFO  c.b.domicare.DomicareApplication - The following 1 profile is active: "prod"
+2025-06-01 08:54:27.672 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-01 08:54:27.749 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 72 ms. Found 9 JPA repository interfaces.
+2025-06-01 08:54:28.157 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-01 08:54:28.163 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-01 08:54:28.163 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-01 08:54:28.189 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-01 08:54:28.189 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1189 ms
+2025-06-01 08:54:28.372 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-01 08:54:28.397 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-01 08:54:28.412 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-01 08:54:28.544 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-01 08:54:28.557 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-01 08:54:29.210 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@5c20505f
+2025-06-01 08:54:29.212 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-01 08:54:29.440 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.8
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-01 08:54:29.943 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-01 08:54:32.652 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01 08:54:32.835 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-01 08:54:33.397 [main] INFO  c.b.d.c.WebSocketConfiguration - Configuring message broker with topic prefix: /topic
+2025-06-01 08:54:33.463 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsService
+2025-06-01 08:54:33.642 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring public endpoint security chain
+2025-06-01 08:54:33.656 [main] INFO  c.b.d.c.WebSocketConfiguration - Registering STOMP endpoints at /ws
+2025-06-01 08:54:33.706 [main] INFO  c.b.d.c.CorsConfiguration - CORS configuration applied for allowed origins
+2025-06-01 08:54:33.869 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-06-01 08:54:33.908 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring main security filter chain
+2025-06-01 08:54:34.224 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-01 08:54:34.224 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@58721f69]]
+2025-06-01 08:54:34.224 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-01 08:54:34.229 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-06-01 08:54:34.239 [main] INFO  c.b.domicare.DomicareApplication - Started DomicareApplication in 7.443 seconds (process running for 7.664)
+2025-06-01 08:54:36.239 [RMI TCP Connection(2)-127.0.0.1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-01 08:54:36.239 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-01 08:54:36.240 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-06-01 08:55:13.201 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-01 08:55:13.208 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-01 08:55:13.210 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-01 08:55:13.210 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@58721f69]]
+2025-06-01 08:55:13.210 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-01 08:55:13.220 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01 08:55:13.222 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-06-01 08:55:13.567 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-06-01 08:58:04.627 [main] INFO  c.b.domicare.DomicareApplication - Starting DomicareApplication using Java 17.0.15 with PID 84587 (/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes started by anhnon in /Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND)
+2025-06-01 08:58:04.628 [main] DEBUG c.b.domicare.DomicareApplication - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-01 08:58:04.629 [main] INFO  c.b.domicare.DomicareApplication - The following 1 profile is active: "prod"
+2025-06-01 08:58:05.205 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-01 08:58:05.250 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 36 ms. Found 9 JPA repository interfaces.
+2025-06-01 08:58:05.636 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-01 08:58:05.642 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-01 08:58:05.642 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-01 08:58:05.667 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-01 08:58:05.667 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1020 ms
+2025-06-01 08:58:05.843 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-01 08:58:05.865 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-01 08:58:05.877 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-01 08:58:05.980 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-01 08:58:05.991 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-01 08:58:09.125 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@62264d4f
+2025-06-01 08:58:09.126 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-01 08:58:09.304 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.8
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-01 08:58:09.770 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-01 08:58:11.985 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01 08:58:12.195 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-01 08:58:12.810 [main] INFO  c.b.d.c.WebSocketConfiguration - Configuring message broker with topic prefix: /topic
+2025-06-01 08:58:12.878 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsService
+2025-06-01 08:58:13.066 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring public endpoint security chain
+2025-06-01 08:58:13.081 [main] INFO  c.b.d.c.WebSocketConfiguration - Registering STOMP endpoints at /ws
+2025-06-01 08:58:13.132 [main] INFO  c.b.d.c.CorsConfiguration - CORS configuration applied for allowed origins
+2025-06-01 08:58:13.307 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-06-01 08:58:13.355 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring main security filter chain
+2025-06-01 08:58:13.699 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-01 08:58:13.699 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@208d5110]]
+2025-06-01 08:58:13.700 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-01 08:58:13.705 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-06-01 08:58:13.714 [main] INFO  c.b.domicare.DomicareApplication - Started DomicareApplication in 9.262 seconds (process running for 9.517)
+2025-06-01 08:58:13.803 [RMI TCP Connection(2)-127.0.0.1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-01 08:58:13.803 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-01 08:58:13.804 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2025-06-01 08:58:23.439 [http-nio-8080-exec-3] DEBUG c.b.d.service.imp.UserServiceImp - Finding user by email: user01@gmail.com
+2025-06-01 08:58:23.560 [http-nio-8080-exec-3] DEBUG c.b.d.service.imp.UserServiceImp - User found with ID: 2
+2025-06-01 08:58:23.644 [http-nio-8080-exec-3] DEBUG c.b.d.service.imp.UserServiceImp - Finding user by email: user01@gmail.com
+2025-06-01 08:58:23.687 [http-nio-8080-exec-3] DEBUG c.b.d.service.imp.UserServiceImp - User found with ID: 2
+2025-06-01 08:58:23.688 [http-nio-8080-exec-3] DEBUG c.b.d.security.jwt.JwtTokenManager - Creating access token for user user01@gmail.com
+2025-06-01 08:58:23.708 [http-nio-8080-exec-3] DEBUG c.b.d.service.imp.UserServiceImp - Finding user by email: user01@gmail.com
+2025-06-01 08:58:23.743 [http-nio-8080-exec-3] DEBUG c.b.d.service.imp.UserServiceImp - User found with ID: 2
+2025-06-01 08:58:23.782 [http-nio-8080-exec-3] DEBUG c.b.d.security.jwt.JwtTokenManager - Deleted existing refresh tokens for user user01@gmail.com
+2025-06-01 08:58:23.834 [http-nio-8080-exec-3] DEBUG c.b.d.security.jwt.JwtTokenManager - Created refresh token for user user01@gmail.com
+2025-06-01 08:58:23.834 [http-nio-8080-exec-3] DEBUG c.b.d.service.imp.UserServiceImp - Finding user by email: user01@gmail.com
+2025-06-01 08:58:23.869 [http-nio-8080-exec-3] DEBUG c.b.d.service.imp.UserServiceImp - User found with ID: 2
+2025-06-01 08:58:35.460 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-01 08:58:35.466 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-01 08:58:35.467 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-01 08:58:35.468 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@208d5110]]
+2025-06-01 08:58:35.468 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-01 08:58:35.522 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01 08:58:35.539 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-06-01 08:58:35.883 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-06-01 09:02:09.151 [main] INFO  c.b.domicare.DomicareApplication - Starting DomicareApplication using Java 17.0.15 with PID 88974 (/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes started by anhnon in /Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND)
+2025-06-01 09:02:09.152 [main] DEBUG c.b.domicare.DomicareApplication - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-01 09:02:09.152 [main] INFO  c.b.domicare.DomicareApplication - The following 1 profile is active: "prod"
+2025-06-01 09:02:09.743 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-01 09:02:09.786 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 38 ms. Found 9 JPA repository interfaces.
+2025-06-01 09:02:10.186 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-01 09:02:10.192 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-01 09:02:10.192 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-01 09:02:10.216 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-01 09:02:10.216 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1046 ms
+2025-06-01 09:02:10.392 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-01 09:02:10.415 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-01 09:02:10.429 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-01 09:02:10.532 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-01 09:02:10.545 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-01 09:02:11.006 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@41948c13
+2025-06-01 09:02:11.007 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-01 09:02:11.179 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.8
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-01 09:02:11.659 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-01 09:02:13.850 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01 09:02:14.066 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-01 09:02:14.677 [main] INFO  c.b.d.c.WebSocketConfiguration - Configuring message broker with topic prefix: /topic
+2025-06-01 09:02:14.746 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsService
+2025-06-01 09:02:14.940 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring public endpoint security chain
+2025-06-01 09:02:14.954 [main] INFO  c.b.d.c.WebSocketConfiguration - Registering STOMP endpoints at /ws
+2025-06-01 09:02:15.005 [main] INFO  c.b.d.c.CorsConfiguration - CORS configuration applied for allowed origins
+2025-06-01 09:02:15.207 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-06-01 09:02:15.254 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring main security filter chain
+2025-06-01 09:02:15.611 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-01 09:02:15.611 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@1f7354be]]
+2025-06-01 09:02:15.612 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-01 09:02:15.617 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-06-01 09:02:15.627 [main] INFO  c.b.domicare.DomicareApplication - Started DomicareApplication in 6.644 seconds (process running for 6.904)
+2025-06-01 09:02:18.370 [RMI TCP Connection(2)-127.0.0.1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-01 09:02:18.371 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-01 09:02:18.372 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-06-01 09:02:19.400 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: user01@gmail.com
+2025-06-01 09:02:19.531 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 2
+2025-06-01 09:02:19.605 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: user01@gmail.com
+2025-06-01 09:02:19.644 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 2
+2025-06-01 09:02:19.644 [http-nio-8080-exec-1] DEBUG c.b.d.security.jwt.JwtTokenManager - Creating access token for user user01@gmail.com
+2025-06-01 09:02:19.664 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: user01@gmail.com
+2025-06-01 09:02:19.700 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 2
+2025-06-01 09:02:19.742 [http-nio-8080-exec-1] DEBUG c.b.d.security.jwt.JwtTokenManager - Deleted existing refresh tokens for user user01@gmail.com
+2025-06-01 09:02:19.788 [http-nio-8080-exec-1] DEBUG c.b.d.security.jwt.JwtTokenManager - Created refresh token for user user01@gmail.com
+2025-06-01 09:02:19.788 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: user01@gmail.com
+2025-06-01 09:02:19.825 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 2
+2025-06-01 09:03:15.609 [MessageBroker-1] INFO  o.s.w.s.c.WebSocketMessageBrokerStats - WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 1, active threads = 1, queued tasks = 0, completed tasks = 0]
+2025-06-01 09:03:16.488 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-01 09:03:16.495 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-01 09:03:16.497 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-01 09:03:16.498 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@1f7354be]]
+2025-06-01 09:03:16.498 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-01 09:03:16.508 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01 09:03:16.512 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-06-01 09:03:16.849 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-06-01 09:06:00.000 [main] INFO  c.b.domicare.DomicareApplication - Starting DomicareApplication using Java 17.0.15 with PID 92734 (/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes started by anhnon in /Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND)
+2025-06-01 09:06:00.001 [main] DEBUG c.b.domicare.DomicareApplication - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-01 09:06:00.002 [main] INFO  c.b.domicare.DomicareApplication - The following 1 profile is active: "prod"
+2025-06-01 09:06:00.693 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-01 09:06:00.737 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 39 ms. Found 9 JPA repository interfaces.
+2025-06-01 09:06:01.250 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-01 09:06:01.256 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-01 09:06:01.256 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-01 09:06:01.282 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-01 09:06:01.283 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1260 ms
+2025-06-01 09:06:01.459 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-01 09:06:01.511 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-01 09:06:01.567 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-01 09:06:01.669 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-01 09:06:01.681 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-01 09:06:02.655 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@38c1b1a7
+2025-06-01 09:06:02.656 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-01 09:06:02.853 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.8
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-01 09:06:03.317 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-01 09:06:05.530 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01 09:06:05.714 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-01 09:06:06.296 [main] INFO  c.b.d.c.WebSocketConfiguration - Configuring message broker with topic prefix: /topic
+2025-06-01 09:06:06.366 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsService
+2025-06-01 09:06:06.546 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring public endpoint security chain
+2025-06-01 09:06:06.560 [main] INFO  c.b.d.c.WebSocketConfiguration - Registering STOMP endpoints at /ws
+2025-06-01 09:06:06.613 [main] INFO  c.b.d.c.CorsConfiguration - CORS configuration applied for allowed origins
+2025-06-01 09:06:06.788 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-06-01 09:06:06.827 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring main security filter chain
+2025-06-01 09:06:07.157 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-01 09:06:07.157 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@3c4dd92e]]
+2025-06-01 09:06:07.158 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-01 09:06:07.162 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-06-01 09:06:07.172 [main] INFO  c.b.domicare.DomicareApplication - Started DomicareApplication in 7.35 seconds (process running for 7.646)
+2025-06-01 09:06:09.159 [RMI TCP Connection(2)-127.0.0.1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-01 09:06:09.159 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-01 09:06:09.160 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-06-01 09:06:10.079 [http-nio-8080-exec-2] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] Login attempt for email: user01@gmail.com
+2025-06-01 09:06:10.167 [http-nio-8080-exec-2] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: user01@gmail.com
+2025-06-01 09:06:10.312 [http-nio-8080-exec-2] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 2
+2025-06-01 09:06:10.388 [http-nio-8080-exec-2] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: user01@gmail.com
+2025-06-01 09:06:10.430 [http-nio-8080-exec-2] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 2
+2025-06-01 09:06:10.431 [http-nio-8080-exec-2] DEBUG c.b.d.security.jwt.JwtTokenManager - Creating access token for user user01@gmail.com
+2025-06-01 09:06:10.456 [http-nio-8080-exec-2] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: user01@gmail.com
+2025-06-01 09:06:10.492 [http-nio-8080-exec-2] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 2
+2025-06-01 09:06:10.544 [http-nio-8080-exec-2] DEBUG c.b.d.security.jwt.JwtTokenManager - Deleted existing refresh tokens for user user01@gmail.com
+2025-06-01 09:06:10.597 [http-nio-8080-exec-2] DEBUG c.b.d.security.jwt.JwtTokenManager - Created refresh token for user user01@gmail.com
+2025-06-01 09:06:10.597 [http-nio-8080-exec-2] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: user01@gmail.com
+2025-06-01 09:06:10.641 [http-nio-8080-exec-2] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 2
+2025-06-01 09:06:10.645 [http-nio-8080-exec-2] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] User user01@gmail.com logged in successfully
+2025-06-01 09:06:29.826 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-01 09:06:29.830 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-01 09:06:29.831 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-01 09:06:29.831 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@3c4dd92e]]
+2025-06-01 09:06:29.831 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-01 09:06:29.839 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01 09:06:29.841 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-06-01 09:06:30.187 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-06-01 09:07:46.923 [main] INFO  c.b.domicare.DomicareApplication - Starting DomicareApplication using Java 17.0.15 with PID 94657 (/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes started by anhnon in /Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND)
+2025-06-01 09:07:46.924 [main] DEBUG c.b.domicare.DomicareApplication - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-01 09:07:46.924 [main] INFO  c.b.domicare.DomicareApplication - The following 1 profile is active: "prod"
+2025-06-01 09:07:47.511 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-01 09:07:47.552 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 36 ms. Found 9 JPA repository interfaces.
+2025-06-01 09:07:47.952 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-01 09:07:47.958 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-01 09:07:47.958 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-01 09:07:47.984 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-01 09:07:47.984 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1042 ms
+2025-06-01 09:07:48.191 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-01 09:07:48.211 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-01 09:07:48.224 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-01 09:07:48.323 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-01 09:07:48.336 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-01 09:07:49.088 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@57ac236a
+2025-06-01 09:07:49.088 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-01 09:07:49.314 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.8
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-01 09:07:49.784 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-01 09:07:52.013 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01 09:07:52.225 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-01 09:07:52.812 [main] INFO  c.b.d.c.WebSocketConfiguration - Configuring message broker with topic prefix: /topic
+2025-06-01 09:07:52.882 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsService
+2025-06-01 09:07:53.065 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring public endpoint security chain
+2025-06-01 09:07:53.081 [main] INFO  c.b.d.c.WebSocketConfiguration - Registering STOMP endpoints at /ws
+2025-06-01 09:07:53.131 [main] INFO  c.b.d.c.CorsConfiguration - CORS configuration applied for allowed origins
+2025-06-01 09:07:53.311 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-06-01 09:07:53.349 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring main security filter chain
+2025-06-01 09:07:53.681 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-01 09:07:53.681 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@673f17f9]]
+2025-06-01 09:07:53.681 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-01 09:07:53.686 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-06-01 09:07:53.696 [main] INFO  c.b.domicare.DomicareApplication - Started DomicareApplication in 6.948 seconds (process running for 7.219)
+2025-06-01 09:07:56.113 [RMI TCP Connection(2)-127.0.0.1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-01 09:07:56.114 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-01 09:07:56.115 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-06-01 09:08:05.576 [http-nio-8080-exec-1] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] Login attempt for email: user01@gmail.com
+2025-06-01 09:08:05.666 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: user01@gmail.com
+2025-06-01 09:08:05.788 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 2
+2025-06-01 09:08:05.864 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: user01@gmail.com
+2025-06-01 09:08:05.908 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 2
+2025-06-01 09:08:05.909 [http-nio-8080-exec-1] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Creating access token for user user01@gmail.com
+2025-06-01 09:08:05.928 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: user01@gmail.com
+2025-06-01 09:08:05.964 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 2
+2025-06-01 09:08:06.024 [http-nio-8080-exec-1] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Deleted existing refresh tokens for user user01@gmail.com
+2025-06-01 09:08:06.070 [http-nio-8080-exec-1] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Created refresh token for user user01@gmail.com
+2025-06-01 09:08:06.070 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: user01@gmail.com
+2025-06-01 09:08:06.108 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 2
+2025-06-01 09:08:06.112 [http-nio-8080-exec-1] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] User user01@gmail.com logged in successfully
+2025-06-01 09:08:53.684 [MessageBroker-1] INFO  o.s.w.s.c.WebSocketMessageBrokerStats - WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 1, active threads = 1, queued tasks = 0, completed tasks = 0]
+2025-06-01 09:09:22.206 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-01 09:09:22.221 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-01 09:09:22.223 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-01 09:09:22.224 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@673f17f9]]
+2025-06-01 09:09:22.224 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-01 09:09:22.234 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01 09:09:22.238 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-06-01 09:09:22.778 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-06-01 09:11:23.068 [main] INFO  c.b.domicare.DomicareApplication - Starting DomicareApplication using Java 21.0.6 with PID 98016 (/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes started by anhnon in /Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND)
+2025-06-01 09:11:23.069 [main] DEBUG c.b.domicare.DomicareApplication - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-01 09:11:23.070 [main] INFO  c.b.domicare.DomicareApplication - The following 1 profile is active: "prod"
+2025-06-01 09:11:23.737 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-01 09:11:23.773 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 32 ms. Found 9 JPA repository interfaces.
+2025-06-01 09:11:24.197 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-01 09:11:24.204 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-01 09:11:24.204 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-01 09:11:24.229 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-01 09:11:24.229 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1139 ms
+2025-06-01 09:11:24.423 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-01 09:11:24.460 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-01 09:11:24.480 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-01 09:11:24.609 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-01 09:11:24.625 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-01 09:11:25.590 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@684430c1
+2025-06-01 09:11:25.591 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-01 09:11:26.073 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.8
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-01 09:11:26.618 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-01 09:11:30.199 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01 09:11:30.442 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-01 09:11:31.097 [main] INFO  c.b.d.c.WebSocketConfiguration - Configuring message broker with topic prefix: /topic
+2025-06-01 09:11:31.178 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsService
+2025-06-01 09:11:31.416 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring public endpoint security chain
+2025-06-01 09:11:31.439 [main] INFO  c.b.d.c.WebSocketConfiguration - Registering STOMP endpoints at /ws
+2025-06-01 09:11:31.511 [main] INFO  c.b.d.c.CorsConfiguration - CORS configuration applied for allowed origins
+2025-06-01 09:11:31.708 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-06-01 09:11:31.777 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring main security filter chain
+2025-06-01 09:11:32.266 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-01 09:11:32.266 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@f02369f]]
+2025-06-01 09:11:32.267 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-01 09:11:32.271 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-06-01 09:11:32.280 [main] INFO  c.b.domicare.DomicareApplication - Started DomicareApplication in 9.428 seconds (process running for 9.804)
+2025-06-01 09:11:32.625 [RMI TCP Connection(2)-127.0.0.1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-01 09:11:32.625 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-01 09:11:32.626 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-06-01 09:11:37.873 [http-nio-8080-exec-1] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] Login attempt for email: user01@gmail.com
+2025-06-01 09:11:37.963 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: user01@gmail.com
+2025-06-01 09:11:38.103 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 2
+2025-06-01 09:11:38.198 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: user01@gmail.com
+2025-06-01 09:11:38.238 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 2
+2025-06-01 09:11:38.239 [http-nio-8080-exec-1] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Creating access token for user user01@gmail.com
+2025-06-01 09:11:38.281 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: user01@gmail.com
+2025-06-01 09:11:38.316 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 2
+2025-06-01 09:11:38.356 [http-nio-8080-exec-1] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Deleted existing refresh tokens for user user01@gmail.com
+2025-06-01 09:11:38.402 [http-nio-8080-exec-1] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Created refresh token for user user01@gmail.com
+2025-06-01 09:11:38.402 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: user01@gmail.com
+2025-06-01 09:11:38.436 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 2
+2025-06-01 09:11:38.438 [http-nio-8080-exec-1] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] User user01@gmail.com logged in successfully
+2025-06-01 09:11:47.251 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-01 09:11:47.258 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-01 09:11:47.260 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-01 09:11:47.260 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@f02369f]]
+2025-06-01 09:11:47.260 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-01 09:11:47.269 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-01 09:11:47.272 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-06-01 09:11:47.619 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

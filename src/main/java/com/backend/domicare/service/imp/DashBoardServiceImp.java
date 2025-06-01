@@ -10,7 +10,7 @@ import com.backend.domicare.dto.DashboardSummaryDTO;
 import com.backend.domicare.dto.request.LocalDateRequest;
 import com.backend.domicare.exception.InvalidDateException;
 import com.backend.domicare.service.BookingService;
-import com.backend.domicare.service.DashboardService;
+import com.backend.domicare.service.DashBoardService;
 import com.backend.domicare.service.ReviewService;
 import com.backend.domicare.service.UserService;
 
@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class DashboardServiceImp implements DashboardService {
+public class DashBoardServiceImp implements DashBoardService {
     private final UserService userService;
     private final BookingService bookingService;
     private final ReviewService reviewService;

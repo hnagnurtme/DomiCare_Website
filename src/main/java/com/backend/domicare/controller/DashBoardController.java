@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.domicare.dto.DashboardSummaryDTO;
 import com.backend.domicare.dto.request.LocalDateRequest;
-import com.backend.domicare.service.DashboardService;
+import com.backend.domicare.service.DashBoardService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api")
 public class DashBoardController {
-    private final DashboardService dashboardService;
+    private final DashBoardService dashboardService;
 
     @PostMapping("/dashboard/summary")
     public ResponseEntity<Map<String, DashboardSummaryDTO>> getDashboardSummary(@Valid @RequestBody LocalDateRequest localDateRequest) {

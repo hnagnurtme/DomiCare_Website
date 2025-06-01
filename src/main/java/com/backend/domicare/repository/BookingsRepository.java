@@ -46,4 +46,15 @@ public interface BookingsRepository extends JpaRepository<Booking, Long> , JpaSp
     @Query("SELECT SUM(b.totalPrice) FROM Booking b WHERE b.bookingStatus = :status AND b.createAt BETWEEN :startDate AND :endDate")
     Long countTotalRevenue(@Param("status") BookingStatus status, @Param("startDate") Instant startDate, @Param("endDate") Instant endDate);
     // Example : Select SUM(b.totalPrice) from Booking b where b.createAt between '2023-01-01' and '2023-12-31'
+
+    //countBookingsByUserIdAndCreatedAtAfter
+    @Query("SELECT COUNT(b) FROM Booking b WHERE b.user.id = :userId AND b.createAt >= :createdAt")
+    Long countBookingsByUserIdAndCreatedAtAfter(@Param("userId") Long userId, @Param("createdAt") Instant createdAt);
+
+
+    @Query("SELECT COUNT(b) > 0 FROM Booking b JOIN b.products p " +
+       "WHERE b.user.id = :userId AND p.id = :productId AND b.bookingStatus = :status")
+    boolean existsByUserIdAndProductIdAndStatus(@Param("userId") Long userId,
+                                             @Param("productId") Long productId,
+                                             @Param("status") BookingStatus status);
 }

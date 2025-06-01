@@ -94,7 +94,6 @@ public class ProductController {
             spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("category").get("id"),
                     categoryId));
         }
-        spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("isDeleted"), false));
 
         return ResponseEntity.status(HttpStatus.OK).body(productService.getAllProducts(spec, pageable));
     }

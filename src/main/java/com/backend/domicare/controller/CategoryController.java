@@ -132,11 +132,6 @@ public class CategoryController {
             spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder
                     .like(criteriaBuilder.lower(root.get("nameUnsigned")), "%" + cleanSearchName + "%"));
         }
-        
-
-        spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder
-                .equal(root.get("isDeleted"), false));
-
         return ResponseEntity.status(HttpStatus.OK).body(this.categoryService.getAllCategories(spec, pageable));
     }
 }

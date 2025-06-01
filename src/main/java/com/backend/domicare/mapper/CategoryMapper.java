@@ -1,5 +1,7 @@
 package com.backend.domicare.mapper;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.factory.Mappers;
@@ -39,6 +41,8 @@ public interface CategoryMapper {
                 .build();
         
     }
+
+    List<CategoryDTO> convertToCategoryDTOs(List<Category> categories);
 
     default CategoryMini convertToCategoryMini(Category category) {
         if (category == null) {

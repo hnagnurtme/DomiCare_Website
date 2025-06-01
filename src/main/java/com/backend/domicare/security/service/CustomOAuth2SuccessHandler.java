@@ -62,19 +62,19 @@ public class CustomOAuth2SuccessHandler {
         user.setActive(true);
         user.setDeleted(false);
         
-        if (StringUtils.hasText(email)) {
+        if (StringUtils.hasText(email) && user.getEmail() == null) {
             user.setEmail(email);
         }
         
-        if (StringUtils.hasText(name)) {
+        if (StringUtils.hasText(name) && user.getName() == null) {
             user.setName(name);
         }
         
-        if (StringUtils.hasText(picture)) {
+        if (StringUtils.hasText(picture) && user.getAvatar() == null) {
             user.setAvatar(picture);
         }
         
-        if (StringUtils.hasText(locale)) {
+        if (StringUtils.hasText(locale) && user.getAddress() == null) {
             user.setAddress(locale);
         }
     }

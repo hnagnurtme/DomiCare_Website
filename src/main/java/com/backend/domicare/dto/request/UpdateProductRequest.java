@@ -31,6 +31,6 @@ public class UpdateProductRequest {
 
     private Double discount;
     
-    private List<String> landingImageIds;
+    private List<String> landingImages;
 
 }

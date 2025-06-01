@@ -16,12 +16,18 @@ import com.backend.domicare.model.Product;
  * This interface extends JpaRepository and JpaSpecificationExecutor to provide CRUD operations and query capabilities.
  */
 public interface ProductsRepository extends JpaRepository<Product, Long> , JpaSpecificationExecutor<Product> {
-    @Modifying
-    @Query("UPDATE Product p SET p.isDeleted = true WHERE p.category.id = :categoryId")
-    void softDeleteByCategoryId(Long categoryId);
+   // soft delete by productids
+   @Modifying
+   @Query("UPDATE Product p SET p.isDeleted = true WHERE p.id IN :ids")
+   void softDeleteByIds(@Param("ids") List<Long> ids);
+    
 
     boolean existsByName(String name);
     boolean existsByNameAndCategoryId(String name, Long categoryId);
+
+    //find by category id and not deleted
+    @Query("SELECT p FROM Product p WHERE p.category.id = :categoryId AND p.isDeleted = false")
+    List<Product> findByCategoryIdAndNotDeleted(@Param("categoryId") Long categoryId);
 
     @Modifying
     @Query("UPDATE Product p SET p.isDeleted = true WHERE p.id = :id")

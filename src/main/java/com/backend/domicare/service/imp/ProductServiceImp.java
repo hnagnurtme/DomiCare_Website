@@ -71,7 +71,7 @@ public class ProductServiceImp implements ProductService {
 
         if (mainImageId != null) {
             File mainImage = fileRepository.findByUrl(mainImageId);
-            if( mainImage == null) {
+            if (mainImage == null) {
                 logger.error("[Product] Main image not found with ID: {}", mainImageId);
                 throw new NotFoundFileException("Main image not found");
             }
@@ -119,10 +119,10 @@ public class ProductServiceImp implements ProductService {
         }
 
         Category oldCategory = categoryRepository.findById(oldCategoryID)
-            .orElseThrow(() -> {
-                logger.error("[Product] Old category not found with ID: {}", oldCategoryID);
-                return new CategoryNotFoundException("Old Category not found");
-            });
+                .orElseThrow(() -> {
+                    logger.error("[Product] Old category not found with ID: {}", oldCategoryID);
+                    return new CategoryNotFoundException("Old Category not found");
+                });
 
         if (oldCategory.getProducts().stream().noneMatch(p -> p.getId().equals(id))) {
             logger.error("[Product] Product with ID: {} not found in old category ID: {}", id, oldCategoryID);
@@ -131,16 +131,16 @@ public class ProductServiceImp implements ProductService {
 
         final Long finalNewCategoryID = newCategoryID;
         Category newCategory = categoryRepository.findById(finalNewCategoryID)
-            .orElseThrow(() -> {
-                logger.error("[Product] New category not found with ID: {}", finalNewCategoryID);
-                return new CategoryNotFoundException("New Category not found");
-            });
+                .orElseThrow(() -> {
+                    logger.error("[Product] New category not found with ID: {}", finalNewCategoryID);
+                    return new CategoryNotFoundException("New Category not found");
+                });
 
         Product productEntity = productRepository.findById(id)
-            .orElseThrow(() -> {
-                logger.error("[Product] Product not found with ID: {}", id);
-                return new NotFoundProductException("Product not found");
-            });
+                .orElseThrow(() -> {
+                    logger.error("[Product] Product not found with ID: {}", id);
+                    return new NotFoundProductException("Product not found");
+                });
 
         if (newCategoryID != null && !newCategoryID.equals(oldCategoryID)) {
             List<Product> oldCategoryProducts = oldCategory.getProducts();
@@ -174,22 +174,27 @@ public class ProductServiceImp implements ProductService {
         String mainImageId = request.getMainImageId();
         if (mainImageId != null) {
             File mainImage = fileRepository.findByUrl(mainImageId);
-            if( mainImage == null) {
+            if (mainImage == null) {
                 logger.error("[Product] Main image not found with ID: {}", mainImageId);
                 throw new NotFoundFileException("Main image not found");
             }
             productEntity.setImage(mainImage.getUrl());
         }
-        List<String> landingImageIds = request.getLandingImageIds();
-        if (landingImageIds != null) {
-            List<String> landingImages = fileRepository.findByUrls(landingImageIds)
-                .stream()
-                .map(File::getUrl)
-                .toList();
-            
+        List<String> landingImageIds = request.getLandingImages();
+        if (landingImageIds != null && !landingImageIds.isEmpty()) {
+            List<File> foundFiles = fileRepository.findByUrls(landingImageIds);
+
+            if (foundFiles.size() != landingImageIds.size()) {
+                logger.error("[Product] One or more landing images not found. Expected: {}, Found: {}",
+                        landingImageIds.size(), foundFiles.size());
+                throw new NotFoundFileException("Some landing images not found");
+            }
+
+            List<String> landingImages = foundFiles.stream()
+                    .map(File::getUrl)
+                    .toList();
             productEntity.setLandingImages(landingImages);
         }
-
         productRepository.save(productEntity);
 
         ProductDTO updatedProductDTO = ProductMapper.INSTANCE.convertToProductDTO(productEntity);
@@ -233,7 +238,7 @@ public class ProductServiceImp implements ProductService {
     @Override
     public ResultPagingDTO getAllProducts(Specification<Product> spec, Pageable pageable) {
         logger.info("[Product] Fetching all products with pagination");
-
+        spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("isDeleted"), false));
         Page<Product> allProducts = this.productRepository.findAll(spec, pageable);
         List<ProductResponse> productDTOs = ProductMapper.INSTANCE.convertToProductResponses(allProducts.getContent());
 
@@ -259,10 +264,10 @@ public class ProductServiceImp implements ProductService {
         Boolean isMainImage = addProductImageRequest.getIsMainImage();
 
         Product product = productRepository.findById(productId)
-            .orElseThrow(() -> {
-                logger.error("[Product] Product not found with ID: {}", productId);
-                return new NotFoundProductException("Product not found");
-            });
+                .orElseThrow(() -> {
+                    logger.error("[Product] Product not found with ID: {}", productId);
+                    return new NotFoundProductException("Product not found");
+                });
 
         File image = fileRepository.findByUrl(imageId);
         if (image == null) {
@@ -279,7 +284,8 @@ public class ProductServiceImp implements ProductService {
             if (!product.getLandingImages().contains(image.getUrl())) {
                 product.getLandingImages().add(image.getUrl());
             } else {
-                logger.warn("[Product] Image with URL: {} already exists in the product's landing images", image.getUrl());
+                logger.warn("[Product] Image with URL: {} already exists in the product's landing images",
+                        image.getUrl());
                 throw new UrlAlreadyExistsException("Image already exists in the product's landing images");
             }
         }
@@ -305,4 +311,3 @@ public class ProductServiceImp implements ProductService {
         return products;
     }
 }
-    

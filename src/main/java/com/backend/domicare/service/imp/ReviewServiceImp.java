@@ -15,12 +15,15 @@ import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.dto.request.ReviewRequest;
 import com.backend.domicare.exception.AlreadyReviewProduct;
 import com.backend.domicare.exception.InvalidDateException;
+import com.backend.domicare.exception.NotBookedProductException;
 import com.backend.domicare.exception.NotFoundProductException;
 import com.backend.domicare.exception.NotFoundUserException;
 import com.backend.domicare.mapper.ReviewMapper;
+import com.backend.domicare.model.BookingStatus;
 import com.backend.domicare.model.Product;
 import com.backend.domicare.model.Review;
 import com.backend.domicare.model.User;
+import com.backend.domicare.repository.BookingsRepository;
 import com.backend.domicare.repository.ProductsRepository;
 import com.backend.domicare.repository.ReviewsRepository;
 import com.backend.domicare.repository.UsersRepository;
@@ -35,11 +38,13 @@ public class ReviewServiceImp implements ReviewService {
     private final ReviewsRepository reviewsRepository;
     private final UsersRepository usersRepository;
     private final ProductsRepository productsRepository;
+    private final BookingsRepository bookingsRepository;
 
     @Override
     public ReviewDTO getReviewById(Long id) {
-
-        return null;
+        Review review = reviewsRepository.findById(id)
+                .orElseThrow(() -> new NotFoundProductException("Review not found with ID: " + id));
+        return ReviewMapper.INSTANCE.convertToReviewDTO(review);
     }
 
     @Override
@@ -64,7 +69,7 @@ public class ReviewServiceImp implements ReviewService {
         User user = usersRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundProductException("User not found with ID: " + userId));
         
-        
+        validateAlreadyBooked(userId, productId);
         boolean reviewExists = reviewsRepository.existsByProductIdAndUserId(productId, userId);
         if (reviewExists) {
             throw new AlreadyReviewProduct("Review already exists for this product and user");
@@ -117,5 +122,13 @@ public class ReviewServiceImp implements ReviewService {
         Instant startDateStr = startDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
         Instant endDateStr = endDate.plusDays(1).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
         return reviewsRepository.countTotalReviews(startDateStr, endDateStr);
+    }
+
+
+    private void validateAlreadyBooked(Long userId, Long productId) {
+        boolean alreadyBooked = bookingsRepository.existsByUserIdAndProductIdAndStatus(userId, productId, BookingStatus.SUCCESS);
+        if (!alreadyBooked) {
+            throw new NotBookedProductException("User has not booked this product yet");
+        }
     }
 }

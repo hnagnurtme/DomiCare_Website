@@ -22,6 +22,7 @@ import com.backend.domicare.exception.AlreadyRegisterUserException;
 import com.backend.domicare.exception.BookingStatusException;
 import com.backend.domicare.exception.NotFoundBookingException;
 import com.backend.domicare.exception.NotFoundUserException;
+import com.backend.domicare.exception.TooMuchBookingException;
 import com.backend.domicare.mapper.BookingMapper;
 import com.backend.domicare.model.Booking;
 import com.backend.domicare.model.BookingStatus;
@@ -34,6 +35,9 @@ import com.backend.domicare.service.BookingService;
 import com.backend.domicare.service.EmailSendingService;
 import com.backend.domicare.service.ProductService;
 import com.backend.domicare.service.UserService;
+
+import lombok.val;
+
 import com.backend.domicare.dto.paging.ResultPagingDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -323,6 +327,8 @@ public class BookingServiceImp implements BookingService {
                 throw new NotFoundUserException("Không tìm thấy người dùng");
             }
         }
+        validateTooMuchBookingPerHour(user.getId());
+        
         Booking booking = BookingMapper.INSTANCE.convertToBooking(request);
         booking.setUser(user);
         booking.setCreateBy(user.getEmail());
@@ -447,5 +453,18 @@ public class BookingServiceImp implements BookingService {
         resultPagingDTO.setData(bookingDTOs); 
 
         return resultPagingDTO;
+    }
+
+
+    private boolean validateTooMuchBookingPerHour(Long userId) {
+        Instant oneHourAgo = Instant.now().minusSeconds(3600);
+        long bookingCount = bookingRepository
+                .countBookingsByUserIdAndCreatedAtAfter(userId,oneHourAgo);
+
+        if (bookingCount >= 5) {
+            logger.warn("[Booking] User with ID: {} has too many bookings in the last hour: {}", userId, bookingCount);
+            throw new TooMuchBookingException("Bạn đã đặt quá 5 đơn hàng trong 1 giờ qua. Vui lòng thử lại sau.");
+        }
+        return true;
     }
 }

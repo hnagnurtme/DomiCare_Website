@@ -38,14 +38,24 @@ public class GlobalExceptionHandler {
         ExceptionConstants.URL_ALREADY_EXISTS,
         ExceptionConstants.NOT_FOUND_FILE,
         ExceptionConstants.BOOKING_NOT_FOUND ,
-        ExceptionConstants.INVALID_DATE
+        ExceptionConstants.INVALID_DATE ,
+        ExceptionConstants.TOO_MUCH_BOOKING,
+        ExceptionConstants.NOT_BOOKED_PRODUCT
     ));
 
     @ExceptionHandler(NotMatchPasswordException.class)
     public ResponseEntity<RestResponse<Object>> handleNotMatchPasswordException(NotMatchPasswordException e) {
         return buildResponse(ExceptionConstants.NOT_MATCH_PASSWORD, e.getMessage());
     }
+    @ExceptionHandler(TooMuchBookingException.class)
+    public ResponseEntity<RestResponse<Object>> handleTooMuchBookingException(TooMuchBookingException e) {
+        return buildResponse(ExceptionConstants.TOO_MUCH_BOOKING, e.getMessage());
+    }
 
+    @ExceptionHandler(NotBookedProductException.class)
+    public ResponseEntity<RestResponse<Object>> handleNotBookedProductException(NotBookedProductException e) {
+        return buildResponse(ExceptionConstants.NOT_BOOKED_PRODUCT, e.getMessage());
+    }
     @ExceptionHandler(InvalidDateException.class)
     public ResponseEntity<RestResponse<Object>> handleInvalidDateException(InvalidDateException e) {
         return buildResponse(ExceptionConstants.INVALID_DATE, e.getMessage());
@@ -174,13 +184,6 @@ public class GlobalExceptionHandler {
                              .body(new Message("File quá lớn!"));
     }
 
-    /**
-     * Builds a standardized response for exception handling
-     *
-     * @param error   The exception constant defining the error type
-     * @param message The error message to be returned
-     * @return A ResponseEntity with appropriate status and body
-     */
     private ResponseEntity<RestResponse<Object>> buildResponse(ExceptionConstants error, String message) {
         RestResponse<Object> response = new RestResponse<>();
         response.setStatus(error.getCode());

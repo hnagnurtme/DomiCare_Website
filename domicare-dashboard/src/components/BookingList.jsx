@@ -35,7 +35,7 @@ const BookingList = () => {
         console.log('✅ WebSocket connected');
 
         stompClient.subscribe('/topic/bookings/new', (message) => {
-          const newBooking = JSON.parse(message.body);
+          const newBooking = JSON.parse(message.body);z
           setBookings(prev => {
             const exists = prev.find(b => b.id === newBooking.id);
             if (exists) return prev;

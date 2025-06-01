@@ -29,10 +29,7 @@ import com.backend.domicare.model.User;
 import com.backend.domicare.repository.TokensRepository;
 import com.backend.domicare.service.UserService;
 
-/**
- * Manages JWT token generation, validation and extraction
- * Handles both access tokens and refresh tokens
- */
+
 @Component
 public class JwtTokenManager {
     private static final Logger logger = LoggerFactory.getLogger(JwtTokenManager.class);
@@ -54,15 +51,8 @@ public class JwtTokenManager {
     }
     public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS256;
     
-    private static final long REFRESH_TOKEN_DURATION_SECONDS = 604800; // 7 days
+    private static final long REFRESH_TOKEN_DURATION_SECONDS = 604800;
 
-    /**
-     * Creates a JWT access token for the specified user email
-     * 
-     * @param email User email
-     * @return JWT token string
-     * @throws NotFoundException if user not found
-     */
     public String createAccessToken(String email) {
         if (!StringUtils.hasText(email)) {
             throw new IllegalArgumentException("Email cannot be empty");
@@ -77,7 +67,6 @@ public class JwtTokenManager {
             throw new NotFoundException(email + " không tồn tại");
         }
 
-        // Get user roles or assign default if none exist
         Set<Role> roles = user.getRoles();
         Set<String> roleNames;
         
@@ -90,7 +79,6 @@ public class JwtTokenManager {
                 .collect(Collectors.toSet());
         }
 
-        // Build JWT claims
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .subject(email)
                 .issuedAt(now)
@@ -105,19 +93,11 @@ public class JwtTokenManager {
         return this.jwtEncoder.encode(JwtEncoderParameters.from(header, claims)).getTokenValue();
     }
 
-    /**
-     * Gets the current user login from SecurityContext
-     * 
-     * @return Optional containing user email if available
-     */
     public static Optional<String> getCurrentUserLogin() {
         SecurityContext context = SecurityContextHolder.getContext();
         return Optional.ofNullable(extractPrincipal(context.getAuthentication()));
     }
 
-    /**
-     * Extracts principal (username/email) from Authentication object
-     */
     private static String extractPrincipal(Authentication authentication) {
         if (authentication == null) {
             return null;
@@ -134,14 +114,6 @@ public class JwtTokenManager {
         }
         return null;
     }
-
-    /**
-     * Creates a refresh token for the specified user and stores it in the database
-     * 
-     * @param email User email
-     * @return Refresh token string
-     * @throws NotFoundException if user not found
-     */
     public String createRefreshToken(String email) {
         if (!StringUtils.hasText(email)) {
             throw new IllegalArgumentException("Email cannot be empty");
@@ -153,14 +125,12 @@ public class JwtTokenManager {
             throw new NotFoundException(email + " không tồn tại");
         }
         
-        // Delete existing refresh tokens for this user to prevent token accumulation
         List<Token> existingTokens = tokensRepository.findByUserId(user.getId());
         if (existingTokens != null && !existingTokens.isEmpty()) {
             tokensRepository.deleteAll(existingTokens);
             logger.debug("Deleted existing refresh tokens for user {}", email);
         }
         
-        // Generate secure random token
         String refreshToken = UUID.randomUUID().toString();
         Instant expiration = Instant.now().plusSeconds(REFRESH_TOKEN_DURATION_SECONDS);
 
@@ -176,11 +146,7 @@ public class JwtTokenManager {
         return refreshToken;
     }
 
-    /**
-     * Deletes the refresh token
-     * 
-     * @param refreshToken The refresh token to delete
-     */
+
     public void deleteRefreshToken(String refreshToken) {
         if (!StringUtils.hasText(refreshToken)) {
             logger.warn("Attempted to delete null or empty refresh token");
@@ -196,13 +162,6 @@ public class JwtTokenManager {
         }
     }
 
-    /**
-     * Gets the user associated with a refresh token
-     * 
-     * @param refreshToken Refresh token string
-     * @return User object
-     * @throws NotFoundException if token not found
-     */
     public User getUserFromRefreshToken(String refreshToken) {
         if (!StringUtils.hasText(refreshToken)) {
             throw new IllegalArgumentException("Refresh token cannot be empty");
@@ -216,12 +175,6 @@ public class JwtTokenManager {
         return token.getUser();
     }
 
-    /**
-     * Checks if a refresh token is valid and not expired
-     * 
-     * @param refreshToken Refresh token string
-     * @return true if valid, false otherwise
-     */
     public boolean isRefreshTokenValid(String refreshToken) {
         if (!StringUtils.hasText(refreshToken)) {
             logger.warn("Attempted to validate null or empty refresh token");
@@ -238,18 +191,12 @@ public class JwtTokenManager {
         
         if (!valid) {
             logger.warn("Refresh token has expired for user ID {}", token.getUser().getId());
-            // Clean up expired token
             tokensRepository.delete(token);
         }
         
         return valid;
     }
 
-    /**
-     * Generates a secure random password
-     * 
-     * @return Random password string
-     */
     public String generateRandomPassword() {
         return UUID.randomUUID().toString();
     }

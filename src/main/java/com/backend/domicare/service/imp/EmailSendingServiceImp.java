@@ -19,119 +19,133 @@ import com.backend.domicare.service.UserService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-
-/**
- * EmailSendingServiceImp is a service class that handles sending emails using JavaMailSender.
- * It supports sending basic emails and emails from templates using Thymeleaf.
- */
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EmailSendingServiceImp implements EmailSendingService {
     private final JavaMailSender javaMailSender;
     private final TemplateEngine templateEngine;
     private final UserService userService;
 
     @Override
-    public void sendEmail(String to , String subject, String content, boolean isMultiparts, boolean isHtml) {
+    public void sendEmail(String to, String subject, String content, boolean isMultiparts, boolean isHtml) {
         this.sendEmailSync(to, subject, content, isMultiparts, isHtml);
     }
 
     private void sendEmailSync(String to, String subject, String content, boolean isMultiparts, boolean isHtml) {
-        MimeMessage message = this.javaMailSender.createMimeMessage();
         try {
+            MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, isMultiparts, StandardCharsets.UTF_8.name());
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(content, isHtml);
-            this.javaMailSender.send(message);
-
+            javaMailSender.send(message);
+            log.info("Email sent successfully to: {}", to);
         } catch (MailException | MessagingException e) {
-            throw new EmailSendingException("Failed to send email : " + e);
+            log.error("Failed to send email to {}: {}", to, e.getMessage(), e);
+            throw new EmailSendingException("Failed to send email: " + e.getMessage());
         }
     }
-    
-    @Async
-    @Override
-    public CompletableFuture<String> sendEmailFromTemplate(String to, String subject, String templateName, String templateType) {
-        Context context = new Context();
-        String verificationToken = this.userService.createVerificationToken(to);
+
+    private String generateVerificationTokenContext(Context context, String to) {
+        String verificationToken = userService.createVerificationToken(to);
         String encodedVerificationToken = URLEncoder.encode(verificationToken, StandardCharsets.UTF_8);
         context.setVariable("verificationToken", encodedVerificationToken);
-        
-        // Add email to context if it's a reset password request
-        if (templateType.equals(TemplateType.RESET_PASSWORD.name())) {
-            context.setVariable("email", to);
-        }
-        
-        String content = templateEngine.process(templateName, context);
-        this.sendEmailSync(to, subject, content, false, true);
-        return CompletableFuture.completedFuture(encodedVerificationToken);
+        return encodedVerificationToken;
     }
-    
-    // Helper methods for internal use - not part of the interface
+
+    private String buildEmailContent(String templateName, Context context) {
+        return templateEngine.process(templateName, context);
+    }
+
+    @Async("taskExecutor")
+    @Override
+    public CompletableFuture<String> sendEmailFromTemplate(String to, String subject, String templateName, String templateType) {
+        try {
+            Context context = new Context();
+            String encodedVerificationToken = generateVerificationTokenContext(context, to);
+
+            if ("RESET_PASSWORD".equalsIgnoreCase(templateType)) {
+                context.setVariable("email", to);
+            }
+
+            String content = buildEmailContent(templateName, context);
+            sendEmailSync(to, subject, content, false, true);
+            return CompletableFuture.completedFuture(encodedVerificationToken);
+        } catch (Exception e) {
+            log.error("Error sending email from template: {}", e.getMessage(), e);
+            return CompletableFuture.failedFuture(e);
+        }
+    }
+
     @Override
     public String sendEmailFromTemplateSync(String to, String subject, String templateName) {
         Context context = new Context();
-        String verificationToken = this.userService.createVerificationToken(to);
-        String encodedVerificationToken = URLEncoder.encode(verificationToken, StandardCharsets.UTF_8);
-        context.setVariable("verificationToken", encodedVerificationToken);
-        String content = templateEngine.process(templateName, context);
-        this.sendEmailSync(to, subject, content, false, true);
+        String encodedVerificationToken = generateVerificationTokenContext(context, to);
+        String content = buildEmailContent(templateName, context);
+        sendEmailSync(to, subject, content, false, true);
         return encodedVerificationToken;
     }
 
     @Override
     public String sendEmailFromTemplateSyncForResetPassword(String to, String subject, String templateName) {
         Context context = new Context();
-        String verificationToken = this.userService.createVerificationToken(to);
-        String encodedVerificationToken = URLEncoder.encode(verificationToken, StandardCharsets.UTF_8);
-        context.setVariable("verificationToken", encodedVerificationToken);
+        String encodedVerificationToken = generateVerificationTokenContext(context, to);
         context.setVariable("email", to);
-        String content = templateEngine.process(templateName, context);
-        this.sendEmailSync(to, subject, content, false, true);
+        String content = buildEmailContent(templateName, context);
+        sendEmailSync(to, subject, content, false, true);
         return encodedVerificationToken;
     }
+
     @Override
-    @Async
-    public CompletableFuture<Void> sendPasswordToUser(String email,String fullName,String passWord){
-        Context context = new Context();
-        context.setVariable("email", email);
-        context.setVariable("password", passWord);
-        context.setVariable("fullName", fullName);
-        String templateName = "SendPasswordToUser";
-        String content = templateEngine.process(templateName, context);
-        String subject = "Cảm ơn bạn đã sử dụng dịch vụ của DomiCare";
-        this.sendEmailSync(email, subject, content, false, true);
-        return CompletableFuture.completedFuture(null);
+    @Async("taskExecutor")
+    public CompletableFuture<Void> sendPasswordToUser(String email, String fullName, String password) {
+        try {
+            Context context = new Context();
+            context.setVariable("email", email);
+            context.setVariable("password", password);
+            context.setVariable("fullName", fullName);
+            String content = buildEmailContent("SendPasswordToUser", context);
+            sendEmailSync(email, "Cảm ơn bạn đã sử dụng dịch vụ của DomiCare", content, false, true);
+            return CompletableFuture.completedFuture(null);
+        } catch (Exception e) {
+            log.error("Failed to send password to user: {}", email, e);
+            return CompletableFuture.failedFuture(e);
+        }
     }
 
-
-    @Async
-    public CompletableFuture<Void> sendRejectToUser(String to, String nameService,String dateBooking, String nameUser){
-        Context context = new Context();
-        context.setVariable("nameUser", nameUser);
-        context.setVariable("nameService", nameService);
-        context.setVariable("dateBooking", dateBooking);
-        context.setVariable("reason", " Hệ thống đang găp sự cố");
-        String templateName = "SendRejectBooking";
-        String content = templateEngine.process(templateName, context);
-        String subject = "Yêu cầu dịch vụ của bạn đã bị từ chối";
-        this.sendEmailSync(to, subject, content, false, true);
-        return CompletableFuture.completedFuture(null);
+    @Async("taskExecutor")
+    public CompletableFuture<Void> sendRejectToUser(String to, String nameService, String dateBooking, String nameUser) {
+        try {
+            Context context = new Context();
+            context.setVariable("nameUser", nameUser);
+            context.setVariable("nameService", nameService);
+            context.setVariable("dateBooking", dateBooking);
+            context.setVariable("reason", "Hệ thống đang gặp sự cố");
+            String content = buildEmailContent("SendRejectBooking", context);
+            sendEmailSync(to, "Yêu cầu dịch vụ của bạn đã bị từ chối", content, false, true);
+            return CompletableFuture.completedFuture(null);
+        } catch (Exception e) {
+            log.error("Failed to send rejection email: {}", to, e);
+            return CompletableFuture.failedFuture(e);
+        }
     }
 
-    @Async
-    public CompletableFuture<Void> sendAcceptedToUser(String to, String nameService,String dateBooking ,String nameUser){
-        Context context = new Context();
-        context.setVariable("nameUser", nameUser);
-        context.setVariable("nameService", nameService);
-        context.setVariable("dateBooking", dateBooking);
-        String templateName = "SendAcceptedBooking";
-        String content = templateEngine.process(templateName, context);
-        String subject = "Yêu cầu dịch vụ của bạn đã được chấp nhận";
-        this.sendEmailSync(to, subject, content, false, true);
-        return CompletableFuture.completedFuture(null);
+    @Async("taskExecutor")
+    public CompletableFuture<Void> sendAcceptedToUser(String to, String nameService, String dateBooking, String nameUser) {
+        try {
+            Context context = new Context();
+            context.setVariable("nameUser", nameUser);
+            context.setVariable("nameService", nameService);
+            context.setVariable("dateBooking", dateBooking);
+            String content = buildEmailContent("SendAcceptedBooking", context);
+            sendEmailSync(to, "Yêu cầu dịch vụ của bạn đã được chấp nhận", content, false, true);
+            return CompletableFuture.completedFuture(null);
+        } catch (Exception e) {
+            log.error("Failed to send acceptance email: {}", to, e);
+            return CompletableFuture.failedFuture(e);
+        }
     }
 }
-

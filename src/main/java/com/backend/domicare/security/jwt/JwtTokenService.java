@@ -1,9 +1,5 @@
 package com.backend.domicare.security.jwt;
 
-import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -20,6 +16,7 @@ import com.backend.domicare.exception.InvalidEmailOrPassword;
 import com.backend.domicare.exception.InvalidRefreshToken;
 import com.backend.domicare.exception.NotFoundUserException;
 import com.backend.domicare.exception.UnconfirmEmailException;
+import com.backend.domicare.exception.UserNotActiveException;
 import com.backend.domicare.mapper.UserMapper;
 import com.backend.domicare.model.Token;
 import com.backend.domicare.model.User;
@@ -35,15 +32,15 @@ import com.backend.domicare.utils.ProjectConstants;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 @RequiredArgsConstructor
 @Service
 @Transactional
-/**
- * JwtTokenService is a service class that handles JWT token generation, user authentication,
- * email verification, and user registration.
- */
 @Lazy
+@Slf4j
 public class JwtTokenService {
 
     private final TokensRepository tokensRepository;
@@ -52,37 +49,30 @@ public class JwtTokenService {
     private final UserService userService;
     private final EmailSendingService emailSendingService;
     private final JwtDecoder jwtDecoder;
-    
+
     public LoginResponse login(LoginRequest loginRequest) {
         String email = loginRequest.getEmail();
         String password = loginRequest.getPassword();
         try {
-            // Tạo đối tượng Authentication từ email và mật khẩu
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(email,
-                    password);
-
-            // Xác thực tài khoản và mật khẩu
-            Authentication authentication = authenticationManager.authenticate(authenticationToken);
-
-            // Nếu xác thực thành công, đặt Authentication vào SecurityContext
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(email, password));
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
             String accessToken = jwtTokenManager.createAccessToken(authentication.getName());
             String refreshToken = jwtTokenManager.createRefreshToken(authentication.getName());
 
-            Optional<String> emailOptional = JwtTokenManager.getCurrentUserLogin();
-            if (!emailOptional.isPresent()) {
-                throw new NotFoundUserException("Không tìm thấy người dùng");
-            }
-            String emailUser = emailOptional.get();
-
-            User user = userService.findUserByEmail(emailUser);
+            User user = userService.findUserByEmail(email);
             if (user == null) {
-                throw new NotFoundUserException("Không tìm thấy người dùng");
+                throw new NotFoundUserException("Không tìm thấy người dùng với email: " + email);
             }
+
             if (!user.isEmailConfirmed()) {
                 throw new UnconfirmEmailException("Email chưa được xác nhận");
             }
+            if (!user.isActive()) {
+                throw new UserNotActiveException("Tài khoản đã bị khóa");
+            }
+
             LoginResponse loginResponse = new LoginResponse();
             loginResponse.setAccessToken(accessToken);
             loginResponse.setRefreshToken(refreshToken);
@@ -90,45 +80,46 @@ public class JwtTokenService {
             return loginResponse;
 
         } catch (InternalAuthenticationServiceException e) {
-            throw new InvalidEmailOrPassword("Email chưa được đăng kí ");
+            log.warn("Đăng nhập thất bại cho email {}: {}", email, e.getMessage());
+            throw new InvalidEmailOrPassword("Email chưa được đăng ký hoặc mật khẩu sai");
         }
     }
 
     public RegisterResponse register(RegisterRequest request) {
         String email = request.getEmail();
-        UserDTO user = new UserDTO();
-        user.setEmail(email);
-        user.setPassword(request.getPassword());
-
         if (userService.isEmailAlreadyExist(email)) {
-            throw new EmailAlreadyExistException("Đã tồn tại email : " + email);
+            throw new EmailAlreadyExistException("Đã tồn tại email: " + email);
         }
-        user.setEmailConfirmed(false);
-        user.setAvatar(ProjectConstants.DEFAULT_AVATAR_OTHER);
-        user.setIsActive(true);
 
-        UserDTO userResponse = userService.saveUser(user);
-        RegisterResponse registerResponse = UserMapper.INSTANCE.convertToRegisterResponse(userResponse);
-        
-        CompletableFuture<String> futureToken = this.emailSendingService.sendEmailFromTemplate(
-            email,
-            "Verify your account",
-            "SendingOTP",
-            EmailSendingService.TemplateType.VERIFICATION.name()
-        );
-        
-        try {
-            String emailToken = futureToken.get();
-            registerResponse.setEmailConfirmationToken(emailToken);
-        } catch (InterruptedException | ExecutionException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Failed to send verification email", e);
-        }
-        
-        return registerResponse;
+        UserDTO newUser = new UserDTO();
+        newUser.setEmail(email);
+        newUser.setPassword(request.getPassword());
+        newUser.setEmailConfirmed(false);
+        newUser.setAvatar(ProjectConstants.DEFAULT_AVATAR_OTHER);
+        newUser.setIsActive(true);
+
+        UserDTO savedUser = userService.saveUser(newUser);
+        RegisterResponse response = UserMapper.INSTANCE.convertToRegisterResponse(savedUser);
+
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCommit() {
+                emailSendingService.sendEmailFromTemplate(
+                        email,
+                        "Xác nhận đăng ký tài khoản DomiCare",
+                        "SendingOTP",
+                        EmailSendingService.TemplateType.VERIFICATION.name())
+                        .thenAccept(token -> log.info("Đã gửi email xác minh đến {} với token: {}", email, token))
+                        .exceptionally(ex -> {
+                            log.error("Lỗi khi gửi email xác minh tới {}: {}", email, ex.getMessage(), ex);
+                            return null;
+                        });
+            }
+        });
+
+        return response;
     }
 
-    @Transactional
     public RefreshTokenRespone createAccessTokenFromRefreshToken(String refreshToken) {
         if (!jwtTokenManager.isRefreshTokenValid(refreshToken)) {
             throw new InvalidRefreshToken("Refresh token không hợp lệ");
@@ -141,32 +132,29 @@ public class JwtTokenService {
 
         User user = token.getUser();
         String accessToken = jwtTokenManager.createAccessToken(user.getEmail());
-
         return new RefreshTokenRespone(accessToken, user.getEmail());
     }
 
     public void verifyEmail(String token) {
         UserDTO user = userService.findUserByEmailConfirmToken(token);
-
-        if (user != null) {
-            user.setEmailConfirmed(true);
-            user.setEmailConfirmationToken(null);
-            userService.updateConfirmedEmail(user);
-        } else {
+        if (user == null) {
             throw new NotFoundUserException("Không tìm thấy người dùng");
         }
+
+        user.setEmailConfirmed(true);
+        user.setEmailConfirmationToken(null);
+        userService.updateConfirmedEmail(user);
     }
 
     public String verifyEmailAndGetEmail(String token) {
         UserDTO user = userService.findUserByEmailConfirmToken(token);
-
-        if (user != null) {
-            user.setEmailConfirmed(true);
-            user.setEmailConfirmationToken(null);
-            userService.updateConfirmedEmail(user);
-        } else {
+        if (user == null) {
             throw new NotFoundUserException("Không tìm thấy người dùng");
         }
+
+        user.setEmailConfirmed(true);
+        user.setEmailConfirmationToken(null);
+        userService.updateConfirmedEmail(user);
         return user.getEmail();
     }
 
@@ -179,14 +167,17 @@ public class JwtTokenService {
         return email;
     }
 
-    public void logout(){
-        String email = JwtTokenManager.getCurrentUserLogin().orElseThrow(() -> new NotFoundUserException("Không tìm thấy người dùng"));
+    public void logout() {
+        String email = JwtTokenManager.getCurrentUserLogin()
+                .orElseThrow(() -> new NotFoundUserException("Không tìm thấy người dùng"));
+
         User user = userService.findUserByEmail(email);
         if (user == null) {
             throw new NotFoundUserException("Không tìm thấy người dùng");
         }
-        this.tokensRepository.deleteByUserId(user.getId());
-        
+
+        tokensRepository.deleteByUserId(user.getId());
         SecurityContextHolder.clearContext();
+        log.info("User {} logged out and tokens cleared", email);
     }
 }

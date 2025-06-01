@@ -51,29 +51,23 @@ public class OAuth2Controller {
         body.add("client_secret", clientSecret);
         body.add("redirect_uri", redirectUri);
         body.add("grant_type", "authorization_code");
-    
-        // Tạo các header cho yêu cầu POST
+
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
     
-        // Tạo đối tượng HttpEntity chứa body và header
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(body, headers);
     
         try {
-            // Gửi yêu cầu POST đến Google để nhận access token
             ResponseEntity<String> response = restTemplate.exchange(GOOGLE_TOKEN_URL, HttpMethod.POST, entity, String.class);
     
-            // Lấy dữ liệu từ response
             try {
                 JsonNode jsonResponse = objectMapper.readTree(response.getBody());
                 String accessToken = jsonResponse.get("access_token").asText();
     
-                // Dùng access token để lấy thông tin người dùng từ Google
                 HttpHeaders userInfoHeaders = new HttpHeaders();
                 userInfoHeaders.set("Authorization", "Bearer " + accessToken);
                 HttpEntity<String> userInfoEntity = new HttpEntity<>(userInfoHeaders);
     
-                // Lấy thông tin người dùng từ Google
                 ResponseEntity<String> userInfoResponse = restTemplate.exchange(GOOGLE_USERINFO_URL, HttpMethod.GET, userInfoEntity, String.class);
                 JsonNode userInfo = objectMapper.readTree(userInfoResponse.getBody());
     
@@ -82,7 +76,6 @@ public class OAuth2Controller {
                 String picture = userInfo.has("picture") ? userInfo.get("picture").asText() : null;
                 String locale = userInfo.has("locale") ? userInfo.get("locale").asText() : null;
                 String sub = userInfo.has("sub") ? userInfo.get("sub").asText() : null;
-                // Tạo LoginResponse và trả về kết quả
                 LoginResponse loginResponse = customOAuth2SuccessHandler.handleOAuth2(email, name, picture, locale, sub);
                 return ResponseEntity.status(HttpStatus.OK).body(loginResponse);
     

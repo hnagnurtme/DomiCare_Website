@@ -24,11 +24,12 @@ public class BookingDTO {
     private Instant startTime;
     private List<ProductDTO> products;
     private UserDTO userDTO;
+    private UserDTO saleDTO;
     private Boolean isPeriodic;
     private BookingStatus bookingStatus;
     private String createBy;
     private String updateBy;
     private Instant createAt;
     private Instant updateAt;
-    
+    private String phone;
 }

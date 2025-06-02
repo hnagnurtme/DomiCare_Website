@@ -15,12 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.backend.domicare.dto.BookingDTO;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
 import com.backend.domicare.dto.request.BookingRequest;
 import com.backend.domicare.dto.request.UpdateBookingRequest;
 import com.backend.domicare.dto.request.UpdateBookingStatusRequest;
+import com.backend.domicare.dto.response.MiniBookingResponse;
 import com.backend.domicare.model.Booking;
 import com.backend.domicare.service.BookingService;
 import com.backend.domicare.utils.FormatStringAccents;
@@ -40,13 +39,13 @@ public class BookingController {
     private final BookingService bookingService;
 
     @PostMapping("/bookings")
-    public ResponseEntity<BookingDTO> createBooking(@Valid @RequestBody BookingRequest bookingRequest) {
+    public ResponseEntity<MiniBookingResponse> createBooking(@Valid @RequestBody BookingRequest bookingRequest) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(bookingService.addBooking(bookingRequest));
     }
 
     @GetMapping("/bookings/{id}")
-    public ResponseEntity<BookingDTO> getBookingById(@PathVariable Long id) {
+    public ResponseEntity<MiniBookingResponse> getBookingById(@PathVariable Long id) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(bookingService.fetchBookingById(id));
     }
@@ -58,13 +57,13 @@ public class BookingController {
     }
 
     @PutMapping("/bookings")
-    public ResponseEntity<BookingDTO> updateBooking(@Valid @RequestBody UpdateBookingRequest bookingRequest) {
+    public ResponseEntity<MiniBookingResponse> updateBooking(@Valid @RequestBody UpdateBookingRequest bookingRequest) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(bookingService.updateBooking(bookingRequest));
     }
 
     @PutMapping("/bookings/status")
-    public ResponseEntity<BookingDTO> updateBookingStatus(
+    public ResponseEntity<MiniBookingResponse> updateBookingStatus(
             @RequestBody UpdateBookingStatusRequest bookingRequest) {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(bookingService.updateBookingStatus(bookingRequest));

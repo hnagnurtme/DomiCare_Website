@@ -78,7 +78,7 @@ public class BookingServiceImp implements BookingService {
 
     @Override
     @Transactional(readOnly = true)
-    public BookingDTO fetchBookingById(Long id) {
+    public MiniBookingResponse fetchBookingById(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("Booking ID cannot be null");
         }
@@ -86,12 +86,12 @@ public class BookingServiceImp implements BookingService {
         logger.debug("[Booking] Fetching booking with ID: {}", id);
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundBookingException("Booking not found with ID: " + id));
-        return BookingMapper.INSTANCE.convertToBookingDTO(booking);
+        return BookingMapper.INSTANCE.convertToMiniBookingResponse(booking);
     }
 
     @Override
     @Transactional
-    public BookingDTO deleteBooking(Long id) {
+    public MiniBookingResponse deleteBooking(Long id) {
         if (id == null) {
             throw new IllegalArgumentException("Booking ID cannot be null");
         }
@@ -101,20 +101,23 @@ public class BookingServiceImp implements BookingService {
                 .orElseThrow(() -> new NotFoundBookingException("Booking not found with ID: " + id));
         if (booking.getBookingStatus() == BookingStatus.ACCEPTED
                 || booking.getBookingStatus() == BookingStatus.CANCELLED) {
-            logger.warn("[Booking] Cannot delete booking with ID: {} due to status: {}", id, booking.getBookingStatus());
+            logger.warn("[Booking] Cannot delete booking with ID: {} due to status: {}", id,
+                    booking.getBookingStatus());
             throw new BookingStatusException("Cannot delete booking with status: " + booking.getBookingStatus());
         }
         booking.setBookingStatus(BookingStatus.CANCELLED);
         Booking savedBooking = bookingRepository.save(booking);
         logger.info("[Booking] Booking with ID: {} has been marked as CANCELLED", id);
-        messagingTemplate.convertAndSend("/topic/bookings/delete", BookingMapper.INSTANCE.convertToBookingDTO(savedBooking));
+        messagingTemplate.convertAndSend("/topic/bookings/delete",
+                BookingMapper.INSTANCE.convertToMiniBookingResponse(savedBooking));
+
         logger.info("[Booking] Booking deletion notification sent for booking ID: {}", id);
-        return BookingMapper.INSTANCE.convertToBookingDTO(savedBooking);
+        return BookingMapper.INSTANCE.convertToMiniBookingResponse(savedBooking);
     }
 
     @Override
     @Transactional
-    public BookingDTO updateBooking(UpdateBookingRequest request) {
+    public MiniBookingResponse updateBooking(UpdateBookingRequest request) {
         if (request == null || request.getBookingId() == null) {
             throw new IllegalArgumentException("Update request or booking ID cannot be null");
         }
@@ -126,12 +129,13 @@ public class BookingServiceImp implements BookingService {
                 .orElseThrow(() -> new NotFoundBookingException("Booking not found with ID: " + id));
 
         if (booking.getBookingStatus() != BookingStatus.PENDING) {
-            logger.warn("[Booking] Cannot update booking with ID: {} due to status: {}", id, booking.getBookingStatus());
+            logger.warn("[Booking] Cannot update booking with ID: {} due to status: {}", id,
+                    booking.getBookingStatus());
             throw new BookingStatusException("Cannot update booking with status: " + booking.getBookingStatus());
         }
         Booking updatedBooking = bookingRepository.save(booking);
         logger.info("[Booking] Booking updated successfully with ID: {}", id);
-        BookingDTO updatedBookingDTO = BookingMapper.INSTANCE.convertToBookingDTO(updatedBooking);
+        MiniBookingResponse updatedBookingDTO = BookingMapper.INSTANCE.convertToMiniBookingResponse(updatedBooking);
         messagingTemplate.convertAndSend("/topic/bookings/update", updatedBookingDTO);
         logger.info("[Booking] Booking update notification sent for booking ID: {}", id);
         return updatedBookingDTO;
@@ -163,7 +167,7 @@ public class BookingServiceImp implements BookingService {
 
     @Override
     @Transactional
-    public BookingDTO updateBookingStatus(UpdateBookingStatusRequest request) {
+    public MiniBookingResponse updateBookingStatus(UpdateBookingStatusRequest request) {
         if (request == null || request.getBookingId() == null || request.getStatus() == null) {
             throw new IllegalArgumentException("Update request, booking ID, or status cannot be null");
         }
@@ -276,16 +280,16 @@ public class BookingServiceImp implements BookingService {
 
         booking.setUpdateBy(saleuser.getEmail());
         Booking updatedBooking = bookingRepository.save(booking);
-        BookingDTO updated = BookingMapper.INSTANCE.convertToBookingDTO(updatedBooking);
+        MiniBookingResponse updated = BookingMapper.INSTANCE.convertToMiniBookingResponse(updatedBooking);
         messagingTemplate.convertAndSend("/topic/bookings/update", updated);
 
         logger.info("[Booking] Booking status updated successfully for ID: {}", id);
-        return BookingMapper.INSTANCE.convertToBookingDTO(updatedBooking);
+        return BookingMapper.INSTANCE.convertToMiniBookingResponse(updatedBooking);
     }
 
     @Override
     @Transactional
-    public BookingDTO addBooking(BookingRequest request) {
+    public MiniBookingResponse addBooking(BookingRequest request) {
 
         User user;
 
@@ -328,7 +332,7 @@ public class BookingServiceImp implements BookingService {
             }
         }
         validateTooMuchBookingPerHour(user.getId());
-        
+
         Booking booking = BookingMapper.INSTANCE.convertToBooking(request);
         booking.setUser(user);
         booking.setCreateBy(user.getEmail());
@@ -340,10 +344,20 @@ public class BookingServiceImp implements BookingService {
 
         List<Product> products = productService.findAllByIdIn(productIds);
         booking.setProducts(products);
-        Double totalPrice = 0.0;
-        for (Product product : products) {
-            totalPrice += product.getPrice();
-        }
+
+        double totalPrice = products.stream()
+                .mapToDouble(product -> {
+                    Double price = product.getPrice();
+                    if (price == null) {
+                        throw new IllegalArgumentException(
+                                "Product price cannot be null (Product ID: " + product.getId() + ")");
+                    }
+
+                    double discount_percent = product.getDiscount() != null ? product.getDiscount() : 0.0;
+                    return price* (100-  discount_percent)/ 100;
+                })
+                .sum();
+
         booking.setTotalPrice(totalPrice);
         booking.setBookingStatus(BookingStatus.PENDING);
 
@@ -352,11 +366,11 @@ public class BookingServiceImp implements BookingService {
 
         logger.info("[Booking] User with email: {} has been associated with booking ID: {}", user.getEmail(),
                 bookingEntity.getId());
-        BookingDTO bookingDTO = BookingMapper.INSTANCE.convertToBookingDTO(bookingEntity);
+        MiniBookingResponse bookingDTO = BookingMapper.INSTANCE.convertToMiniBookingResponse(bookingEntity);
         messagingTemplate.convertAndSend("/topic/bookings/new", bookingDTO);
 
         logger.info("[Booking] New booking notification sent for booking ID: {}", bookingEntity.getId());
-        return BookingMapper.INSTANCE.convertToBookingDTO(bookingEntity);
+        return BookingMapper.INSTANCE.convertToMiniBookingResponse(bookingEntity);
     }
 
     private void calculateSuccessPercentage(User saleUser) {
@@ -445,21 +459,19 @@ public class BookingServiceImp implements BookingService {
 
         resultPagingDTO.setMeta(meta);
 
-
         List<MiniBookingResponse> bookingDTOs = bookings.getContent().stream()
                 .map(BookingMapper.INSTANCE::convertToMiniBookingResponse)
                 .collect(Collectors.toList());
 
-        resultPagingDTO.setData(bookingDTOs); 
+        resultPagingDTO.setData(bookingDTOs);
 
         return resultPagingDTO;
     }
 
-
     private boolean validateTooMuchBookingPerHour(Long userId) {
         Instant oneHourAgo = Instant.now().minusSeconds(3600);
         long bookingCount = bookingRepository
-                .countBookingsByUserIdAndCreatedAtAfter(userId,oneHourAgo);
+                .countBookingsByUserIdAndCreatedAtAfter(userId, oneHourAgo);
 
         if (bookingCount >= 5) {
             logger.warn("[Booking] User with ID: {} has too many bookings in the last hour: {}", userId, bookingCount);

@@ -45,6 +45,8 @@ public class Booking {
     private String note;
     private Boolean isPeriodic;
     private Instant startTime;
+    
+    private String phone;
 
     private Double totalPrice;
    

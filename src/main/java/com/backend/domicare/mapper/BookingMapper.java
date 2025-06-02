@@ -30,7 +30,9 @@ public interface  BookingMapper {
                 .isPeriodic(booking.getIsPeriodic())
                 .startTime(booking.getStartTime())
                 .bookingStatus(booking.getBookingStatus())
+                .phone(booking.getPhone())
                 .userDTO(booking.getUser() != null ? UserMapper.INSTANCE.convertToUserDTO(booking.getUser()) : null)
+                .saleDTO(booking.getSaleUser() != null ? UserMapper.INSTANCE.convertToUserDTO(booking.getSaleUser()) : null)
                 .products(booking.getProducts() != null ? ProductMapper.INSTANCE.convertToProductDTOs(booking.getProducts()) : null)
                 .build();
     }
@@ -44,6 +46,7 @@ public interface  BookingMapper {
                 .address(bookingRequest.getAddress())
                 .note(bookingRequest.getNote())
                 .isPeriodic(bookingRequest.getIsPeriodic())
+                .phone(bookingRequest.getPhone())
                 .startTime(bookingRequest.getStartTime())
                 .build();
     }
@@ -57,9 +60,11 @@ public interface  BookingMapper {
                 .address(booking.getAddress())
                 .totalPrice(booking.getTotalPrice())
                 .note(booking.getNote())
+                .phone(booking.getPhone())
                 .startTime(booking.getStartTime())
                 .products(booking.getProducts() != null ? ProductMapper.INSTANCE.convertToProductMinis(booking.getProducts()) : null)
                 .userDTO(booking.getUser() != null ? UserMapper.INSTANCE.convertToUserMini(booking.getUser()) : null)
+                .saleDTO(booking.getSaleUser() != null ? UserMapper.INSTANCE.convertToUserMini(booking.getSaleUser()) : null)
                 .isPeriodic(booking.getIsPeriodic())
                 .bookingStatus(booking.getBookingStatus())
                 .createBy(booking.getCreateBy())

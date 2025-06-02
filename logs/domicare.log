@@ -947,3 +947,815 @@ Caused by: org.hibernate.DuplicateMappingException: Table [bookings] contains ph
 2025-06-02 15:06:21.299 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
 2025-06-02 15:06:21.303 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 2025-06-02 15:06:22.364 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-06-02 15:10:01.693 [main] INFO  c.b.domicare.DomicareApplication - Starting DomicareApplication using Java 17.0.15 with PID 14846 (/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes started by anhnon in /Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND)
+2025-06-02 15:10:01.695 [main] DEBUG c.b.domicare.DomicareApplication - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-02 15:10:01.695 [main] INFO  c.b.domicare.DomicareApplication - The following 1 profile is active: "prod"
+2025-06-02 15:10:02.258 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-02 15:10:02.297 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 34 ms. Found 9 JPA repository interfaces.
+2025-06-02 15:10:02.678 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-02 15:10:02.683 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-02 15:10:02.683 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-02 15:10:02.713 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-02 15:10:02.713 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1000 ms
+2025-06-02 15:10:02.880 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-02 15:10:02.904 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-02 15:10:02.916 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-02 15:10:03.012 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-02 15:10:03.023 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-02 15:10:04.684 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@3fdede3a
+2025-06-02 15:10:04.685 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-02 15:10:04.858 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.8
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-02 15:10:05.325 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-02 15:10:07.479 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-02 15:10:07.704 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-02 15:10:08.349 [main] INFO  c.b.d.c.WebSocketConfiguration - Configuring message broker with topic prefix: /topic
+2025-06-02 15:10:08.418 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsService
+2025-06-02 15:10:08.604 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring public endpoint security chain
+2025-06-02 15:10:08.617 [main] INFO  c.b.d.c.WebSocketConfiguration - Registering STOMP endpoints at /ws
+2025-06-02 15:10:08.666 [main] INFO  c.b.d.c.CorsConfiguration - CORS configuration applied for allowed origins
+2025-06-02 15:10:08.845 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-06-02 15:10:08.882 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring main security filter chain
+2025-06-02 15:10:09.220 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-02 15:10:09.221 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@1067da91]]
+2025-06-02 15:10:09.221 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-02 15:10:09.226 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-06-02 15:10:09.235 [main] INFO  c.b.domicare.DomicareApplication - Started DomicareApplication in 7.727 seconds (process running for 8.018)
+2025-06-02 15:10:10.426 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-02 15:10:10.426 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-02 15:10:10.427 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-06-02 15:10:25.320 [http-nio-8080-exec-4] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] Login attempt for email: sale2@example.com
+2025-06-02 15:10:25.407 [http-nio-8080-exec-4] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: sale2@example.com
+2025-06-02 15:10:25.912 [http-nio-8080-exec-4] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 6
+2025-06-02 15:10:26.001 [http-nio-8080-exec-4] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: sale2@example.com
+2025-06-02 15:10:26.195 [http-nio-8080-exec-4] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 6
+2025-06-02 15:10:26.197 [http-nio-8080-exec-4] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Creating access token for user sale2@example.com
+2025-06-02 15:10:26.210 [http-nio-8080-exec-4] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: sale2@example.com
+2025-06-02 15:10:26.411 [http-nio-8080-exec-4] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 6
+2025-06-02 15:10:26.873 [http-nio-8080-exec-4] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Created refresh token for user sale2@example.com
+2025-06-02 15:10:26.873 [http-nio-8080-exec-4] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: sale2@example.com
+2025-06-02 15:10:26.968 [http-nio-8080-exec-4] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 6
+2025-06-02 15:10:26.973 [http-nio-8080-exec-4] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] User sale2@example.com logged in successfully
+2025-06-02 15:10:36.876 [http-nio-8080-exec-6] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Updating booking status for ID: 50 to SUCCESS
+2025-06-02 15:10:37.221 [http-nio-8080-exec-6] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Booking status updated successfully for ID: 50
+2025-06-02 15:11:09.228 [MessageBroker-1] INFO  o.s.w.s.c.WebSocketMessageBrokerStats - WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 1, active threads = 1, queued tasks = 0, completed tasks = 0]
+2025-06-02 15:11:43.291 [http-nio-8080-exec-4] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Updating booking status for ID: 59 to SUCCESS
+2025-06-02 15:11:49.226 [http-nio-8080-exec-6] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Updating booking status for ID: 59 to ACCEPTED
+2025-06-02 15:11:49.451 [http-nio-8080-exec-6] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Booking status updated successfully for ID: 59
+2025-06-02 15:11:55.553 [DomiCare-Async-1] INFO  c.b.d.s.imp.EmailSendingServiceImp - Email sent successfully to: a.nhnon0106@googlemail.com
+2025-06-02 15:12:16.185 [http-nio-8080-exec-9] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Updating booking status for ID: 59 to SUCCESS
+2025-06-02 15:12:16.463 [http-nio-8080-exec-9] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Booking status updated successfully for ID: 59
+2025-06-02 15:34:30.593 [http-nio-8080-exec-1] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] Login attempt for email: sale2@example.com
+2025-06-02 15:34:30.595 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: sale2@example.com
+2025-06-02 15:34:30.671 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 6
+2025-06-02 15:34:30.763 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: sale2@example.com
+2025-06-02 15:34:30.797 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 6
+2025-06-02 15:34:30.797 [http-nio-8080-exec-1] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Creating access token for user sale2@example.com
+2025-06-02 15:34:30.798 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: sale2@example.com
+2025-06-02 15:34:30.832 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 6
+2025-06-02 15:34:30.882 [http-nio-8080-exec-1] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Deleted existing refresh tokens for user sale2@example.com
+2025-06-02 15:34:30.917 [http-nio-8080-exec-1] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Created refresh token for user sale2@example.com
+2025-06-02 15:34:30.917 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: sale2@example.com
+2025-06-02 15:34:30.953 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 6
+2025-06-02 15:34:30.953 [http-nio-8080-exec-1] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] User sale2@example.com logged in successfully
+2025-06-02 15:34:41.235 [http-nio-8080-exec-4] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Updating booking status for ID: 60 to ACCEPTED
+2025-06-02 15:34:41.505 [http-nio-8080-exec-4] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Booking status updated successfully for ID: 60
+2025-06-02 15:34:46.003 [DomiCare-Async-2] INFO  c.b.d.s.imp.EmailSendingServiceImp - Email sent successfully to: anhnon0106@gmail.com
+2025-06-02 15:34:53.306 [http-nio-8080-exec-5] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Updating booking status for ID: 60 to SUCCESS
+2025-06-02 15:34:54.185 [http-nio-8080-exec-5] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Booking status updated successfully for ID: 60
+2025-06-02 15:39:09.877 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-02 15:39:09.885 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-02 15:39:09.889 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-02 15:39:09.889 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@1067da91]]
+2025-06-02 15:39:09.889 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-02 15:39:09.901 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-02 15:39:09.905 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-06-02 15:39:10.330 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-06-02 15:39:20.522 [main] INFO  c.b.domicare.DomicareApplication - Starting DomicareApplication using Java 17.0.15 with PID 44582 (/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes started by anhnon in /Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND)
+2025-06-02 15:39:20.523 [main] DEBUG c.b.domicare.DomicareApplication - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-02 15:39:20.523 [main] INFO  c.b.domicare.DomicareApplication - The following 1 profile is active: "prod"
+2025-06-02 15:39:21.145 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-02 15:39:21.184 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 34 ms. Found 9 JPA repository interfaces.
+2025-06-02 15:39:21.620 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-02 15:39:21.626 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-02 15:39:21.626 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-02 15:39:21.651 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-02 15:39:21.651 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1108 ms
+2025-06-02 15:39:21.821 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-02 15:39:21.850 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-02 15:39:21.867 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-02 15:39:21.976 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-02 15:39:21.988 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-02 15:39:24.022 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2c6efee3
+2025-06-02 15:39:24.023 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-02 15:39:24.314 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.8
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-02 15:39:24.832 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-02 15:39:28.093 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-02 15:39:28.309 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-02 15:39:28.819 [main] INFO  c.b.d.c.WebSocketConfiguration - Configuring message broker with topic prefix: /topic
+2025-06-02 15:39:28.888 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsService
+2025-06-02 15:39:29.086 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring public endpoint security chain
+2025-06-02 15:39:29.100 [main] INFO  c.b.d.c.WebSocketConfiguration - Registering STOMP endpoints at /ws
+2025-06-02 15:39:29.153 [main] INFO  c.b.d.c.CorsConfiguration - CORS configuration applied for allowed origins
+2025-06-02 15:39:29.340 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-06-02 15:39:29.385 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring main security filter chain
+2025-06-02 15:39:29.745 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-02 15:39:29.746 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@7c5abd91]]
+2025-06-02 15:39:29.746 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-02 15:39:29.752 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-06-02 15:39:29.763 [main] INFO  c.b.domicare.DomicareApplication - Started DomicareApplication in 9.432 seconds (process running for 9.753)
+2025-06-02 15:39:32.673 [RMI TCP Connection(2)-127.0.0.1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-02 15:39:32.674 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-02 15:39:32.674 [RMI TCP Connection(2)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 0 ms
+2025-06-02 15:39:49.366 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-02 15:39:49.372 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-02 15:39:49.375 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-02 15:39:49.375 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@7c5abd91]]
+2025-06-02 15:39:49.375 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-02 15:39:49.386 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-02 15:39:49.390 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-06-02 15:39:49.759 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-06-02 15:48:03.381 [main] INFO  c.b.domicare.DomicareApplication - Starting DomicareApplication using Java 17.0.15 with PID 52136 (/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes started by anhnon in /Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND)
+2025-06-02 15:48:03.382 [main] DEBUG c.b.domicare.DomicareApplication - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-02 15:48:03.382 [main] INFO  c.b.domicare.DomicareApplication - The following 1 profile is active: "prod"
+2025-06-02 15:48:04.008 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-02 15:48:04.051 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 38 ms. Found 9 JPA repository interfaces.
+2025-06-02 15:48:04.454 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-02 15:48:04.460 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-02 15:48:04.460 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-02 15:48:04.486 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-02 15:48:04.487 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1084 ms
+2025-06-02 15:48:04.662 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-02 15:48:04.689 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-02 15:48:04.705 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-02 15:48:04.825 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-02 15:48:04.839 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-02 15:48:08.403 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@125a8ab6
+2025-06-02 15:48:08.404 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-02 15:48:08.879 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.8
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-02 15:48:09.475 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-02 15:48:12.269 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-02 15:48:12.480 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-02 15:48:13.040 [main] INFO  c.b.d.c.WebSocketConfiguration - Configuring message broker with topic prefix: /topic
+2025-06-02 15:48:13.108 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsService
+2025-06-02 15:48:13.299 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring public endpoint security chain
+2025-06-02 15:48:13.312 [main] INFO  c.b.d.c.WebSocketConfiguration - Registering STOMP endpoints at /ws
+2025-06-02 15:48:13.359 [main] INFO  c.b.d.c.CorsConfiguration - CORS configuration applied for allowed origins
+2025-06-02 15:48:13.515 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-06-02 15:48:13.549 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring main security filter chain
+2025-06-02 15:48:13.864 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-02 15:48:13.865 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@5afefccc]]
+2025-06-02 15:48:13.865 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-02 15:48:13.870 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-06-02 15:48:13.880 [main] INFO  c.b.domicare.DomicareApplication - Started DomicareApplication in 10.692 seconds (process running for 11.03)
+2025-06-02 15:48:15.523 [RMI TCP Connection(3)-127.0.0.1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-02 15:48:15.523 [RMI TCP Connection(3)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-02 15:48:15.524 [RMI TCP Connection(3)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-06-02 15:48:22.228 [http-nio-8080-exec-1] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] Login attempt for email: anhnon0106@gmail.com
+2025-06-02 15:48:22.323 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: anhnon0106@gmail.com
+2025-06-02 15:48:22.458 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 1
+2025-06-02 15:48:22.535 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: anhnon0106@gmail.com
+2025-06-02 15:48:22.642 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 1
+2025-06-02 15:48:22.644 [http-nio-8080-exec-1] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Creating access token for user anhnon0106@gmail.com
+2025-06-02 15:48:22.671 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: anhnon0106@gmail.com
+2025-06-02 15:48:22.707 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 1
+2025-06-02 15:48:22.750 [http-nio-8080-exec-1] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Deleted existing refresh tokens for user anhnon0106@gmail.com
+2025-06-02 15:48:22.795 [http-nio-8080-exec-1] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Created refresh token for user anhnon0106@gmail.com
+2025-06-02 15:48:22.796 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: anhnon0106@gmail.com
+2025-06-02 15:48:22.829 [http-nio-8080-exec-1] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 1
+2025-06-02 15:48:22.832 [http-nio-8080-exec-1] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] User anhnon0106@gmail.com logged in successfully
+2025-06-02 15:49:13.849 [MessageBroker-1] INFO  o.s.w.s.c.WebSocketMessageBrokerStats - WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 1, active threads = 1, queued tasks = 0, completed tasks = 0]
+2025-06-02 15:52:53.300 [http-nio-8080-exec-6] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] Login attempt for email: sale1@example.com
+2025-06-02 15:52:53.302 [http-nio-8080-exec-6] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: sale1@example.com
+2025-06-02 15:52:53.499 [http-nio-8080-exec-6] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 5
+2025-06-02 15:52:53.598 [http-nio-8080-exec-6] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: sale1@example.com
+2025-06-02 15:52:53.712 [http-nio-8080-exec-6] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 5
+2025-06-02 15:52:53.712 [http-nio-8080-exec-6] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Creating access token for user sale1@example.com
+2025-06-02 15:52:53.713 [http-nio-8080-exec-6] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: sale1@example.com
+2025-06-02 15:52:53.767 [http-nio-8080-exec-6] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 5
+2025-06-02 15:52:53.840 [http-nio-8080-exec-6] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Deleted existing refresh tokens for user sale1@example.com
+2025-06-02 15:52:53.916 [http-nio-8080-exec-6] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Created refresh token for user sale1@example.com
+2025-06-02 15:52:53.916 [http-nio-8080-exec-6] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: sale1@example.com
+2025-06-02 15:52:54.025 [http-nio-8080-exec-6] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 5
+2025-06-02 15:52:54.026 [http-nio-8080-exec-6] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] User sale1@example.com logged in successfully
+2025-06-02 15:53:03.690 [http-nio-8080-exec-8] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Updating booking status for ID: 61 to SUCCESS
+2025-06-02 15:53:09.063 [http-nio-8080-exec-10] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Updating booking status for ID: 61 to ACCEPTED
+2025-06-02 15:53:09.968 [http-nio-8080-exec-10] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Booking status updated successfully for ID: 61
+2025-06-02 15:53:13.680 [http-nio-8080-exec-1] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Updating booking status for ID: 61 to SUCCESS
+2025-06-02 15:53:13.920 [http-nio-8080-exec-1] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Booking status updated successfully for ID: 61
+2025-06-02 15:53:14.177 [DomiCare-Async-1] INFO  c.b.d.s.imp.EmailSendingServiceImp - Email sent successfully to: anhnon0106@gmail.com
+2025-06-02 15:56:59.684 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-02 15:56:59.691 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-02 15:56:59.696 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-02 15:56:59.696 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@5afefccc]]
+2025-06-02 15:56:59.696 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-02 15:56:59.711 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-02 15:56:59.715 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-06-02 15:57:00.212 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-06-02 15:57:01.217 [main] INFO  c.b.domicare.DomicareApplication - Starting DomicareApplication using Java 17.0.15 with PID 61491 (/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes started by anhnon in /Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND)
+2025-06-02 15:57:01.218 [main] DEBUG c.b.domicare.DomicareApplication - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-02 15:57:01.218 [main] INFO  c.b.domicare.DomicareApplication - The following 1 profile is active: "prod"
+2025-06-02 15:57:01.810 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-02 15:57:01.857 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 42 ms. Found 9 JPA repository interfaces.
+2025-06-02 15:57:02.249 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-02 15:57:02.254 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-02 15:57:02.254 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-02 15:57:02.278 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-02 15:57:02.278 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1040 ms
+2025-06-02 15:57:02.445 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-02 15:57:02.467 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-02 15:57:02.482 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-02 15:57:02.580 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-02 15:57:02.591 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-02 15:57:03.502 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@5a9ef32e
+2025-06-02 15:57:03.503 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-02 15:57:03.684 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.8
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-02 15:57:04.139 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-02 15:57:07.550 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-02 15:57:07.785 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-02 15:57:08.416 [main] INFO  c.b.d.c.WebSocketConfiguration - Configuring message broker with topic prefix: /topic
+2025-06-02 15:57:08.490 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsService
+2025-06-02 15:57:08.662 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring public endpoint security chain
+2025-06-02 15:57:08.674 [main] INFO  c.b.d.c.WebSocketConfiguration - Registering STOMP endpoints at /ws
+2025-06-02 15:57:08.724 [main] INFO  c.b.d.c.CorsConfiguration - CORS configuration applied for allowed origins
+2025-06-02 15:57:08.895 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-06-02 15:57:08.936 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring main security filter chain
+2025-06-02 15:57:09.307 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-02 15:57:09.307 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@d2775ae]]
+2025-06-02 15:57:09.308 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-02 15:57:09.313 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-06-02 15:57:09.323 [main] INFO  c.b.domicare.DomicareApplication - Started DomicareApplication in 8.291 seconds (process running for 8.529)
+2025-06-02 15:57:09.839 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-02 15:57:09.839 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-02 15:57:09.840 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-06-02 15:58:09.310 [MessageBroker-1] INFO  o.s.w.s.c.WebSocketMessageBrokerStats - WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 1, active threads = 1, queued tasks = 0, completed tasks = 0]
+2025-06-02 16:01:28.849 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-02 16:01:28.855 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-02 16:01:28.859 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-02 16:01:28.859 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@d2775ae]]
+2025-06-02 16:01:28.859 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-02 16:01:28.868 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-02 16:01:28.872 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-06-02 16:01:29.300 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-06-02 16:01:30.267 [main] INFO  c.b.domicare.DomicareApplication - Starting DomicareApplication using Java 17.0.15 with PID 65412 (/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes started by anhnon in /Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND)
+2025-06-02 16:01:30.268 [main] DEBUG c.b.domicare.DomicareApplication - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-02 16:01:30.268 [main] INFO  c.b.domicare.DomicareApplication - The following 1 profile is active: "prod"
+2025-06-02 16:01:30.866 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-02 16:01:30.907 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 36 ms. Found 9 JPA repository interfaces.
+2025-06-02 16:01:31.312 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-02 16:01:31.317 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-02 16:01:31.317 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-02 16:01:31.341 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-02 16:01:31.341 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1056 ms
+2025-06-02 16:01:31.517 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-02 16:01:31.539 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-02 16:01:31.555 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-02 16:01:31.655 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-02 16:01:31.667 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-02 16:01:32.400 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@e2ee348
+2025-06-02 16:01:32.401 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-02 16:01:32.661 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.8
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-02 16:01:33.114 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-02 16:01:36.435 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-02 16:01:36.638 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-02 16:01:37.023 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'bookingController' defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/controller/BookingController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'bookingServiceImp' defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/service/imp/BookingServiceImp.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'bookingsRepository' defined in com.backend.domicare.repository.BookingsRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Could not create query for public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductIdAndStatusAndCreateAtAfter(java.lang.Long,java.lang.Long,com.backend.domicare.model.BookingStatus,java.time.Instant); Reason: Failed to create query for method public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductIdAndStatusAndCreateAtAfter(java.lang.Long,java.lang.Long,com.backend.domicare.model.BookingStatus,java.time.Instant); No property 'productId' found for type 'Booking'; Did you mean 'products'
+2025-06-02 16:01:37.023 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-02 16:01:37.025 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-06-02 16:01:37.521 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-06-02 16:01:37.523 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-06-02 16:01:37.540 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-06-02 16:01:37.550 [main] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'bookingController' defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/controller/BookingController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'bookingServiceImp' defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/service/imp/BookingServiceImp.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'bookingsRepository' defined in com.backend.domicare.repository.BookingsRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Could not create query for public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductIdAndStatusAndCreateAtAfter(java.lang.Long,java.lang.Long,com.backend.domicare.model.BookingStatus,java.time.Instant); Reason: Failed to create query for method public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductIdAndStatusAndCreateAtAfter(java.lang.Long,java.lang.Long,com.backend.domicare.model.BookingStatus,java.time.Instant); No property 'productId' found for type 'Booking'; Did you mean 'products'
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:804)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1381)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1218)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:563)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1155)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1121)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1056)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:987)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at com.backend.domicare.DomicareApplication.main(DomicareApplication.java:10)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'bookingServiceImp' defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/service/imp/BookingServiceImp.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'bookingsRepository' defined in com.backend.domicare.repository.BookingsRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Could not create query for public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductIdAndStatusAndCreateAtAfter(java.lang.Long,java.lang.Long,com.backend.domicare.model.BookingStatus,java.time.Instant); Reason: Failed to create query for method public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductIdAndStatusAndCreateAtAfter(java.lang.Long,java.lang.Long,com.backend.domicare.model.BookingStatus,java.time.Instant); No property 'productId' found for type 'Booking'; Did you mean 'products'
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:804)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1381)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1218)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:563)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1667)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1555)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791)
+	... 21 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'bookingsRepository' defined in com.backend.domicare.repository.BookingsRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Could not create query for public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductIdAndStatusAndCreateAtAfter(java.lang.Long,java.lang.Long,com.backend.domicare.model.BookingStatus,java.time.Instant); Reason: Failed to create query for method public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductIdAndStatusAndCreateAtAfter(java.lang.Long,java.lang.Long,com.backend.domicare.model.BookingStatus,java.time.Instant); No property 'productId' found for type 'Booking'; Did you mean 'products'
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1812)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1667)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1555)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791)
+	... 35 common frames omitted
+Caused by: org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductIdAndStatusAndCreateAtAfter(java.lang.Long,java.lang.Long,com.backend.domicare.model.BookingStatus,java.time.Instant); Reason: Failed to create query for method public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductIdAndStatusAndCreateAtAfter(java.lang.Long,java.lang.Long,com.backend.domicare.model.BookingStatus,java.time.Instant); No property 'productId' found for type 'Booking'; Did you mean 'products'
+	at org.springframework.data.repository.query.QueryCreationException.create(QueryCreationException.java:101)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lookupQuery(QueryExecutorMethodInterceptor.java:120)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.mapMethodsToQuery(QueryExecutorMethodInterceptor.java:104)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lambda$new$0(QueryExecutorMethodInterceptor.java:92)
+	at java.base/java.util.Optional.map(Optional.java:260)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.<init>(QueryExecutorMethodInterceptor.java:92)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport.getRepository(RepositoryFactorySupport.java:431)
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.lambda$afterPropertiesSet$4(RepositoryFactoryBeanSupport.java:350)
+	at org.springframework.data.util.Lazy.getNullable(Lazy.java:135)
+	at org.springframework.data.util.Lazy.get(Lazy.java:113)
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.afterPropertiesSet(RepositoryFactoryBeanSupport.java:356)
+	at org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean.afterPropertiesSet(JpaRepositoryFactoryBean.java:132)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1859)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1808)
+	... 46 common frames omitted
+Caused by: java.lang.IllegalArgumentException: Failed to create query for method public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductIdAndStatusAndCreateAtAfter(java.lang.Long,java.lang.Long,com.backend.domicare.model.BookingStatus,java.time.Instant); No property 'productId' found for type 'Booking'; Did you mean 'products'
+	at org.springframework.data.jpa.repository.query.PartTreeJpaQuery.<init>(PartTreeJpaQuery.java:107)
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$CreateQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:128)
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$CreateIfNotFoundQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:262)
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$AbstractQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:99)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lookupQuery(QueryExecutorMethodInterceptor.java:116)
+	... 58 common frames omitted
+Caused by: org.springframework.data.mapping.PropertyReferenceException: No property 'productId' found for type 'Booking'; Did you mean 'products'
+	at org.springframework.data.mapping.PropertyPath.<init>(PropertyPath.java:94)
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:455)
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:431)
+	at org.springframework.data.mapping.PropertyPath.lambda$from$0(PropertyPath.java:384)
+	at java.base/java.util.concurrent.ConcurrentMap.computeIfAbsent(ConcurrentMap.java:330)
+	at org.springframework.data.mapping.PropertyPath.from(PropertyPath.java:366)
+	at org.springframework.data.mapping.PropertyPath.from(PropertyPath.java:344)
+	at org.springframework.data.repository.query.parser.Part.<init>(Part.java:81)
+	at org.springframework.data.repository.query.parser.PartTree$OrPart.lambda$new$0(PartTree.java:259)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:921)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:682)
+	at org.springframework.data.repository.query.parser.PartTree$OrPart.<init>(PartTree.java:260)
+	at org.springframework.data.repository.query.parser.PartTree$Predicate.lambda$new$0(PartTree.java:389)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:921)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:682)
+	at org.springframework.data.repository.query.parser.PartTree$Predicate.<init>(PartTree.java:390)
+	at org.springframework.data.repository.query.parser.PartTree.<init>(PartTree.java:103)
+	at org.springframework.data.jpa.repository.query.PartTreeJpaQuery.<init>(PartTreeJpaQuery.java:101)
+	... 62 common frames omitted
+2025-06-02 16:03:43.963 [main] INFO  c.b.domicare.DomicareApplication - Starting DomicareApplication using Java 17.0.15 with PID 67509 (/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes started by anhnon in /Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND)
+2025-06-02 16:03:43.964 [main] DEBUG c.b.domicare.DomicareApplication - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-02 16:03:43.964 [main] INFO  c.b.domicare.DomicareApplication - The following 1 profile is active: "prod"
+2025-06-02 16:03:44.536 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-02 16:03:44.582 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 40 ms. Found 9 JPA repository interfaces.
+2025-06-02 16:03:44.963 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-02 16:03:44.968 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-02 16:03:44.968 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-02 16:03:44.993 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-02 16:03:44.994 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1012 ms
+2025-06-02 16:03:45.173 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-02 16:03:45.196 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-02 16:03:45.209 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-02 16:03:45.308 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-02 16:03:45.320 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-02 16:03:47.585 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@5c20505f
+2025-06-02 16:03:47.586 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-02 16:03:47.946 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.8
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-02 16:03:48.477 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-02 16:03:52.342 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-02 16:03:52.566 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-02 16:03:53.021 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'bookingController' defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/controller/BookingController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'bookingServiceImp' defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/service/imp/BookingServiceImp.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'bookingsRepository' defined in com.backend.domicare.repository.BookingsRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Could not create query for public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductsAndStatusAndCreateAtAfter(java.lang.Long,com.backend.domicare.model.Product,com.backend.domicare.model.BookingStatus,java.time.Instant); Reason: Failed to create query for method public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductsAndStatusAndCreateAtAfter(java.lang.Long,com.backend.domicare.model.Product,com.backend.domicare.model.BookingStatus,java.time.Instant); No property 'status' found for type 'Booking'
+2025-06-02 16:03:53.022 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-02 16:03:53.024 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-06-02 16:03:53.593 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-06-02 16:03:53.594 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-06-02 16:03:53.605 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-06-02 16:03:53.613 [main] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'bookingController' defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/controller/BookingController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'bookingServiceImp' defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/service/imp/BookingServiceImp.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'bookingsRepository' defined in com.backend.domicare.repository.BookingsRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Could not create query for public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductsAndStatusAndCreateAtAfter(java.lang.Long,com.backend.domicare.model.Product,com.backend.domicare.model.BookingStatus,java.time.Instant); Reason: Failed to create query for method public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductsAndStatusAndCreateAtAfter(java.lang.Long,com.backend.domicare.model.Product,com.backend.domicare.model.BookingStatus,java.time.Instant); No property 'status' found for type 'Booking'
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:804)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1381)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1218)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:563)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1155)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1121)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1056)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:987)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at com.backend.domicare.DomicareApplication.main(DomicareApplication.java:10)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'bookingServiceImp' defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/service/imp/BookingServiceImp.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'bookingsRepository' defined in com.backend.domicare.repository.BookingsRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Could not create query for public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductsAndStatusAndCreateAtAfter(java.lang.Long,com.backend.domicare.model.Product,com.backend.domicare.model.BookingStatus,java.time.Instant); Reason: Failed to create query for method public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductsAndStatusAndCreateAtAfter(java.lang.Long,com.backend.domicare.model.Product,com.backend.domicare.model.BookingStatus,java.time.Instant); No property 'status' found for type 'Booking'
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:804)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1381)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1218)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:563)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1667)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1555)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791)
+	... 21 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'bookingsRepository' defined in com.backend.domicare.repository.BookingsRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Could not create query for public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductsAndStatusAndCreateAtAfter(java.lang.Long,com.backend.domicare.model.Product,com.backend.domicare.model.BookingStatus,java.time.Instant); Reason: Failed to create query for method public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductsAndStatusAndCreateAtAfter(java.lang.Long,com.backend.domicare.model.Product,com.backend.domicare.model.BookingStatus,java.time.Instant); No property 'status' found for type 'Booking'
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1812)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1667)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1555)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791)
+	... 35 common frames omitted
+Caused by: org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductsAndStatusAndCreateAtAfter(java.lang.Long,com.backend.domicare.model.Product,com.backend.domicare.model.BookingStatus,java.time.Instant); Reason: Failed to create query for method public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductsAndStatusAndCreateAtAfter(java.lang.Long,com.backend.domicare.model.Product,com.backend.domicare.model.BookingStatus,java.time.Instant); No property 'status' found for type 'Booking'
+	at org.springframework.data.repository.query.QueryCreationException.create(QueryCreationException.java:101)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lookupQuery(QueryExecutorMethodInterceptor.java:120)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.mapMethodsToQuery(QueryExecutorMethodInterceptor.java:104)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lambda$new$0(QueryExecutorMethodInterceptor.java:92)
+	at java.base/java.util.Optional.map(Optional.java:260)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.<init>(QueryExecutorMethodInterceptor.java:92)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport.getRepository(RepositoryFactorySupport.java:431)
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.lambda$afterPropertiesSet$4(RepositoryFactoryBeanSupport.java:350)
+	at org.springframework.data.util.Lazy.getNullable(Lazy.java:135)
+	at org.springframework.data.util.Lazy.get(Lazy.java:113)
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.afterPropertiesSet(RepositoryFactoryBeanSupport.java:356)
+	at org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean.afterPropertiesSet(JpaRepositoryFactoryBean.java:132)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1859)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1808)
+	... 46 common frames omitted
+Caused by: java.lang.IllegalArgumentException: Failed to create query for method public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductsAndStatusAndCreateAtAfter(java.lang.Long,com.backend.domicare.model.Product,com.backend.domicare.model.BookingStatus,java.time.Instant); No property 'status' found for type 'Booking'
+	at org.springframework.data.jpa.repository.query.PartTreeJpaQuery.<init>(PartTreeJpaQuery.java:107)
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$CreateQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:128)
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$CreateIfNotFoundQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:262)
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$AbstractQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:99)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lookupQuery(QueryExecutorMethodInterceptor.java:116)
+	... 58 common frames omitted
+Caused by: org.springframework.data.mapping.PropertyReferenceException: No property 'status' found for type 'Booking'
+	at org.springframework.data.mapping.PropertyPath.<init>(PropertyPath.java:94)
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:455)
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:431)
+	at org.springframework.data.mapping.PropertyPath.lambda$from$0(PropertyPath.java:384)
+	at java.base/java.util.concurrent.ConcurrentMap.computeIfAbsent(ConcurrentMap.java:330)
+	at org.springframework.data.mapping.PropertyPath.from(PropertyPath.java:366)
+	at org.springframework.data.mapping.PropertyPath.from(PropertyPath.java:344)
+	at org.springframework.data.repository.query.parser.Part.<init>(Part.java:81)
+	at org.springframework.data.repository.query.parser.PartTree$OrPart.lambda$new$0(PartTree.java:259)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:921)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:682)
+	at org.springframework.data.repository.query.parser.PartTree$OrPart.<init>(PartTree.java:260)
+	at org.springframework.data.repository.query.parser.PartTree$Predicate.lambda$new$0(PartTree.java:389)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:921)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:682)
+	at org.springframework.data.repository.query.parser.PartTree$Predicate.<init>(PartTree.java:390)
+	at org.springframework.data.repository.query.parser.PartTree.<init>(PartTree.java:103)
+	at org.springframework.data.jpa.repository.query.PartTreeJpaQuery.<init>(PartTreeJpaQuery.java:101)
+	... 62 common frames omitted
+2025-06-02 16:04:07.762 [main] INFO  c.b.domicare.DomicareApplication - Starting DomicareApplication using Java 17.0.15 with PID 68205 (/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes started by anhnon in /Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND)
+2025-06-02 16:04:07.763 [main] DEBUG c.b.domicare.DomicareApplication - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-02 16:04:07.763 [main] INFO  c.b.domicare.DomicareApplication - The following 1 profile is active: "prod"
+2025-06-02 16:04:08.343 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-02 16:04:08.385 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 36 ms. Found 9 JPA repository interfaces.
+2025-06-02 16:04:08.805 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-02 16:04:08.810 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-02 16:04:08.810 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-02 16:04:08.836 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-02 16:04:08.836 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1057 ms
+2025-06-02 16:04:09.016 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-02 16:04:09.038 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-02 16:04:09.051 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-02 16:04:09.159 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-02 16:04:09.174 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-02 16:04:09.729 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2b4ba2d9
+2025-06-02 16:04:09.730 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-02 16:04:09.906 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.8
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-02 16:04:10.370 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-02 16:04:12.786 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-02 16:04:13.005 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-02 16:04:13.326 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'bookingController' defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/controller/BookingController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'bookingServiceImp' defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/service/imp/BookingServiceImp.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'bookingsRepository' defined in com.backend.domicare.repository.BookingsRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Could not create query for public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductsAndStatusAndCreateAtAfter(java.lang.Long,com.backend.domicare.model.Product,com.backend.domicare.model.BookingStatus,java.time.Instant); Reason: Failed to create query for method public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductsAndStatusAndCreateAtAfter(java.lang.Long,com.backend.domicare.model.Product,com.backend.domicare.model.BookingStatus,java.time.Instant); No property 'status' found for type 'Booking'
+2025-06-02 16:04:13.326 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-02 16:04:13.327 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-06-02 16:04:13.754 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-06-02 16:04:13.756 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-06-02 16:04:13.770 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-06-02 16:04:13.778 [main] ERROR o.s.boot.SpringApplication - Application run failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'bookingController' defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/controller/BookingController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'bookingServiceImp' defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/service/imp/BookingServiceImp.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'bookingsRepository' defined in com.backend.domicare.repository.BookingsRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Could not create query for public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductsAndStatusAndCreateAtAfter(java.lang.Long,com.backend.domicare.model.Product,com.backend.domicare.model.BookingStatus,java.time.Instant); Reason: Failed to create query for method public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductsAndStatusAndCreateAtAfter(java.lang.Long,com.backend.domicare.model.Product,com.backend.domicare.model.BookingStatus,java.time.Instant); No property 'status' found for type 'Booking'
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:804)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1381)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1218)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:563)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.instantiateSingleton(DefaultListableBeanFactory.java:1155)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingleton(DefaultListableBeanFactory.java:1121)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:1056)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:987)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:627)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:146)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:752)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:439)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:318)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1361)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1350)
+	at com.backend.domicare.DomicareApplication.main(DomicareApplication.java:10)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'bookingServiceImp' defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/service/imp/BookingServiceImp.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'bookingsRepository' defined in com.backend.domicare.repository.BookingsRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Could not create query for public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductsAndStatusAndCreateAtAfter(java.lang.Long,com.backend.domicare.model.Product,com.backend.domicare.model.BookingStatus,java.time.Instant); Reason: Failed to create query for method public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductsAndStatusAndCreateAtAfter(java.lang.Long,com.backend.domicare.model.Product,com.backend.domicare.model.BookingStatus,java.time.Instant); No property 'status' found for type 'Booking'
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:804)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1381)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1218)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:563)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1667)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1555)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791)
+	... 21 common frames omitted
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'bookingsRepository' defined in com.backend.domicare.repository.BookingsRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Could not create query for public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductsAndStatusAndCreateAtAfter(java.lang.Long,com.backend.domicare.model.Product,com.backend.domicare.model.BookingStatus,java.time.Instant); Reason: Failed to create query for method public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductsAndStatusAndCreateAtAfter(java.lang.Long,com.backend.domicare.model.Product,com.backend.domicare.model.BookingStatus,java.time.Instant); No property 'status' found for type 'Booking'
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1812)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:601)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:523)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:339)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:347)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:337)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:254)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1667)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1555)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:913)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791)
+	... 35 common frames omitted
+Caused by: org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductsAndStatusAndCreateAtAfter(java.lang.Long,com.backend.domicare.model.Product,com.backend.domicare.model.BookingStatus,java.time.Instant); Reason: Failed to create query for method public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductsAndStatusAndCreateAtAfter(java.lang.Long,com.backend.domicare.model.Product,com.backend.domicare.model.BookingStatus,java.time.Instant); No property 'status' found for type 'Booking'
+	at org.springframework.data.repository.query.QueryCreationException.create(QueryCreationException.java:101)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lookupQuery(QueryExecutorMethodInterceptor.java:120)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.mapMethodsToQuery(QueryExecutorMethodInterceptor.java:104)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lambda$new$0(QueryExecutorMethodInterceptor.java:92)
+	at java.base/java.util.Optional.map(Optional.java:260)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.<init>(QueryExecutorMethodInterceptor.java:92)
+	at org.springframework.data.repository.core.support.RepositoryFactorySupport.getRepository(RepositoryFactorySupport.java:431)
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.lambda$afterPropertiesSet$4(RepositoryFactoryBeanSupport.java:350)
+	at org.springframework.data.util.Lazy.getNullable(Lazy.java:135)
+	at org.springframework.data.util.Lazy.get(Lazy.java:113)
+	at org.springframework.data.repository.core.support.RepositoryFactoryBeanSupport.afterPropertiesSet(RepositoryFactoryBeanSupport.java:356)
+	at org.springframework.data.jpa.repository.support.JpaRepositoryFactoryBean.afterPropertiesSet(JpaRepositoryFactoryBean.java:132)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1859)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1808)
+	... 46 common frames omitted
+Caused by: java.lang.IllegalArgumentException: Failed to create query for method public abstract boolean com.backend.domicare.repository.BookingsRepository.existsByUserIdAndProductsAndStatusAndCreateAtAfter(java.lang.Long,com.backend.domicare.model.Product,com.backend.domicare.model.BookingStatus,java.time.Instant); No property 'status' found for type 'Booking'
+	at org.springframework.data.jpa.repository.query.PartTreeJpaQuery.<init>(PartTreeJpaQuery.java:107)
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$CreateQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:128)
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$CreateIfNotFoundQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:262)
+	at org.springframework.data.jpa.repository.query.JpaQueryLookupStrategy$AbstractQueryLookupStrategy.resolveQuery(JpaQueryLookupStrategy.java:99)
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.lookupQuery(QueryExecutorMethodInterceptor.java:116)
+	... 58 common frames omitted
+Caused by: org.springframework.data.mapping.PropertyReferenceException: No property 'status' found for type 'Booking'
+	at org.springframework.data.mapping.PropertyPath.<init>(PropertyPath.java:94)
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:455)
+	at org.springframework.data.mapping.PropertyPath.create(PropertyPath.java:431)
+	at org.springframework.data.mapping.PropertyPath.lambda$from$0(PropertyPath.java:384)
+	at java.base/java.util.concurrent.ConcurrentMap.computeIfAbsent(ConcurrentMap.java:330)
+	at org.springframework.data.mapping.PropertyPath.from(PropertyPath.java:366)
+	at org.springframework.data.mapping.PropertyPath.from(PropertyPath.java:344)
+	at org.springframework.data.repository.query.parser.Part.<init>(Part.java:81)
+	at org.springframework.data.repository.query.parser.PartTree$OrPart.lambda$new$0(PartTree.java:259)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:921)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:682)
+	at org.springframework.data.repository.query.parser.PartTree$OrPart.<init>(PartTree.java:260)
+	at org.springframework.data.repository.query.parser.PartTree$Predicate.lambda$new$0(PartTree.java:389)
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197)
+	at java.base/java.util.stream.ReferencePipeline$2$1.accept(ReferencePipeline.java:179)
+	at java.base/java.util.Spliterators$ArraySpliterator.forEachRemaining(Spliterators.java:992)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499)
+	at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:921)
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234)
+	at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:682)
+	at org.springframework.data.repository.query.parser.PartTree$Predicate.<init>(PartTree.java:390)
+	at org.springframework.data.repository.query.parser.PartTree.<init>(PartTree.java:103)
+	at org.springframework.data.jpa.repository.query.PartTreeJpaQuery.<init>(PartTreeJpaQuery.java:101)
+	... 62 common frames omitted
+2025-06-02 16:05:24.008 [main] INFO  c.b.domicare.DomicareApplication - Starting DomicareApplication using Java 17.0.15 with PID 69635 (/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes started by anhnon in /Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND)
+2025-06-02 16:05:24.009 [main] DEBUG c.b.domicare.DomicareApplication - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-02 16:05:24.010 [main] INFO  c.b.domicare.DomicareApplication - The following 1 profile is active: "prod"
+2025-06-02 16:05:24.651 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-02 16:05:24.694 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 38 ms. Found 9 JPA repository interfaces.
+2025-06-02 16:05:25.092 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-02 16:05:25.097 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-02 16:05:25.097 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-02 16:05:25.121 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-02 16:05:25.121 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1093 ms
+2025-06-02 16:05:25.296 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-02 16:05:25.329 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-02 16:05:25.343 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-02 16:05:25.440 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-02 16:05:25.451 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-02 16:05:26.209 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@62264d4f
+2025-06-02 16:05:26.210 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-02 16:05:26.606 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.8
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-02 16:05:27.059 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-02 16:05:30.899 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-02 16:05:31.123 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-02 16:05:31.696 [main] INFO  c.b.d.c.WebSocketConfiguration - Configuring message broker with topic prefix: /topic
+2025-06-02 16:05:31.755 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsService
+2025-06-02 16:05:31.938 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring public endpoint security chain
+2025-06-02 16:05:31.952 [main] INFO  c.b.d.c.WebSocketConfiguration - Registering STOMP endpoints at /ws
+2025-06-02 16:05:31.996 [main] INFO  c.b.d.c.CorsConfiguration - CORS configuration applied for allowed origins
+2025-06-02 16:05:32.163 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-06-02 16:05:32.198 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring main security filter chain
+2025-06-02 16:05:32.534 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-02 16:05:32.534 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@287213ac]]
+2025-06-02 16:05:32.534 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-02 16:05:32.539 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-06-02 16:05:32.549 [main] INFO  c.b.domicare.DomicareApplication - Started DomicareApplication in 8.713 seconds (process running for 8.994)
+2025-06-02 16:05:33.212 [RMI TCP Connection(3)-127.0.0.1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-02 16:05:33.212 [RMI TCP Connection(3)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-02 16:05:33.213 [RMI TCP Connection(3)-127.0.0.1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-06-02 16:05:41.281 [http-nio-8080-exec-5] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] Login attempt for email: anhnon0106@gmail.com
+2025-06-02 16:05:41.383 [http-nio-8080-exec-5] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: anhnon0106@gmail.com
+2025-06-02 16:05:44.540 [http-nio-8080-exec-5] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 1
+2025-06-02 16:05:44.616 [http-nio-8080-exec-5] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: anhnon0106@gmail.com
+2025-06-02 16:05:44.804 [http-nio-8080-exec-5] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 1
+2025-06-02 16:05:44.805 [http-nio-8080-exec-5] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Creating access token for user anhnon0106@gmail.com
+2025-06-02 16:05:44.817 [http-nio-8080-exec-5] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: anhnon0106@gmail.com
+2025-06-02 16:05:44.949 [http-nio-8080-exec-5] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 1
+2025-06-02 16:05:45.040 [http-nio-8080-exec-5] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Deleted existing refresh tokens for user anhnon0106@gmail.com
+2025-06-02 16:05:45.116 [http-nio-8080-exec-5] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Created refresh token for user anhnon0106@gmail.com
+2025-06-02 16:05:45.116 [http-nio-8080-exec-5] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: anhnon0106@gmail.com
+2025-06-02 16:05:45.195 [http-nio-8080-exec-5] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 1
+2025-06-02 16:05:45.198 [http-nio-8080-exec-5] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] User anhnon0106@gmail.com logged in successfully
+2025-06-02 16:05:49.908 [http-nio-8080-exec-6] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] Login attempt for email: anhnon0106@gmail.com
+2025-06-02 16:05:49.910 [http-nio-8080-exec-6] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: anhnon0106@gmail.com
+2025-06-02 16:05:49.993 [http-nio-8080-exec-6] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 1
+2025-06-02 16:05:50.091 [http-nio-8080-exec-6] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: anhnon0106@gmail.com
+2025-06-02 16:05:50.184 [http-nio-8080-exec-6] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 1
+2025-06-02 16:05:50.185 [http-nio-8080-exec-6] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Creating access token for user anhnon0106@gmail.com
+2025-06-02 16:05:50.185 [http-nio-8080-exec-6] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: anhnon0106@gmail.com
+2025-06-02 16:05:50.223 [http-nio-8080-exec-6] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 1
+2025-06-02 16:05:50.261 [http-nio-8080-exec-6] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Deleted existing refresh tokens for user anhnon0106@gmail.com
+2025-06-02 16:05:50.297 [http-nio-8080-exec-6] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Created refresh token for user anhnon0106@gmail.com
+2025-06-02 16:05:50.298 [http-nio-8080-exec-6] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: anhnon0106@gmail.com
+2025-06-02 16:05:50.343 [http-nio-8080-exec-6] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 1
+2025-06-02 16:05:50.344 [http-nio-8080-exec-6] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] User anhnon0106@gmail.com logged in successfully
+2025-06-02 16:06:26.521 [http-nio-8080-exec-10] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] Login attempt for email: sale1@example.com
+2025-06-02 16:06:26.522 [http-nio-8080-exec-10] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: sale1@example.com
+2025-06-02 16:06:26.623 [http-nio-8080-exec-10] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 5
+2025-06-02 16:06:26.703 [http-nio-8080-exec-10] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: sale1@example.com
+2025-06-02 16:06:26.782 [http-nio-8080-exec-10] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 5
+2025-06-02 16:06:26.782 [http-nio-8080-exec-10] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Creating access token for user sale1@example.com
+2025-06-02 16:06:26.783 [http-nio-8080-exec-10] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: sale1@example.com
+2025-06-02 16:06:26.982 [http-nio-8080-exec-10] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 5
+2025-06-02 16:06:27.030 [http-nio-8080-exec-10] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Deleted existing refresh tokens for user sale1@example.com
+2025-06-02 16:06:27.068 [http-nio-8080-exec-10] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Created refresh token for user sale1@example.com
+2025-06-02 16:06:27.068 [http-nio-8080-exec-10] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: sale1@example.com
+2025-06-02 16:06:27.104 [http-nio-8080-exec-10] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 5
+2025-06-02 16:06:27.105 [http-nio-8080-exec-10] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] User sale1@example.com logged in successfully
+2025-06-02 16:06:32.530 [MessageBroker-1] INFO  o.s.w.s.c.WebSocketMessageBrokerStats - WebSocketSession[0 current WS(0)-HttpStream(0)-HttpPoll(0), 0 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(0)-CONNECTED(0)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], outboundChannel[pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 0], sockJsScheduler[pool size = 1, active threads = 1, queued tasks = 0, completed tasks = 0]
+2025-06-02 16:06:43.254 [http-nio-8080-exec-3] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Updating booking status for ID: 62 to SUCCESS
+2025-06-02 16:06:48.645 [http-nio-8080-exec-5] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Updating booking status for ID: 62 to ACCEPTED
+2025-06-02 16:06:49.003 [http-nio-8080-exec-5] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Booking status updated successfully for ID: 62
+2025-06-02 16:06:52.956 [DomiCare-Async-1] INFO  c.b.d.s.imp.EmailSendingServiceImp - Email sent successfully to: anhnon0106@gmail.com
+2025-06-02 16:06:54.451 [http-nio-8080-exec-6] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Updating booking status for ID: 62 to SUCCESS
+2025-06-02 16:06:54.795 [http-nio-8080-exec-6] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Booking status updated successfully for ID: 62
+2025-06-02 16:07:07.272 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-02 16:07:07.279 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-02 16:07:07.281 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-02 16:07:07.281 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@287213ac]]
+2025-06-02 16:07:07.281 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-02 16:07:07.291 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-02 16:07:07.294 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-06-02 16:07:07.843 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

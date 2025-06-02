@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.backend.domicare.model.Booking;
 import com.backend.domicare.model.BookingStatus;
+import com.backend.domicare.model.Product;
 
 
 @Repository
@@ -57,4 +58,12 @@ public interface BookingsRepository extends JpaRepository<Booking, Long> , JpaSp
     boolean existsByUserIdAndProductIdAndStatus(@Param("userId") Long userId,
                                              @Param("productId") Long productId,
                                              @Param("status") BookingStatus status);
+   
+   boolean existsByUserIdAndProductsAndBookingStatusAndCreateAtAfter(
+    Long userId,
+    Product products,
+    BookingStatus bookingStatus,
+    Instant createAt
+);
+
 }

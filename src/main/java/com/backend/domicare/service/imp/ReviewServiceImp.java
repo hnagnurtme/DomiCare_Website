@@ -2,6 +2,7 @@ package com.backend.domicare.service.imp;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,31 +63,28 @@ public class ReviewServiceImp implements ReviewService {
         } else {
             throw new NotFoundUserException("User not found");
         }
-       
+
         Product product = productsRepository.findById(productId)
                 .orElseThrow(() -> new NotFoundProductException("Product not found with ID: " + productId));
 
         User user = usersRepository.findById(userId)
                 .orElseThrow(() -> new NotFoundProductException("User not found with ID: " + userId));
-        
+
         validateAlreadyBooked(userId, productId);
-        boolean reviewExists = reviewsRepository.existsByProductIdAndUserId(productId, userId);
-        if (reviewExists) {
-            throw new AlreadyReviewProduct("Review already exists for this product and user");
-        }
-        
+        validateAlreadyReview(userId, productId);
+
         Review reviewEntity = ReviewMapper.INSTANCE.convertToReview(review);
-        
+
         reviewEntity.setProduct(product);
         reviewEntity.setUser(user);
-        
+
         List<Review> reviews = product.getReviews();
         reviews.add(reviewEntity);
         product.setReviews(reviews);
         product.setOveralRating(product.calculateRatingStar());
-        
+
         productsRepository.save(product);
-        
+
         return ReviewMapper.INSTANCE.convertToReviewDTO(reviewsRepository.save(reviewEntity));
     }
 
@@ -96,7 +94,7 @@ public class ReviewServiceImp implements ReviewService {
         ResultPagingDTO resultPagingDTO = new ResultPagingDTO();
         ResultPagingDTO.Meta meta = new ResultPagingDTO.Meta();
 
-        meta.setPage(reviews.getNumber()+1);
+        meta.setPage(reviews.getNumber() + 1);
         meta.setSize(reviews.getSize());
         meta.setTotal(reviews.getTotalElements());
         meta.setTotalPages(reviews.getTotalPages());
@@ -106,13 +104,13 @@ public class ReviewServiceImp implements ReviewService {
 
         return resultPagingDTO;
     }
-    
+
     @Override
     public Long countAllReviews() {
         return reviewsRepository.count();
     }
 
-    public Long countTotalReviews(LocalDate startDate, LocalDate endDate){
+    public Long countTotalReviews(LocalDate startDate, LocalDate endDate) {
         if (startDate == null || endDate == null) {
             throw new InvalidDateException("Start date and end date cannot be null");
         }
@@ -124,11 +122,33 @@ public class ReviewServiceImp implements ReviewService {
         return reviewsRepository.countTotalReviews(startDateStr, endDateStr);
     }
 
-
     private void validateAlreadyBooked(Long userId, Long productId) {
-        boolean alreadyBooked = bookingsRepository.existsByUserIdAndProductIdAndStatus(userId, productId, BookingStatus.SUCCESS);
+        boolean alreadyBooked = bookingsRepository.existsByUserIdAndProductIdAndStatus(userId, productId,
+                BookingStatus.SUCCESS);
         if (!alreadyBooked) {
             throw new NotBookedProductException("User has not booked this product yet");
         }
     }
+
+    private void validateAlreadyReview(Long userId, Long productId) {
+
+        Optional<Review> lastReviewOpt = reviewsRepository.findTopByUserIdAndProductIdOrderByCreateAtDesc(userId,
+                productId);
+
+        if (lastReviewOpt.isEmpty()) {
+            return;
+        }
+        Instant lastReviewTime = lastReviewOpt.get().getCreateAt();
+
+        Product product = productsRepository.findById(productId)
+                .orElseThrow(() -> new NotFoundProductException("Product not found"));
+
+        boolean hasNewBooking = bookingsRepository.existsByUserIdAndProductsAndBookingStatusAndCreateAtAfter(
+                userId, product, BookingStatus.SUCCESS, lastReviewTime);
+
+        if (!hasNewBooking) {
+            throw new AlreadyReviewProduct("Bạn đã review sản phẩm này rồi và chưa có đơn đặt hàng mới sau đó.");
+        }
+    }
+
 }

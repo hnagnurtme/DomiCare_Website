@@ -108,7 +108,7 @@ public class EmailSendingServiceImp implements EmailSendingService {
             context.setVariable("password", password);
             context.setVariable("fullName", fullName);
             String content = buildEmailContent("SendPasswordToUser", context);
-            sendEmailSync(email, "Cảm ơn bạn đã sử dụng dịch vụ của DomiCare", content, false, true);
+            sendEmailSync(email, "[DOMICARE] - THÔNG TIN TÀI KHOẢN", content, false, true);
             return CompletableFuture.completedFuture(null);
         } catch (Exception e) {
             log.error("Failed to send password to user: {}", email, e);
@@ -125,7 +125,7 @@ public class EmailSendingServiceImp implements EmailSendingService {
             context.setVariable("dateBooking", dateBooking);
             context.setVariable("reason", "Hệ thống đang gặp sự cố");
             String content = buildEmailContent("SendRejectBooking", context);
-            sendEmailSync(to, "Yêu cầu dịch vụ của bạn đã bị từ chối", content, false, true);
+            sendEmailSync(to, "[DOMICARE]-TỪ CHỐI DỊCH VỤ", content, false, true);
             return CompletableFuture.completedFuture(null);
         } catch (Exception e) {
             log.error("Failed to send rejection email: {}", to, e);
@@ -141,7 +141,7 @@ public class EmailSendingServiceImp implements EmailSendingService {
             context.setVariable("nameService", nameService);
             context.setVariable("dateBooking", dateBooking);
             String content = buildEmailContent("SendAcceptedBooking", context);
-            sendEmailSync(to, "Yêu cầu dịch vụ của bạn đã được chấp nhận", content, false, true);
+            sendEmailSync(to, "[DOMICARE]- TIẾP NHẬN DỊCH VỤ", content, false, true);
             return CompletableFuture.completedFuture(null);
         } catch (Exception e) {
             log.error("Failed to send acceptance email: {}", to, e);

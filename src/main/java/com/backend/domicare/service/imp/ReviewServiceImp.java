@@ -2,7 +2,6 @@ package com.backend.domicare.service.imp;
 
 import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -104,12 +103,6 @@ public class ReviewServiceImp implements ReviewService {
 
         return resultPagingDTO;
     }
-
-    @Override
-    public Long countAllReviews() {
-        return reviewsRepository.count();
-    }
-
     public Long countTotalReviews(LocalDate startDate, LocalDate endDate) {
         if (startDate == null || endDate == null) {
             throw new InvalidDateException("Start date and end date cannot be null");

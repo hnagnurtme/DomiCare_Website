@@ -13,9 +13,7 @@ public interface PermissionService {
     public boolean isPermissionExists(PermissionDTO permission);
     public PermissionDTO createPermission(PermissionDTO permission);
     public PermissionDTO getPermissionById(Long id);
-
     public PermissionDTO updatePermission(PermissionDTO permission);
     public void deletePermission(Long id);
-
     public ResultPagingDTO getPermissions(Specification<Permission> spec,Pageable pageable);
 }

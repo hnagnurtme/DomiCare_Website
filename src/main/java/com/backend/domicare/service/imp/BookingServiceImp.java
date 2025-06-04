@@ -15,11 +15,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.backend.domicare.dto.BookingDTO;
 import com.backend.domicare.dto.UserDTO;
 import com.backend.domicare.dto.request.BookingRequest;
+import com.backend.domicare.dto.request.LocalDateRequest;
 import com.backend.domicare.dto.request.UpdateBookingRequest;
 import com.backend.domicare.dto.request.UpdateBookingStatusRequest;
 import com.backend.domicare.dto.response.MiniBookingResponse;
 import com.backend.domicare.exception.AlreadyRegisterUserException;
 import com.backend.domicare.exception.BookingStatusException;
+import com.backend.domicare.exception.InvalidDateException;
 import com.backend.domicare.exception.NotFoundBookingException;
 import com.backend.domicare.exception.NotFoundUserException;
 import com.backend.domicare.exception.TooMuchBookingException;
@@ -354,7 +356,7 @@ public class BookingServiceImp implements BookingService {
                     }
 
                     double discount_percent = product.getDiscount() != null ? product.getDiscount() : 0.0;
-                    return price* (100-  discount_percent)/ 100;
+                    return price * (100 - discount_percent) / 100;
                 })
                 .sum();
 
@@ -388,14 +390,6 @@ public class BookingServiceImp implements BookingService {
         saleUser.setSaleSuccessPercent(successPercentage);
     }
 
-    @Override
-    public Long countTotalSuccessBooking() {
-        Long totalSuccessBookings = bookingRepository.countBookingsByStatus(BookingStatus.SUCCESS);
-        logger.debug("[Booking] Total success bookings: {}", totalSuccessBookings);
-        return totalSuccessBookings;
-    }
-
-    @Override
     public Long getTotalBooking(LocalDate startDate, LocalDate endDate) {
         if (startDate == null || endDate == null) {
             throw new IllegalArgumentException("Start date and end date cannot be null");
@@ -440,13 +434,6 @@ public class BookingServiceImp implements BookingService {
     }
 
     @Override
-    public Long countTotalRevenue() {
-        Long totalRevenue = bookingRepository.countTotalRevenue(BookingStatus.SUCCESS, Instant.EPOCH, Instant.now());
-        logger.debug("[Booking] Total revenue: {}", totalRevenue);
-        return totalRevenue;
-    }
-
-    @Override
     public ResultPagingDTO getAllBooking(Specification<Booking> spec, Pageable pageable) {
         Page<Booking> bookings = bookingRepository.findAll(spec, pageable);
         ResultPagingDTO resultPagingDTO = new ResultPagingDTO();
@@ -478,5 +465,72 @@ public class BookingServiceImp implements BookingService {
             throw new TooMuchBookingException("Bạn đã đặt quá 5 đơn hàng trong 1 giờ qua. Vui lòng thử lại sau.");
         }
         return true;
+    }
+
+    @Override
+    public Long countTotalBookingByStatus(BookingStatus status, LocalDateRequest localDateRequest) {
+        LocalDate startDate = localDateRequest.getStartDate();
+        LocalDate endDate = localDateRequest.getEndDate();
+        if (startDate == null || endDate == null) {
+            throw new InvalidDateException("Start date and end date cannot be null");
+        }
+        if (startDate.isAfter(endDate)) {
+            throw new InvalidDateException("Start date must be before or equal to end date");
+        }
+        Instant startDateStr = startDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
+        Instant endDateStr = endDate.plusDays(1).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
+        logger.debug("[Booking] Counting total bookings with status {} from {} to {}", status, startDateStr,
+                endDateStr);
+        Long totalBookings = bookingRepository.countBookingsByStatusAndCreatedAtBetween(status, startDateStr,
+                endDateStr);
+        if (totalBookings == null) {
+            totalBookings = 0L;
+        }
+        logger.debug("[Booking] Total bookings with status {} from {} to {}: {}", status, startDate, endDate,
+                totalBookings);
+        return totalBookings;
+    }
+
+    @Override
+    public Long countTotalBooking(LocalDateRequest localDateRequest) {
+        LocalDate startDate = localDateRequest.getStartDate();
+        LocalDate endDate = localDateRequest.getEndDate();
+        if (startDate == null || endDate == null) {
+            throw new InvalidDateException("Start date and end date cannot be null");
+        }
+        if (startDate.isAfter(endDate)) {
+            throw new InvalidDateException("Start date must be before or equal to end date");
+        }
+        Instant startDateStr = startDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
+        Instant endDateStr = endDate.plusDays(1).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
+        logger.debug("[Booking] Counting total bookings from {} to {}", startDateStr, endDateStr);
+        Long totalBookings = bookingRepository.countTotalBookingWithNotStatus(BookingStatus.CANCELLED, startDateStr,
+                endDateStr);
+        if (totalBookings == null) {
+            totalBookings = 0L;
+        }
+        logger.debug("[Booking] Total bookings from {} to {}: {}", startDate, endDate, totalBookings);
+        return totalBookings;
+    }
+
+    @Override
+    public Long getTotalSuccessBooking(LocalDate startDate, LocalDate endDate) {
+        if (startDate == null || endDate == null) {
+            throw new InvalidDateException("Start date and end date cannot be null");
+
+        }
+        if (startDate.isAfter(endDate)) {
+            throw new InvalidDateException("Start date must be before or equal to end date");
+        }
+        Instant startDateStr = startDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
+        Instant endDateStr = endDate.plusDays(1).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
+        logger.debug("[Booking] Counting total bookings from {} to {}", startDateStr, endDateStr);
+        Long totalBookings = bookingRepository.countBookingsByStatusAndCreatedAtBetween(BookingStatus.CANCELLED, startDateStr,
+                endDateStr);
+        if (totalBookings == null) {
+            totalBookings = 0L;
+        }
+        logger.debug("[Booking] Total bookings from {} to {}: {}", startDate, endDate, totalBookings);
+        return totalBookings;
     }
 }

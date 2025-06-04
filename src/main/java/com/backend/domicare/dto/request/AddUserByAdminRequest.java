@@ -7,6 +7,10 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
+import java.time.Instant;
+
+import com.backend.domicare.model.Gender;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -41,6 +45,16 @@ public class AddUserByAdminRequest {
     
     @Schema(example = "123 Street, City", description = "User's address")
     private String address;
+
+    @Schema(example = "https://example.com/avatar.jpg", description = "URL of the user's avatar image")
+    private String avatar;
+
+    @Schema(example =  "MALE", description = "Gender")
+    private Gender gender;
+
+    @NotNull(message = "Date of birth cannot be empty")
+    @Schema(example = "2000-01-01T00:00:00Z", description = "User's date of birth in ISO 8601 format")
+    private Instant dateOfBirth;
     
     @NotNull(message = "Role ID cannot be empty")
     @Positive(message = "Role ID must be positive")

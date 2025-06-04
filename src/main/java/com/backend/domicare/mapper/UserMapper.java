@@ -92,7 +92,10 @@ public interface UserMapper {
         userDTO.phone( userRequest.getPhone() );
         userDTO.address( userRequest.getAddress() );
         userDTO.email( userRequest.getEmail() );
-
+        userDTO.avatar( userRequest.getAvatar() );
+        userDTO.phone( userRequest.getPhone() );
+        userDTO.gender( userRequest.getGender() );
+        userDTO.dateOfBirth( userRequest.getDateOfBirth() );
         return userDTO.build();
         
     }

@@ -14,10 +14,9 @@ import com.backend.domicare.model.Booking;
 import com.backend.domicare.model.BookingStatus;
 import com.backend.domicare.model.Product;
 
-
 @Repository
-public interface BookingsRepository extends JpaRepository<Booking, Long> , JpaSpecificationExecutor<Booking> {
-    
+public interface BookingsRepository extends JpaRepository<Booking, Long>, JpaSpecificationExecutor<Booking> {
+
     @Query("SELECT b FROM Booking b WHERE b.user.id = :userId")
     List<Booking> findByUserId(@Param("userId") Long userId);
 
@@ -29,6 +28,7 @@ public interface BookingsRepository extends JpaRepository<Booking, Long> , JpaSp
 
     @Query("SELECT COUNT(b) FROM Booking b WHERE b.bookingStatus = :status")
     Long countBookingsByStatus(@Param("status") BookingStatus status);
+
     @Query("SELECT b FROM Booking b WHERE b.updateBy = :updateBy AND b.bookingStatus = :status")
     List<Booking> findByUpdateByAndStatus(@Param("updateBy") String updateBy, @Param("status") BookingStatus status);
 
@@ -36,34 +36,47 @@ public interface BookingsRepository extends JpaRepository<Booking, Long> , JpaSp
     List<Booking> findByCreateByAndStatus(@Param("createBy") String createBy, @Param("status") BookingStatus status);
 
     @Query("SELECT b FROM Booking b WHERE b.updateBy = :updateBy AND b.bookingStatus IN :status")
-    List<Booking> findByUpdateByAndStatusIn(@Param("updateBy") String updateBy, @Param("status") List<BookingStatus> status);
+    List<Booking> findByUpdateByAndStatusIn(@Param("updateBy") String updateBy,
+            @Param("status") List<BookingStatus> status);
 
     // count total success booking in startdate and enddate
     @Query("SELECT COUNT(b) FROM Booking b WHERE b.bookingStatus = :status AND b.createAt BETWEEN :startDate AND :endDate")
-    Long countTotalSuccessBooking(@Param("status") BookingStatus status, @Param("startDate") Instant startDate, @Param("endDate") Instant endDate);
-    // Example : Select b from Booking b where b.createAt between '2023-01-01' and '2023-12-31'
+    Long countTotalSuccessBooking(@Param("status") BookingStatus status, @Param("startDate") Instant startDate,
+            @Param("endDate") Instant endDate);
+    // Example : Select b from Booking b where b.createAt between '2023-01-01' and
+    // '2023-12-31'
 
-    //count total revenue in startdate and enddate // 
+    // count total revenue in startdate and enddate //
     @Query("SELECT SUM(b.totalPrice) FROM Booking b WHERE b.bookingStatus = :status AND b.createAt BETWEEN :startDate AND :endDate")
-    Long countTotalRevenue(@Param("status") BookingStatus status, @Param("startDate") Instant startDate, @Param("endDate") Instant endDate);
-    // Example : Select SUM(b.totalPrice) from Booking b where b.createAt between '2023-01-01' and '2023-12-31'
+    Long countTotalRevenue(@Param("status") BookingStatus status, @Param("startDate") Instant startDate,
+            @Param("endDate") Instant endDate);
+    // Example : Select SUM(b.totalPrice) from Booking b where b.createAt between
+    // '2023-01-01' and '2023-12-31'
 
-    //countBookingsByUserIdAndCreatedAtAfter
+    // countBookingsByUserIdAndCreatedAtAfter
     @Query("SELECT COUNT(b) FROM Booking b WHERE b.user.id = :userId AND b.createAt >= :createdAt")
     Long countBookingsByUserIdAndCreatedAtAfter(@Param("userId") Long userId, @Param("createdAt") Instant createdAt);
 
-
     @Query("SELECT COUNT(b) > 0 FROM Booking b JOIN b.products p " +
-       "WHERE b.user.id = :userId AND p.id = :productId AND b.bookingStatus = :status")
+            "WHERE b.user.id = :userId AND p.id = :productId AND b.bookingStatus = :status")
     boolean existsByUserIdAndProductIdAndStatus(@Param("userId") Long userId,
-                                             @Param("productId") Long productId,
-                                             @Param("status") BookingStatus status);
-   
-   boolean existsByUserIdAndProductsAndBookingStatusAndCreateAtAfter(
-    Long userId,
-    Product products,
-    BookingStatus bookingStatus,
-    Instant createAt
-);
+            @Param("productId") Long productId,
+            @Param("status") BookingStatus status);
 
-}
+    boolean existsByUserIdAndProductsAndBookingStatusAndCreateAtAfter(
+            Long userId,
+            Product products,
+            BookingStatus bookingStatus,
+            Instant createAt);
+    //countBookingsByStatusAndCreatedAtBetween
+    @Query("SELECT COUNT(b) FROM Booking b WHERE b.bookingStatus = :status AND b.createAt BETWEEN :startDate AND :endDate")
+    Long countBookingsByStatusAndCreatedAtBetween(@Param("status") BookingStatus status,
+            @Param("startDate") Instant startDate,
+            @Param("endDate") Instant endDate);
+    // /countTotalBookingWithNotCancelled(Instant startDate, Instant endDate)
+    @Query("SELECT COUNT(b) FROM Booking b WHERE b.bookingStatus <> :status AND b.createAt BETWEEN :startDate AND :endDate")
+    Long countTotalBookingWithNotStatus(@Param("status") BookingStatus status,
+            @Param("startDate") Instant startDate,
+            @Param("endDate") Instant endDate);
+    
+}   

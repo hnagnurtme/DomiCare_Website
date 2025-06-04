@@ -14,7 +14,5 @@ public interface ReviewService {
     public ReviewDTO getReviewById(Long id);
     public ReviewDTO createReview(ReviewRequest review);
     public ResultPagingDTO getAllReviews(Specification<Review> spec , Pageable pageable);
-    public Long countAllReviews();
-
     public Long countTotalReviews(LocalDate startDate, LocalDate endDate);
 }

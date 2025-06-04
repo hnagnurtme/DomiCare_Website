@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.domicare.dto.DashboardSummaryDTO;
 import com.backend.domicare.dto.request.LocalDateRequest;
+import com.backend.domicare.dto.response.OverviewResponse;
 import com.backend.domicare.service.DashBoardService;
 
 import jakarta.validation.Valid;
@@ -23,8 +24,8 @@ public class DashBoardController {
     private final DashBoardService dashboardService;
 
     @PostMapping("/dashboard/summary")
-    public ResponseEntity<Map<String, DashboardSummaryDTO>> getDashboardSummary(@Valid @RequestBody LocalDateRequest localDateRequest) {
-        Map<String, DashboardSummaryDTO> summary = dashboardService.getDashboardSummary(localDateRequest);
+    public ResponseEntity<OverviewResponse> getDashboardSummary(@Valid @RequestBody LocalDateRequest localDateRequest) {
+        OverviewResponse summary = dashboardService.getDashboardSummary(localDateRequest);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(summary);
     }

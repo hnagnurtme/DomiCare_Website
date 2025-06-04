@@ -2,7 +2,7 @@ package com.backend.domicare.exception;
 
 public class UserNotActiveException  extends RuntimeException {
     public UserNotActiveException(String message) {
-        super("Tài khoản không hoạt động. Vui lòng liên hệ quản trị viên.");
+        super("Hệ thống đã tự động tạo tài khoản cho bạn, vui lòng check email để xem thông tin tài khoản. ");
     }
     
 }

@@ -21,6 +21,7 @@ import com.backend.domicare.dto.request.UpdateBookingRequest;
 import com.backend.domicare.dto.request.UpdateBookingStatusRequest;
 import com.backend.domicare.dto.response.MiniBookingResponse;
 import com.backend.domicare.model.Booking;
+import com.backend.domicare.model.BookingStatus;
 import com.backend.domicare.service.BookingService;
 import com.backend.domicare.utils.FormatStringAccents;
 import com.turkraft.springfilter.boot.Filter;
@@ -73,7 +74,8 @@ public class BookingController {
     public ResponseEntity<ResultPagingDTO> getBookings(
             @Parameter(description = "Page number (1-based)") @RequestParam(defaultValue = "1") int page,
             @Parameter(description = "Number of items per page") @RequestParam(defaultValue = "20") int size,
-            @Parameter(description = "Search by category name") @RequestParam(required = false) String searchName,
+            @Parameter(description = "Search by user id") @RequestParam(required = false , defaultValue = "0") Long userId,
+            @Parameter(description = "Search by status") @RequestParam(required = false) String bookingStatus,
             @Parameter(description = "Field to sort by") @RequestParam(required = false, defaultValue = "id") String sortBy,
             @Parameter(description = "Sort direction (asc/desc)") @RequestParam(required = false, defaultValue = "asc") String sortDirection,
             @Parameter(description = "Additional filter specification") @Filter Specification<Booking> spec, 
@@ -91,12 +93,12 @@ public class BookingController {
 
         pageable = PageRequest.of(page - 1, size, sort);
 
-        if (searchName != null && !searchName.trim().isEmpty()) {
-            String cleanSearchName = FormatStringAccents.removeTones(searchName.toLowerCase().trim());
-            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder
-                    .like(criteriaBuilder.lower(root.get("nameUnsigned")), "%" + cleanSearchName + "%"));
+        if (userId > 0) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("user").get("id"), userId));
         }
-
+        if (bookingStatus != null && !bookingStatus.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("bookingStatus"), BookingStatus.valueOf(FormatStringAccents.removeTones(bookingStatus.toUpperCase()))));
+        }    
         return ResponseEntity.status(HttpStatus.OK).body(this.bookingService.getAllBooking(spec, pageable));
     }
 }

@@ -14,7 +14,6 @@ public interface FileService {
     public FileDTO updateFile(Long id, FileDTO file);
     public FileDTO fetchFileByName(String name);
     public List<FileDTO> fetchAllFiles();
-
     public ImageResponse findByUrl(String url);
     public List<ImageResponse> findByUrls(List<String> urls);
 }

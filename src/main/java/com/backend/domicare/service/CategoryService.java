@@ -14,5 +14,4 @@ public interface  CategoryService {
     public CategoryDTO fetchCategoryById(Long categoryId);
     public CategoryDTO updateCategory(UpdateCategoryRequest request);
     public ResultPagingDTO getAllCategories(Specification<Category> spec,Pageable pageable);
-
 }

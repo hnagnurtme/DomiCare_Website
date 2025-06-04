@@ -1,5 +1,6 @@
 package com.backend.domicare.security.jwt;
 
+import org.mapstruct.control.MappingControl.Use;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
@@ -18,9 +19,11 @@ import com.backend.domicare.exception.NotFoundUserException;
 import com.backend.domicare.exception.UnconfirmEmailException;
 import com.backend.domicare.exception.UserNotActiveException;
 import com.backend.domicare.mapper.UserMapper;
+import com.backend.domicare.model.Gender;
 import com.backend.domicare.model.Token;
 import com.backend.domicare.model.User;
 import com.backend.domicare.repository.TokensRepository;
+import com.backend.domicare.repository.UsersRepository;
 import com.backend.domicare.security.dto.LoginRequest;
 import com.backend.domicare.security.dto.LoginResponse;
 import com.backend.domicare.security.dto.RefreshTokenRespone;
@@ -44,6 +47,7 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
 public class JwtTokenService {
 
     private final TokensRepository tokensRepository;
+    private final UsersRepository usersRepository;
     private final JwtTokenManager jwtTokenManager;
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
@@ -70,10 +74,9 @@ public class JwtTokenService {
             if (!user.isEmailConfirmed()) {
                 throw new UnconfirmEmailException("Email chưa được xác nhận");
             }
-            if (!user.isActive()) {
-                throw new UserNotActiveException("Tài khoản đã bị khóa");
-            }
-
+            user.setActive(true);
+            this.usersRepository.save(user);
+            
             LoginResponse loginResponse = new LoginResponse();
             loginResponse.setAccessToken(accessToken);
             loginResponse.setRefreshToken(refreshToken);
@@ -90,9 +93,16 @@ public class JwtTokenService {
     public RegisterResponse register(RegisterRequest request) {
         String email = request.getEmail();
         log.info("[JWT] Registration attempt for email: {}", email);
-        if (userService.isEmailAlreadyExist(email)) {
+
+        User existingUser = userService.findUserByEmail(email);
+      
+        if (existingUser != null && !existingUser.isActive()) {
+            log.warn("[JWT] Registration failed - user is not active: {}", email);
+            throw new UserNotActiveException("Người dùng không hoạt động: " + email);
+        }
+        if (existingUser != null) {
             log.warn("[JWT] Registration failed - email already exists: {}", email);
-            throw new EmailAlreadyExistException("Đã tồn tại email: " + email);
+            throw new EmailAlreadyExistException("Email đã tồn tại: " + email);
         }
 
         UserDTO newUser = new UserDTO();
@@ -100,6 +110,7 @@ public class JwtTokenService {
         newUser.setPassword(request.getPassword());
         newUser.setEmailConfirmed(false);
         newUser.setAvatar(ProjectConstants.DEFAULT_AVATAR_OTHER);
+        newUser.setGender(Gender.OTHER);
         newUser.setIsActive(true);
 
         UserDTO savedUser = userService.saveUser(newUser);
@@ -111,7 +122,7 @@ public class JwtTokenService {
             public void afterCommit() {
                 emailSendingService.sendEmailFromTemplate(
                         email,
-                        "Xác nhận đăng ký tài khoản DomiCare",
+                        "[DOMICARE] - XÁC MINH EMAIL",
                         "SendingOTP",
                         EmailSendingService.TemplateType.VERIFICATION.name())
                         .thenAccept(token -> log.info("[JWT] Đã gửi email xác minh đến {} với token: {}", email, token))

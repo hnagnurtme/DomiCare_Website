@@ -17,7 +17,7 @@ import lombok.Setter;
 @Getter
 public class BookingRequest {
     private String name;
-
+    @NotNull(message = "Không được để trống số điện thoại")
     private String phone;
     @NotNull(message = "Không được để trống địa chỉ")
     private String address;

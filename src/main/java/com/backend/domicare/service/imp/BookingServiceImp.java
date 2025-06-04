@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.mapstruct.control.MappingControl.Use;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import com.backend.domicare.dto.request.LocalDateRequest;
 import com.backend.domicare.dto.request.UpdateBookingRequest;
 import com.backend.domicare.dto.request.UpdateBookingStatusRequest;
 import com.backend.domicare.dto.response.MiniBookingResponse;
+import com.backend.domicare.exception.AlreadyPendingBooking;
 import com.backend.domicare.exception.AlreadyRegisterUserException;
 import com.backend.domicare.exception.BookingStatusException;
 import com.backend.domicare.exception.InvalidDateException;
@@ -129,18 +131,45 @@ public class BookingServiceImp implements BookingService {
 
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundBookingException("Booking not found with ID: " + id));
+        
 
-        if (booking.getBookingStatus() != BookingStatus.PENDING) {
+        if (booking.getBookingStatus() != BookingStatus.PENDING && booking.getBookingStatus() != BookingStatus.ACCEPTED ) {
             logger.warn("[Booking] Cannot update booking with ID: {} due to status: {}", id,
                     booking.getBookingStatus());
             throw new BookingStatusException("Cannot update booking with status: " + booking.getBookingStatus());
         }
-        Booking updatedBooking = bookingRepository.save(booking);
+        if (request.getAddress() != null) {
+            booking.setAddress(request.getAddress().trim());
+        }
+        if (request.getNote() != null) {
+            booking.setNote(request.getNote().trim());
+        }
+        if (request.getPhone() != null) {
+            booking.setPhone(request.getPhone().trim());
+        }
+        if (request.getStartTime() != null) {
+            booking.setStartTime(request.getStartTime());
+        }
+        if (request.getIsPeriodic() != null) {
+            booking.setIsPeriodic(request.getIsPeriodic());
+        }
+        if( request.getName() != null) {
+            User user = booking.getUser();
+            if (user == null) {
+                throw new NotFoundUserException("User not found for booking ID: " + id);
+            }
+            user.setName(request.getName().trim());
+            userRepository.save(user);
+        }
+        bookingRepository.save(booking);
         logger.info("[Booking] Booking updated successfully with ID: {}", id);
-        MiniBookingResponse updatedBookingDTO = BookingMapper.INSTANCE.convertToMiniBookingResponse(updatedBooking);
-        messagingTemplate.convertAndSend("/topic/bookings/update", updatedBookingDTO);
+
+        // status
+        MiniBookingResponse changeStatus = this.updateBookingStatus(
+                new UpdateBookingStatusRequest(id, request.getStatus()));
+        messagingTemplate.convertAndSend("/topic/bookings/update", changeStatus);
         logger.info("[Booking] Booking update notification sent for booking ID: {}", id);
-        return updatedBookingDTO;
+        return changeStatus;
     }
 
     @Override
@@ -334,6 +363,7 @@ public class BookingServiceImp implements BookingService {
             }
         }
         validateTooMuchBookingPerHour(user.getId());
+        validateAlreadyBookedAndPending(user.getId(), request.getProductIds().get(0), request);
 
         Booking booking = BookingMapper.INSTANCE.convertToBooking(request);
         booking.setUser(user);
@@ -465,6 +495,26 @@ public class BookingServiceImp implements BookingService {
             throw new TooMuchBookingException("Bạn đã đặt quá 5 đơn hàng trong 1 giờ qua. Vui lòng thử lại sau.");
         }
         return true;
+    }
+
+    private void validateAlreadyBookedAndPending(Long userId, Long productId, BookingRequest request) {
+        
+        Optional<Booking> existingBooking = bookingRepository
+                .findFirstByUserIdAndProductsIdAndBookingStatusOrderByCreateAtDesc(userId, productId, BookingStatus.PENDING);  
+        
+        if (existingBooking.isPresent()) {
+            Booking booking = existingBooking.get();
+            String bookingAddress = booking.getAddress();
+            Instant bookingDate = booking.getStartTime();
+            String requestAddress = request.getAddress();
+            Instant requestDate = request.getStartTime();
+            if (bookingAddress.equals(requestAddress) || bookingDate.equals(requestDate)) {
+                logger.warn("[Booking] User with ID: {} already has a pending booking for product ID: {}", userId,
+                        productId);
+                throw new AlreadyPendingBooking("Bạn đã có một đơn hàng đang chờ xử lý cho sản phẩm này.");
+            }
+            
+        }
     }
 
     @Override

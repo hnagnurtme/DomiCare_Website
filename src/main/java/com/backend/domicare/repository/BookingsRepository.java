@@ -68,15 +68,14 @@ public interface BookingsRepository extends JpaRepository<Booking, Long>, JpaSpe
             Product products,
             BookingStatus bookingStatus,
             Instant createAt);
-    //countBookingsByStatusAndCreatedAtBetween
     @Query("SELECT COUNT(b) FROM Booking b WHERE b.bookingStatus = :status AND b.createAt BETWEEN :startDate AND :endDate")
     Long countBookingsByStatusAndCreatedAtBetween(@Param("status") BookingStatus status,
             @Param("startDate") Instant startDate,
             @Param("endDate") Instant endDate);
-    // /countTotalBookingWithNotCancelled(Instant startDate, Instant endDate)
     @Query("SELECT COUNT(b) FROM Booking b WHERE b.bookingStatus <> :status AND b.createAt BETWEEN :startDate AND :endDate")
     Long countTotalBookingWithNotStatus(@Param("status") BookingStatus status,
             @Param("startDate") Instant startDate,
             @Param("endDate") Instant endDate);
-    
+    //findFirstByUserIdAndProductIdAndStatus(userId, productId, BookingStatus.PENDING)
+    Optional<Booking> findFirstByUserIdAndProductsIdAndBookingStatusOrderByCreateAtDesc(Long userId, Long productId, BookingStatus status);
 }   

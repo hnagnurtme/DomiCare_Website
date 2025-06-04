@@ -61,7 +61,9 @@ public enum ExceptionConstants {
 	
 	TOO_MUCH_BOOKING(135, "TOO_MUCH_BOOKING"),
 	
-	NOT_BOOKED_PRODUCT(136, "NOT_BOOKED"),;
+	NOT_BOOKED_PRODUCT(136, "NOT_BOOKED"),
+	
+	ALREADY_PENDING_BOOKING(137, "ALREADY_PENDING_BOOKING"),;
 
 	private final int code;
 	private final String messageName;

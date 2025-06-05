@@ -138,6 +138,7 @@ public class BookingServiceImp implements BookingService {
                     booking.getBookingStatus());
             throw new BookingStatusException("Cannot update booking with status: " + booking.getBookingStatus());
         }
+        validateStartTime(request.getStartTime());
         // update productId
         //create list productIds from request
         Long productId = request.getProductId();
@@ -395,6 +396,7 @@ public class BookingServiceImp implements BookingService {
         }
         validateTooMuchBookingPerHour(user.getId());
         validateAlreadyBookedAndPending(user.getId(), request.getProductIds().get(0), request);
+        validateStartTime(request.getStartTime());
 
         Booking booking = BookingMapper.INSTANCE.convertToBooking(request);
         booking.setUser(user);
@@ -547,6 +549,15 @@ public class BookingServiceImp implements BookingService {
             
         }
     }
+    private void validateStartTime(Instant startTime) {
+        if (startTime == null) {
+            throw new InvalidDateException("Start time cannot be null");
+        }
+        Instant now = Instant.now();
+        if (startTime.isBefore(now)) {
+            throw new InvalidDateException("Start time cannot be in the past");
+        }
+    }
 
     @Override
     public Long countTotalBookingByStatus(BookingStatus status, LocalDateRequest localDateRequest) {
@@ -648,7 +659,7 @@ public List<TopSaleResponse> getFiveTopSale(LocalDateRequest localDateRequest) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
             logger.warn("[Booking] User not found for email: {}", email);
-            continue; // bỏ qua nếu user không còn tồn tại
+            continue; 
         }
 
         TopSaleResponse response = new TopSaleResponse();

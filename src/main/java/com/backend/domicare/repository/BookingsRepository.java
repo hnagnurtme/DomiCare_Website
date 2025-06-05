@@ -78,4 +78,13 @@ public interface BookingsRepository extends JpaRepository<Booking, Long>, JpaSpe
             @Param("endDate") Instant endDate);
     //findFirstByUserIdAndProductIdAndStatus(userId, productId, BookingStatus.PENDING)
     Optional<Booking> findFirstByUserIdAndProductsIdAndBookingStatusOrderByCreateAtDesc(Long userId, Long productId, BookingStatus status);
+
+    //List<TopSaleResponse> topSales = bookingRepository.findTopSales(startDateStr, endDateStr);
+    @Query("SELECT b.updateBy AS email, SUM(b.totalPrice) AS totalRevenue " +
+       "FROM Booking b " +
+       "WHERE b.createAt BETWEEN :startDate AND :endDate AND b.bookingStatus = 'SUCCESS' " +
+       "GROUP BY b.updateBy " +
+       "ORDER BY totalRevenue DESC")
+    List<Object[]> findTopRevenueSales(@Param("startDate") Instant startDate,
+                                   @Param("endDate") Instant endDate);
 }   

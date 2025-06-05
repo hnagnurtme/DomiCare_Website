@@ -1,9 +1,5 @@
 package com.backend.domicare.dto.response;
 
-import java.util.Map;
-
-import com.backend.domicare.dto.DashboardSummaryDTO;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +9,11 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class OverviewResponse {
-    Map<String, DashboardSummaryDTO> dashboardSummary;
-    BookingOverview bookingOverview;
+public class TopSaleResponse {
+    private Long id;
+    private String name;
+    private String avatar;
+    private String email;
+    private Double totalSalePrice;
+    private Float totalSuccessBookingPercent;
 }

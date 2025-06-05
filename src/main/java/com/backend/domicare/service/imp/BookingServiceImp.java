@@ -2,13 +2,12 @@ package com.backend.domicare.service.imp;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import org.mapstruct.control.MappingControl.Use;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -20,6 +19,7 @@ import com.backend.domicare.dto.request.LocalDateRequest;
 import com.backend.domicare.dto.request.UpdateBookingRequest;
 import com.backend.domicare.dto.request.UpdateBookingStatusRequest;
 import com.backend.domicare.dto.response.MiniBookingResponse;
+import com.backend.domicare.dto.response.TopSaleResponse;
 import com.backend.domicare.exception.AlreadyPendingBooking;
 import com.backend.domicare.exception.AlreadyRegisterUserException;
 import com.backend.domicare.exception.AlreadySaleHandle;
@@ -294,6 +294,9 @@ public class BookingServiceImp implements BookingService {
                             booking.getUser().getName());
                     booking.setSaleUser(saleuser);
                     break;
+                case PENDING:
+                    logger.info("[Booking] Booking with ID: {} is already in PENDING status", id);
+                    break;
                 default:
                     throw new BookingStatusException("Cannot update booking to status: " + newStatus);
             }
@@ -315,6 +318,9 @@ public class BookingServiceImp implements BookingService {
                         saleuser.setUserTotalSuccessBookings(saleuser.getUserTotalSuccessBookings() + 1);
                         customer.setUserTotalSuccessBookings(customer.getUserTotalSuccessBookings() + 1);
                         calculateSuccessPercentage(saleuser);
+                        break;
+                    case ACCEPTED:
+                        logger.info("[Booking] Booking with ID: {} is already in ACCEPTED status", id);
                         break;
                     default:
                         throw new BookingStatusException("Cannot update booking to status: " + newStatus);
@@ -359,7 +365,6 @@ public class BookingServiceImp implements BookingService {
                 if (existingUser.isActive()) {
                     throw new AlreadyRegisterUserException("Email đã được đăng ký");
                 } else {
-
                     user = existingUser;
                 }
             } else {
@@ -609,4 +614,56 @@ public class BookingServiceImp implements BookingService {
         logger.debug("[Booking] Total bookings from {} to {}: {}", startDate, endDate, totalBookings);
         return totalBookings;
     }
+
+   @Override
+public List<TopSaleResponse> getFiveTopSale(LocalDateRequest localDateRequest) {
+    LocalDate startDate = localDateRequest.getStartDate();
+    LocalDate endDate = localDateRequest.getEndDate();
+
+    if (startDate == null || endDate == null) {
+        throw new InvalidDateException("Start date and end date cannot be null");
+    }
+    if (startDate.isAfter(endDate)) {
+        throw new InvalidDateException("Start date must be before or equal to end date");
+    }
+
+    Instant startInstant = startDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+    Instant endInstant = endDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant();
+
+    logger.debug("[Booking] Fetching top revenue sales from {} to {}", startInstant, endInstant);
+
+    List<Object[]> topSalesData = bookingRepository.findTopRevenueSales(startInstant, endInstant);
+    if (topSalesData.isEmpty()) {
+        logger.debug("[Booking] No top sales found for the given date range");
+        return Collections.emptyList();
+    }
+
+    List<TopSaleResponse> topSales = new ArrayList<>();
+
+    for (Object[] data : topSalesData) {
+        String email = (String) data[0];
+        Number revenueNumber = (Number) data[1];
+        Double totalRevenue = revenueNumber != null ? revenueNumber.doubleValue() : 0.0;
+
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            logger.warn("[Booking] User not found for email: {}", email);
+            continue; // bỏ qua nếu user không còn tồn tại
+        }
+
+        TopSaleResponse response = new TopSaleResponse();
+        response.setId(user.getId());
+        response.setName(user.getName() != null ? user.getName() : "Unknown User");
+        response.setEmail(email);
+        response.setAvatar(user.getAvatar()); 
+        response.setTotalSalePrice(totalRevenue);
+        response.setTotalSuccessBookingPercent(user.getSaleSuccessPercent() != null ? user.getSaleSuccessPercent().floatValue() : 0.0f);
+        logger.info("[Booking] Top sale: {} - ID: {}, Total: {}, Success: {}%", 
+                    response.getName(), response.getId(), totalRevenue, response.getTotalSuccessBookingPercent());
+
+        topSales.add(response);
+    }
+
+    return topSales.size() > 5 ? topSales.subList(0, 5) : topSales;
+}
 }

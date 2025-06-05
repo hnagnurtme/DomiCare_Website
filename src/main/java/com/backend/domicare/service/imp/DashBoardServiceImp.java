@@ -3,6 +3,7 @@ package com.backend.domicare.service.imp;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Service;
 import com.backend.domicare.dto.DashboardSummaryDTO;
 import com.backend.domicare.dto.request.LocalDateRequest;
 import com.backend.domicare.dto.response.BookingOverview;
+import com.backend.domicare.dto.response.ChartResponse;
 import com.backend.domicare.dto.response.OverviewResponse;
+import com.backend.domicare.dto.response.TopSaleResponse;
 import com.backend.domicare.exception.InvalidDateException;
 import com.backend.domicare.model.BookingStatus;
 import com.backend.domicare.service.BookingService;
@@ -66,8 +69,6 @@ public class DashBoardServiceImp implements DashBoardService {
 
         OverviewResponse result = new OverviewResponse();
         result.setDashboardSummary(summaryDTO);
-
-        result.setTotalRevenue12Months(this.getTotalRevenue12Months());
         result.setBookingOverview(this.getBookingOverview(localDateRequest));
         return result;
 
@@ -94,36 +95,46 @@ public class DashBoardServiceImp implements DashBoardService {
     }
 
     @Override
-    public Map<String, Long> getTotalRevenue12Months() {
+    public ChartResponse getTotalRevenue12Months() {
+        ChartResponse chartResponse = new ChartResponse();
         Map<String, Long> revenueMap = new LinkedHashMap<>();
 
-        // Khởi tạo tháng theo thứ tự cố định
-        String[] monthsOrder = {
-                "JANUARY", "FEBRUARY", "MARCH", "APRIL", "MAY", "JUNE",
-                "JULY", "AUGUST", "SEPTEMBER", "OCTOBER", "NOVEMBER", "DECEMBER"
-        };
-        for (String month : monthsOrder) {
-            revenueMap.put(month, 0L); // gán giá trị mặc định 0
+        // Khởi tạo map với định dạng "Th 01" → "Th 12"
+        for (int i = 1; i <= 12; i++) {
+            revenueMap.put(String.format("Th %02d", i), 0L);
         }
 
         LocalDate currentDate = LocalDate.now();
 
-        // Duyệt 12 tháng gần nhất
         for (int i = 11; i >= 0; i--) {
             LocalDate monthStart = currentDate.minusMonths(i).withDayOfMonth(1);
             LocalDate monthEnd = monthStart.withDayOfMonth(monthStart.lengthOfMonth());
+
             Long totalRevenue = bookingService.getTotalRevenue(monthStart, monthEnd);
             if (totalRevenue == null)
                 totalRevenue = 0L;
 
-            // Lấy tên tháng (uppercase)
-            String monthName = monthStart.getMonth().toString();
-
-            // Cập nhật lại giá trị vào map
-            revenueMap.put(monthName, totalRevenue);
+            String monthKey = String.format("Th %02d", monthStart.getMonthValue());
+            revenueMap.put(monthKey, totalRevenue);
         }
 
-        return revenueMap;
+        chartResponse.setTotalRevenue(revenueMap);
+
+        // Tính tăng trưởng tháng này so với tháng trước
+        String currentMonthKey = String.format("Th %02d", currentDate.getMonthValue());
+        String previousMonthKey = String.format("Th %02d", currentDate.minusMonths(1).getMonthValue());
+
+        Long currentMonthRevenue = revenueMap.getOrDefault(currentMonthKey, 0L);
+        Long previousMonthRevenue = revenueMap.getOrDefault(previousMonthKey, 0L);
+
+        float growthRate = 0f;
+        if (previousMonthRevenue > 0) {
+            growthRate = ((float) (currentMonthRevenue - previousMonthRevenue) / previousMonthRevenue) * 100;
+            growthRate = Math.round(growthRate * 100f) / 100f; // Làm tròn 2 chữ số thập phân
+        }
+
+        chartResponse.setGrowthRate(growthRate);
+        return chartResponse;
     }
 
     @Override
@@ -150,6 +161,20 @@ public class DashBoardServiceImp implements DashBoardService {
                 bookingService.countTotalBookingByStatus(BookingStatus.PENDING, localDateRequest));
         bookingOverview.setTotalRevenueBookings(bookingService.getTotalRevenue(startDate, endDate));
         return bookingOverview;
+    }
+
+
+    @Override
+    public  List<TopSaleResponse> getTopSale(LocalDateRequest localDateRequest){
+        LocalDate startDate = localDateRequest.getStartDate();
+        LocalDate endDate = localDateRequest.getEndDate();
+        if (startDate == null || endDate == null) {
+            throw new InvalidDateException("Start date and end date must not be null.");
+        }
+        if (startDate.isAfter(endDate)) {
+            throw new InvalidDateException("Start date must be before or equal to end date.");
+        }
+        return bookingService.getFiveTopSale(localDateRequest);
     }
 
 }

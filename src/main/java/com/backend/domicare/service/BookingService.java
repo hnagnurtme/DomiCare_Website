@@ -14,6 +14,7 @@ import com.backend.domicare.dto.request.LocalDateRequest;
 import com.backend.domicare.dto.request.UpdateBookingRequest;
 import com.backend.domicare.dto.request.UpdateBookingStatusRequest;
 import com.backend.domicare.dto.response.MiniBookingResponse;
+import com.backend.domicare.dto.response.TopSaleResponse;
 import com.backend.domicare.model.Booking;
 import com.backend.domicare.model.BookingStatus;
 
@@ -30,4 +31,6 @@ public interface  BookingService {
     public Long getTotalRevenue(LocalDate startDate, LocalDate endDate);
     public Long countTotalBookingByStatus(BookingStatus status, LocalDateRequest localDateRequest);
     public Long countTotalBooking(LocalDateRequest localDateRequest);
+
+    public List<TopSaleResponse> getFiveTopSale(LocalDateRequest localDateRequest);
 }

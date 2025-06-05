@@ -41,7 +41,8 @@ public class GlobalExceptionHandler {
         ExceptionConstants.INVALID_DATE ,
         ExceptionConstants.TOO_MUCH_BOOKING,
         ExceptionConstants.NOT_BOOKED_PRODUCT,
-        ExceptionConstants.ALREADY_PENDING_BOOKING
+        ExceptionConstants.ALREADY_PENDING_BOOKING,
+        ExceptionConstants.ALREADY_SALE_HANDLED
     ));
 
     @ExceptionHandler(NotMatchPasswordException.class)
@@ -52,7 +53,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<RestResponse<Object>> handleTooMuchBookingException(TooMuchBookingException e) {
         return buildResponse(ExceptionConstants.TOO_MUCH_BOOKING, e.getMessage());
     }
-
+    @ExceptionHandler(AlreadySaleHandle.class)
+    public ResponseEntity<RestResponse<Object>> handleAlreadySaleHandle(AlreadySaleHandle e) {
+        return buildResponse(ExceptionConstants.ALREADY_SALE_HANDLED, e.getMessage());
+    }
     @ExceptionHandler(AlreadyPendingBooking.class)
     public ResponseEntity<RestResponse<Object>> handleInvalidAuthenticatedException(AlreadyPendingBooking e) {
         return buildResponse(ExceptionConstants.ALREADY_PENDING_BOOKING, e.getMessage());

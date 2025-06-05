@@ -24,5 +24,5 @@ public class AddProductRequest {
     @NotNull(message = "Không được để trống ảnh")
     private String mainImageId;
     private Double discount;
-    private List<String> landingImageIds;
+    private List<String> landingImages;
 }

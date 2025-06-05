@@ -56,7 +56,7 @@ public class ProductServiceImp implements ProductService {
         productDTO.setDiscount(request.getDiscount());
 
         String mainImageId = request.getMainImageId();
-        List<String> landingImageIds = request.getLandingImageIds();
+        List<String> landingImageIds = request.getLandingImages();
 
         Category category = categoryRepository.findByIdAndNotDeleted(categoryID);
         if (category == null) {

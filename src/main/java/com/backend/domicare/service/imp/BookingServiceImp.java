@@ -22,6 +22,7 @@ import com.backend.domicare.dto.request.UpdateBookingStatusRequest;
 import com.backend.domicare.dto.response.MiniBookingResponse;
 import com.backend.domicare.exception.AlreadyPendingBooking;
 import com.backend.domicare.exception.AlreadyRegisterUserException;
+import com.backend.domicare.exception.AlreadySaleHandle;
 import com.backend.domicare.exception.BookingStatusException;
 import com.backend.domicare.exception.InvalidDateException;
 import com.backend.domicare.exception.NotFoundBookingException;
@@ -40,7 +41,6 @@ import com.backend.domicare.service.EmailSendingService;
 import com.backend.domicare.service.ProductService;
 import com.backend.domicare.service.UserService;
 
-import lombok.val;
 
 import com.backend.domicare.dto.paging.ResultPagingDTO;
 
@@ -138,6 +138,29 @@ public class BookingServiceImp implements BookingService {
                     booking.getBookingStatus());
             throw new BookingStatusException("Cannot update booking with status: " + booking.getBookingStatus());
         }
+        // update productId
+        //create list productIds from request
+        Long productId = request.getProductId();
+        if (productId != null) {
+            List<Product> products = productService.findAllByIdIn(List.of(productId));
+            if (products.isEmpty()) {
+                throw new NotFoundBookingException("Product not found with ID: " + productId);
+            }
+            booking.setProducts(products);
+            // set total price
+            double totalPrice = products.stream()
+                    .mapToDouble(product -> {
+                        Double price = product.getPrice();
+                        if (price == null) {
+                            throw new IllegalArgumentException(
+                                    "Product price cannot be null (Product ID: " + product.getId() + ")");
+                        }
+                        double discount_percent = product.getDiscount() != null ? product.getDiscount() : 0.0;
+                        return price * (100 - discount_percent) / 100;
+                    })
+                    .sum();
+            booking.setTotalPrice(totalPrice);
+        }
         if (request.getAddress() != null) {
             booking.setAddress(request.getAddress().trim());
         }
@@ -164,7 +187,6 @@ public class BookingServiceImp implements BookingService {
         bookingRepository.save(booking);
         logger.info("[Booking] Booking updated successfully with ID: {}", id);
 
-        // status
         MiniBookingResponse changeStatus = this.updateBookingStatus(
                 new UpdateBookingStatusRequest(id, request.getStatus()));
         messagingTemplate.convertAndSend("/topic/bookings/update", changeStatus);
@@ -277,6 +299,10 @@ public class BookingServiceImp implements BookingService {
             }
         } else {
             if (booking.getBookingStatus() == BookingStatus.ACCEPTED) {
+                // validate saleid
+                if (booking.getSaleUser() == null || !booking.getSaleUser().getId().equals(saleuser.getId())) {
+                    throw new AlreadySaleHandle("This booking has already been handled by another sale user.");
+                }
                 switch (newStatus) {
                     case FAILED:
                         booking.setBookingStatus(BookingStatus.FAILED);

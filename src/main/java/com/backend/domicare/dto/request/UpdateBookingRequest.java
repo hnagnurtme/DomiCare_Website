@@ -31,4 +31,7 @@ public class UpdateBookingRequest {
     private String status;
     @NotNull(message = "Không được để trống số điện thoại")
     private String phone;
+
+    @NotNull(message = "Không được để trống ID sản phẩm")
+    private Long productId;
 }

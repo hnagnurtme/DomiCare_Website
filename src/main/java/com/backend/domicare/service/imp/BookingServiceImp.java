@@ -617,7 +617,7 @@ public class BookingServiceImp implements BookingService {
         Instant startDateStr = startDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
         Instant endDateStr = endDate.plusDays(1).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
         logger.debug("[Booking] Counting total bookings from {} to {}", startDateStr, endDateStr);
-        Long totalBookings = bookingRepository.countBookingsByStatusAndCreatedAtBetween(BookingStatus.CANCELLED, startDateStr,
+        Long totalBookings = bookingRepository.countBookingsByStatusAndCreatedAtBetween(BookingStatus.SUCCESS, startDateStr,
                 endDateStr);
         if (totalBookings == null) {
             totalBookings = 0L;

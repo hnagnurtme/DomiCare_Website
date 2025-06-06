@@ -28,7 +28,7 @@ public class UpdateUserRequest {
     
     private String address;
     
-    @Pattern(regexp = "^[0-9]{10,15}$", message = "Phone number must be between 10 and 15 digits")
+    @Pattern(regexp = "^[0-9]{10,11}$", message = "Phone number must be between 10 and 11 digits")
     private String phone;
     
     private Gender gender;

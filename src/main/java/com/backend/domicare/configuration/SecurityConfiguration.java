@@ -19,21 +19,15 @@ import com.backend.domicare.security.jwt.JwtAuthenticationEntryPoint;
 
 import lombok.RequiredArgsConstructor;
 
-/**
- * Configuration class for application security settings
- */
 @Configuration
 @RequiredArgsConstructor
-@EnableMethodSecurity // Enables @PreAuthorize, @PostAuthorize annotations
+@EnableMethodSecurity
 public class SecurityConfiguration {
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfiguration.class);
 
-    // Dependencies
+
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
-    /**
-     * API endpoint path constants
-     */
     private static class ApiPaths {
         // Documentation paths
         public static final String[] DOCS_PATHS = {"/v3/api-docs/**", "/swagger-ui/**"};
@@ -69,12 +63,9 @@ public class SecurityConfiguration {
     private static class Roles {
         public static final String ADMIN = "ADMIN";
         public static final String USER = "USER";
+        public static final String SALE = "SALE";
     }
 
-    /**
-     * Get all public API paths
-     * @return List of public endpoint paths
-     */
     private List<String> getPublicApiPaths() {
         return Arrays.stream(new String[][] {
             ApiPaths.DOCS_PATHS,
@@ -85,9 +76,6 @@ public class SecurityConfiguration {
         }).flatMap(Arrays::stream).toList();
     }
 
-    /**
-     * Configuration for public endpoints that don't require authentication
-     */
     @Bean
     @Order(1) // Higher priority
     public SecurityFilterChain publicEndpointFilterChain(HttpSecurity http) throws Exception {
@@ -97,14 +85,10 @@ public class SecurityConfiguration {
             .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
             .csrf(AbstractHttpConfigurer::disable)
             .oauth2ResourceServer(oauth2 -> oauth2.disable());
-
-        
         return http.build();
     }
 
-    /**
-     * Main security filter chain for protected endpoints
-     */
+
     @Bean
     @Order(2)
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -114,7 +98,7 @@ public class SecurityConfiguration {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
                 // User and admin access
-                .requestMatchers(ApiPaths.USER_PATHS).permitAll()
+                .requestMatchers(ApiPaths.USER_PATHS).authenticated()
                 
                 // Admin-only access
                 .requestMatchers(ApiPaths.ADMIN_PATHS).hasRole(Roles.ADMIN)
@@ -137,7 +121,9 @@ public class SecurityConfiguration {
                 // File access - any authenticated user
                 .requestMatchers(ApiPaths.FILE_PATHS).authenticated()
 
-                .requestMatchers(HttpMethod.POST, ApiPaths.BOOKING_PATH).permitAll()
+                .requestMatchers(HttpMethod.POST, ApiPaths.BOOKING_PATH).hasRole(Roles.USER)
+                    .requestMatchers(HttpMethod.PUT, ApiPaths.BOOKING_PATH).hasAnyRole(Roles.USER, Roles.SALE)
+
                 
                 // Booking status - public access
                 .requestMatchers(HttpMethod.GET, "/api/booking-status/**").permitAll()

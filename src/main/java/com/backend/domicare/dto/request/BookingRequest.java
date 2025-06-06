@@ -3,7 +3,10 @@ package com.backend.domicare.dto.request;
 import java.time.Instant;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,7 +21,11 @@ import lombok.Setter;
 public class BookingRequest {
     private String name;
     @NotNull(message = "Không được để trống số điện thoại")
+
+    @Pattern(regexp = "^[0-9]{10,11}$", message = "Phone number must be 10 or 11 digits")
+    @Schema(example = "0912345678", description = "User's phone number")
     private String phone;
+
     @NotNull(message = "Không được để trống địa chỉ")
     private String address;
 
@@ -29,7 +36,9 @@ public class BookingRequest {
     private String note;
     @NotNull(message = "Không được để trống thời gian bắt đầu")
     private Instant startTime;
-
+    @NotEmpty(message = "{email_not_empty}")
+    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "{email_invalid}")
+    @Schema( example = "string")
     private String guestEmail;
 
 }

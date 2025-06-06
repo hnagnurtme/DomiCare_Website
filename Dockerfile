@@ -1,4 +1,4 @@
-# Sử dụng image OpenJDK 17
+# Sử dụng image OpenJDK 25
 FROM openjdk:25-jdk
 
 # Đặt thông tin tác giả

@@ -111,8 +111,10 @@ public class BookingServiceImp implements BookingService {
         booking.setBookingStatus(BookingStatus.CANCELLED);
         Booking savedBooking = bookingRepository.save(booking);
         logger.info("[Booking] Booking with ID: {} has been marked as CANCELLED", id);
-        messagingTemplate.convertAndSend("/topic/bookings/delete",
-                BookingMapper.INSTANCE.convertToMiniBookingResponse(savedBooking));
+        Long userId = savedBooking.getUser().getId();
+        String destination = "/topic/bookings/delete/" + userId;
+        messagingTemplate.convertAndSend(destination,BookingMapper.INSTANCE.convertToMiniBookingResponse(savedBooking));
+        messagingTemplate.convertAndSend("/topic/bookings/delete", BookingMapper.INSTANCE.convertToMiniBookingResponse(savedBooking));
 
         logger.info("[Booking] Booking deletion notification sent for booking ID: {}", id);
         return BookingMapper.INSTANCE.convertToMiniBookingResponse(savedBooking);
@@ -186,11 +188,11 @@ public class BookingServiceImp implements BookingService {
         }
         bookingRepository.save(booking);
         logger.info("[Booking] Booking updated successfully with ID: {}", id);
+        // send notification to user
+        
 
         MiniBookingResponse changeStatus = this.updateBookingStatus(
                 new UpdateBookingStatusRequest(id, request.getStatus()));
-        messagingTemplate.convertAndSend("/topic/bookings/update", changeStatus);
-        logger.info("[Booking] Booking update notification sent for booking ID: {}", id);
         return changeStatus;
     }
 
@@ -348,9 +350,11 @@ public class BookingServiceImp implements BookingService {
         booking.setUpdateBy(saleuser.getEmail());
         Booking updatedBooking = bookingRepository.save(booking);
         MiniBookingResponse updated = BookingMapper.INSTANCE.convertToMiniBookingResponse(updatedBooking);
+        Long userId = updated.getUserDTO().getId();
+        String destination = "/topic/bookings/update/" + userId;
+        messagingTemplate.convertAndSend(destination, updated);
         messagingTemplate.convertAndSend("/topic/bookings/update", updated);
-
-        logger.info("[Booking] Booking status updated successfully for ID: {}", id);
+        logger.info("[Booking] Booking update notification sent for booking ID: {}", id);
         return BookingMapper.INSTANCE.convertToMiniBookingResponse(updatedBooking);
     }
 
@@ -437,7 +441,10 @@ public class BookingServiceImp implements BookingService {
                 bookingEntity.getId());
         MiniBookingResponse bookingDTO = BookingMapper.INSTANCE.convertToMiniBookingResponse(bookingEntity);
         messagingTemplate.convertAndSend("/topic/bookings/new", bookingDTO);
-
+        Long userId = bookingDTO.getUserDTO().getId();
+        logger.info("[Booking] Sending new booking notification to user ID: {}", userId);
+        String destination = "/topic/bookings/new/" + userId;
+        messagingTemplate.convertAndSend(destination, bookingDTO);
         logger.info("[Booking] New booking notification sent for booking ID: {}", bookingEntity.getId());
         return BookingMapper.INSTANCE.convertToMiniBookingResponse(bookingEntity);
     }

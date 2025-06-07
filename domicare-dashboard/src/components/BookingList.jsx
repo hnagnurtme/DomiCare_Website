@@ -2,19 +2,31 @@ import React, { useEffect, useState } from 'react';
 import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode'; // ✅ Sửa cú pháp import đúng cho jwt-decode v5.x
 
 const BookingList = () => {
   const [bookings, setBookings] = useState([]);
   const [tokenInput, setTokenInput] = useState('');
   const [token, setToken] = useState(localStorage.getItem('accessToken') || '');
+  const [userId, setUserId] = useState(null);
 
+  // 🔑 Lấy token từ input và decode để lấy userId
   useEffect(() => {
     if (!token) return;
 
-    // Save token to localStorage for future use
+    // Lưu token vào localStorage
     localStorage.setItem('accessToken', token);
 
-    // Fetch initial data with Authorization header
+    // Giải mã token để lấy userId
+    try {
+      const decoded = jwtDecode(token);
+      const extractedId = decoded.id || decoded.user_id || decoded.sub;
+      setUserId(4);
+    } catch (error) {
+      console.error('❌ Lỗi khi giải mã token:', error);
+    }
+
+    // Gọi API lấy dữ liệu booking ban đầu
     axios.get('http://localhost:8080/api/bookings', {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -24,9 +36,13 @@ const BookingList = () => {
         const data = response.data?.data?.data || [];
         setBookings(data);
       })
-      .catch(error => console.error('Lỗi khi tải danh sách bookings:', error));
+      .catch(error => console.error('❌ Lỗi khi tải danh sách bookings:', error));
+  }, [token]);
 
-    // Setup STOMP client
+  // 🧩 Kết nối WebSocket và subscribe các topic
+  useEffect(() => {
+    if (!token || !userId) return;
+
     const stompClient = new Client({
       webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
       debug: (str) => console.log('[STOMP] ' + str),
@@ -34,6 +50,7 @@ const BookingList = () => {
       onConnect: () => {
         console.log('✅ WebSocket connected');
 
+        // 🎯 Subscribe topic công khai
         stompClient.subscribe('/topic/bookings/new', (message) => {
           const newBooking = JSON.parse(message.body);
           setBookings(prev => {
@@ -44,11 +61,31 @@ const BookingList = () => {
         });
 
         stompClient.subscribe('/topic/bookings/delete', (message) => {
-          const deletedId = JSON.parse(message.body);
-          setBookings(prev => prev.filter(b => b.id !== deletedId));
+          const deletedBooking = JSON.parse(message.body);
+          setBookings(prev => prev.filter(b => b.id !== deletedBooking.id));
         });
 
         stompClient.subscribe('/topic/bookings/update', (message) => {
+          const updatedBooking = JSON.parse(message.body);
+          setBookings(prev => prev.map(b => b.id === updatedBooking.id ? updatedBooking : b));
+        });
+
+        // 🔐 Subscribe topic riêng theo userId
+        stompClient.subscribe(`/topic/bookings/new/${userId}`, (message) => {
+          const newBooking = JSON.parse(message.body);
+          setBookings(prev => {
+            const exists = prev.find(b => b.id === newBooking.id);
+            if (exists) return prev;
+            return [newBooking, ...prev];
+          });
+        });
+
+        stompClient.subscribe(`/topic/bookings/delete/${userId}`, (message) => {
+          const deletedBooking = JSON.parse(message.body);
+          setBookings(prev => prev.filter(b => b.id !== deletedBooking.id));
+        });
+
+        stompClient.subscribe(`/topic/bookings/update/${userId}`, (message) => {
           const updatedBooking = JSON.parse(message.body);
           setBookings(prev => prev.map(b => b.id === updatedBooking.id ? updatedBooking : b));
         });
@@ -60,8 +97,9 @@ const BookingList = () => {
     return () => {
       stompClient.deactivate();
     };
-  }, [token]);
+  }, [token, userId]);
 
+  // 🚨 Xử lý trường hợp dữ liệu lỗi
   if (!Array.isArray(bookings)) {
     return <div>❌ Dữ liệu bookings không hợp lệ</div>;
   }
@@ -70,6 +108,7 @@ const BookingList = () => {
     <div>
       <h2>📋 Danh sách đặt dịch vụ</h2>
 
+      {/* Nhập token nếu chưa có */}
       {!token && (
         <div>
           <label htmlFor="token-input"><strong>🔐 Nhập Access Token:</strong></label><br />
@@ -84,6 +123,7 @@ const BookingList = () => {
         </div>
       )}
 
+      {/* Danh sách booking */}
       {bookings.map((booking) => (
         <div key={booking.id} style={{ border: '1px solid #ccc', padding: '10px', margin: '10px' }}>
           <div><strong>ID:</strong> {booking.id}</div>

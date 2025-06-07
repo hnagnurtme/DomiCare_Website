@@ -622,3 +622,243 @@
 2025-06-07 15:50:50.372 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
 2025-06-07 15:50:50.379 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
 2025-06-07 15:50:51.584 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-06-07 16:40:40.473 [main] INFO  c.b.domicare.DomicareApplication - Starting DomicareApplication using Java 17.0.15 with PID 10362 (/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes started by anhnon in /Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND)
+2025-06-07 16:40:40.473 [main] DEBUG c.b.domicare.DomicareApplication - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-07 16:40:40.474 [main] INFO  c.b.domicare.DomicareApplication - The following 1 profile is active: "prod"
+2025-06-07 16:40:41.071 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-07 16:40:41.112 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 36 ms. Found 9 JPA repository interfaces.
+2025-06-07 16:40:41.507 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-07 16:40:41.513 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-07 16:40:41.513 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-07 16:40:41.543 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-07 16:40:41.544 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1051 ms
+2025-06-07 16:40:41.713 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-07 16:40:41.738 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-07 16:40:41.751 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-07 16:40:41.895 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-07 16:40:41.908 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-07 16:40:43.531 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@84becbe
+2025-06-07 16:40:43.532 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-07 16:40:43.696 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.8
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-07 16:40:44.176 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-07 16:40:46.241 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-07 16:40:46.452 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-07 16:40:46.927 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'bookingController' defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/controller/BookingController.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'bookingServiceImp' defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/service/imp/BookingServiceImp.class]: Unsatisfied dependency expressed through constructor parameter 4: Error creating bean with name 'userServiceImp' defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/service/imp/UserServiceImp.class]: Unsatisfied dependency expressed through constructor parameter 2: Error creating bean with name 'userValidationServiceImp' defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/service/imp/UserValidationServiceImp.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'emailSendingServiceImp' defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/service/imp/EmailSendingServiceImp.class]: Unsatisfied dependency expressed through constructor parameter 2: Error creating bean with name 'userServiceImp': Requested bean is currently in creation: Is there an unresolvable circular reference or an asynchronous initialization dependency?
+2025-06-07 16:40:46.927 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-07 16:40:46.929 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-06-07 16:40:47.272 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-06-07 16:40:47.273 [main] INFO  o.a.catalina.core.StandardService - Stopping service [Tomcat]
+2025-06-07 16:40:47.296 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLogger - 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2025-06-07 16:40:47.306 [main] ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+The dependencies of some of the beans in the application context form a cycle:
+
+   bookingController defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/controller/BookingController.class]
+      ↓
+   bookingServiceImp defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/service/imp/BookingServiceImp.class]
+┌─────┐
+|  userServiceImp defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/service/imp/UserServiceImp.class]
+↑     ↓
+|  userValidationServiceImp defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/service/imp/UserValidationServiceImp.class]
+↑     ↓
+|  emailSendingServiceImp defined in file [/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes/com/backend/domicare/service/imp/EmailSendingServiceImp.class]
+└─────┘
+
+
+Action:
+
+Relying upon circular references is discouraged and they are prohibited by default. Update your application to remove the dependency cycle between beans. As a last resort, it may be possible to break the cycle automatically by setting spring.main.allow-circular-references to true.
+
+2025-06-07 16:42:55.972 [main] INFO  c.b.domicare.DomicareApplication - Starting DomicareApplication using Java 17.0.15 with PID 12918 (/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes started by anhnon in /Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND)
+2025-06-07 16:42:55.973 [main] DEBUG c.b.domicare.DomicareApplication - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-07 16:42:55.973 [main] INFO  c.b.domicare.DomicareApplication - The following 1 profile is active: "prod"
+2025-06-07 16:42:56.541 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-07 16:42:56.581 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 36 ms. Found 9 JPA repository interfaces.
+2025-06-07 16:42:56.958 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-07 16:42:56.964 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-07 16:42:56.964 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-07 16:42:56.995 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-07 16:42:56.995 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1005 ms
+2025-06-07 16:42:57.160 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-07 16:42:57.182 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-07 16:42:57.194 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-07 16:42:57.294 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-07 16:42:57.305 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-07 16:42:57.773 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@15a2fddd
+2025-06-07 16:42:57.774 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-07 16:42:57.943 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.8
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-07 16:42:58.406 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-07 16:43:00.493 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-07 16:43:00.696 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-07 16:43:01.336 [main] INFO  c.b.d.c.WebSocketConfiguration - Configuring message broker with topic prefix: /topic
+2025-06-07 16:43:01.399 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsService
+2025-06-07 16:43:01.609 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring public endpoint security chain
+2025-06-07 16:43:01.628 [main] INFO  c.b.d.c.WebSocketConfiguration - Registering STOMP endpoints at /ws
+2025-06-07 16:43:01.678 [main] INFO  c.b.d.c.CorsConfiguration - CORS configuration applied for allowed origins
+2025-06-07 16:43:01.809 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-06-07 16:43:01.853 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring main security filter chain
+2025-06-07 16:43:02.174 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-07 16:43:02.174 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@3b1261ed]]
+2025-06-07 16:43:02.175 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-07 16:43:02.183 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-06-07 16:43:02.193 [main] INFO  c.b.domicare.DomicareApplication - Started DomicareApplication in 6.415 seconds (process running for 6.623)
+2025-06-07 16:43:05.055 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-07 16:43:05.055 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-07 16:43:05.056 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-06-07 16:43:38.318 [http-nio-8080-exec-2] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] Login attempt for email: anhnon0106@googlemail.com
+2025-06-07 16:43:38.395 [http-nio-8080-exec-2] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: anhnon0106@googlemail.com
+2025-06-07 16:43:38.541 [http-nio-8080-exec-2] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 17
+2025-06-07 16:43:38.614 [http-nio-8080-exec-2] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: anhnon0106@googlemail.com
+2025-06-07 16:43:38.657 [http-nio-8080-exec-2] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 17
+2025-06-07 16:43:38.658 [http-nio-8080-exec-2] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Creating access token for user anhnon0106@googlemail.com
+2025-06-07 16:43:38.665 [http-nio-8080-exec-2] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: anhnon0106@googlemail.com
+2025-06-07 16:43:38.714 [http-nio-8080-exec-2] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 17
+2025-06-07 16:43:38.776 [http-nio-8080-exec-2] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Deleted existing refresh tokens for user anhnon0106@googlemail.com
+2025-06-07 16:43:38.844 [http-nio-8080-exec-2] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Created refresh token for user anhnon0106@googlemail.com
+2025-06-07 16:43:38.844 [http-nio-8080-exec-2] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: anhnon0106@googlemail.com
+2025-06-07 16:43:38.897 [http-nio-8080-exec-2] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 17
+2025-06-07 16:43:38.906 [http-nio-8080-exec-2] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] User anhnon0106@googlemail.com logged in successfully
+2025-06-07 16:43:47.531 [http-nio-8080-exec-4] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] Login attempt for email: user03@gmail.com
+2025-06-07 16:43:47.532 [http-nio-8080-exec-4] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: user03@gmail.com
+2025-06-07 16:43:47.603 [http-nio-8080-exec-4] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 4
+2025-06-07 16:43:47.677 [http-nio-8080-exec-4] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: user03@gmail.com
+2025-06-07 16:43:47.713 [http-nio-8080-exec-4] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 4
+2025-06-07 16:43:47.713 [http-nio-8080-exec-4] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Creating access token for user user03@gmail.com
+2025-06-07 16:43:47.714 [http-nio-8080-exec-4] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: user03@gmail.com
+2025-06-07 16:43:47.747 [http-nio-8080-exec-4] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 4
+2025-06-07 16:43:47.781 [http-nio-8080-exec-4] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Deleted existing refresh tokens for user user03@gmail.com
+2025-06-07 16:43:47.813 [http-nio-8080-exec-4] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Created refresh token for user user03@gmail.com
+2025-06-07 16:43:47.813 [http-nio-8080-exec-4] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: user03@gmail.com
+2025-06-07 16:43:47.846 [http-nio-8080-exec-4] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 4
+2025-06-07 16:43:47.847 [http-nio-8080-exec-4] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] User user03@gmail.com logged in successfully
+2025-06-07 16:44:02.198 [MessageBroker-1] INFO  o.s.w.s.c.WebSocketMessageBrokerStats - WebSocketSession[1 current WS(1)-HttpStream(0)-HttpPoll(0), 1 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(1)-CONNECTED(1)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 20, active threads = 0, queued tasks = 0, completed tasks = 21], outboundChannel[pool size = 1, active threads = 0, queued tasks = 0, completed tasks = 1], sockJsScheduler[pool size = 10, active threads = 1, queued tasks = 2, completed tasks = 10]
+2025-06-07 16:44:22.889 [http-nio-8080-exec-9] INFO  c.b.d.service.imp.ProductServiceImp - [Product] Fetching products with IDs: [2]
+2025-06-07 16:44:22.984 [http-nio-8080-exec-9] INFO  c.b.d.service.imp.ProductServiceImp - [Product] Products fetched successfully with count: 1
+2025-06-07 16:44:23.022 [http-nio-8080-exec-9] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Booking created successfully with ID: 108
+2025-06-07 16:44:23.022 [http-nio-8080-exec-9] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] User with email: user03@gmail.com has been associated with booking ID: 108
+2025-06-07 16:44:23.295 [http-nio-8080-exec-9] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] New booking notification sent for booking ID: 108
+2025-06-07 16:45:04.264 [http-nio-8080-exec-6] INFO  c.b.d.service.imp.ProductServiceImp - [Product] Fetching products with IDs: [1]
+2025-06-07 16:45:04.340 [http-nio-8080-exec-6] INFO  c.b.d.service.imp.ProductServiceImp - [Product] Products fetched successfully with count: 1
+2025-06-07 16:45:04.377 [http-nio-8080-exec-6] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Booking created successfully with ID: 109
+2025-06-07 16:45:04.377 [http-nio-8080-exec-6] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] User with email: user03@gmail.com has been associated with booking ID: 109
+2025-06-07 16:45:04.620 [http-nio-8080-exec-6] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] New booking notification sent for booking ID: 109
+2025-06-07 16:47:27.363 [http-nio-8080-exec-8] WARN  c.b.d.service.imp.BookingServiceImp - [Booking] User with ID: 4 already has a pending booking for product ID: 1
+2025-06-07 16:47:31.812 [http-nio-8080-exec-7] INFO  c.b.d.service.imp.ProductServiceImp - [Product] Fetching products with IDs: [3]
+2025-06-07 16:47:31.882 [http-nio-8080-exec-7] INFO  c.b.d.service.imp.ProductServiceImp - [Product] Products fetched successfully with count: 1
+2025-06-07 16:47:31.918 [http-nio-8080-exec-7] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Booking created successfully with ID: 110
+2025-06-07 16:47:31.919 [http-nio-8080-exec-7] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] User with email: user03@gmail.com has been associated with booking ID: 110
+2025-06-07 16:47:32.128 [http-nio-8080-exec-7] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] New booking notification sent for booking ID: 110
+2025-06-07 16:49:31.548 [http-nio-8080-exec-5] INFO  c.b.d.service.imp.ProductServiceImp - [Product] Fetching products with IDs: [4]
+2025-06-07 16:49:31.625 [http-nio-8080-exec-5] INFO  c.b.d.service.imp.ProductServiceImp - [Product] Products fetched successfully with count: 1
+2025-06-07 16:49:31.666 [http-nio-8080-exec-5] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Booking created successfully with ID: 111
+2025-06-07 16:49:31.667 [http-nio-8080-exec-5] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] User with email: user03@gmail.com has been associated with booking ID: 111
+2025-06-07 16:49:31.983 [http-nio-8080-exec-5] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] New booking notification sent for booking ID: 111
+2025-06-07 16:50:21.374 [http-nio-8080-exec-7] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] Login attempt for email: sale1@example.com
+2025-06-07 16:50:21.375 [http-nio-8080-exec-7] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: sale1@example.com
+2025-06-07 16:50:21.447 [http-nio-8080-exec-7] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 5
+2025-06-07 16:50:21.539 [http-nio-8080-exec-7] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: sale1@example.com
+2025-06-07 16:50:21.575 [http-nio-8080-exec-7] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 5
+2025-06-07 16:50:21.575 [http-nio-8080-exec-7] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Creating access token for user sale1@example.com
+2025-06-07 16:50:21.576 [http-nio-8080-exec-7] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: sale1@example.com
+2025-06-07 16:50:21.610 [http-nio-8080-exec-7] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 5
+2025-06-07 16:50:21.680 [http-nio-8080-exec-7] DEBUG c.b.d.security.jwt.JwtTokenManager - [JWT] Created refresh token for user sale1@example.com
+2025-06-07 16:50:21.680 [http-nio-8080-exec-7] DEBUG c.b.d.service.imp.UserServiceImp - [User] Finding user by email: sale1@example.com
+2025-06-07 16:50:21.714 [http-nio-8080-exec-7] DEBUG c.b.d.service.imp.UserServiceImp - [User] User found with ID: 5
+2025-06-07 16:50:21.715 [http-nio-8080-exec-7] INFO  c.b.d.security.jwt.JwtTokenService - [JWT] User sale1@example.com logged in successfully
+2025-06-07 16:50:31.049 [http-nio-8080-exec-1] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Updating booking with ID: 111
+2025-06-07 16:50:31.086 [http-nio-8080-exec-1] INFO  c.b.d.service.imp.ProductServiceImp - [Product] Fetching products with IDs: [12]
+2025-06-07 16:50:31.156 [http-nio-8080-exec-1] INFO  c.b.d.service.imp.ProductServiceImp - [Product] Products fetched successfully with count: 1
+2025-06-07 16:50:31.233 [http-nio-8080-exec-1] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Booking updated successfully with ID: 111
+2025-06-07 16:50:31.234 [http-nio-8080-exec-1] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Updating booking status for ID: 111 to ACCEPTED
+2025-06-07 16:50:31.767 [http-nio-8080-exec-1] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Booking update notification sent for booking ID: 111
+2025-06-07 16:50:35.056 [DomiCare-Async-1] INFO  c.b.d.s.imp.EmailSendingServiceImp - Email sent successfully to: user03@gmail.com
+2025-06-07 16:52:01.935 [http-nio-8080-exec-10] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Attempting to delete booking with ID: 111
+2025-06-07 16:52:01.974 [http-nio-8080-exec-10] WARN  c.b.d.service.imp.BookingServiceImp - [Booking] Cannot delete booking with ID: 111 due to status: ACCEPTED
+2025-06-07 16:52:55.522 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-07 16:52:55.527 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-07 16:52:55.530 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-07 16:52:55.530 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@3b1261ed]]
+2025-06-07 16:52:55.530 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-07 16:52:55.536 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-07 16:52:55.538 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-06-07 16:52:55.918 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.
+2025-06-07 16:52:56.852 [main] INFO  c.b.domicare.DomicareApplication - Starting DomicareApplication using Java 17.0.15 with PID 24760 (/Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND/target/classes started by anhnon in /Users/anhnon/CODE/DomiCare_Website/DOMICARE-BACKEND)
+2025-06-07 16:52:56.853 [main] DEBUG c.b.domicare.DomicareApplication - Running with Spring Boot v3.4.4, Spring v6.2.5
+2025-06-07 16:52:56.853 [main] INFO  c.b.domicare.DomicareApplication - The following 1 profile is active: "prod"
+2025-06-07 16:52:57.423 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-06-07 16:52:57.476 [main] INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 47 ms. Found 9 JPA repository interfaces.
+2025-06-07 16:52:57.866 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+2025-06-07 16:52:57.872 [main] INFO  o.a.catalina.core.StandardService - Starting service [Tomcat]
+2025-06-07 16:52:57.872 [main] INFO  o.a.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/10.1.39]
+2025-06-07 16:52:57.902 [main] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2025-06-07 16:52:57.902 [main] INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1028 ms
+2025-06-07 16:52:58.065 [main] INFO  o.h.jpa.internal.util.LogHelper - HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-06-07 16:52:58.087 [main] INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.11.Final
+2025-06-07 16:52:58.100 [main] INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+2025-06-07 16:52:58.198 [main] INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-06-07 16:52:58.210 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Starting...
+2025-06-07 16:52:59.937 [main] INFO  com.zaxxer.hikari.pool.HikariPool - HikariPool-1 - Added connection org.postgresql.jdbc.PgConnection@2c06e145
+2025-06-07 16:52:59.937 [main] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Start completed.
+2025-06-07 16:53:00.105 [main] INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 16.8
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-06-07 16:53:00.548 [main] INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-06-07 16:53:02.629 [main] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-06-07 16:53:02.836 [main] INFO  o.s.d.j.r.query.QueryEnhancerFactory - Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-06-07 16:53:03.378 [main] INFO  c.b.d.c.WebSocketConfiguration - Configuring message broker with topic prefix: /topic
+2025-06-07 16:53:03.441 [main] INFO  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name userDetailsService
+2025-06-07 16:53:03.615 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring public endpoint security chain
+2025-06-07 16:53:03.628 [main] INFO  c.b.d.c.WebSocketConfiguration - Registering STOMP endpoints at /ws
+2025-06-07 16:53:03.675 [main] INFO  c.b.d.c.CorsConfiguration - CORS configuration applied for allowed origins
+2025-06-07 16:53:03.795 [main] INFO  o.s.b.a.e.web.EndpointLinksResolver - Exposing 1 endpoint beneath base path '/actuator'
+2025-06-07 16:53:03.833 [main] DEBUG c.b.d.c.SecurityConfiguration - Configuring main security filter chain
+2025-06-07 16:53:04.090 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Starting...
+2025-06-07 16:53:04.091 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@29fea6c2]]
+2025-06-07 16:53:04.091 [main] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Started.
+2025-06-07 16:53:04.096 [main] INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+2025-06-07 16:53:04.109 [main] INFO  c.b.domicare.DomicareApplication - Started DomicareApplication in 7.451 seconds (process running for 7.611)
+2025-06-07 16:53:06.176 [http-nio-8080-exec-1] INFO  o.a.c.c.C.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-06-07 16:53:06.177 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+2025-06-07 16:53:06.178 [http-nio-8080-exec-1] INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 1 ms
+2025-06-07 16:53:20.119 [http-nio-8080-exec-7] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Updating booking with ID: 111
+2025-06-07 16:53:20.182 [http-nio-8080-exec-7] INFO  c.b.d.service.imp.ProductServiceImp - [Product] Fetching products with IDs: [12]
+2025-06-07 16:53:20.283 [http-nio-8080-exec-7] INFO  c.b.d.service.imp.ProductServiceImp - [Product] Products fetched successfully with count: 1
+2025-06-07 16:53:20.357 [http-nio-8080-exec-7] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Booking updated successfully with ID: 111
+2025-06-07 16:53:20.358 [http-nio-8080-exec-7] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Updating booking status for ID: 111 to SUCCESS
+2025-06-07 16:53:20.819 [http-nio-8080-exec-7] INFO  c.b.d.service.imp.BookingServiceImp - [Booking] Booking update notification sent for booking ID: 111
+2025-06-07 16:54:04.087 [MessageBroker-2] INFO  o.s.w.s.c.WebSocketMessageBrokerStats - WebSocketSession[1 current WS(1)-HttpStream(0)-HttpPoll(0), 1 total, 0 closed abnormally (0 connect failure, 0 send limit, 0 transport error)], stompSubProtocol[processed CONNECT(1)-CONNECTED(1)-DISCONNECT(0)], stompBrokerRelay[null], inboundChannel[pool size = 20, active threads = 0, queued tasks = 0, completed tasks = 21], outboundChannel[pool size = 3, active threads = 0, queued tasks = 0, completed tasks = 3], sockJsScheduler[pool size = 10, active threads = 1, queued tasks = 2, completed tasks = 13]
+2025-06-07 16:54:49.166 [SpringApplicationShutdownHook] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Commencing graceful shutdown. Waiting for active requests to complete
+2025-06-07 16:54:49.172 [tomcat-shutdown] INFO  o.s.b.w.e.tomcat.GracefulShutdown - Graceful shutdown complete
+2025-06-07 16:54:49.176 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopping...
+2025-06-07 16:54:49.176 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@29fea6c2]]
+2025-06-07 16:54:49.176 [SpringApplicationShutdownHook] INFO  o.s.m.s.b.SimpleBrokerMessageHandler - Stopped.
+2025-06-07 16:54:49.183 [SpringApplicationShutdownHook] INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-06-07 16:54:49.185 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown initiated...
+2025-06-07 16:54:49.562 [SpringApplicationShutdownHook] INFO  com.zaxxer.hikari.HikariDataSource - HikariPool-1 - Shutdown completed.

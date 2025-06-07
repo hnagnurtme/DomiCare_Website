@@ -42,7 +42,8 @@ public class GlobalExceptionHandler {
         ExceptionConstants.TOO_MUCH_BOOKING,
         ExceptionConstants.NOT_BOOKED_PRODUCT,
         ExceptionConstants.ALREADY_PENDING_BOOKING,
-        ExceptionConstants.ALREADY_SALE_HANDLED
+        ExceptionConstants.ALREADY_SALE_HANDLED,
+        ExceptionConstants.ACCOUNT_ALREADY_DELETE
     ));
 
     @ExceptionHandler(NotMatchPasswordException.class)
@@ -52,6 +53,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(TooMuchBookingException.class)
     public ResponseEntity<RestResponse<Object>> handleTooMuchBookingException(TooMuchBookingException e) {
         return buildResponse(ExceptionConstants.TOO_MUCH_BOOKING, e.getMessage());
+    }
+    @ExceptionHandler(AccountAlreadyDelete.class)
+    public ResponseEntity<RestResponse<Object>> handleAccountAlreadyDelete(AccountAlreadyDelete e) {
+        return buildResponse(ExceptionConstants.ACCOUNT_ALREADY_DELETE, e.getMessage());
     }
     @ExceptionHandler(AlreadySaleHandle.class)
     public ResponseEntity<RestResponse<Object>> handleAlreadySaleHandle(AlreadySaleHandle e) {

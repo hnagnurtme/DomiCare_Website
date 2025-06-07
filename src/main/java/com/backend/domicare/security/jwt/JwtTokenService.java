@@ -93,8 +93,7 @@ public class JwtTokenService {
     public RegisterResponse register(RegisterRequest request) {
         String email = request.getEmail();
         log.info("[JWT] Registration attempt for email: {}", email);
-
-        User existingUser = userService.findUserByEmail(email);
+        User existingUser = usersRepository.findByEmail(email);
       
         if (existingUser != null && !existingUser.isActive()) {
             log.warn("[JWT] Registration failed - user is not active: {}", email);

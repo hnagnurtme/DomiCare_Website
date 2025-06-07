@@ -4,7 +4,6 @@ import java.time.Instant;
 import java.util.List;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
@@ -36,9 +35,7 @@ public class BookingRequest {
     private String note;
     @NotNull(message = "Không được để trống thời gian bắt đầu")
     private Instant startTime;
-    
-    @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "{email_invalid}")
-    @Schema( example = "string")
+
     private String guestEmail;
 
 }

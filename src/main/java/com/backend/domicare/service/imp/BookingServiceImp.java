@@ -40,8 +40,7 @@ import com.backend.domicare.service.BookingService;
 import com.backend.domicare.service.EmailSendingService;
 import com.backend.domicare.service.ProductService;
 import com.backend.domicare.service.UserService;
-
-
+import com.backend.domicare.utils.ProjectConstants;
 import com.backend.domicare.dto.paging.ResultPagingDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -381,6 +380,7 @@ public class BookingServiceImp implements BookingService {
                 userDTO.setPhone(request.getPhone());
                 userDTO.setAddress(request.getAddress());
                 userDTO.setPassword(randomPassword);
+                userDTO.setAvatar(ProjectConstants.DEFAULT_AVATAR_OTHER);
                 userDTO.setIsActive(false);
                 userDTO.setEmailConfirmed(true);
 

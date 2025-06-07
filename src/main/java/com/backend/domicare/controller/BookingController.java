@@ -79,8 +79,8 @@ public class BookingController {
             @Parameter(description = "Search by status") @RequestParam(required = false) String bookingStatus,
             @Parameter(description = "Search by other status") @RequestParam(required = false) String otherbookingStatus,
             @Parameter(description = "Search by username ") @RequestParam(required = false ) String searchName,
-            @Parameter(description = "Field to sort by") @RequestParam(required = false, defaultValue = "id") String sortBy,
-            @Parameter(description = "Sort direction (asc/desc)") @RequestParam(required = false, defaultValue = "asc") String sortDirection,
+            @Parameter(description = "Field to sort by") @RequestParam(required = false, defaultValue = "createAt") String sortBy,
+            @Parameter(description = "Sort direction (asc/desc)") @RequestParam(required = false, defaultValue = "desc") String sortDirection,
             @Parameter(description = "Additional filter specification") @Filter Specification<Booking> spec, 
             Pageable pageable) {
 

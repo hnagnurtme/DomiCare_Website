@@ -121,12 +121,14 @@ public class SecurityConfiguration {
                 // File access - any authenticated user
                 .requestMatchers(ApiPaths.FILE_PATHS).authenticated()
 
-                .requestMatchers(HttpMethod.POST, ApiPaths.BOOKING_PATH).hasRole(Roles.USER)
-                    .requestMatchers(HttpMethod.PUT, ApiPaths.BOOKING_PATH).hasAnyRole(Roles.USER, Roles.SALE)
+                .requestMatchers(HttpMethod.POST, ApiPaths.BOOKING_PATH).permitAll()
+                .requestMatchers(HttpMethod.PUT, ApiPaths.BOOKING_PATH).hasAnyRole(Roles.USER, Roles.SALE)
+                .requestMatchers(HttpMethod.GET, ApiPaths.BOOKING_PATH).hasAnyRole(Roles.USER, Roles.SALE, Roles.ADMIN)
+                .requestMatchers(HttpMethod.DELETE, ApiPaths.BOOKING_PATH).authenticated()
 
                 
                 // Booking status - public access
-                .requestMatchers(HttpMethod.GET, "/api/booking-status/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/booking-status/**").authenticated()
                 
                 // Default fallback - allow access if not specified above
                 .anyRequest().authenticated()

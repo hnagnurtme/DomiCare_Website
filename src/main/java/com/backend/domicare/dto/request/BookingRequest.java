@@ -36,7 +36,7 @@ public class BookingRequest {
     private String note;
     @NotNull(message = "Không được để trống thời gian bắt đầu")
     private Instant startTime;
-    @NotEmpty(message = "{email_not_empty}")
+    
     @Pattern(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", message = "{email_invalid}")
     @Schema( example = "string")
     private String guestEmail;

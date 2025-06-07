@@ -295,6 +295,10 @@ public class BookingServiceImp implements BookingService {
                             booking.getUser().getName());
                     booking.setSaleUser(saleuser);
                     break;
+                case CANCELLED:
+                    booking.setBookingStatus(BookingStatus.CANCELLED);
+                    logger.info("[Booking] Booking with ID: {} has been cancelled", id);
+                    break;
                 case PENDING:
                     logger.info("[Booking] Booking with ID: {} is already in PENDING status", id);
                     break;

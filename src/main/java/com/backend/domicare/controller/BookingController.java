@@ -75,7 +75,10 @@ public class BookingController {
             @Parameter(description = "Page number (1-based)") @RequestParam(defaultValue = "1") int page,
             @Parameter(description = "Number of items per page") @RequestParam(defaultValue = "20") int size,
             @Parameter(description = "Search by user id") @RequestParam(required = false , defaultValue = "0") Long userId,
+            @Parameter(description = "Search by sale id") @RequestParam(required = false , defaultValue = "0") Long saleId,
             @Parameter(description = "Search by status") @RequestParam(required = false) String bookingStatus,
+            @Parameter(description = "Search by other status") @RequestParam(required = false) String otherbookingStatus,
+            @Parameter(description = "Search by username ") @RequestParam(required = false ) String searchName,
             @Parameter(description = "Field to sort by") @RequestParam(required = false, defaultValue = "id") String sortBy,
             @Parameter(description = "Sort direction (asc/desc)") @RequestParam(required = false, defaultValue = "asc") String sortDirection,
             @Parameter(description = "Additional filter specification") @Filter Specification<Booking> spec, 
@@ -96,9 +99,24 @@ public class BookingController {
         if (userId > 0) {
             spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("user").get("id"), userId));
         }
-        if (bookingStatus != null && !bookingStatus.isEmpty()) {
-            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("bookingStatus"), BookingStatus.valueOf(FormatStringAccents.removeTones(bookingStatus.toUpperCase()))));
-        }    
+        if (saleId > 0) {
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("saleUser").get("id"), saleId));
+        }
+        if (bookingStatus != null && !bookingStatus.isEmpty() ) {
+           if( otherbookingStatus != null && !otherbookingStatus.isEmpty() ) {
+                spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.or(
+                        criteriaBuilder.equal(root.get("bookingStatus"), BookingStatus.valueOf(bookingStatus)),
+                        criteriaBuilder.equal(root.get("bookingStatus"), BookingStatus.valueOf(otherbookingStatus))
+                ));
+            } else {
+                spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("bookingStatus"), BookingStatus.valueOf(bookingStatus)));
+            }
+        }  
+        if (searchName != null && !searchName.isEmpty()) {
+             String cleanSearchName = FormatStringAccents.removeTones(searchName.toLowerCase().trim());
+            spec = spec.and((root, query, criteriaBuilder) -> criteriaBuilder
+                    .like(criteriaBuilder.lower(root.get("nameUnsigned")), "%" + cleanSearchName + "%"));
+        }
         return ResponseEntity.status(HttpStatus.OK).body(this.bookingService.getAllBooking(spec, pageable));
     }
 }

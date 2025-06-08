@@ -2,7 +2,6 @@ package com.backend.domicare.security.service;
 
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-
 import com.backend.domicare.mapper.UserMapper;
 import com.backend.domicare.model.User;
 import com.backend.domicare.repository.UsersRepository;
@@ -36,7 +35,6 @@ public class CustomOAuth2SuccessHandler {
         }
         
         updateUserInformation(user, email, name, picture, locale, subId);
-
         if (isNewUser) {
             this.userService.saveUser(UserMapper.INSTANCE.convertToUserDTO(user));
         } else {
@@ -46,11 +44,12 @@ public class CustomOAuth2SuccessHandler {
         String accessToken = jwtTokenManager.createAccessToken(email);
         String refreshToken = jwtTokenManager.createRefreshToken(email);
 
+        User entity = userRepository.findByEmail(email);
 
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setAccessToken(accessToken);
         loginResponse.setRefreshToken(refreshToken);
-        loginResponse.setUser(UserMapper.INSTANCE.convertToUserDTO(user));
+        loginResponse.setUser(UserMapper.INSTANCE.convertToUserDTO(entity));
         
         return loginResponse;
     }

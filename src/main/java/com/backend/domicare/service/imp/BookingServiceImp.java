@@ -113,8 +113,10 @@ public class BookingServiceImp implements BookingService {
         logger.info("[Booking] Booking with ID: {} has been marked as CANCELLED", id);
         Long userId = savedBooking.getUser().getId();
         String destination = "/topic/bookings/delete/" + userId;
-        messagingTemplate.convertAndSend(destination,BookingMapper.INSTANCE.convertToMiniBookingResponse(savedBooking));
-        messagingTemplate.convertAndSend("/topic/bookings/delete", BookingMapper.INSTANCE.convertToMiniBookingResponse(savedBooking));
+        messagingTemplate.convertAndSend(destination,
+                BookingMapper.INSTANCE.convertToMiniBookingResponse(savedBooking));
+        messagingTemplate.convertAndSend("/topic/bookings/delete",
+                BookingMapper.INSTANCE.convertToMiniBookingResponse(savedBooking));
 
         logger.info("[Booking] Booking deletion notification sent for booking ID: {}", id);
         return BookingMapper.INSTANCE.convertToMiniBookingResponse(savedBooking);
@@ -132,16 +134,16 @@ public class BookingServiceImp implements BookingService {
 
         Booking booking = bookingRepository.findById(id)
                 .orElseThrow(() -> new NotFoundBookingException("Booking not found with ID: " + id));
-        
 
-        if (booking.getBookingStatus() != BookingStatus.PENDING && booking.getBookingStatus() != BookingStatus.ACCEPTED ) {
+        if (booking.getBookingStatus() != BookingStatus.PENDING
+                && booking.getBookingStatus() != BookingStatus.ACCEPTED) {
             logger.warn("[Booking] Cannot update booking with ID: {} due to status: {}", id,
                     booking.getBookingStatus());
             throw new BookingStatusException("Cannot update booking with status: " + booking.getBookingStatus());
         }
         validateStartTime(request.getStartTime());
         // update productId
-        //create list productIds from request
+        // create list productIds from request
         Long productId = request.getProductId();
         if (productId != null) {
             List<Product> products = productService.findAllByIdIn(List.of(productId));
@@ -178,7 +180,7 @@ public class BookingServiceImp implements BookingService {
         if (request.getIsPeriodic() != null) {
             booking.setIsPeriodic(request.getIsPeriodic());
         }
-        if( request.getName() != null) {
+        if (request.getName() != null) {
             User user = booking.getUser();
             if (user == null) {
                 throw new NotFoundUserException("User not found for booking ID: " + id);
@@ -189,7 +191,6 @@ public class BookingServiceImp implements BookingService {
         bookingRepository.save(booking);
         logger.info("[Booking] Booking updated successfully with ID: {}", id);
         // send notification to user
-        
 
         MiniBookingResponse changeStatus = this.updateBookingStatus(
                 new UpdateBookingStatusRequest(id, request.getStatus()));
@@ -352,6 +353,7 @@ public class BookingServiceImp implements BookingService {
         MiniBookingResponse updated = BookingMapper.INSTANCE.convertToMiniBookingResponse(updatedBooking);
         Long userId = updated.getUserDTO().getId();
         String destination = "/topic/bookings/update/" + userId;
+        logger.info("[Booking] Sending booking update notification to user ID: {}", userId);
         messagingTemplate.convertAndSend(destination, updated);
         messagingTemplate.convertAndSend("/topic/bookings/update", updated);
         logger.info("[Booking] Booking update notification sent for booking ID: {}", id);
@@ -542,10 +544,11 @@ public class BookingServiceImp implements BookingService {
     }
 
     private void validateAlreadyBookedAndPending(Long userId, Long productId, BookingRequest request) {
-        
+
         Optional<Booking> existingBooking = bookingRepository
-                .findFirstByUserIdAndProductsIdAndBookingStatusOrderByCreateAtDesc(userId, productId, BookingStatus.PENDING);  
-        
+                .findFirstByUserIdAndProductsIdAndBookingStatusOrderByCreateAtDesc(userId, productId,
+                        BookingStatus.PENDING);
+
         if (existingBooking.isPresent()) {
             Booking booking = existingBooking.get();
             String bookingAddress = booking.getAddress();
@@ -557,9 +560,10 @@ public class BookingServiceImp implements BookingService {
                         productId);
                 throw new AlreadyPendingBooking("Bạn đã có một đơn hàng đang chờ xử lý cho sản phẩm này.");
             }
-            
+
         }
     }
+
     private void validateStartTime(Instant startTime) {
         if (startTime == null) {
             throw new InvalidDateException("Start time cannot be null");
@@ -628,7 +632,8 @@ public class BookingServiceImp implements BookingService {
         Instant startDateStr = startDate.atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
         Instant endDateStr = endDate.plusDays(1).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant();
         logger.debug("[Booking] Counting total bookings from {} to {}", startDateStr, endDateStr);
-        Long totalBookings = bookingRepository.countBookingsByStatusAndCreatedAtBetween(BookingStatus.SUCCESS, startDateStr,
+        Long totalBookings = bookingRepository.countBookingsByStatusAndCreatedAtBetween(BookingStatus.SUCCESS,
+                startDateStr,
                 endDateStr);
         if (totalBookings == null) {
             totalBookings = 0L;
@@ -637,55 +642,56 @@ public class BookingServiceImp implements BookingService {
         return totalBookings;
     }
 
-   @Override
-public List<TopSaleResponse> getFiveTopSale(LocalDateRequest localDateRequest) {
-    LocalDate startDate = localDateRequest.getStartDate();
-    LocalDate endDate = localDateRequest.getEndDate();
+    @Override
+    public List<TopSaleResponse> getFiveTopSale(LocalDateRequest localDateRequest) {
+        LocalDate startDate = localDateRequest.getStartDate();
+        LocalDate endDate = localDateRequest.getEndDate();
 
-    if (startDate == null || endDate == null) {
-        throw new InvalidDateException("Start date and end date cannot be null");
-    }
-    if (startDate.isAfter(endDate)) {
-        throw new InvalidDateException("Start date must be before or equal to end date");
-    }
-
-    Instant startInstant = startDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
-    Instant endInstant = endDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant();
-
-    logger.debug("[Booking] Fetching top revenue sales from {} to {}", startInstant, endInstant);
-
-    List<Object[]> topSalesData = bookingRepository.findTopRevenueSales(startInstant, endInstant);
-    if (topSalesData.isEmpty()) {
-        logger.debug("[Booking] No top sales found for the given date range");
-        return Collections.emptyList();
-    }
-
-    List<TopSaleResponse> topSales = new ArrayList<>();
-
-    for (Object[] data : topSalesData) {
-        String email = (String) data[0];
-        Number revenueNumber = (Number) data[1];
-        Double totalRevenue = revenueNumber != null ? revenueNumber.doubleValue() : 0.0;
-
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            logger.warn("[Booking] User not found for email: {}", email);
-            continue; 
+        if (startDate == null || endDate == null) {
+            throw new InvalidDateException("Start date and end date cannot be null");
+        }
+        if (startDate.isAfter(endDate)) {
+            throw new InvalidDateException("Start date must be before or equal to end date");
         }
 
-        TopSaleResponse response = new TopSaleResponse();
-        response.setId(user.getId());
-        response.setName(user.getName() != null ? user.getName() : "Unknown User");
-        response.setEmail(email);
-        response.setAvatar(user.getAvatar()); 
-        response.setTotalSalePrice(totalRevenue);
-        response.setTotalSuccessBookingPercent(user.getSaleSuccessPercent() != null ? user.getSaleSuccessPercent().floatValue() : 0.0f);
-        logger.info("[Booking] Top sale: {} - ID: {}, Total: {}, Success: {}%", 
+        Instant startInstant = startDate.atStartOfDay(ZoneId.systemDefault()).toInstant();
+        Instant endInstant = endDate.plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant();
+
+        logger.debug("[Booking] Fetching top revenue sales from {} to {}", startInstant, endInstant);
+
+        List<Object[]> topSalesData = bookingRepository.findTopRevenueSales(startInstant, endInstant);
+        if (topSalesData.isEmpty()) {
+            logger.debug("[Booking] No top sales found for the given date range");
+            return Collections.emptyList();
+        }
+
+        List<TopSaleResponse> topSales = new ArrayList<>();
+
+        for (Object[] data : topSalesData) {
+            String email = (String) data[0];
+            Number revenueNumber = (Number) data[1];
+            Double totalRevenue = revenueNumber != null ? revenueNumber.doubleValue() : 0.0;
+
+            User user = userRepository.findByEmail(email);
+            if (user == null) {
+                logger.warn("[Booking] User not found for email: {}", email);
+                continue;
+            }
+
+            TopSaleResponse response = new TopSaleResponse();
+            response.setId(user.getId());
+            response.setName(user.getName() != null ? user.getName() : "Unknown User");
+            response.setEmail(email);
+            response.setAvatar(user.getAvatar());
+            response.setTotalSalePrice(totalRevenue);
+            response.setTotalSuccessBookingPercent(
+                    user.getSaleSuccessPercent() != null ? user.getSaleSuccessPercent().floatValue() : 0.0f);
+            logger.info("[Booking] Top sale: {} - ID: {}, Total: {}, Success: {}%",
                     response.getName(), response.getId(), totalRevenue, response.getTotalSuccessBookingPercent());
 
-        topSales.add(response);
-    }
+            topSales.add(response);
+        }
 
-    return topSales.size() > 5 ? topSales.subList(0, 5) : topSales;
-}
+        return topSales.size() > 5 ? topSales.subList(0, 5) : topSales;
+    }
 }

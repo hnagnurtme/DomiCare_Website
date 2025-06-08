@@ -21,7 +21,7 @@ const BookingList = () => {
     try {
       const decoded = jwtDecode(token);
       const extractedId = decoded.id || decoded.user_id || decoded.sub;
-      setUserId(4);
+      setUserId(18);
     } catch (error) {
       console.error('❌ Lỗi khi giải mã token:', error);
     }

@@ -2,7 +2,6 @@ package com.backend.domicare.service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

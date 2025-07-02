@@ -34,13 +34,13 @@ public class OAuth2Controller {
     private final ObjectMapper objectMapper;
     private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
     
-    @Value("${oauth2.google.client-id}")
+    @Value("${spring.security.oauth2.client.registration.google.client-id}")
     private String clientId;
 
-    @Value("${oauth2.google.client-secret}")
+    @Value("${spring.security.oauth2.client.registration.google.client-secret}")
     private String clientSecret;
     
-    @Value("${oauth2.google.redirect-uri}")
+    @Value("${spring.security.oauth2.client.registration.google.redirect-uri}")
     private String redirectUri;
     
     @GetMapping("/auth/callback")

@@ -39,7 +39,6 @@ build/
 src/main/resources/application-cloud.properties
 src/main/resources/application-local.properties
 src/main/resources/application-prod.properties
-
 #env
 .env
 

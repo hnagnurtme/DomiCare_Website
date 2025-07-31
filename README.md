@@ -353,4 +353,46 @@ application-prod.properties
 .env.development
 .env.production
 ```
+Danh mục dịch vụ sẽ hiển thị các danh mục hiện có của hệ thống và trong mỗi danh mục sẽ hiển thị ra các dịch vụ để khách hàng có thể lựa chọn. Ngoài ra hệ thống còn hỗ trợ tìm kiếm các dịch vụ theo tên, sắp xếp các dịch vụ theo nhiều tiêu chí khác nhau giúp khách hàng dễ dàng thuận tiện trong việc căn nhắc lựa chọn dịch vụ.
+<img width="852" height="1114" alt="image" src="https://github.com/user-attachments/assets/4dbe0b06-b39e-4abd-a753-f3b7dbfc0242" />
+Chi tiết về dịch vụ sẽ được miêu tả và được minh họa thông qua các hình ảnh được chụp chân thật từ những lần thực hiện dịch vụ trước đó. Đồng thời còn hiển thị giá cả và giảm giá để khách hàng có thể biết.
+<img width="860" height="574" alt="image" src="https://github.com/user-attachments/assets/067ebd72-a9bf-45da-893b-c826262aa8c7" />
+<img width="862" height="436" alt="image" src="https://github.com/user-attachments/assets/2a28922c-2d41-45cd-bfb2-fa9ca7169aae" />
+<img width="864" height="428" alt="image" src="https://github.com/user-attachments/assets/a43ee8b6-dd92-4b04-863b-c0037e514d94" />
+<img width="864" height="458" alt="image" src="https://github.com/user-attachments/assets/4f69d4d7-0c7d-4bce-9de3-989fcfa36fd7" />
+
+ii.Phần lịch sử dịch vụ: nơi hiển thi các dịch vụ mà khách hàng đã từng sử dụng. 
+<img width="852" height="1210" alt="image" src="https://github.com/user-attachments/assets/4378f121-c8e8-4917-978b-07055e9556ee" />
+
+6.2.3.Đối với nhân viên sale :
+a.Xem danh sách tất cả đơn hàng:
+Danh sách giúp nhân viên sale dễ dàng nắm bắt được đơn hàng nào đang cần được tư vấn để có thể kịp thời liên hệ tránh trường hợp để đơn hàng tồn đọng quá lâu gây mất thiện cảm từ khách hàng.
+<img width="912" height="862" alt="image" src="https://github.com/user-attachments/assets/28f79f0c-71fe-45b6-ac76-234286985d0b" />
+
+<img width="872" height="210" alt="image" src="https://github.com/user-attachments/assets/9e930bd7-1be5-4288-8a25-0463b297d569" />
+<img width="888" height="978" alt="image" src="https://github.com/user-attachments/assets/bece93f7-693e-47de-b12e-cc465c023ef7" />
+
+Giao diện email gửi đến khách hàng 
+<img width="748" height="460" alt="image" src="https://github.com/user-attachments/assets/2c415aca-68f1-4197-b4f8-906e3a60b3f7" />
+
+Giao diện báo cáo & thống kê tổng quan cung cấp cho quản trị viên và nhân viên sale cái nhìn trực quan về hiệu suất hoạt động của hệ thống thông qua các số liệu như doanh thu, số lượng đơn đặt, lượng khách hàng mới và biểu đồ đánh giá dịch vụ.
+<img width="854" height="856" alt="image" src="https://github.com/user-attachments/assets/49ce3d2c-6f2c-41a6-a440-823bfa3ca94b" />
+
+Quản lý nhân viên: bao gồm các chức năng thêm, sửa, xóa nhân viên trên hệ thống, ngoài ra còn hỗ trợ hiển thị thông tin.
+<img width="846" height="474" alt="image" src="https://github.com/user-attachments/assets/cf7a3507-5a46-43cf-9f25-1e718f9818a5" />
+<img width="854" height="474" alt="image" src="https://github.com/user-attachments/assets/43354584-ca98-4a02-a524-8320130647a9" />
+
+ii.Dịch vụ: bao gồm các chức năng thêm, sửa, xóa danh mục trên hệ thống, ngoài ra còn hỗ trợ tìm kiếm và hiển thị thông tin.
+<img width="846" height="926" alt="image" src="https://github.com/user-attachments/assets/b6aff725-d7a3-4840-912d-1dfe7d884505" />
+Webisite Cho phép admin tạo mới một dịch vụ bằng cách nhập tên, mô tả, giá, mức giảm giá, chọn danh mục tương ứng và tải lên hình ảnh minh hoạ. Dữ liệu sẽ được lưu vào hệ thống và cập nhật giao diện sau khi nhấn “Thêm mới”.
+<img width="872" height="684" alt="image" src="https://github.com/user-attachments/assets/99bbc15a-5867-428e-9cb7-5e8b34d37333" />
+Để hỗ trợ quản trị viên dễ dàng cập nhật thông tin dịch vụ, hệ thống cung cấp một giao diện chỉnh sửa trực quan và thân thiện. Form này cho phép thay đổi các thuộc tính cơ bản như tên, mô tả, giá cả, mức giảm giá và hình ảnh minh họa của dịch vụ.
+<img width="872" height="684" alt="image" src="https://github.com/user-attachments/assets/c3dd130b-35ac-45b0-997b-db47dc804bc6" />
+
+Danh sách giúp nhân viên sale dễ dàng nắm bắt được đơn hàng nào đang cần được tư vấn để có thể kịp thời liên hệ tránh trường hợp để đơn hàng tồn đọng quá lâu gây mất thiện cảm từ khách hàng.
+<img width="872" height="1126" alt="image" src="https://github.com/user-attachments/assets/f67d3206-797d-40a9-a915-b8ed756eddec" />
+
+
+
+
 

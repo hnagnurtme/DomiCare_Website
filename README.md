@@ -376,31 +376,5 @@ http://localhost:8080/swagger-ui.html
 
 ---
 
-## 🌐 Demo
 
-[Coming soon!]
 
----
-
-## 🤝 Contributing
-
-We welcome contributions! Please follow these steps:
-1. Fork the repository.
-2. Create a feature branch (`git checkout -b feature/your-feature`).
-3. Commit changes (`git commit -m 'Add your feature'`).
-4. Push to the branch (`git push origin feature/your-feature`).
-5. Open a Pull Request.
-
----
-
-## 📬 Contact
-
-For inquiries, please reach out to:
-- **Email**: support@domicare.com
-- **GitHub Issues**: [DomiCare Issues](https://github.com/your-username/domicare/issues)
-
----
-
-## 📝 License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

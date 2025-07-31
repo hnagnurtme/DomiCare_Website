@@ -1,9 +1,11 @@
-# DomiCare Website - Cleaning Service Platform
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
-![Status](https://img.shields.io/badge/status-in%20development-yellow.svg)
-![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7+-green.svg)
-![JDK](https://img.shields.io/badge/JDK-11+-orange.svg)
+# DomiCare Website
+
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg) ![Status](https://img.shields.io/badge/status-in%20development-yellow.svg) ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7+-green.svg) ![JDK](https://img.shields.io/badge/JDK-11+-orange.svg)
+
+> **Nền tảng kết nối khách hàng với dịch vụ dọn dẹp và bảo trì chuyên nghiệp, hiện đại, minh bạch và an toàn.**
+
+---
 
 ## 📑 Mục lục
 - [Giới thiệu](#giới-thiệu)
@@ -12,6 +14,7 @@
 - [Công nghệ sử dụng](#công-nghệ-sử-dụng)
 - [Cấu trúc cơ sở dữ liệu](#cấu-trúc-cơ-sở-dữ-liệu)
 - [Hướng dẫn cài đặt](#hướng-dẫn-cài-đặt)
+- [Hướng dẫn chạy nhanh](#hướng-dẫn-chạy-nhanh)
 - [Quy trình triển khai](#quy-trình-triển-khai)
 - [API Documentation](#api-documentation)
 - [Bảo mật](#bảo-mật)
@@ -20,49 +23,84 @@
 - [Liên hệ](#liên-hệ)
 - [Giấy phép](#giấy-phép)
 
+
 ## 🌟 Giới thiệu
 
-**DomiCare** là nền tảng web chuyên cung cấp dịch vụ dọn dẹp và bảo trì chất lượng cao, kết nối khách hàng với đội ngũ nhân viên chuyên nghiệp. Hệ thống được xây dựng trên kiến trúc hiện đại với backend Spring Boot và frontend ReactJS, mang đến trải nghiệm người dùng tối ưu và quản lý hiệu quả.
+**DomiCare** là nền tảng web giúp khách hàng dễ dàng đặt dịch vụ dọn dẹp, bảo trì nhà cửa với quy trình minh bạch, giá cả rõ ràng, chất lượng đảm bảo và đội ngũ nhân viên chuyên nghiệp. Hệ thống sử dụng công nghệ hiện đại (Spring Boot, ReactJS) để tối ưu trải nghiệm và hiệu quả quản lý.
 
-Dự án hướng đến các giá trị:
-- **Tiện lợi**: Đơn giản hóa việc đặt dịch vụ dọn dẹp
-- **Minh bạch**: Thông tin dịch vụ, giá cả rõ ràng
-- **Chất lượng**: Đảm bảo dịch vụ đạt tiêu chuẩn cao
-- **Phát triển bền vững**: Sử dụng sản phẩm thân thiện với môi trường
+**Giá trị cốt lõi:**
+- 🚀 **Tiện lợi**: Đặt dịch vụ nhanh chóng, mọi lúc mọi nơi
+- 🔎 **Minh bạch**: Thông tin dịch vụ, giá cả rõ ràng
+- ⭐ **Chất lượng**: Đội ngũ chuyên nghiệp, quy trình kiểm soát chất lượng
+- 🌱 **Bền vững**: Ưu tiên sản phẩm thân thiện môi trường
+
 
 ## 🚀 Tính năng chính
 
-### 1. Khách hàng
-- **Tìm kiếm dịch vụ**: Tìm kiếm dựa trên nhiều tiêu chí (giá cả, đánh giá, thời gian, vị trí)
-- **Đặt dịch vụ**: Quy trình đặt dịch vụ liền mạch, xác thực qua OTP
-- **Quản lý tài khoản**: Đăng ký, đăng nhập (hỗ trợ OAuth2), khôi phục mật khẩu
-- **Lịch sử dịch vụ**: Xem chi tiết lịch sử và trạng thái các dịch vụ đã sử dụng
-- **Đánh giá dịch vụ**: Đánh giá chất lượng bằng hệ thống sao và bình luận
-- **Đặt lịch linh hoạt**: Đặt lịch qua form trực tuyến hoặc liên hệ trực tiếp
-- **Thanh toán trực tuyến**: Hỗ trợ nhiều phương thức thanh toán an toàn
+### 👤 Khách hàng
+- **Đăng nhập/Đăng ký:**
+  - Tạo tài khoản bằng email, số điện thoại
+  - Hỗ trợ quên mật khẩu, đặt lại mật khẩu qua email
+- **Quản lý tài khoản cá nhân:**
+  - Cập nhật thông tin cá nhân
+  - Xem lịch sử đặt dịch vụ
+- **Xem danh mục dịch vụ:**
+  - Hiển thị danh sách dịch vụ (hình ảnh, giá, mô tả)
+  - Tìm kiếm, lọc, sắp xếp dịch vụ theo từ khóa, danh mục, giá, đánh giá, phổ biến
+- **Đặt lịch:**
+  - Chọn dịch vụ, nhập thông tin địa chỉ, ghi chú, thời gian mong muốn
+- **Đánh giá dịch vụ:**
+  - Đánh giá, bình luận về dịch vụ đã đặt
+  - Hệ thống xếp hạng dịch vụ theo đánh giá khách hàng
 
-### 2. Nhân viên Sales
-- **Quản lý đơn hàng**: Tiếp nhận, xử lý đơn hàng từ khách hàng
-- **Chốt đơn**: Xác nhận đơn hàng, điều phối nhân viên kỹ thuật
-- **Báo cáo doanh thu**: Theo dõi doanh thu theo nhiều khung thời gian
-- **Quản lý khách hàng**: Xem thông tin và lịch sử giao dịch của khách hàng
-- **Thông báo**: Nhận thông báo realtime khi có đơn hàng mới
+### 🕵️ Khách vãng lai
+- Xem, tìm kiếm dịch vụ
+- Đăng ký/đăng nhập
+- Để lại thông tin để được tư vấn
 
-### 3. Nhân viên Thi Công (Trưởng Bộ Phận Kỹ Thuật)
-- **Quản lý lịch trình**: Xem và quản lý lịch trình công việc
-- **Cập nhật tiến độ**: Cập nhật trạng thái công việc theo thời gian thực
-- **Xác nhận hoàn thành**: Ghi nhận hình ảnh trước và sau khi hoàn thành
-- **Đánh giá chất lượng**: Yêu cầu khách hàng đánh giá sau khi hoàn thành
-- **Báo cáo sự cố**: Báo cáo các vấn đề phát sinh trong quá trình thực hiện
+### 💼 Nhân viên Tiếp thị (Sales)
+- Quản lý đơn đặt lịch, khách hàng
+- Quản lý tài khoản cá nhân, cập nhật thông tin
+- Quản lý tư vấn khách hàng, xem danh sách đơn đã tư vấn
+- Báo cáo doanh thu, nhận thông báo realtime
 
-### 4. Admin
-- **Quản lý toàn diện**: Bảng điều khiển thống kê tổng quan
-- **Quản lý nhân viên**: Thêm, sửa, xóa, phân quyền nhân viên sales và kỹ thuật
-- **Quản lý đơn hàng**: Giám sát toàn bộ đơn hàng và doanh thu
-- **Quản lý khách hàng**: Quản lý thông tin và lịch sử giao dịch khách hàng
-- **Quản lý dịch vụ**: CRUD các dịch vụ, phân loại, cập nhật giá
-- **Quản lý nội dung**: Quản lý tin tức, bài viết, hình ảnh quảng cáo
-- **Báo cáo phân tích**: Xuất báo cáo kinh doanh theo nhiều tiêu chí
+### 🛠️ Nhân viên Thi Công
+- Quản lý lịch trình, cập nhật tiến độ
+- Xác nhận hoàn thành, báo cáo sự cố
+
+### 🛡️ Quản trị viên (Admin)
+- Quản lý danh mục dịch vụ (thêm, sửa, xóa, hình ảnh, giá, mô tả)
+- Quản lý khách hàng (xem danh sách, thông tin)
+- Quản lý giảm giá, khuyến mãi (thêm, sửa, xóa)
+- Quản lý nhân viên (xem danh sách, phân quyền)
+- Quản lý tư vấn khách hàng
+- Xử lý khiếu nại, hỗ trợ khách hàng
+
+---
+
+## 👥 Các tác nhân hệ thống & phân quyền
+
+| Tác nhân             | Chức năng chính                                                                                 |
+|----------------------|------------------------------------------------------------------------------------------------|
+| Khách vãng lai       | Đăng ký/đăng nhập, xem/tìm kiếm dịch vụ, để lại thông tin tư vấn                                 |
+| Khách đã đăng ký     | Đặt dịch vụ, quản lý tài khoản, cập nhật thông tin, đánh giá dịch vụ, xem lịch sử               |
+| Nhân viên tiếp thị   | Quản lý đơn đặt lịch, tư vấn khách hàng, quản lý tài khoản, cập nhật thông tin, báo cáo         |
+| Nhân viên thi công   | Quản lý lịch trình, cập nhật tiến độ, xác nhận hoàn thành, báo cáo sự cố                        |
+| Quản trị viên (Admin)| Quản lý dịch vụ, khách hàng, nhân viên, giảm giá, tư vấn, khiếu nại, hỗ trợ, phân quyền        |
+
+---
+## ⚡ Hướng dẫn chạy nhanh
+
+```bash
+# Backend
+mvnw spring-boot:run -Dspring-boot.run.profiles=local
+
+# Frontend (giả sử đã cài Node.js)
+cd frontend
+npm install && npm start
+```
+
+> Xem chi tiết cấu hình trong phần "Hướng dẫn cài đặt" bên dưới.
 
 ## 🏗️ Kiến trúc hệ thống
 
@@ -315,22 +353,4 @@ application-prod.properties
 .env.development
 .env.production
 ```
-
-
-
-## 👥 Đóng góp
-
-Chúng tôi chào đón mọi đóng góp! Để tham gia phát triển:
-
-1. Fork repository
-2. Tạo nhánh cho tính năng mới: `git checkout -b feature/amazing-feature`
-3. Commit thay đổi: `git commit -m 'Add amazing feature'`
-4. Push lên nhánh của bạn: `git push origin feature/amazing-feature`
-5. Tạo Pull Request
-
-### Quy tắc đóng góp
-- Tuân thủ coding standards
-- Viết unit tests cho code mới
-- Cập nhật tài liệu khi cần thiết
-- Mô tả chi tiết về thay đổi trong Pull Request
 

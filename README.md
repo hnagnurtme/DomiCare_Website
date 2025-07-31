@@ -1,398 +1,406 @@
-
-# DomiCare Website
+# DomiCare - Professional Cleaning & Maintenance Platform
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue.svg) ![Status](https://img.shields.io/badge/status-in%20development-yellow.svg) ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7+-green.svg) ![JDK](https://img.shields.io/badge/JDK-11+-orange.svg)
 
-> **Nền tảng kết nối khách hàng với dịch vụ dọn dẹp và bảo trì chuyên nghiệp, hiện đại, minh bạch và an toàn.**
+> **A modern, transparent, and secure platform connecting customers with professional cleaning and maintenance services.**
 
 ---
 
-## 📑 Mục lục
-- [Giới thiệu](#giới-thiệu)
-- [Tính năng chính](#tính-năng-chính)
-- [Kiến trúc hệ thống](#kiến-trúc-hệ-thống)
-- [Công nghệ sử dụng](#công-nghệ-sử-dụng)
-- [Cấu trúc cơ sở dữ liệu](#cấu-trúc-cơ-sở-dữ-liệu)
-- [Hướng dẫn cài đặt](#hướng-dẫn-cài-đặt)
-- [Hướng dẫn chạy nhanh](#hướng-dẫn-chạy-nhanh)
-- [Quy trình triển khai](#quy-trình-triển-khai)
+## 📑 Table of Contents
+- [Introduction](#introduction)
+- [Key Features](#key-features)
+- [System Architecture](#system-architecture)
+- [Technology Stack](#technology-stack)
+- [Database Structure](#database-structure)
+- [Installation Guide](#installation-guide)
+- [Quick Start](#quick-start)
+- [Deployment Process](#deployment-process)
 - [API Documentation](#api-documentation)
-- [Bảo mật](#bảo-mật)
+- [Security](#security)
 - [Demo](#demo)
-- [Đóng góp](#đóng-góp)
-- [Liên hệ](#liên-hệ)
-- [Giấy phép](#giấy-phép)
-
-
-## 🌟 Giới thiệu
-
-**DomiCare** là nền tảng web giúp khách hàng dễ dàng đặt dịch vụ dọn dẹp, bảo trì nhà cửa với quy trình minh bạch, giá cả rõ ràng, chất lượng đảm bảo và đội ngũ nhân viên chuyên nghiệp. Hệ thống sử dụng công nghệ hiện đại (Spring Boot, ReactJS) để tối ưu trải nghiệm và hiệu quả quản lý.
-
-**Giá trị cốt lõi:**
-- 🚀 **Tiện lợi**: Đặt dịch vụ nhanh chóng, mọi lúc mọi nơi
-- 🔎 **Minh bạch**: Thông tin dịch vụ, giá cả rõ ràng
-- ⭐ **Chất lượng**: Đội ngũ chuyên nghiệp, quy trình kiểm soát chất lượng
-- 🌱 **Bền vững**: Ưu tiên sản phẩm thân thiện môi trường
-
-
-## 🚀 Tính năng chính
-
-### 👤 Khách hàng
-- **Đăng nhập/Đăng ký:**
-  - Tạo tài khoản bằng email, số điện thoại
-  - Hỗ trợ quên mật khẩu, đặt lại mật khẩu qua email
-- **Quản lý tài khoản cá nhân:**
-  - Cập nhật thông tin cá nhân
-  - Xem lịch sử đặt dịch vụ
-- **Xem danh mục dịch vụ:**
-  - Hiển thị danh sách dịch vụ (hình ảnh, giá, mô tả)
-  - Tìm kiếm, lọc, sắp xếp dịch vụ theo từ khóa, danh mục, giá, đánh giá, phổ biến
-- **Đặt lịch:**
-  - Chọn dịch vụ, nhập thông tin địa chỉ, ghi chú, thời gian mong muốn
-- **Đánh giá dịch vụ:**
-  - Đánh giá, bình luận về dịch vụ đã đặt
-  - Hệ thống xếp hạng dịch vụ theo đánh giá khách hàng
-
-### 🕵️ Khách vãng lai
-- Xem, tìm kiếm dịch vụ
-- Đăng ký/đăng nhập
-- Để lại thông tin để được tư vấn
-
-### 💼 Nhân viên Tiếp thị (Sales)
-- Quản lý đơn đặt lịch, khách hàng
-- Quản lý tài khoản cá nhân, cập nhật thông tin
-- Quản lý tư vấn khách hàng, xem danh sách đơn đã tư vấn
-- Báo cáo doanh thu, nhận thông báo realtime
-
-### 🛠️ Nhân viên Thi Công
-- Quản lý lịch trình, cập nhật tiến độ
-- Xác nhận hoàn thành, báo cáo sự cố
-
-### 🛡️ Quản trị viên (Admin)
-- Quản lý danh mục dịch vụ (thêm, sửa, xóa, hình ảnh, giá, mô tả)
-- Quản lý khách hàng (xem danh sách, thông tin)
-- Quản lý giảm giá, khuyến mãi (thêm, sửa, xóa)
-- Quản lý nhân viên (xem danh sách, phân quyền)
-- Quản lý tư vấn khách hàng
-- Xử lý khiếu nại, hỗ trợ khách hàng
+- [Contributing](#contributing)
+- [Contact](#contact)
+- [License](#license)
 
 ---
 
-## 👥 Các tác nhân hệ thống & phân quyền
+## 🌟 Introduction
 
-| Tác nhân             | Chức năng chính                                                                                 |
-|----------------------|------------------------------------------------------------------------------------------------|
-| Khách vãng lai       | Đăng ký/đăng nhập, xem/tìm kiếm dịch vụ, để lại thông tin tư vấn                                 |
-| Khách đã đăng ký     | Đặt dịch vụ, quản lý tài khoản, cập nhật thông tin, đánh giá dịch vụ, xem lịch sử               |
-| Nhân viên tiếp thị   | Quản lý đơn đặt lịch, tư vấn khách hàng, quản lý tài khoản, cập nhật thông tin, báo cáo         |
-| Nhân viên thi công   | Quản lý lịch trình, cập nhật tiến độ, xác nhận hoàn thành, báo cáo sự cố                        |
-| Quản trị viên (Admin)| Quản lý dịch vụ, khách hàng, nhân viên, giảm giá, tư vấn, khiếu nại, hỗ trợ, phân quyền        |
+**DomiCare** is a web-based platform designed to streamline the booking of professional cleaning and maintenance services. Built with modern technologies like Spring Boot and ReactJS, it ensures a seamless, transparent, and high-quality experience for customers, staff, and administrators.
+
+### Core Values
+- 🚀 **Convenience**: Book services anytime, anywhere.
+- 🔎 **Transparency**: Clear pricing and service details.
+- ⭐ **Quality**: Professional staff with rigorous quality control.
+- 🌱 **Sustainability**: Eco-friendly products and practices.
 
 ---
-## ⚡ Hướng dẫn chạy nhanh
+
+## 🚀 Key Features
+
+### 👤 Customers
+- **Account Management**:
+  - Register/login via email or phone.
+  - Password recovery via email.
+  - Update personal information and view booking history.
+- **Service Browsing**:
+  - Explore services with images, prices, and descriptions.
+  - Search, filter, and sort by keywords, categories, price, ratings, or popularity.
+- **Booking**:
+  - Select services, specify address, notes, and preferred time.
+- **Service Reviews**:
+  - Rate and comment on completed services.
+  - View service rankings based on customer feedback.
+
+### 🕵️ Guest Users
+- Browse and search services.
+- Register/login or request consultation.
+
+### 💼 Sales Staff
+- Manage bookings and customer consultations.
+- Update personal information.
+- View consulted bookings and generate revenue reports.
+- Receive real-time notifications.
+
+### 🛠️ Technical Staff
+- Manage schedules and update task progress.
+- Confirm task completion or report issues.
+
+### 🛡️ Administrators
+- Manage service categories, customer accounts, and staff roles.
+- Create, edit, or delete discounts and promotions.
+- Handle customer complaints and support requests.
+- Monitor consultations and system performance.
+
+---
+
+## 👥 System Actors & Permissions
+
+| Actor                | Key Functions                                                                 |
+|----------------------|------------------------------------------------------------------------------|
+| Guest User           | Browse/search services, register/login, request consultation.                |
+| Registered Customer  | Book services, manage account, rate services, view history.                 |
+| Sales Staff          | Manage bookings, consult customers, update account, generate reports.        |
+| Technical Staff      | Manage schedules, update task progress, report issues.                       |
+| Administrator        | Manage services, customers, staff, promotions, complaints, and permissions.  |
+
+---
+
+## ⚡ Quick Start
 
 ```bash
 # Backend
-mvnw spring-boot:run -Dspring-boot.run.profiles=local
+cd backend
+./mvnw spring-boot:run -Dspring-boot.run.profiles=local
 
-# Frontend (giả sử đã cài Node.js)
+# Frontend
 cd frontend
 npm install && npm start
 ```
 
-> Xem chi tiết cấu hình trong phần "Hướng dẫn cài đặt" bên dưới.
+> See the [Installation Guide](#installation-guide) for detailed setup instructions.
 
-## 🏗️ Kiến trúc hệ thống
+---
 
-DomiCare được xây dựng theo kiến trúc microservices, với các thành phần chính:
+## 🏗️ System Architecture
+
+DomiCare adopts a **microservices architecture** for scalability and maintainability, comprising:
 
 ### Backend (Spring Boot)
-- **API Layer**: RESTful API endpoints, xử lý request/response
-- **Service Layer**: Chứa business logic của ứng dụng
-- **Repository Layer**: Tương tác với database
-- **Security Layer**: Xác thực và phân quyền
-- **Email Service**: Xử lý gửi email tự động
-- **File Storage Service**: Quản lý lưu trữ file/hình ảnh
+- **API Layer**: RESTful endpoints for request/response handling.
+- **Service Layer**: Core business logic.
+- **Repository Layer**: Database interactions.
+- **Security Layer**: Authentication and authorization.
+- **Email Service**: Automated email notifications.
+- **File Storage Service**: Image and file management.
 
 ### Frontend (ReactJS)
-- **Public Portal**: Giao diện cho khách hàng
-- **Admin Portal**: Giao diện cho admin quản lý hệ thống
-- **Sales Portal**: Giao diện cho nhân viên sales
-- **Technical Portal**: Giao diện cho nhân viên kỹ thuật
+- **Public Portal**: Customer-facing interface.
+- **Admin Portal**: System management interface.
+- **Sales Portal**: Sales staff dashboard.
+- **Technical Portal**: Technical staff interface.
 
 ### Infrastructure
-- **Database**: PostgreSQL trên Cloud
-- **File Storage**: Cloudinary
-- **Authentication**: JWT + OAuth2
-- **Caching**: Redis (optinoal)
-- **CI/CD**: GitHub Actions/Jenkins
+- **Database**: PostgreSQL (cloud-hosted).
+- **File Storage**: Cloudinary.
+- **Authentication**: JWT + OAuth2.
+- **Caching**: Redis (optional).
+- **CI/CD**: GitHub Actions or Jenkins.
 
-## 💻 Công nghệ sử dụng
+---
+
+## 💻 Technology Stack
 
 ### Backend
-- **Spring Boot**: Framework Java toàn diện để phát triển ứng dụng
-- **Spring Security**: Bảo mật ứng dụng với xác thực và phân quyền
-- **Spring Data JPA**: ORM framework để tương tác với database
-- **JWT**: Cơ chế xác thực stateless cho REST API
-- **OAuth2**: Hỗ trợ đăng nhập qua Google, Facebook
-- **PostgreSQL**: Hệ quản trị cơ sở dữ liệu quan hệ
-- **Hibernate**: ORM framework
-- **Swagger/OpenAPI 3**: Tài liệu hóa API
-- **Maven**: Quản lý dependency và build
-- **JUnit & Mockito**: Unit testing
-- **JavaMail**: Gửi email thông báo
-- **Cloudinary**: Lưu trữ hình ảnh trên cloud
-- **Lombok**: Giảm boilerplate code
+- **Spring Boot**: Core framework for Java development.
+- **Spring Security**: Authentication and authorization.
+- **Spring Data JPA**: Database interaction with ORM.
+- **JWT & OAuth2**: Stateless authentication and third-party login (Google, Facebook).
+- **PostgreSQL**: Relational database.
+- **Hibernate**: ORM framework.
+- **Swagger/OpenAPI**: API documentation.
+- **Maven**: Dependency and build management.
+- **JUnit & Mockito**: Unit testing.
+- **JavaMail**: Email notifications.
+- **Cloudinary**: Cloud-based image storage.
+- **Lombok**: Boilerplate code reduction.
 
 ### Frontend
-- **ReactJS**: Framework JavaScript xây dựng UI
-- **Redux**: Quản lý state
-- **Axios**: HTTP client gọi API
-- **React Router**: Định tuyến
-- **Material-UI**: Component library
-- **Formik**: Quản lý form
-- **React Query**: Data fetching và caching
-- **i18next**: Đa ngôn ngữ
-- **Jest & React Testing Library**: Testing
-- **ESLint & Prettier**: Code quality
+- **ReactJS**: UI development framework.
+- **Redux**: State management.
+- **Axios**: HTTP client for API calls.
+- **React Router**: Client-side routing.
+- **Material-UI**: UI component library.
+- **Formik**: Form management.
+- **React Query**: Data fetching and caching.
+- **i18next**: Multilingual support.
+- **Jest & React Testing Library**: Testing.
+- **ESLint & Prettier**: Code quality tools.
 
 ### DevOps & Tools
-- **Docker**: Containerization
-- **Git**: Version control
-- **Postman**: API testing
-- **SonarQube**: Code quality analysis
-- **Prometheus & Grafana**: Monitoring (optional)
-- **ELK Stack**: Logging (optional)
+- **Docker**: Containerization.
+- **Git**: Version control.
+- **Postman**: API testing.
+- **SonarQube**: Code quality analysis.
+- **Prometheus & Grafana**: Monitoring (optional).
+- **ELK Stack**: Logging (optional).
 
-## 📊 Cấu trúc cơ sở dữ liệu
+---
+## 🛠️ Installation Guide
 
-### Các bảng chính
-- **users**: Thông tin người dùng (khách hàng, nhân viên sales, kỹ thuật, admin)
-- **roles**: Vai trò người dùng trong hệ thống
-- **services**: Thông tin các dịch vụ
-- **service_categories**: Phân loại dịch vụ
-- **orders**: Đơn hàng dịch vụ
-- **order_items**: Chi tiết đơn hàng
-- **payments**: Thông tin thanh toán
-- **reviews**: Đánh giá dịch vụ
-- **notifications**: Thông báo hệ thống
-- **media**: Lưu trữ thông tin hình ảnh, tài liệu
-- **posts**: Bài viết, tin tức
-
-### Sơ đồ quan hệ
-```
-users --(1:N)--> orders
-orders --(N:1)--> services
-users --(1:N)--> reviews
-services --(1:N)--> reviews
-services --(N:1)--> service_categories
-orders --(1:1)--> payments
-users --(N:M)--> roles
-```
-
-## 🛠️ Hướng dẫn cài đặt
-
-### Yêu cầu hệ thống
-- JDK 11 trở lên
+### Prerequisites
+- JDK 11+
 - Maven 3.6+
-- Node.js 14+ và npm 6+
+- Node.js 14+ and npm 6+
 - PostgreSQL 12+
 - Git
 
-### Cài đặt Backend
+### Backend Setup
 
-#### 1. Clone repository
-```bash
-git clone https://github.com/your-username/domicare.git
-cd domicare/backend
-```
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/your-username/domicare.git
+   cd domicare/backend
+   ```
 
-#### 2. Cấu hình database
-Tạo database PostgreSQL:
-```sql
-CREATE DATABASE domicare;
-```
+2. **Configure Database**
+   Create a PostgreSQL database:
+   ```sql
+   CREATE DATABASE domicare;
+   ```
 
-#### 3. Cấu hình application.properties
-Tạo file `src/main/resources/application-local.properties`:
+3. **Set Up `application-local.properties`**
+   Create `src/main/resources/application-local.properties`:
+   ```properties
+   # Database
+   spring.datasource.url=jdbc:postgresql://localhost:5432/domicare
+   spring.datasource.username=your-db-username
+   spring.datasource.password=your-db-password
+   spring.datasource.driver-class-name=org.postgresql.Driver
 
-```properties
-# Database Configuration
-spring.datasource.url=jdbc:postgresql://localhost:5432/domicare
-spring.datasource.username=your-db-username
-spring.datasource.password=your-db-password
-spring.datasource.driver-class-name=org.postgresql.Driver
+   # JPA
+   spring.jpa.hibernate.ddl-auto=update
+   spring.jpa.show-sql=true
+   spring.jpa.properties.hibernate.format_sql=true
+   spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 
-# JPA Configuration
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.format_sql=true
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+   # JWT
+   jwt.secret=your-jwt-secret-key
+   jwt.expiration=86400000
 
-# JWT Configuration
-jwt.secret=your-jwt-secret-key
-jwt.expiration=86400000
+   # Email
+   spring.mail.host=smtp.gmail.com
+   spring.mail.port=587
+   spring.mail.username=your-email@gmail.com
+   spring.mail.password=your-email-app-password
+   spring.mail.properties.mail.smtp.auth=true
+   spring.mail.properties.mail.smtp.starttls.enable=true
 
-# Mail Configuration
-spring.mail.host=smtp.gmail.com
-spring.mail.port=587
-spring.mail.username=your-email@gmail.com
-spring.mail.password=your-email-app-password
-spring.mail.properties.mail.smtp.auth=true
-spring.mail.properties.mail.smtp.starttls.enable=true
+   # OAuth2
+   spring.security.oauth2.client.registration.google.client-id=your-google-client-id
+   spring.security.oauth2.client.registration.google.client-secret=your-google-client-secret
+   spring.security.oauth2.client.registration.google.scope=profile,email
 
-# OAuth2 Configuration
-spring.security.oauth2.client.registration.google.client-id=your-google-client-id
-spring.security.oauth2.client.registration.google.client-secret=your-google-client-secret
-spring.security.oauth2.client.registration.google.scope=profile,email
+   # Cloudinary
+   cloudinary.cloud-name=your-cloud-name
+   cloudinary.api-key=your-api-key
+   cloudinary.api-secret=your-api-secret
 
-# Cloudinary Configuration
-cloudinary.cloud-name=your-cloud-name
-cloudinary.api-key=your-api-key
-cloudinary.api-secret=your-api-secret
+   # Server
+   server.port=8080
+   ```
 
-# Server Configuration
-server.port=8080
-```
+4. **Build and Run**
+   ```bash
+   mvn clean install
+   mvn spring-boot:run -Dspring-boot.run.profiles=local
+   ```
+   Or use the JAR file:
+   ```bash
+   java -jar target/domicare-0.0.1-SNAPSHOT.jar --spring.profiles.active=local
+   ```
 
-#### 4. Build và chạy ứng dụng
-```bash
-mvn clean install
-mvn spring-boot:run -Dspring-boot.run.profiles=local
-```
+### Frontend Setup
 
-Hoặc chạy bằng JAR file:
-```bash
-java -jar target/domicare-0.0.1-SNAPSHOT.jar --spring.profiles.active=local
-```
+1. **Navigate to Frontend Directory**
+   ```bash
+   cd ../frontend
+   ```
 
-### Cài đặt Frontend
+2. **Install Dependencies**
+   ```bash
+   npm install
+   ```
 
-#### 1. Di chuyển đến thư mục frontend
-```bash
-cd ../frontend
-```
+3. **Configure API Endpoint**
+   Create `.env.local`:
+   ```plaintext
+   REACT_APP_API_BASE_URL=http://localhost:8080/api
+   REACT_APP_CLOUDINARY_URL=https://api.cloudinary.com/v1_1/your-cloud-name/upload
+   REACT_APP_GOOGLE_CLIENT_ID=your-google-client-id
+   ```
 
-#### 2. Cài đặt dependencies
-```bash
-npm install
-```
+4. **Run Frontend**
+   ```bash
+   npm start
+   ```
 
-#### 3. Cấu hình API endpoint
-Tạo file `.env.local`:
-```
-REACT_APP_API_BASE_URL=http://localhost:8080/api
-REACT_APP_CLOUDINARY_URL=https://api.cloudinary.com/v1_1/your-cloud-name/upload
-REACT_APP_GOOGLE_CLIENT_ID=your-google-client-id
-```
+5. **Build for Production**
+   ```bash
+   npm run build
+   ```
 
-#### 4. Chạy ứng dụng frontend
-```bash
-npm start
-```
+---
 
-#### 5. Build cho production
-```bash
-npm run build
-```
+## 🚢 Deployment Process
 
-## 🚢 Quy trình triển khai
-
-### Môi trường phát triển
-1. **Local**: Phát triển trên máy tính cá nhân
-2. **Development**: Môi trường test nội bộ
-3. **Staging**: Môi trường kiểm thử UAT
-4. **Production**: Môi trường chính thức
+### Environments
+1. **Local**: Developer workstations.
+2. **Development**: Internal testing.
+3. **Staging**: User acceptance testing (UAT).
+4. **Production**: Live environment.
 
 ### CI/CD Pipeline
-- **Commit Code**: Push code lên Git repository
-- **Automated Tests**: Chạy unit tests, integration tests
-- **Code Quality**: Kiểm tra code quality với SonarQube
-- **Build**: Build ứng dụng với Maven/npm
-- **Deploy**: Deploy lên môi trường tương ứng
-- **Monitor**: Giám sát ứng dụng sau khi deploy
+- **Code Commit**: Push to Git repository.
+- **Automated Tests**: Run unit and integration tests.
+- **Code Quality**: Analyze with SonarQube.
+- **Build**: Compile with Maven/npm.
+- **Deploy**: Deploy to target environment.
+- **Monitor**: Track performance post-deployment.
+
+---
 
 ## 📚 API Documentation
 
-API được tài liệu hóa bằng Swagger/OpenAPI. Sau khi chạy backend, truy cập:
+Access Swagger/OpenAPI documentation after starting the backend:
 ```
 http://localhost:8080/swagger-ui.html
 ```
 
-### Các nhóm API chính
-- **/api/auth**: Xác thực và phân quyền
-- **/api/users**: Quản lý người dùng
-- **/api/services**: Quản lý dịch vụ
-- **/api/orders**: Quản lý đơn hàng
-- **/api/payments**: Xử lý thanh toán
-- **/api/reviews**: Đánh giá dịch vụ
-- **/api/media**: Upload và quản lý media
-- **/api/posts**: Quản lý bài viết
+### API Groups
+- **/api/auth**: Authentication and authorization.
+- **/api/users**: User management.
+- **/api/services**: Service management.
+- **/api/orders**: Booking management.
+- **/api/payments**: Payment processing.
+- **/api/reviews**: Service reviews.
+- **/api/media**: Media upload and management.
+- **/api/posts**: News and article management.
 
-## 🔒 Bảo mật
+---
 
-### Nguyên tắc bảo mật:
-- **Authentication**: JWT + OAuth2
-- **Authorization**: Role-based Access Control (RBAC)
-- **Data Protection**: HTTPS/SSL
-- **Password Storage**: BCrypt hashing
-- **Input Validation**: Kiểm tra và sanitize input
-- **CORS Configuration**: Bảo vệ từ cross-origin requests
-- **Rate Limiting**: Bảo vệ chống DOS attacks
+## 🔒 Security
 
-### Quản lý Secrets:
-- Sử dụng biến môi trường hoặc vault service
-- Không commit secrets lên Git
-- File nhạy cảm cần thêm vào .gitignore:
-```
-# .gitignore
-application-local.properties
-application-dev.properties
-application-prod.properties
-.env.local
-.env.development
-.env.production
-```
-Danh mục dịch vụ sẽ hiển thị các danh mục hiện có của hệ thống và trong mỗi danh mục sẽ hiển thị ra các dịch vụ để khách hàng có thể lựa chọn. Ngoài ra hệ thống còn hỗ trợ tìm kiếm các dịch vụ theo tên, sắp xếp các dịch vụ theo nhiều tiêu chí khác nhau giúp khách hàng dễ dàng thuận tiện trong việc căn nhắc lựa chọn dịch vụ.
-<img width="852" height="1114" alt="image" src="https://github.com/user-attachments/assets/4dbe0b06-b39e-4abd-a753-f3b7dbfc0242" />
-Chi tiết về dịch vụ sẽ được miêu tả và được minh họa thông qua các hình ảnh được chụp chân thật từ những lần thực hiện dịch vụ trước đó. Đồng thời còn hiển thị giá cả và giảm giá để khách hàng có thể biết.
-<img width="860" height="574" alt="image" src="https://github.com/user-attachments/assets/067ebd72-a9bf-45da-893b-c826262aa8c7" />
-<img width="862" height="436" alt="image" src="https://github.com/user-attachments/assets/2a28922c-2d41-45cd-bfb2-fa9ca7169aae" />
-<img width="864" height="428" alt="image" src="https://github.com/user-attachments/assets/a43ee8b6-dd92-4b04-863b-c0037e514d94" />
-<img width="864" height="458" alt="image" src="https://github.com/user-attachments/assets/4f69d4d7-0c7d-4bce-9de3-989fcfa36fd7" />
+### Security Principles
+- **Authentication**: JWT + OAuth2.
+- **Authorization**: Role-based access control (RBAC).
+- **Data Protection**: HTTPS/SSL encryption.
+- **Password Storage**: BCrypt hashing.
+- **Input Validation**: Sanitize and validate inputs.
+- **CORS**: Restrict cross-origin requests.
+- **Rate Limiting**: Prevent DOS attacks.
 
-ii.Phần lịch sử dịch vụ: nơi hiển thi các dịch vụ mà khách hàng đã từng sử dụng. 
-<img width="852" height="1210" alt="image" src="https://github.com/user-attachments/assets/4378f121-c8e8-4917-978b-07055e9556ee" />
+### Secret Management
+- Store secrets in environment variables or a vault.
+- Exclude sensitive files from Git:
+  ```plaintext
+  # .gitignore
+  application-local.properties
+  application-dev.properties
+  application-prod.properties
+  .env.local
+  .env.development
+  .env.production
+  ```
 
-6.2.3.Đối với nhân viên sale :
-a.Xem danh sách tất cả đơn hàng:
-Danh sách giúp nhân viên sale dễ dàng nắm bắt được đơn hàng nào đang cần được tư vấn để có thể kịp thời liên hệ tránh trường hợp để đơn hàng tồn đọng quá lâu gây mất thiện cảm từ khách hàng.
-<img width="912" height="862" alt="image" src="https://github.com/user-attachments/assets/28f79f0c-71fe-45b6-ac76-234286985d0b" />
+---
 
-<img width="872" height="210" alt="image" src="https://github.com/user-attachments/assets/9e930bd7-1be5-4288-8a25-0463b297d569" />
-<img width="888" height="978" alt="image" src="https://github.com/user-attachments/assets/bece93f7-693e-47de-b12e-cc465c023ef7" />
+## 🎨 User Interface Highlights
 
-Giao diện email gửi đến khách hàng 
-<img width="748" height="460" alt="image" src="https://github.com/user-attachments/assets/2c415aca-68f1-4197-b4f8-906e3a60b3f7" />
+### Registration
+- **Form**: Email, password, confirm password, and terms/privacy policy checkbox.
+- **Actions**: Resend verification email or navigate to login page.
+- **Post-Registration**: Email verification link sent for account activation.
 
-Giao diện báo cáo & thống kê tổng quan cung cấp cho quản trị viên và nhân viên sale cái nhìn trực quan về hiệu suất hoạt động của hệ thống thông qua các số liệu như doanh thu, số lượng đơn đặt, lượng khách hàng mới và biểu đồ đánh giá dịch vụ.
-<img width="854" height="856" alt="image" src="https://github.com/user-attachments/assets/49ce3d2c-6f2c-41a6-a440-823bfa3ca94b" />
+### Service Catalog
+- Browse services by category with search, filter, and sort options (name, price, ratings).
+- Detailed service pages with descriptions, authentic images, pricing, and discounts.
 
-Quản lý nhân viên: bao gồm các chức năng thêm, sửa, xóa nhân viên trên hệ thống, ngoài ra còn hỗ trợ hiển thị thông tin.
-<img width="846" height="474" alt="image" src="https://github.com/user-attachments/assets/cf7a3507-5a46-43cf-9f25-1e718f9818a5" />
-<img width="854" height="474" alt="image" src="https://github.com/user-attachments/assets/43354584-ca98-4a02-a524-8320130647a9" />
+### Booking History
+- View past services with details and statuses.
 
-ii.Dịch vụ: bao gồm các chức năng thêm, sửa, xóa danh mục trên hệ thống, ngoài ra còn hỗ trợ tìm kiếm và hiển thị thông tin.
-<img width="846" height="926" alt="image" src="https://github.com/user-attachments/assets/b6aff725-d7a3-4840-912d-1dfe7d884505" />
-Webisite Cho phép admin tạo mới một dịch vụ bằng cách nhập tên, mô tả, giá, mức giảm giá, chọn danh mục tương ứng và tải lên hình ảnh minh hoạ. Dữ liệu sẽ được lưu vào hệ thống và cập nhật giao diện sau khi nhấn “Thêm mới”.
-<img width="872" height="684" alt="image" src="https://github.com/user-attachments/assets/99bbc15a-5867-428e-9cb7-5e8b34d37333" />
-Để hỗ trợ quản trị viên dễ dàng cập nhật thông tin dịch vụ, hệ thống cung cấp một giao diện chỉnh sửa trực quan và thân thiện. Form này cho phép thay đổi các thuộc tính cơ bản như tên, mô tả, giá cả, mức giảm giá và hình ảnh minh họa của dịch vụ.
-<img width="872" height="684" alt="image" src="https://github.com/user-attachments/assets/c3dd130b-35ac-45b0-997b-db47dc804bc6" />
+### Sales Staff Dashboard
+- View and manage bookings to ensure timely customer consultations.
+- Real-time notifications and revenue reports.
 
-Danh sách giúp nhân viên sale dễ dàng nắm bắt được đơn hàng nào đang cần được tư vấn để có thể kịp thời liên hệ tránh trường hợp để đơn hàng tồn đọng quá lâu gây mất thiện cảm từ khách hàng.
-<img width="872" height="1126" alt="image" src="https://github.com/user-attachments/assets/f67d3206-797d-40a9-a915-b8ed756eddec" />
+### Admin Dashboard
+- **Analytics**: Revenue, bookings, new customers, and service ratings visualized in charts.
+- **Staff Management**: Add, edit, or delete staff with detailed information views.
+- **Service Management**: Create, update, or delete services with intuitive forms for name, description, price, discount, category, and images.
 
+---
 
+## 📸 Screenshots
 
+| **Registration** | **Service Catalog** | **Service Details** |
+|------------------|---------------------|---------------------|
+| ![Registration](https://github.com/user-attachments/assets/d442271a-35fc-4138-a9a4-9fd3646609ca) | ![Service Catalog](https://github.com/user-attachments/assets/4dbe0b06-b39e-4abd-a753-f3b7dbfc0242) | ![Service Details](https://github.com/user-attachments/assets/067ebd72-a9bf-45da-893b-c826262aa8c7) |
 
+| **Booking History** | **Sales Dashboard** | **Admin Analytics** |
+|---------------------|---------------------|---------------------|
+| ![Booking History](https://github.com/user-attachments/assets/4378f121-c8e8-4917-978b-07055e9556ee) | ![Sales Dashboard](https://github.com/user-attachments/assets/f67d3206-797d-40a9-a915-b8ed756eddec) | ![Admin Analytics](https://github.com/user-attachments/assets/49ce3d2c-6f2c-41a6-a440-823bfa3ca94b) |
 
+| **Email Verification** | **Staff Management** | **Service Management** |
+|------------------------|----------------------|------------------------|
+| ![Email Verification](https://github.com/user-attachments/assets/2c415aca-68f1-4197-b4f8-906e3a60b3f7) | ![Staff Management](https://github.com/user-attachments/assets/cf7a3507-5a46-43cf-9f25-1e718f9818a5) | ![Service Management](https://github.com/user-attachments/assets/b6aff725-d7a3-4840-912d-1dfe7d884505) |
+
+---
+
+## 🌐 Demo
+
+[Coming soon!]
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please follow these steps:
+1. Fork the repository.
+2. Create a feature branch (`git checkout -b feature/your-feature`).
+3. Commit changes (`git commit -m 'Add your feature'`).
+4. Push to the branch (`git push origin feature/your-feature`).
+5. Open a Pull Request.
+
+---
+
+## 📬 Contact
+
+For inquiries, please reach out to:
+- **Email**: support@domicare.com
+- **GitHub Issues**: [DomiCare Issues](https://github.com/your-username/domicare/issues)
+
+---
+
+## 📝 License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.

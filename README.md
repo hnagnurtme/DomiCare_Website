@@ -45,9 +45,14 @@
 
 ## Backend API Documentation
 
+## Backend API Documentation
+
 - OpenAPI Spec (JSON): [https://domicare-web-v1-5.onrender.com/v3/api-docs](https://domicare-web-v1-5.onrender.com/v3/api-docs)  
 - Swagger UI: [https://domicare-web-v1-5.onrender.com/swagger-ui/index.html](https://domicare-web-v1-5.onrender.com/swagger-ui/index.html)
-<img width="1514" height="8000" alt="image" src="https://github.com/user-attachments/assets/9e061f91-3385-4630-bfc3-dc509b6e2c12" />
+
+### Swagger UI Preview
+![Swagger UI Screenshot](https://github.com/hnagnurtme/DomiCare_Website/blob/master/domicare-web-v1-5.onrender.com_swagger-ui_index.html%20(1).png)
+
 
 ## ⚡ Quick Start
 

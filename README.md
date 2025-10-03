@@ -3,38 +3,9 @@
 ![Version](https://img.shields.io/badge/version-1.0.0-blue.svg) ![Status](https://img.shields.io/badge/status-in%20development-yellow.svg) ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7+-green.svg) ![JDK](https://img.shields.io/badge/JDK-11+-orange.svg)
 
 > **A modern, transparent, and secure platform connecting customers with professional cleaning and maintenance services.**
-
----
-
-## 📑 Table of Contents
-- [Introduction](#introduction)
-- [Key Features](#key-features)
-- [System Architecture](#system-architecture)
-- [Technology Stack](#technology-stack)
-- [Database Structure](#database-structure)
-- [Installation Guide](#installation-guide)
-- [Quick Start](#quick-start)
-- [Deployment Process](#deployment-process)
-- [API Documentation](#api-documentation)
-- [Security](#security)
-- [Demo](#demo)
-- [Contributing](#contributing)
-- [Contact](#contact)
-- [License](#license)
-
----
-
 ## 🌟 Introduction
 
 **DomiCare** is a web-based platform designed to streamline the booking of professional cleaning and maintenance services. Built with modern technologies like Spring Boot and ReactJS, it ensures a seamless, transparent, and high-quality experience for customers, staff, and administrators.
-
-### Core Values
-- 🚀 **Convenience**: Book services anytime, anywhere.
-- 🔎 **Transparency**: Clear pricing and service details.
-- ⭐ **Quality**: Professional staff with rigorous quality control.
-- 🌱 **Sustainability**: Eco-friendly products and practices.
-
----
 
 ## 🚀 Key Features
 
@@ -72,19 +43,11 @@
 - Handle customer complaints and support requests.
 - Monitor consultations and system performance.
 
----
+## Backend API Documentation
 
-## 👥 System Actors & Permissions
-
-| Actor                | Key Functions                                                                 |
-|----------------------|------------------------------------------------------------------------------|
-| Guest User           | Browse/search services, register/login, request consultation.                |
-| Registered Customer  | Book services, manage account, rate services, view history.                 |
-| Sales Staff          | Manage bookings, consult customers, update account, generate reports.        |
-| Technical Staff      | Manage schedules, update task progress, report issues.                       |
-| Administrator        | Manage services, customers, staff, promotions, complaints, and permissions.  |
-
----
+- OpenAPI Spec (JSON): [https://domicare-web-v1-5.onrender.com/v3/api-docs](https://domicare-web-v1-5.onrender.com/v3/api-docs)  
+- Swagger UI: [https://domicare-web-v1-5.onrender.com/swagger-ui/index.html](https://domicare-web-v1-5.onrender.com/swagger-ui/index.html)
+<img width="1514" height="8000" alt="image" src="https://github.com/user-attachments/assets/9e061f91-3385-4630-bfc3-dc509b6e2c12" />
 
 ## ⚡ Quick Start
 
@@ -239,126 +202,6 @@ DomiCare adopts a **microservices architecture** for scalability and maintainabi
    ```bash
    java -jar target/domicare-0.0.1-SNAPSHOT.jar --spring.profiles.active=local
    ```
-
-### Frontend Setup
-
-1. **Navigate to Frontend Directory**
-   ```bash
-   cd ../frontend
-   ```
-
-2. **Install Dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Configure API Endpoint**
-   Create `.env.local`:
-   ```plaintext
-   REACT_APP_API_BASE_URL=http://localhost:8080/api
-   REACT_APP_CLOUDINARY_URL=https://api.cloudinary.com/v1_1/your-cloud-name/upload
-   REACT_APP_GOOGLE_CLIENT_ID=your-google-client-id
-   ```
-
-4. **Run Frontend**
-   ```bash
-   npm start
-   ```
-
-5. **Build for Production**
-   ```bash
-   npm run build
-   ```
-
----
-
-## 🚢 Deployment Process
-
-### Environments
-1. **Local**: Developer workstations.
-2. **Development**: Internal testing.
-3. **Staging**: User acceptance testing (UAT).
-4. **Production**: Live environment.
-
-### CI/CD Pipeline
-- **Code Commit**: Push to Git repository.
-- **Automated Tests**: Run unit and integration tests.
-- **Code Quality**: Analyze with SonarQube.
-- **Build**: Compile with Maven/npm.
-- **Deploy**: Deploy to target environment.
-- **Monitor**: Track performance post-deployment.
-
----
-
-## 📚 API Documentation
-
-Access Swagger/OpenAPI documentation after starting the backend:
-```
-http://localhost:8080/swagger-ui.html
-```
-
-### API Groups
-- **/api/auth**: Authentication and authorization.
-- **/api/users**: User management.
-- **/api/services**: Service management.
-- **/api/orders**: Booking management.
-- **/api/payments**: Payment processing.
-- **/api/reviews**: Service reviews.
-- **/api/media**: Media upload and management.
-- **/api/posts**: News and article management.
-
----
-
-## 🔒 Security
-
-### Security Principles
-- **Authentication**: JWT + OAuth2.
-- **Authorization**: Role-based access control (RBAC).
-- **Data Protection**: HTTPS/SSL encryption.
-- **Password Storage**: BCrypt hashing.
-- **Input Validation**: Sanitize and validate inputs.
-- **CORS**: Restrict cross-origin requests.
-- **Rate Limiting**: Prevent DOS attacks.
-
-### Secret Management
-- Store secrets in environment variables or a vault.
-- Exclude sensitive files from Git:
-  ```plaintext
-  # .gitignore
-  application-local.properties
-  application-dev.properties
-  application-prod.properties
-  .env.local
-  .env.development
-  .env.production
-  ```
-
----
-
-## 🎨 User Interface Highlights
-
-### Registration
-- **Form**: Email, password, confirm password, and terms/privacy policy checkbox.
-- **Actions**: Resend verification email or navigate to login page.
-- **Post-Registration**: Email verification link sent for account activation.
-
-### Service Catalog
-- Browse services by category with search, filter, and sort options (name, price, ratings).
-- Detailed service pages with descriptions, authentic images, pricing, and discounts.
-
-### Booking History
-- View past services with details and statuses.
-
-### Sales Staff Dashboard
-- View and manage bookings to ensure timely customer consultations.
-- Real-time notifications and revenue reports.
-
-### Admin Dashboard
-- **Analytics**: Revenue, bookings, new customers, and service ratings visualized in charts.
-- **Staff Management**: Add, edit, or delete staff with detailed information views.
-- **Service Management**: Create, update, or delete services with intuitive forms for name, description, price, discount, category, and images.
-
----
 
 ## 📸 Screenshots
 

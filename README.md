@@ -1,27 +1,46 @@
-# DomiCare - Professional Cleaning & Maintenance Platform
+# 🧹 DomiCare – Professional Cleaning & Maintenance Platform
 
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg) ![Status](https://img.shields.io/badge/status-in%20development-yellow.svg) ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7+-green.svg) ![JDK](https://img.shields.io/badge/JDK-11+-orange.svg)
+![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![Status](https://img.shields.io/badge/status-in%20development-yellow.svg)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7%2B-green.svg)
+![ReactJS](https://img.shields.io/badge/ReactJS-18-blue.svg)
+![JDK](https://img.shields.io/badge/JDK-11%2B-orange.svg)
+![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 
 > **A modern, transparent, and secure platform connecting customers with professional cleaning and maintenance services.**
+
+---
+
 ## 🌟 Introduction
 
-**DomiCare** is a web-based platform designed to streamline the booking of professional cleaning and maintenance services. Built with modern technologies like Spring Boot and ReactJS, it ensures a seamless, transparent, and high-quality experience for customers, staff, and administrators.
+**DomiCare** is a web-based platform designed to streamline the booking of professional cleaning and maintenance services.  
+Built with **Spring Boot**, **ReactJS**, and **PostgreSQL**, it ensures a seamless, transparent, and high-quality experience for customers, staff, and administrators.
 
-## 🚀 Key Features
+## 🧠 Tech Stack
 
-### 👤 Customers
-- **Account Management**:
-  - Register/login via email or phone.
-  - Password recovery via email.
-  - Update personal information and view booking history.
-- **Service Browsing**:
-  - Explore services with images, prices, and descriptions.
-  - Search, filter, and sort by keywords, categories, price, ratings, or popularity.
-- **Booking**:
-  - Select services, specify address, notes, and preferred time.
-- **Service Reviews**:
-  - Rate and comment on completed services.
-  - View service rankings based on customer feedback.
+### **Backend**
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=flat-square&logo=springboot&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=flat-square&logo=postgresql&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-000000?style=flat-square&logo=jsonwebtokens&logoColor=white)
+![OAuth2](https://img.shields.io/badge/OAuth2-EB5424?style=flat-square)
+![Redis](https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=redis&logoColor=white)
+![Cloudinary](https://img.shields.io/badge/Cloudinary-4285F4?style=flat-square&logo=cloudinary&logoColor=white)
+![JavaMail](https://img.shields.io/badge/SMTP-0078D4?style=flat-square&logo=gmail&logoColor=white)
+![JUnit](https://img.shields.io/badge/JUnit-25A162?style=flat-square&logo=junit5&logoColor=white)
+
+### **Frontend**
+![ReactJS](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=black)
+![Redux](https://img.shields.io/badge/Redux-764ABC?style=flat-square&logo=redux&logoColor=white)
+![Material UI](https://img.shields.io/badge/Material--UI-007FFF?style=flat-square&logo=mui&logoColor=white)
+![Axios](https://img.shields.io/badge/Axios-5A29E4?style=flat-square)
+![React Router](https://img.shields.io/badge/React%20Router-CA4245?style=flat-square&logo=reactrouter&logoColor=white)
+![i18next](https://img.shields.io/badge/i18next-26A69A?style=flat-square)
+
+### **DevOps & Tools**
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)
+![Postman](https://img.shields.io/badge/Postman-FF6C37?style=flat-square&logo=postman&logoColor=white)
+![SonarQube](https://img.shields.io/badge/SonarQube-4E9BCD?style=flat-square&logo=sonarqube&logoColor=white)
 
 ### 🕵️ Guest Users
 - Browse and search services.
@@ -42,9 +61,6 @@
 - Create, edit, or delete discounts and promotions.
 - Handle customer complaints and support requests.
 - Monitor consultations and system performance.
-
-## Backend API Documentation
-
 ## Backend API Documentation
 
 - OpenAPI Spec (JSON): [https://domicare-web-v1-5.onrender.com/v3/api-docs](https://domicare-web-v1-5.onrender.com/v3/api-docs)  

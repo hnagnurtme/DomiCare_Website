@@ -61,15 +61,15 @@ Built with **Spring Boot**, **ReactJS**, and **PostgreSQL**, it ensures a seamle
 - Create, edit, or delete discounts and promotions.
 - Handle customer complaints and support requests.
 - Monitor consultations and system performance.
-## Backend API Documentation
+## Deployment
 
-- OpenAPI Spec (JSON): [https://domicare-web-v1-5.onrender.com/v3/api-docs](https://domicare-web-v1-5.onrender.com/v3/api-docs)  
-- Swagger UI: [https://domicare-web-v1-5.onrender.com/swagger-ui/index.html](https://domicare-web-v1-5.onrender.com/swagger-ui/index.html)
+**Website:** [https://domicare.hnagnurtme.id.vn](https://domicare.hnagnurtme.id.vn)
 
-### Swagger UI Preview
-![Swagger UI Screenshot](https://github.com/hnagnurtme/DomiCare_Website/blob/master/domicare-web-v1-5.onrender.com_swagger-ui_index.html%20(1).png)
+**Sale Test Account:**  
+- Email: domicare.company@gmail.com
+- Password: SALErole123
 
-
+---
 ## ⚡ Quick Start
 
 ```bash
@@ -110,55 +110,6 @@ DomiCare adopts a **microservices architecture** for scalability and maintainabi
 - **Authentication**: JWT + OAuth2.
 - **Caching**: Redis (optional).
 - **CI/CD**: GitHub Actions or Jenkins.
-
----
-
-## 💻 Technology Stack
-
-### Backend
-- **Spring Boot**: Core framework for Java development.
-- **Spring Security**: Authentication and authorization.
-- **Spring Data JPA**: Database interaction with ORM.
-- **JWT & OAuth2**: Stateless authentication and third-party login (Google, Facebook).
-- **PostgreSQL**: Relational database.
-- **Hibernate**: ORM framework.
-- **Swagger/OpenAPI**: API documentation.
-- **Maven**: Dependency and build management.
-- **JUnit & Mockito**: Unit testing.
-- **JavaMail**: Email notifications.
-- **Cloudinary**: Cloud-based image storage.
-- **Lombok**: Boilerplate code reduction.
-
-### Frontend
-- **ReactJS**: UI development framework.
-- **Redux**: State management.
-- **Axios**: HTTP client for API calls.
-- **React Router**: Client-side routing.
-- **Material-UI**: UI component library.
-- **Formik**: Form management.
-- **React Query**: Data fetching and caching.
-- **i18next**: Multilingual support.
-- **Jest & React Testing Library**: Testing.
-- **ESLint & Prettier**: Code quality tools.
-
-### DevOps & Tools
-- **Docker**: Containerization.
-- **Git**: Version control.
-- **Postman**: API testing.
-- **SonarQube**: Code quality analysis.
-- **Prometheus & Grafana**: Monitoring (optional).
-- **ELK Stack**: Logging (optional).
-
----
-## 🛠️ Installation Guide
-
-### Prerequisites
-- JDK 11+
-- Maven 3.6+
-- Node.js 14+ and npm 6+
-- PostgreSQL 12+
-- Git
-
 ### Backend Setup
 
 1. **Clone the Repository**

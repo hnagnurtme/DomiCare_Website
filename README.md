@@ -117,46 +117,46 @@ cloudinary.api-secret=your-api-secret
 <details>
   <summary>Home Page</summary>
 
-  ![Login Page](../image/image-login.png)
-  ![Home Page](../image/image-homepage.png)
-  ![Intro / About](../image/image-gioithieu.png)
+  ![Login Page](docs/image/image-login.png)
+  ![Home Page](docs/image/image-homepage.png)
+  ![Intro / About](docs/image/image-gioithieu.png)
 </details>
 
 <details>
   <summary>Products Page</summary>
 
-  ![All Products](../image/image-search.png)
-  ![Products Grid](../image/image-fullproduct.png)
+  ![All Products](docs/image/image-search.png)
+  ![Products Grid](docs/image/image-fullproduct.png)
 </details>
 
 <details>
   <summary>Admin / Dashboard</summary>
 
-  ![Admin Dashboard](../image/image-dashboard.png)
-  ![Admin Orders](../image/image-donhang.png)
-  ![Admin Services](../image/image-admin-dichvu.png)
+  ![Admin Dashboard](docs/image/image-dashboard.png)
+  ![Admin Orders](docs/image/image-donhang.png)
+  ![Admin Services](docs/image/image-admin-dichvu.png)
 </details>
 
 <details>
   <summary>Admin - Staff & Management</summary>
 
-  ![Admin Staff](../image/image-admin-nhanvien.png)
-  ![Admin Update Form](../image/image-admin-update.png)
+  ![Admin Staff](docs/image/image-admin-nhanvien.png)
+  ![Admin Update Form](docs/image/image-admin-update.png)
 </details>
 
 <details>
   <summary>User / Mobile Views</summary>
 
-  ![Bookings History (User)](../image/image-user-lichsu-tatca.png)
-  ![Mobile - Reset Password / Email](../image/image-matkhau.png)
-  ![Notifications / Toasts](../image/image-thongbao.png)
+  ![Bookings History (User)](docs/image/image-user-lichsu-tatca.png)
+  ![Mobile - Reset Password / Email](docs/image/image-matkhau.png)
+  ![Notifications / Toasts](docs/image/image-thongbao.png)
 </details>
 
 <details>
   <summary>Sales / Notifications</summary>
 
-  ![Sales - Orders](../image/image-sale-donhang.png)
-  ![Consultation / Requests](../image/image-tuvan.png)
+  ![Sales - Orders](docs/image/image-sale-donhang.png)
+  ![Consultation / Requests](docs/image/image-tuvan.png)
 </details>
 
 ---
